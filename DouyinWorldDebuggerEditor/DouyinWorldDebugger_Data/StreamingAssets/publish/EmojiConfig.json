@@ -1,0 +1,106 @@
+{
+  "Path": "UI/WorldUI/Expression/Expression",
+  "EmojiList": [
+    {
+      "Type": 1,
+      "Texture": "UI/WorldUI/Expression/Common/Texture/hi",
+      "ActionType": 1,
+      "name": "Hi"
+    },
+    {
+      "Type": 2,
+      "Texture": "UI/WorldUI/Expression/Common/Texture/haha",
+      "ActionType": 1,
+      "name": "Haha"
+    },
+    {
+      "Type": 3,
+      "Texture": "UI/WorldUI/Expression/Common/Texture/love",
+      "ActionType": 2,
+      "name": "Love"
+    },
+    {
+      "Type": 4,
+      "Texture": "UI/WorldUI/Expression/Common/Texture/666",
+      "ActionType": 2,
+      "name": "666"
+    },
+    {
+      "Type": 5,
+      "Texture": "UI/WorldUI/Expression/Common/Texture/awkward",
+      "ActionType": 1,
+      "name": "Awkward"
+    },
+    {
+      "Type": 6,
+      "Texture": "UI/WorldUI/Expression/Common/Texture/sad",
+      "ActionType": 1,
+      "name": "Sad"
+    },
+    {
+      "Type": 7,
+      "Texture": "UI/WorldUI/Expression/Common/Texture/question",
+      "ActionType": 1,
+      "name": "Question"
+    },
+    {
+      "Type": 8,
+      "Texture": "UI/WorldUI/Expression/Common/Texture/heartbreak",
+      "ActionType": 2,
+      "name": "Heart Break"
+    },
+    {
+      "Type": 9,
+      "Texture": "UI/WorldUI/Expression/Common/Texture/bye",
+      "ActionType": 1,
+      "name": "Bye"
+    },
+    {
+      "Type": 10,
+      "Texture": "UI/WorldUI/Expression/Common/Texture/qiujiaoshui",
+      "ActionType": 1,
+      "name": "qiujiaoshui"
+    },
+    {
+      "Type": 11,
+      "Texture": "UI/WorldUI/Expression/Common/Texture/ganenyouni",
+      "ActionType": 1,
+      "name": "ganenyouni"
+    },
+    {
+      "Type": 12,
+      "Texture": "UI/WorldUI/Expression/Common/Texture/zhenhaokan",
+      "ActionType": 1,
+      "name": "zhenhaokan"
+    },
+    {
+      "Type": 13,
+      "Texture": "UI/WorldUI/Expression/Common/Texture/qiuguanzhu",
+      "ActionType": 1,
+      "name": "qiuguanzhu"
+    },
+    {
+      "Type": 14,
+      "Texture": "UI/WorldUI/Expression/Common/Texture/qiuliaotian",
+      "ActionType": 1,
+      "name": "qiuliaotian"
+    },
+    {
+      "Type": 15,
+      "Texture": "UI/WorldUI/Expression/Common/Texture/zhaodazi",
+      "ActionType": 1,
+      "name": "zhaodazi"
+    },
+    {
+      "Type": 16,
+      "Texture": "UI/WorldUI/Expression/Common/Texture/dianzan",
+      "ActionType": 2,
+      "name": "dianzan"
+    }, {
+      "Type": 17,
+      "Texture": "UI/WorldUI/Expression/Common/Texture/xiexie",
+      "ActionType": 1,
+      "name": "xiexie"
+    }
+  ]
+}
