@@ -2031,6 +2031,22 @@ namespace PixelCrushers.DialogueSystem
             return true;
         }
 
+        private Component GetComponentByName(GameObject go, string componentName)
+        {
+            foreach (var comp in go.GetComponents<Component>())
+            {
+                if (comp == null) continue;
+                // 匹配简单类名或完整名称（包含命名空间）
+                if (comp.GetType().Name == componentName || 
+                    comp.GetType().FullName == componentName)
+                {
+                    return comp;
+                }
+            }
+            return null;
+        }
+        
+        
         /// <summary>
         /// Handles the "SetEnabled(component[, true|false|flip[, subject]])" action.
         /// 
@@ -2054,7 +2070,7 @@ namespace PixelCrushers.DialogueSystem
                 for (int i = 0; i < gameObjects.Length; i++)
                 {
                     var go = gameObjects[i];
-                    var comp = (go != null) ? go.GetComponent(componentName) as Component : null;
+                    var comp = (go != null) ? GetComponentByName(go, componentName) : null;
                     if (comp != null)
                     {
                         Toggle state = Toggle.True;
@@ -2077,7 +2093,8 @@ namespace PixelCrushers.DialogueSystem
             }
             else
             {
-                Component component = subject.GetComponent(componentName) as Component;
+                // Component component = subject.GetComponent(componentName) as Component;
+                Component component = GetComponentByName(subject.gameObject, componentName);
                 if (component == null)
                 {
                     if (DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Sequencer: SetEnabled() command: component '{1}' not found on {2}.", new System.Object[] { DialogueDebug.Prefix, componentName, subject.name }));

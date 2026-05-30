@@ -34,12 +34,7 @@ function RefreshCreatorInfo(info)
 end
 
 function RefreshNumberOfFans()
-    if creatorInfo.numberOfFans > 10000 then
-        local num = string.format("%.2f", creatorInfo.numberOfFans / 10000.0)
-        fansNum.text = tostring(num) .. "w 粉丝"
-    else
-        fansNum.text = tostring(creatorInfo.numberOfFans) .. " 粉丝"
-    end
+    fansNum.text = creatorInfo.fans
 end
 
 -- 关注创作者

@@ -15,7 +15,7 @@ MonoBehaviour:
   m_GroupName: Duplicate Asset Isolation
   m_Data:
     m_SerializedData: []
-  m_GUID: 99669dcb794e74524961049b7bdbc913
+  m_GUID: 460b376392c8d4a5d98ae835954304b0
   m_SerializeEntries:
   - m_GUID: 211feea29a4364d27bca96926245669d
     m_Address: Assets/DouyinVCreateSDK/World/WorldResources/Shaders/ENV/World_Lit.shader
@@ -37,11 +37,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7dc7dccd9200dd64890d0915743b1824
-    m_Address: Assets/DouyinVCreateSDK/World/WorldResources/Shaders/ENV/Water.shader
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 36e335017ad71d54fbb10842863188ae
     m_Address: Packages/com.unity.render-pipelines.core/Runtime/FallbackShader.shader
     m_ReadOnly: 0
@@ -56,5 +51,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: a114677fd3efc4f4395052ee6d9b52c6, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: c9ce2aa10aba17248a824e58f235a6fb, type: 2}
-    - {fileID: 11400000, guid: 7c5519fe8dda80945ba3d47665e8195a, type: 2}
+    - {fileID: 11400000, guid: 4c0a41a1939874f349ac2131e648ac86, type: 2}
+    - {fileID: 11400000, guid: b47abf81409ba45b0a53eefdd19f3853, type: 2}
