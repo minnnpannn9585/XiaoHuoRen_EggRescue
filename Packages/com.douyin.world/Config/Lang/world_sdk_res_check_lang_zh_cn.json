@@ -70,6 +70,8 @@
   "str_worldSDK_resourceCheck_shader_shaderQuantity_oversize_error_title": "此世界着色器数量超出限制",
   "str_worldSDK_resourceCheck_shader_shaderQuantity_text": "{0}/{1}",
   "str_worldSDK_resourceCheck_shader_shaderQuantity_title": "着色器数量",
+  "str_worldSDK_resourceCheck_shader_version_outofrange_error_title": "WebGL模式下，使用超过3.0的着色器版本会出现表现异常",
+  "str_worldSDK_resourceCheck_shader_version_outofrange_error_text": "请确认场景中使用的shader中#pragma target不大于3.0",
   "str_worldSDK_resourceCheck_shader_title": "着色器检查",
   "str_worldSDK_resourceCheck_shader_unURP_warning_text": "为确保虚拟世界有较好的运行效果，当前仅支持使用通用渲染管线（URP）的着色器，请修改资源后重新上传",
   "str_worldSDK_resourceCheck_shader_unURP_warning_title": "世界中使用了非通用渲染管线（URP）的着色器",

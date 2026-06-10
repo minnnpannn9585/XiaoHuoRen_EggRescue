@@ -15,7 +15,7 @@ MonoBehaviour:
   m_GroupName: Duplicate Asset Isolation
   m_Data:
     m_SerializedData: []
-  m_GUID: 460b376392c8d4a5d98ae835954304b0
+  m_GUID: cc1e239131e064244b5d1895b40ea8e4
   m_SerializeEntries:
   - m_GUID: 211feea29a4364d27bca96926245669d
     m_Address: Assets/DouyinVCreateSDK/World/WorldResources/Shaders/ENV/World_Lit.shader
@@ -34,6 +34,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 832bc14bf0899bf46a3ee4401bdbf44a
     m_Address: Assets/DouyinVCreateSDK/World/WorldResources/Shaders/ENV/Glass.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7dc7dccd9200dd64890d0915743b1824
+    m_Address: Assets/DouyinVCreateSDK/World/WorldResources/Shaders/ENV/Water.shader
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

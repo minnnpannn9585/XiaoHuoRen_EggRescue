@@ -137,6 +137,11 @@
               "Title": "str_worldSDK_resourceCheck_shader_shaderLost_warning_title",
               "Message": "str_worldSDK_resourceCheck_shader_shaderLost_warning_text",
               "StyleType": 2
+            },
+            {
+              "Title": "str_worldSDK_resourceCheck_shader_version_outofrange_error_title",
+              "Message": "str_worldSDK_resourceCheck_shader_version_outofrange_error_text",
+              "StyleType": 1
             }
           ],
           "Success": {
