@@ -1,0 +1,36 @@
+{
+    "npcList": [
+        {
+            "id": "Player_001",
+            "name": "玩家",
+            "avatar": {
+                "instanceID": 41410
+            },
+            "avatarPath": "Assets/DialogueSystem/UI/Npc1.png",
+            "currentBranchId": 1,
+            "isFolded": true,
+            "storyGraphs": []
+        },
+        {
+            "id": "NPC_900",
+            "name": "大树",
+            "avatar": {
+                "instanceID": 41386
+            },
+            "avatarPath": "Assets/Res/UI/Black Cat.png",
+            "currentBranchId": 1,
+            "isFolded": false,
+            "storyGraphs": [
+                {
+                    "branchId": 1,
+                    "storyDescription": "新剧情路由",
+                    "luaAsset": {
+                        "instanceID": 82816
+                    },
+                    "luaModuleName": "Dashu1-A",
+                    "luaAssetPath": "Assets/Editor/DialogueData/Dashu1-A.lua"
+                }
+            ]
+        }
+    ]
+}

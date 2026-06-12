@@ -3,34 +3,26 @@
     <type fullname="DouyinCanvasAdapter" preserve="all" />
     <type fullname="DouyinUIHVAdapterinOnePrefab_new" preserve="all" />
     <type fullname="DouyinUIHVTransfromData" preserve="all" />
-    <type fullname="DouyinWaterArea" preserve="all" />
     <type fullname="DouyinUIHVTransfromData/DouyinUIRootsRecttransformData" preserve="nothing" serialized="true" />
-    <type fullname="DouyinWaterArea/FogParam" preserve="nothing" serialized="true" />
   </assembly>
   <assembly fullname="com.douyin.script, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="DouyinScript" preserve="all" />
     <type fullname="DouyinScriptAsset" preserve="all" />
-    <type fullname="DouyinButton" preserve="nothing" serialized="true" />
     <type fullname="DouyinLuaDataDouyinButtonArr" preserve="nothing" serialized="true" />
     <type fullname="DouyinLuaDataEnum" preserve="nothing" serialized="true" />
     <type fullname="DouyinLuaDataFloat" preserve="nothing" serialized="true" />
     <type fullname="DouyinLuaDataMono" preserve="nothing" serialized="true" />
-    <type fullname="DouyinLuaDataSObject" preserve="nothing" serialized="true" />
     <type fullname="DouyinLuaDataUObject" preserve="nothing" serialized="true" />
     <type fullname="DouyinLuaDataUObjectArr" preserve="nothing" serialized="true" />
-    <type fullname="DouyinLuaDataVarBoolean" preserve="nothing" serialized="true" />
     <type fullname="DouyinLuaDataVarInt" preserve="nothing" serialized="true" />
   </assembly>
   <assembly fullname="com.douyin.world, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="DouyinNetworkGuid" preserve="all" />
-    <type fullname="DouyinObjectSync" preserve="all" />
     <type fullname="DouyinScriptLoader" preserve="all" />
     <type fullname="DouyinWorldRoot" preserve="all" />
-    <type fullname="DouyinJoyStick" preserve="nothing" serialized="true" />
     <type fullname="DouyinNetworkGuid/NetworkGUID" preserve="nothing" serialized="true" />
     <type fullname="Interaction3DType" preserve="nothing" serialized="true" />
     <type fullname="InteractionType" preserve="nothing" serialized="true" />
-    <type fullname="MainInteractButtonType" preserve="nothing" serialized="true" />
   </assembly>
   <assembly fullname="Unity.Addressables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" preserve="all">
     <type fullname="UnityEngine.AddressableAssets.Addressables" preserve="all" />
@@ -74,7 +66,6 @@
     <type fullname="UnityEngine.BoxCollider" preserve="all" />
     <type fullname="UnityEngine.CapsuleCollider" preserve="all" />
     <type fullname="UnityEngine.MeshCollider" preserve="all" />
-    <type fullname="UnityEngine.Rigidbody" preserve="all" />
     <type fullname="UnityEngine.SphereCollider" preserve="all" />
   </assembly>
   <assembly fullname="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">

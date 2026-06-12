@@ -16,17 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: d88864f19e31c4dbb93ad6fbb1e6eae0
-  m_SerializeEntries:
-  - m_GUID: 28b5f53639b054318bb53a3567435dad
-    m_Address: Assets/Scenes/AAA.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a1bb8d829e37a4b91b1a79a884f9a236
-    m_Address: Assets/Scenes/AAA.shadervariants
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a114677fd3efc4f4395052ee6d9b52c6, type: 2}
   m_SchemaSet:

@@ -11,6 +11,21 @@ using UnityEngine.UIElements;
 
 namespace RPGDialogueEditor
 {
+    [Serializable]
+    public class GlobalNPCCharacter
+    {
+        public string id;
+        public string name;
+        public string avatarPath;
+        public int currentBranchId = 1;
+    }
+
+    [Serializable]
+    public class GlobalNPCData
+    {
+        public List<GlobalNPCCharacter> npcList = new List<GlobalNPCCharacter>();
+    }
+
     /// <summary>
     /// 剧情对话数据结构体
     /// </summary>
@@ -44,7 +59,16 @@ namespace RPGDialogueEditor
     public class DialogueGraphEditorWindow : EditorWindow
     {
         private DialogueGraphView _graphView;
-        private string _lastSavePath = "";
+        private string _lastSavePath = "Assets/Editor/DialogueData";
+
+        public GlobalNPCData NpcConfigList = new GlobalNPCData();
+        
+        private string _npcConfigFilePath = "Assets/Editor/EidtData/NPCData_Config.json";
+
+        // --- 新增：对话文件管理状态 ---
+        private string _dialogueDirectory = "Assets/Editor/DialogueData";
+        private string _currentDialogueFile = "";
+        private ScrollView _fileScrollView;
 
         [MenuItem("抖音虚拟创作SDK/DialogueEditor")]
         public static void OpenWindow()
@@ -56,10 +80,41 @@ namespace RPGDialogueEditor
 
         private void OnEnable()
         {
+            LoadNPCConfig();
             ConstructLayout();
             
-            // 默认加载老村长示例数据
-            LoadDefaultExample();
+            // 默认加载第一个文件，如果没有则加载示例数据
+            if (!string.IsNullOrEmpty(_currentDialogueFile) && _currentDialogueFile != "无文件")
+            {
+                LoadDialogueFile(_currentDialogueFile);
+            }
+            else
+            {
+                LoadDefaultExample();
+            }
+        }
+
+        private void OnFocus()
+        {
+            LoadNPCConfig();
+            RefreshAllNodesNPCList();
+        }
+
+        private void LoadNPCConfig()
+        {
+            if (System.IO.File.Exists(_npcConfigFilePath))
+            {
+                string json = System.IO.File.ReadAllText(_npcConfigFilePath);
+                if (!string.IsNullOrEmpty(json))
+                {
+                    NpcConfigList = JsonUtility.FromJson<GlobalNPCData>(json);
+                }
+            }
+
+            if (NpcConfigList == null || NpcConfigList.npcList == null)
+            {
+                NpcConfigList = new GlobalNPCData();
+            }
         }
 
         private void OnDisable()
@@ -109,6 +164,46 @@ namespace RPGDialogueEditor
             titleContainer.Add(subtitleLabel);
             sidebar.Add(titleContainer);
 
+            // ==========================================
+            // 新增：文件管理区域
+            // ==========================================
+            var sectionFile = new Label("对话文件管理");
+            sectionFile.style.fontSize = 11;
+            sectionFile.style.unityFontStyleAndWeight = FontStyle.Bold;
+            sectionFile.style.color = new Color(0.55f, 0.62f, 0.75f);
+            sectionFile.style.marginBottom = 8;
+            sidebar.Add(sectionFile);
+
+            _fileScrollView = new ScrollView();
+            _fileScrollView.style.maxHeight = 200; // 限制最大高度，防止把下面的按钮顶出去
+            _fileScrollView.style.marginBottom = 6;
+            _fileScrollView.style.backgroundColor = new Color(0.1f, 0.12f, 0.18f);
+            
+            // 增加圆角和边框质感
+            _fileScrollView.style.borderTopLeftRadius = 5;
+            _fileScrollView.style.borderTopRightRadius = 5;
+            _fileScrollView.style.borderBottomLeftRadius = 5;
+            _fileScrollView.style.borderBottomRightRadius = 5;
+            _fileScrollView.style.borderTopWidth = 1;
+            _fileScrollView.style.borderBottomWidth = 1;
+            _fileScrollView.style.borderLeftWidth = 1;
+            _fileScrollView.style.borderRightWidth = 1;
+            _fileScrollView.style.borderTopColor = new Color(0.18f, 0.22f, 0.33f, 1.0f);
+            _fileScrollView.style.borderBottomColor = new Color(0.18f, 0.22f, 0.33f, 1.0f);
+            _fileScrollView.style.borderLeftColor = new Color(0.18f, 0.22f, 0.33f, 1.0f);
+            _fileScrollView.style.borderRightColor = new Color(0.18f, 0.22f, 0.33f, 1.0f);
+
+            sidebar.Add(_fileScrollView);
+
+            var dividerFile = new VisualElement();
+            dividerFile.style.height = 1;
+            dividerFile.style.backgroundColor = new Color(0.18f, 0.22f, 0.33f, 0.5f);
+            dividerFile.style.marginTop = 12;
+            dividerFile.style.marginBottom = 16;
+            sidebar.Add(dividerFile);
+
+            RefreshFileList();
+
             // 分组A：快捷创建节点 (Beautified Card Style)
             var sectionCreate = new Label("快捷创建节点");
             sectionCreate.style.fontSize = 11;
@@ -144,7 +239,7 @@ namespace RPGDialogueEditor
             sidebar.Add(sectionConfig);
 
             // 导入 Lua 按钮
-            var btnImport = CreateActionButton("导入Lua配置文件", 
+            var btnImport = CreateActionButton("导入外部Lua配置文件", 
                 () =>
                 {
                     ImportLuaFile();
@@ -165,7 +260,7 @@ namespace RPGDialogueEditor
             sidebar.Add(btnImport);
             
             // 导出 Lua 按钮
-            var btnExport = CreateActionButton("导出Lua配置文件", ExportLuaFile, new Color(0.24f, 0.3f, 0.6f));
+            var btnExport = CreateActionButton("导出外部Lua配置文件", ExportLuaFile, new Color(0.24f, 0.3f, 0.6f));
             sidebar.Add(btnExport);
 
             // 清空画布按钮
@@ -192,6 +287,18 @@ namespace RPGDialogueEditor
             };
             _graphView.StretchToParentSize(); // 让 Graph 填满该局部相对容器
             canvasContainer.Add(_graphView);
+        }
+
+
+
+        public void RefreshAllNodesNPCList()
+        {
+            if (_graphView == null) return;
+            var nodes = _graphView.GetAllDialogueNodes();
+            foreach (var node in nodes)
+            {
+                node.RefreshNPCDropdown();
+            }
         }
 
         private void StyleCardButton(Button btn, string title, string desc, Color accentColor)
@@ -257,6 +364,7 @@ namespace RPGDialogueEditor
 
         private void LoadDefaultExample()
         {
+            if (_graphView == null) return;
             _graphView.ClearGraph();
 
             _graphView.CreateNodeWithData(new DialogueNodeData
@@ -334,6 +442,132 @@ namespace RPGDialogueEditor
             _graphView.RebuildEdgesFromDataIds();
         }
 
+        private void RefreshFileList()
+        {
+            if (_fileScrollView == null) return;
+            _fileScrollView.Clear();
+
+            if (!System.IO.Directory.Exists(_dialogueDirectory))
+            {
+                System.IO.Directory.CreateDirectory(_dialogueDirectory);
+            }
+
+            string[] filePaths = System.IO.Directory.GetFiles(_dialogueDirectory, "*.lua");
+            List<string> files = new List<string>();
+            foreach (var path in filePaths)
+            {
+                files.Add(System.IO.Path.GetFileNameWithoutExtension(path));
+            }
+
+            if (files.Count > 0 && !files.Contains(_currentDialogueFile))
+            {
+                _currentDialogueFile = files[0];
+            }
+
+            if (files.Count == 0)
+            {
+                var emptyLabel = new Label("暂无文件配置");
+                emptyLabel.style.color = new Color(0.5f, 0.5f, 0.5f);
+                emptyLabel.style.paddingLeft = 8;
+                emptyLabel.style.paddingTop = 8;
+                emptyLabel.style.paddingBottom = 8;
+                _fileScrollView.Add(emptyLabel);
+                return;
+            }
+
+            foreach (var file in files)
+            {
+                var btn = new Button(() => {
+                    if (_currentDialogueFile != file) {
+                        _currentDialogueFile = file;
+                        LoadDialogueFile(file);
+                        RefreshFileList(); // 刷新以更新选中高亮状态
+                    }
+                });
+                
+                btn.text =file;
+                btn.style.unityTextAlign = TextAnchor.MiddleLeft;
+                btn.style.paddingLeft = 8;
+                btn.style.height = 26;
+                btn.style.borderLeftWidth = 0;
+                btn.style.borderRightWidth = 0;
+                btn.style.borderTopWidth = 0;
+                btn.style.borderBottomWidth = 1;
+                btn.style.borderBottomColor = new Color(0.15f, 0.18f, 0.25f);
+                btn.style.borderTopLeftRadius = 0;
+                btn.style.borderTopRightRadius = 0;
+                btn.style.borderBottomLeftRadius = 0;
+                btn.style.borderBottomRightRadius = 0;
+                btn.style.marginLeft = 0;
+                btn.style.marginRight = 0;
+                btn.style.marginTop = 0;
+                btn.style.marginBottom = 0;
+
+                if (_currentDialogueFile == file)
+                {
+                    btn.style.backgroundColor = new Color(0.24f, 0.3f, 0.6f); // 高亮当前选中
+                    btn.style.color = Color.white;
+                    btn.style.unityFontStyleAndWeight = FontStyle.Bold;
+                }
+                else
+                {
+                    btn.style.backgroundColor = Color.clear;
+                    btn.style.color = new Color(0.7f, 0.75f, 0.85f);
+                    btn.style.unityFontStyleAndWeight = FontStyle.Normal;
+                }
+                
+                _fileScrollView.Add(btn);
+            }
+        }
+
+        private void LoadDialogueFile(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName) || fileName == "无文件") return;
+            string path = System.IO.Path.Combine(_dialogueDirectory, fileName + ".lua");
+            if (!System.IO.File.Exists(path)) return;
+
+            try
+            {
+                string luaText = System.IO.File.ReadAllText(path);
+                bool hasSavedPositions = luaText.Contains("Position:");
+                List<DialogueNodeData> parsedNodes = ParseLuaConfig(luaText);
+
+                _graphView.ClearGraph();
+
+                if (parsedNodes != null && parsedNodes.Count > 0)
+                {
+                    if (!hasSavedPositions) AutoArrangeNodes(parsedNodes);
+                    
+                    bool npcAdded = false;
+                    foreach (var data in parsedNodes)
+                    {
+                        if (!string.IsNullOrEmpty(data.npcName) && !NpcConfigList.npcList.Exists(n => n.name == data.npcName))
+                        {
+                            NpcConfigList.npcList.Add(new GlobalNPCCharacter { id = Guid.NewGuid().ToString(), name = data.npcName, avatarPath = data.npcSprite });
+                            npcAdded = true;
+                        }
+                    }
+                    if (npcAdded)
+                    {
+                        // SaveNPCConfig(); // 取消保存，NPC 数据现由全局管理器维护
+                        // RefreshNPCListUI();
+                    }
+
+                    foreach (var data in parsedNodes) _graphView.CreateNodeWithData(data);
+                    _graphView.RebuildEdgesFromDataIds();
+                    _graphView.ShowToast($"已加载: {fileName}");
+                }
+                else
+                {
+                    _graphView.ShowToast($"文件 {fileName} 为空或解析失败");
+                }
+            }
+            catch (Exception ex)
+            {
+                EditorUtility.DisplayDialog("加载失败", "错误详情: " + ex.Message, "确定");
+            }
+        }
+
         private void ImportLuaFile()
         {
             string path = EditorUtility.OpenFilePanel("导入 DialogueConfig Lua 配置", _lastSavePath, "lua");
@@ -358,6 +592,22 @@ namespace RPGDialogueEditor
                         AutoArrangeNodes(parsedNodes);
                     }
                     
+                    // 0. 自动将导入的未知 NPC 加入到全局配置列表中
+                    bool npcAdded = false;
+                    foreach (var data in parsedNodes)
+                    {
+                        if (!string.IsNullOrEmpty(data.npcName) && !NpcConfigList.npcList.Exists(n => n.name == data.npcName))
+                        {
+                            NpcConfigList.npcList.Add(new GlobalNPCCharacter { id = Guid.NewGuid().ToString(), name = data.npcName, avatarPath = data.npcSprite });
+                            npcAdded = true;
+                        }
+                    }
+                    if (npcAdded)
+                    {
+                        // SaveNPCConfig(); // 取消保存，NPC 数据现由全局管理器维护
+                        // RefreshNPCListUI();
+                    }
+
                     // 1. 批量实例化所有解析出的数据节点
                     foreach (var data in parsedNodes)
                     {
@@ -770,6 +1020,7 @@ namespace RPGDialogueEditor
     public class DialogueGraphView : GraphView
     {
         private readonly DialogueGraphEditorWindow _editorWindow;
+        public DialogueGraphEditorWindow EditorWindow => _editorWindow;
 
         public DialogueGraphView(DialogueGraphEditorWindow window)
         {
@@ -980,8 +1231,8 @@ namespace RPGDialogueEditor
 
         private VisualElement _customContainer;
         private IntegerField _idField;
-        private TextField _nameField;
-        private TextField _spriteField;
+        private DropdownField _npcDropdown;
+        private Label _spriteLabel;
         private TextField _dialogueField;
         private IntegerField _nextIdField; // Normal 专用
 
@@ -1031,6 +1282,8 @@ namespace RPGDialogueEditor
                 label.style.minWidth = 70;
             }
             var textInput = field.Q("unity-text-input");
+            if (textInput == null) textInput = field.Q(className: "unity-base-popup-field__input");
+            
             if (textInput != null)
             {
                 textInput.style.backgroundColor = new Color(0.05f, 0.06f, 0.1f, 1.0f);
@@ -1077,15 +1330,29 @@ namespace RPGDialogueEditor
             BeautifyField(_idField);
             _customContainer.Add(_idField);
 
-            _nameField = new TextField("NPC名字") { value = Data.npcName };
-            _nameField.RegisterValueChangedCallback(evt => Data.npcName = evt.newValue);
-            BeautifyField(_nameField);
-            _customContainer.Add(_nameField);
+            _npcDropdown = new DropdownField("选择NPC");
+            _npcDropdown.RegisterValueChangedCallback(evt =>
+            {
+                Data.npcName = evt.newValue;
+                var npc = _graphView.EditorWindow.NpcConfigList.npcList.Find(n => n.name == evt.newValue);
+                if (npc != null)
+                {
+                    string spriteName = string.IsNullOrEmpty(npc.avatarPath) ? "" : System.IO.Path.GetFileNameWithoutExtension(npc.avatarPath);
+                    Data.npcSprite = spriteName;
+                    if (_spriteLabel != null) _spriteLabel.text = $"[立绘] {spriteName}";
+                }
+            });
+            BeautifyField(_npcDropdown);
+            _customContainer.Add(_npcDropdown);
 
-            _spriteField = new TextField("立绘名称") { value = Data.npcSprite };
-            _spriteField.RegisterValueChangedCallback(evt => Data.npcSprite = evt.newValue);
-            BeautifyField(_spriteField);
-            _customContainer.Add(_spriteField);
+            _spriteLabel = new Label($"[立绘] {Data.npcSprite}");
+            _spriteLabel.style.color = new Color(0.5f, 0.6f, 0.7f);
+            _spriteLabel.style.fontSize = 10;
+            _spriteLabel.style.marginBottom = 6;
+            _spriteLabel.style.marginLeft = 75; // 对齐下拉框
+            _customContainer.Add(_spriteLabel);
+
+            RefreshNPCDropdown();
 
             _dialogueField = new TextField("对话文本")
             {
@@ -1282,6 +1549,42 @@ namespace RPGDialogueEditor
             if (_nextIdField != null)
             {
                 _nextIdField.SetValueWithoutNotify(Data.next);
+            }
+        }
+
+        public void RefreshNPCDropdown()
+        {
+            if (_npcDropdown == null) return;
+            var npcs = _graphView.EditorWindow.NpcConfigList.npcList;
+            var names = new List<string>();
+            foreach (var n in npcs) names.Add(n.name);
+            
+            if (names.Count == 0) names.Add("None");
+            
+            _npcDropdown.choices = names;
+            
+            if (names.Contains(Data.npcName))
+            {
+                _npcDropdown.SetValueWithoutNotify(Data.npcName);
+                var npc = npcs.Find(n => n.name == Data.npcName);
+                if (npc != null && _spriteLabel != null)
+                {
+                    string spriteName = string.IsNullOrEmpty(npc.avatarPath) ? "" : System.IO.Path.GetFileNameWithoutExtension(npc.avatarPath);
+                    _spriteLabel.text = $"[立绘] {spriteName}";
+                    Data.npcSprite = spriteName;
+                }
+            }
+            else
+            {
+                Data.npcName = names[0];
+                _npcDropdown.SetValueWithoutNotify(Data.npcName);
+                var npc = npcs.Find(n => n.name == Data.npcName);
+                if (npc != null)
+                {
+                    string spriteName = string.IsNullOrEmpty(npc.avatarPath) ? "" : System.IO.Path.GetFileNameWithoutExtension(npc.avatarPath);
+                    Data.npcSprite = spriteName;
+                    if (_spriteLabel != null) _spriteLabel.text = $"[立绘] {spriteName}";
+                }
             }
         }
 
