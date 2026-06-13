@@ -52,6 +52,9 @@ DialogueConfig[6] = {
     NpcName = "描述",
     NpcSprite = "",
     Dialogue = "——这蜗牛……话说到一半就没有了？",
+    UnlockBranches = {
+        { NpcName = "大树", BranchId = 2 }
+    },
     Next = -1  -- 下一段对话ID
 }
 

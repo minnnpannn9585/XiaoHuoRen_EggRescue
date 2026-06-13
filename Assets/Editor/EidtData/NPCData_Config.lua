@@ -19,14 +19,14 @@ local NPCData = {
             storyGraphs = {
                 {
                     branchId = 1,
-                    storyDescription = "新剧情路由",
+                    storyDescription = "对话A",
                     luaModuleName = "Dashu1-A",
                     luaAssetPath = "Assets/Editor/DialogueData/Dashu1-A.lua"
                 }
                 ,
                 {
                     branchId = 2,
-                    storyDescription = "新剧情路由",
+                    storyDescription = "对话B",
                     luaModuleName = "Dashu1-B-1",
                     luaAssetPath = "Assets/Editor/DialogueData/Dashu1-B-1.lua"
                 }
@@ -43,6 +43,13 @@ local NPCData = {
                 {
                     branchId = 1,
                     storyDescription = "描述",
+                    luaModuleName = "woniu",
+                    luaAssetPath = "Assets/Editor/DialogueData/woniu.lua"
+                }
+                ,
+                {
+                    branchId = 2,
+                    storyDescription = "对话剧情",
                     luaModuleName = "woniu",
                     luaAssetPath = "Assets/Editor/DialogueData/woniu.lua"
                 }

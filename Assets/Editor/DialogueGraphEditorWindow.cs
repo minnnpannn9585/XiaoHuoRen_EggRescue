@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using UnityEditor;
@@ -12,12 +13,22 @@ using UnityEngine.UIElements;
 namespace RPGDialogueEditor
 {
     [Serializable]
+    public class GlobalNPCStoryGraph
+    {
+        public int branchId = 1;
+        public string storyDescription = "";
+        public string luaModuleName = "";
+        public string luaAssetPath = "";
+    }
+
+    [Serializable]
     public class GlobalNPCCharacter
     {
         public string id;
         public string name;
         public string avatarPath;
         public int currentBranchId = 1;
+        public List<GlobalNPCStoryGraph> storyGraphs = new List<GlobalNPCStoryGraph>();
     }
 
     [Serializable]
@@ -39,9 +50,17 @@ namespace RPGDialogueEditor
         public string dialogue = "";
         public int next = -1;
         public List<OptionData> options = new List<OptionData>();
-        
+        public List<UnlockBranchData> unlockBranches = new List<UnlockBranchData>(); // 执行到该节点时，将指定 NPC 的 currentBranchId 改为对应值
+
         // 记录节点在画布中的二维坐标，确保导入时完美还原排版
-        public Vector2 position; 
+        public Vector2 position;
+    }
+
+    [Serializable]
+    public class UnlockBranchData
+    {
+        public string npcName = "";  // 要解锁的 NPC 名称
+        public int branchId = 0;     // 解锁到的分支 ID（>0 才有效）
     }
 
     [Serializable]
@@ -182,9 +201,64 @@ namespace RPGDialogueEditor
                 else if (key == "name") npc.name = ParseLuaString(luaContent, ref pos);
                 else if (key == "avatarPath") npc.avatarPath = ParseLuaString(luaContent, ref pos);
                 else if (key == "currentBranchId") npc.currentBranchId = ParseLuaInt(luaContent, ref pos);
+                else if (key == "storyGraphs") npc.storyGraphs = ParseLuaStoryGraphList(luaContent, ref pos);
                 else SkipLuaValue(luaContent, ref pos);
             }
             return npc;
+        }
+
+        private static List<GlobalNPCStoryGraph> ParseLuaStoryGraphList(string luaContent, ref int pos)
+        {
+            List<GlobalNPCStoryGraph> list = new List<GlobalNPCStoryGraph>();
+            SkipLuaWhitespace(luaContent, ref pos);
+            if (pos < luaContent.Length && luaContent[pos] == '=') pos++;
+            SkipLuaWhitespace(luaContent, ref pos);
+            if (pos < luaContent.Length && luaContent[pos] == '{') pos++;
+
+            while (pos < luaContent.Length)
+            {
+                SkipLuaWhitespace(luaContent, ref pos);
+                if (pos >= luaContent.Length) break;
+                if (luaContent[pos] == '}') { pos++; break; }
+                if (luaContent[pos] == ',') { pos++; continue; }
+
+                SkipLuaWhitespace(luaContent, ref pos);
+                if (pos < luaContent.Length && luaContent[pos] == '{')
+                {
+                    pos++;
+                    var sg = ParseLuaStoryGraph(luaContent, ref pos);
+                    if (sg != null) list.Add(sg);
+                }
+                else pos++;
+            }
+            return list;
+        }
+
+        private static GlobalNPCStoryGraph ParseLuaStoryGraph(string luaContent, ref int pos)
+        {
+            var sg = new GlobalNPCStoryGraph();
+            while (pos < luaContent.Length)
+            {
+                SkipLuaWhitespace(luaContent, ref pos);
+                if (pos >= luaContent.Length) break;
+                if (luaContent[pos] == '}') { pos++; break; }
+                if (luaContent[pos] == ',') { pos++; continue; }
+
+                int keyStart = pos;
+                while (pos < luaContent.Length && char.IsLetterOrDigit(luaContent[pos])) pos++;
+                string key = luaContent.Substring(keyStart, pos - keyStart);
+
+                SkipLuaWhitespace(luaContent, ref pos);
+                if (pos < luaContent.Length && luaContent[pos] == '=') pos++;
+                SkipLuaWhitespace(luaContent, ref pos);
+
+                if (key == "branchId") sg.branchId = ParseLuaInt(luaContent, ref pos);
+                else if (key == "storyDescription") sg.storyDescription = ParseLuaString(luaContent, ref pos);
+                else if (key == "luaModuleName") sg.luaModuleName = ParseLuaString(luaContent, ref pos);
+                else if (key == "luaAssetPath") sg.luaAssetPath = ParseLuaString(luaContent, ref pos);
+                else SkipLuaValue(luaContent, ref pos);
+            }
+            return sg;
         }
 
         private static string ParseLuaString(string luaContent, ref int pos)
@@ -409,7 +483,7 @@ namespace RPGDialogueEditor
                     AutoArrangeNodes(dataList);
                     foreach (var node in nodeList)
                     {
-                        node.SetPosition(new Rect(node.Data.position, new Vector2(280, 250)));
+                        node.SetPosition(new Rect(node.Data.position, new Vector2(340, 250)));
                     }
                     _graphView.RebuildEdgesFromDataIds();
                     _graphView.ShowToast("画布布局已自动整理完毕！");
@@ -1053,6 +1127,52 @@ namespace RPGDialogueEditor
                 string dialogue = ExtractStringField(cleanBody, "Dialogue");
                 int next = ExtractIntField(cleanBody, "Next", -1);
 
+                // 3.5 解析 UnlockBranches 数组（新格式）
+                var unlockList = new List<UnlockBranchData>();
+                int ubIndex = cleanBody.IndexOf("UnlockBranches", StringComparison.OrdinalIgnoreCase);
+                if (ubIndex != -1)
+                {
+                    int ubBrace = cleanBody.IndexOf('{', ubIndex);
+                    if (ubBrace != -1)
+                    {
+                        int ubDepth = 1;
+                        int ubScan = ubBrace + 1;
+                        while (ubScan < cleanBody.Length && ubDepth > 0)
+                        {
+                            if (cleanBody[ubScan] == '{') ubDepth++;
+                            else if (cleanBody[ubScan] == '}') ubDepth--;
+                            ubScan++;
+                        }
+                        // ubScan 现在指向最外层 '}' 的下一位
+                        string ubText = cleanBody.Substring(ubBrace + 1, ubScan - ubBrace - 2);
+
+                        // 匹配每一个 { NpcName = "...", BranchId = N } 形式
+                        var ubMatches = Regex.Matches(ubText, @"NpcName\s*=\s*""([^""]*)""[^}]*?BranchId\s*=\s*(\d+)");
+                        foreach (Match ubm in ubMatches)
+                        {
+                            unlockList.Add(new UnlockBranchData
+                            {
+                                npcName = ubm.Groups[1].Value,
+                                branchId = int.Parse(ubm.Groups[2].Value)
+                            });
+                        }
+                    }
+                }
+
+                // 兼容旧格式：UnlockBranchId（单个整数）
+                if (unlockList.Count == 0)
+                {
+                    int legacyUnlockId = ExtractIntField(cleanBody, "UnlockBranchId", 0);
+                    if (legacyUnlockId > 0)
+                    {
+                        unlockList.Add(new UnlockBranchData
+                        {
+                            npcName = npcName,
+                            branchId = legacyUnlockId
+                        });
+                    }
+                }
+
                 var nodeData = new DialogueNodeData
                 {
                     id = id,
@@ -1061,6 +1181,7 @@ namespace RPGDialogueEditor
                     npcSprite = npcSprite,
                     dialogue = dialogue.Replace("\\\"", "\""),
                     next = next,
+                    unlockBranches = unlockList,
                     position = pos,
                     options = new List<OptionData>()
                 };
@@ -1143,6 +1264,23 @@ namespace RPGDialogueEditor
                 
                 string escapedDiag = (node.dialogue ?? "").Replace("\"", "\\\"");
                 sb.AppendLine($"    Dialogue = \"{ escapedDiag }\",");
+
+                if (node.unlockBranches != null && node.unlockBranches.Count > 0)
+                {
+                    // 只输出有效条目（npcName 非空 且 branchId > 0）
+                    var validEntries = node.unlockBranches.Where(u => !string.IsNullOrEmpty(u.npcName) && u.branchId > 0).ToList();
+                    if (validEntries.Count > 0)
+                    {
+                        sb.AppendLine($"    UnlockBranches = {{");
+                        for (int i = 0; i < validEntries.Count; i++)
+                        {
+                            var u = validEntries[i];
+                            string comma = (i == validEntries.Count - 1) ? "" : ",";
+                            sb.AppendLine($"        {{ NpcName = \"{u.npcName}\", BranchId = {u.branchId} }}{comma}");
+                        }
+                        sb.AppendLine("    },");
+                    }
+                }
 
                 if (isNormal)
                 {
@@ -1263,7 +1401,7 @@ namespace RPGDialogueEditor
         public DialogueGraphNode CreateNodeWithData(DialogueNodeData nodeData)
         {
             var node = new DialogueGraphNode(nodeData, this);
-            node.SetPosition(new Rect(nodeData.position, new Vector2(280, 250)));
+            node.SetPosition(new Rect(nodeData.position, new Vector2(340, 250)));
             AddElement(node);
             return node;
         }
@@ -1399,7 +1537,7 @@ namespace RPGDialogueEditor
             _graphView = graphView;
 
             title = data.type == "Normal" ? "普通对话 (Normal)" : "NPC提问 (Question)";
-            style.width = 280;
+            style.width = 340;
             
             style.borderTopLeftRadius = 10;
             style.borderTopRightRadius = 10;
@@ -1436,7 +1574,7 @@ namespace RPGDialogueEditor
             {
                 label.style.color = new Color(0.65f, 0.72f, 0.85f);
                 label.style.fontSize = 11;
-                label.style.minWidth = 70;
+            label.style.minWidth = 55;
             }
             var textInput = field.Q("unity-text-input");
             if (textInput == null) textInput = field.Q(className: "unity-base-popup-field__input");
@@ -1472,7 +1610,8 @@ namespace RPGDialogueEditor
             _customContainer.style.paddingBottom = 8;
             _customContainer.style.backgroundColor = new Color(0.09f, 0.11f, 0.16f, 0.95f);
             
-            _idField = new IntegerField("唯一编号") { value = Data.id };
+            _idField = new IntegerField("ID") { value = Data.id };
+            _idField.style.maxWidth = 110;
             _idField.RegisterValueChangedCallback(evt =>
             {
                 int oldId = Data.id;
@@ -1485,9 +1624,8 @@ namespace RPGDialogueEditor
                 }
             });
             BeautifyField(_idField);
-            _customContainer.Add(_idField);
 
-            _npcDropdown = new DropdownField("选择NPC");
+            _npcDropdown = new DropdownField("NPC");
             _npcDropdown.RegisterValueChangedCallback(evt =>
             {
                 Data.npcName = evt.newValue;
@@ -1500,13 +1638,20 @@ namespace RPGDialogueEditor
                 }
             });
             BeautifyField(_npcDropdown);
-            _customContainer.Add(_npcDropdown);
+
+            // 把 ID 和 NPC 选择器放在同一行，节省空间
+            var headerRow = new VisualElement();
+            headerRow.style.flexDirection = FlexDirection.Row;
+            headerRow.style.marginBottom = 2;
+            headerRow.Add(_idField);
+            headerRow.Add(_npcDropdown);
+            _customContainer.Add(headerRow);
 
             _spriteLabel = new Label($"[立绘] {Data.npcSprite}");
             _spriteLabel.style.color = new Color(0.5f, 0.6f, 0.7f);
             _spriteLabel.style.fontSize = 10;
             _spriteLabel.style.marginBottom = 6;
-            _spriteLabel.style.marginLeft = 75; // 对齐下拉框
+            _spriteLabel.style.marginLeft = 5; // 与上面一行对齐
             _customContainer.Add(_spriteLabel);
 
             RefreshNPCDropdown();
@@ -1520,6 +1665,173 @@ namespace RPGDialogueEditor
             BeautifyField(_dialogueField);
             _dialogueField.RegisterValueChangedCallback(evt => Data.dialogue = evt.newValue);
             _customContainer.Add(_dialogueField);
+
+            // 解锁规则：NPC下拉 + 分支下拉
+            var unlockHeader = new Label("✦ 解锁分支（执行该节点后自动更新 NPC 配置）");
+            unlockHeader.style.color = new Color(0.9f, 0.7f, 0.35f);
+            unlockHeader.style.fontSize = 11;
+            unlockHeader.style.marginBottom = 4;
+            unlockHeader.style.unityFontStyleAndWeight = FontStyle.Bold;
+            _customContainer.Add(unlockHeader);
+
+            var unlockContainer = new VisualElement();
+            unlockContainer.name = "UnlockBranchesContainer";
+            unlockContainer.style.marginBottom = 6;
+            _customContainer.Add(unlockContainer);
+
+            void RefreshUnlockUI()
+            {
+                unlockContainer.Clear();
+
+                if (Data.unlockBranches == null)
+                    Data.unlockBranches = new List<UnlockBranchData>();
+
+                // 拿到所有 NPC 名字列表
+                var npcNames = new List<string>();
+                if (_graphView.EditorWindow.NpcConfigList != null && _graphView.EditorWindow.NpcConfigList.npcList != null)
+                {
+                    foreach (var n in _graphView.EditorWindow.NpcConfigList.npcList)
+                    {
+                        if (!string.IsNullOrEmpty(n.name)) npcNames.Add(n.name);
+                    }
+                }
+
+                for (int i = 0; i < Data.unlockBranches.Count; i++)
+                {
+                    int localIdx = i;
+                    var ubData = Data.unlockBranches[localIdx];
+
+                    var row = new VisualElement();
+                    row.style.flexDirection = FlexDirection.Column;
+                    row.style.marginBottom = 6;
+                    row.style.backgroundColor = new Color(0.1f, 0.12f, 0.18f, 0.8f);
+                    row.style.borderTopLeftRadius = 6;
+                    row.style.borderTopRightRadius = 6;
+                    row.style.borderBottomLeftRadius = 6;
+                    row.style.borderBottomRightRadius = 6;
+                    row.style.paddingTop = 4;
+                    row.style.paddingBottom = 4;
+                    row.style.paddingLeft = 4;
+                    row.style.paddingRight = 4;
+
+                    // NPC 下拉框
+                    var npcDropdown = new DropdownField("NPC", npcNames, ubData.npcName);
+                    npcDropdown.style.flexGrow = 1;
+                    npcDropdown.style.marginRight = 6;
+                    npcDropdown.style.marginBottom = 2;
+                    BeautifyField(npcDropdown);
+                    row.Add(npcDropdown);
+
+                    // 分支下拉框（根据选中的 NPC 动态变化，显示 storyDescription）
+                    DropdownField branchDropdown = null;
+                    // 保存描述到 branchId 的映射
+                    Dictionary<string, int> descToBranchId = new Dictionary<string, int>();
+                    System.Action refreshBranchDropdown = () =>
+                    {
+                        var branches = new List<string>();
+                        descToBranchId.Clear();
+                        var currentNPC = _graphView.EditorWindow.NpcConfigList?.npcList?.FirstOrDefault(n => n.name == npcDropdown.value);
+                        if (currentNPC != null && currentNPC.storyGraphs != null)
+                        {
+                            foreach (var sg in currentNPC.storyGraphs)
+                            {
+                                string desc = string.IsNullOrEmpty(sg.storyDescription) ? $"分支 {sg.branchId}" : sg.storyDescription;
+                                branches.Add(desc);
+                                descToBranchId[desc] = sg.branchId;
+                            }
+                        }
+                        if (branchDropdown != null)
+                        {
+                            branchDropdown.choices = branches;
+                            // 用 ubData.branchId 反查对应的描述
+                            string wanted = branches.FirstOrDefault(b => descToBranchId.ContainsKey(b) && descToBranchId[b] == ubData.branchId);
+                            branchDropdown.value = wanted ?? (branches.Count > 0 ? branches[0] : "");
+                            if (!string.IsNullOrEmpty(branchDropdown.value) && descToBranchId.TryGetValue(branchDropdown.value, out int bId))
+                            {
+                                ubData.branchId = bId;
+                            }
+                        }
+                    };
+
+                    branchDropdown = new DropdownField("分支", new List<string>(), "");
+                    branchDropdown.style.flexGrow = 1;
+                    branchDropdown.style.marginRight = 6;
+                    branchDropdown.style.marginBottom = 2;
+                    BeautifyField(branchDropdown);
+                    row.Add(branchDropdown);
+
+                    npcDropdown.RegisterValueChangedCallback(evt =>
+                    {
+                        ubData.npcName = evt.newValue;
+                        refreshBranchDropdown();
+                    });
+
+                    branchDropdown.RegisterValueChangedCallback(evt =>
+                    {
+                        if (!string.IsNullOrEmpty(evt.newValue) && descToBranchId.TryGetValue(evt.newValue, out int bId))
+                        {
+                            ubData.branchId = bId;
+                        }
+                    });
+
+                    // 初次渲染分支下拉
+                    refreshBranchDropdown();
+
+                    // 删除按钮（单独一行右对齐）
+                    var btnRow = new VisualElement();
+                    btnRow.style.flexDirection = FlexDirection.Row;
+                    btnRow.style.justifyContent = Justify.FlexEnd;
+                    var removeBtn = new Button(() =>
+                    {
+                        Data.unlockBranches.RemoveAt(localIdx);
+                        RefreshUnlockUI();
+                    })
+                    { text = "✕ 删除此规则" };
+                    removeBtn.style.height = 20;
+                    removeBtn.style.fontSize = 10;
+                    removeBtn.style.backgroundColor = new Color(0.6f, 0.25f, 0.25f, 0.9f);
+                    btnRow.Add(removeBtn);
+                    row.Add(btnRow);
+
+                    unlockContainer.Add(row);
+                }
+
+                var hintLabel = new Label(Data.unlockBranches.Count(u => !string.IsNullOrEmpty(u.npcName) && u.branchId > 0) > 0
+                    ? $"✓ 共 {Data.unlockBranches.Count(u => !string.IsNullOrEmpty(u.npcName) && u.branchId > 0)} 条解锁规则"
+                    : "（当前无解锁规则，点击下方按钮添加）");
+                hintLabel.style.color = new Color(0.55f, 0.75f, 0.55f);
+                hintLabel.style.fontSize = 10;
+                hintLabel.style.marginLeft = 4;
+                hintLabel.style.marginTop = 2;
+                unlockContainer.Add(hintLabel);
+            }
+
+            var addUnlockBtn = new Button(() =>
+            {
+                if (Data.unlockBranches == null)
+                    Data.unlockBranches = new List<UnlockBranchData>();
+
+                // 默认用当前节点的 NPC，如果它有分支的话
+                var defaultBranchId = 1;
+                var npc = _graphView.EditorWindow.NpcConfigList?.npcList?.FirstOrDefault(n => n.name == Data.npcName);
+                if (npc != null && npc.storyGraphs != null && npc.storyGraphs.Count > 0)
+                {
+                    // 选一个不同于当前 currentBranchId 的分支
+                    var other = npc.storyGraphs.FirstOrDefault(s => s.branchId != npc.currentBranchId);
+                    defaultBranchId = other != null ? other.branchId : npc.storyGraphs[0].branchId;
+                }
+
+                Data.unlockBranches.Add(new UnlockBranchData { npcName = Data.npcName, branchId = defaultBranchId });
+                RefreshUnlockUI();
+            })
+            { text = "✚ 添加解锁规则" };
+            addUnlockBtn.style.marginTop = 0;
+            addUnlockBtn.style.marginBottom = 4;
+            addUnlockBtn.style.height = 24;
+            addUnlockBtn.style.backgroundColor = new Color(0.15f, 0.35f, 0.5f, 0.9f);
+            _customContainer.Add(addUnlockBtn);
+
+            RefreshUnlockUI();
 
             if (Data.type == "Normal")
             {

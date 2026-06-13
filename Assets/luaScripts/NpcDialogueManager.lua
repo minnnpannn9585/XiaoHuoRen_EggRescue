@@ -40,6 +40,218 @@ local isWaitingForNextAfterOption = false   -- 是否正在等待点击 Next 以
 
 -- ========== 新增：外部动态加载的对话配置 ==========
 local externalDialogueConfig = nil   -- 动态加载的外部对话数据
+local npcConfigPath = "Assets/Editor/EidtData/NPCData_Config.lua"  -- NPC 配置文件路径
+local unlockedBranchCache = {}  -- 已处理过的分支缓存，防止同一节点重复解锁
+
+-- ========== 新增：NPC 分支解锁（将 NPC 的 currentBranchId ==========
+-- 功能：当执行到带有 UnlockBranchId 的节点时，修改 NPCData_Config.lua 中的 currentBranchId
+
+-- ========== 与 DialogueTrigger 保持一致的项目路径计算 ==========
+function GetProjectPath_DM()
+    local dataPath = CS.UnityEngine.Application.dataPath
+    local projectPath = dataPath
+
+    if dataPath:find("DouyinWorldDebugger") or dataPath:find("_Data") then
+        local parts = {}
+        for part in dataPath:gmatch("[^/\\]+") do
+            table.insert(parts, part)
+        end
+        if #parts >= 2 then
+            local newParts = {}
+            for i = 1, #parts - 2 do
+                table.insert(newParts, parts[i])
+            end
+            projectPath = table.concat(newParts, "/")
+        else
+            projectPath = CS.System.IO.Path.GetFullPath(dataPath .. "/../../")
+        end
+    else
+        projectPath = CS.System.IO.Path.GetFullPath(dataPath .. "/../")
+    end
+
+    return projectPath
+end
+
+function UpdateNPCBranchConfig(npcName, newBranchId)
+    if not npcName or npcName == "" then
+        return false
+    end
+    newBranchId = tonumber(newBranchId) or 0
+    if newBranchId <= 0 then
+        return false
+    end
+
+    -- 用与 DialogueTrigger 相同的 GetProjectPath 逻辑计算项目根目录
+    local projectRoot = GetProjectPath_DM()
+    local fullPath = CS.System.IO.Path.Combine(projectRoot, npcConfigPath)
+
+    print("=== NPC [" .. npcName .. "] -> " .. newBranchId)
+    print(": " .. fullPath)
+
+    -- 读取 NPC 配置
+    local configContent
+    local success, err = pcall(function()
+        if not CS.System.IO.File.Exists(fullPath) then
+            error("配置文件不存在: " .. fullPath)
+        end
+        return CS.System.IO.File.ReadAllText(fullPath)
+    end)
+
+    if not success then
+        print("[NPC分支解锁] 读取失败: " .. tostring(err))
+        return false
+    end
+
+    configContent = err
+
+    -- 执行 Lua 代码获取 Lua 表
+    local configData
+    local loadSuccess, loadErr = pcall(function()
+        local func = load(configContent)
+        return func()
+    end)
+
+    if not loadSuccess or not loadErr then
+        print("[NPC分支解锁] 解析失败: " .. tostring(loadErr))
+        return false
+    end
+
+    configData = loadErr
+
+    -- 在 npcList 中查找并修改
+    local found = false
+    if configData and configData.npcList then
+        for _, npc in ipairs(configData.npcList) do
+            if npc.name == npcName then
+                local oldBranchId = npc.currentBranchId or 1
+                npc.currentBranchId = newBranchId
+                found = true
+                print("[NPC分支解锁] 找到 NPC [" .. npcName .. "]，currentBranchId: " .. oldBranchId .. " -> " .. newBranchId)
+                break
+            end
+        end
+    end
+
+    if not found then
+        print("[NPC分支解锁] 未找到名为 [" .. npcName .. "] 的 NPC")
+        return false
+    end
+
+    -- 将修改后的配置表重新序列化为 Lua 文本
+    local newContent = SerializeNPCConfig(configData.npcList)
+    if not newContent then
+        print("[NPC分支解锁] 序列化失败")
+        return false
+    end
+
+    -- 写回文件
+    local writeSuccess, writeErr = pcall(function()
+        CS.System.IO.File.WriteAllText(fullPath, newContent)
+    end)
+
+    if not writeSuccess then
+        print("[NPC分支解锁] 写入失败: " .. tostring(writeErr))
+        return false
+    end
+
+    DouyinUtility.Toast("NPC [" .. npcName .. "] 已解锁分支 " .. newBranchId)
+    print("[NPC分支解锁] ✓ 已成功更新 NPCData_Config.lua")
+    return true
+end
+
+-- ========== 新增：将 NPC 配置表序列化为 Lua 文本 ==========
+function SerializeNPCConfig(npcList)
+    if not npcList then
+        return nil
+    end
+
+    local sb = {}
+    table.insert(sb, "local NPCData = {")
+    table.insert(sb, "    npcList = {")
+
+    for i, npc in ipairs(npcList) do
+        table.insert(sb, "        {")
+        table.insert(sb, '            id = "' .. tostring(npc.id or "") .. '",')
+        table.insert(sb, '            name = "' .. tostring(npc.name or "") .. '",')
+        table.insert(sb, '            avatarPath = "' .. tostring(npc.avatarPath or "") .. '",')
+        table.insert(sb, "            currentBranchId = " .. tostring(npc.currentBranchId or 1) .. ",")
+
+        if npc.isFolded ~= nil then
+            local foldStr = npc.isFolded and "true" or "false"
+            table.insert(sb, "            isFolded = " .. foldStr .. ",")
+        end
+
+        if npc.storyGraphs and #npc.storyGraphs then
+            table.insert(sb, "            storyGraphs = {")
+            for j, graph in ipairs(npc.storyGraphs) do
+                table.insert(sb, "                {")
+                table.insert(sb, "                    branchId = " .. tostring(graph.branchId or 1) .. ",")
+                table.insert(sb, '                    storyDescription = "' .. tostring(graph.storyDescription or "") .. '",')
+                table.insert(sb, '                    luaModuleName = "' .. tostring(graph.luaModuleName or "") .. '",')
+                table.insert(sb, '                    luaAssetPath = "' .. tostring(graph.luaAssetPath or "") .. '"')
+                table.insert(sb, "                }")
+                if j < #npc.storyGraphs then
+                    table.insert(sb, "                ,")
+                end
+            end
+            table.insert(sb, "            }")
+        end
+
+        table.insert(sb, "        }")
+        if i < #npcList then
+            table.insert(sb, "        ,")
+        end
+    end
+
+    table.insert(sb, "    }")
+    table.insert(sb, "}")
+    table.insert(sb, "return NPCData")
+
+    return table.concat(sb, "\n") .. "\n"
+end
+
+-- ========== 新增：检查并处理 UnlockBranches（节点执行时解锁指定 NPC 的分支）==========
+function CheckAndUnlockBranch(data)
+    if not data then
+        return
+    end
+
+    -- 收集所有需要解锁的条目：可能是数组（新格式），也可能是 UnlockBranchId 整数（兼容）
+    local entries = {}
+
+    if data.UnlockBranches and #data.UnlockBranches > 0 then
+        -- 新格式：UnlockBranches = { { NpcName = "大树", BranchId = 2 }, ... }
+        for _, item in ipairs(data.UnlockBranches) do
+            local name = item.NpcName or item.npcName
+            local bid = tonumber(item.BranchId) or tonumber(item.branchId) or 0
+            if name and name ~= "" and bid > 0 then
+                table.insert(entries, { npcName = name, branchId = bid })
+            end
+        end
+    end
+
+    if data.UnlockBranchId and tonumber(data.UnlockBranchId) > 0 then
+        -- 兼容旧格式：UnlockBranchId = 2，NPC 为当前节点的 NpcName
+        local name = data.NpcName or ""
+        if name ~= "" then
+            table.insert(entries, { npcName = name, branchId = tonumber(data.UnlockBranchId) })
+        end
+    end
+
+    if #entries == 0 then
+        return
+    end
+
+    -- 逐条执行解锁（同节点内每个NPC只处理一次）
+    for _, entry in ipairs(entries) do
+        local cacheKey = currentDialogueID .. "_" .. entry.npcName
+        if not unlockedBranchCache[cacheKey] then
+            if UpdateNPCBranchConfig(entry.npcName, entry.branchId) then
+                unlockedBranchCache[cacheKey] = true
+            end
+        end
+    end
+end
 
 function Awake()
     _G["_DialogueManager"] = self.script
@@ -189,6 +401,9 @@ function UpdateDialogueUI()
     end
 
     currentDataCache = data
+
+    -- 检查是否需要解锁分支
+    CheckAndUnlockBranch(data)
 
     if next then
         next.gameObject:SetActive(false)
@@ -485,6 +700,7 @@ function EndDialogue()
     isWaitingForNextAfterOption = false
     selectedOptionCache = nil
     externalDialogueConfig = nil
+    unlockedBranchCache = {}
 
     if dialoguePanel then
         dialoguePanel:SetActive(false)

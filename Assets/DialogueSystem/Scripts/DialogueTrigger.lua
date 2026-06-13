@@ -119,26 +119,39 @@ function LoadNPCScript(npcName)
         logError("NPC")
         return nil
     end
-    
-    if loadedNPCScripts[npcName] then
-        print("NPC: " .. npcName)
-        return loadedNPCScripts[npcName]
-    end
-    
-    if not _NPCConfigs or not _NPCConfigs.byName then
-        logError("NPC")
+
+    -- ===== 改动：每次都重新读取 NPC 配置文件，确保拿到最新的 currentBranchId =====
+    local projectPath = GetProjectPath()
+    local configPath = CS.System.IO.Path.Combine(projectPath, "Assets/Editor/EidtData/NPCData_Config.lua")
+
+    local npcConfig = nil
+    local cfgSuccess, cfgResult = pcall(function()
+        if not CS.System.IO.File.Exists(configPath) then
+            error("file not found: " .. configPath)
+        end
+        local content = CS.System.IO.File.ReadAllText(configPath)
+        local func = load(content)
+        local data = func()
+        if data and data.npcList then
+            for _, npc in ipairs(data.npcList) do
+                if npc.name == npcName then
+                    return npc
+                end
+            end
+        end
+        return nil
+    end)
+
+    if not cfgSuccess or not cfgResult then
+        logError("NPC [" .. npcName .. "]: " .. tostring(cfgResult))
         return nil
     end
-    
-    local npcConfig = _NPCConfigs.byName[npcName]
-    if not npcConfig then
-        logError("NPC: " .. npcName)
-        return nil
-    end
-    
+
+    npcConfig = cfgResult
+
     local currentBranchId = npcConfig.currentBranchId or 1
     local luaAssetPath = nil
-    
+
     if npcConfig.storyGraphs then
         for _, graph in ipairs(npcConfig.storyGraphs) do
             if graph.branchId == currentBranchId then
@@ -147,20 +160,27 @@ function LoadNPCScript(npcName)
             end
         end
     end
-    
+
     if not luaAssetPath or luaAssetPath == "" then
         logError("NPC " .. npcName .. " " .. currentBranchId .. " Lua")
         return nil
     end
-    
+
+    -- 缓存 key 同时包含 NPC 名和 branchId，切换分支时自动走新缓存
+    local cacheKey = npcName .. "_b" .. currentBranchId
+    if loadedNPCScripts[cacheKey] then
+        print("NPC: " .. npcName .. " ( " .. currentBranchId .. ")")
+        return loadedNPCScripts[cacheKey]
+    end
+
     print("=== NPC ===")
     print("NPC: " .. npcName)
+    print("Branch: " .. currentBranchId)
     print("LuaPath: " .. luaAssetPath)
-    
-    local projectPath = GetProjectPath()
+
     local fullPath = CS.System.IO.Path.Combine(projectPath, luaAssetPath)
     print("FullPath: " .. fullPath)
-    
+
     local success, scriptData = pcall(function()
         if not CS.System.IO.File.Exists(fullPath) then
             error("file not found: " .. fullPath)
@@ -168,21 +188,21 @@ function LoadNPCScript(npcName)
         local content = CS.System.IO.File.ReadAllText(fullPath)
         return ExecuteLuaFile(content)
     end)
-    
+
     if not success then
         logError("NPC [" .. npcName .. "]: " .. tostring(scriptData))
         return nil
     end
-    
+
     local normalizedData = NormalizeDialogueData(scriptData)
     if normalizedData == nil then
         logError("NPC " .. npcName .. " ")
         return nil
     end
-    
-    loadedNPCScripts[npcName] = normalizedData
-    print("NPC: " .. npcName)
-    
+
+    loadedNPCScripts[cacheKey] = normalizedData
+    print("NPC: " .. npcName .. " ( " .. currentBranchId .. ")")
+
     return normalizedData
 end
 
