@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -11,7 +12,7 @@ public class NPCAssetManagerWindow : EditorWindow
     {
         public int branchId;             // 触发分支ID
         public string storyDescription; // 剧情备注
-        public Object luaAsset;          // 绑定的 Lua 脚本资产对象
+        public UnityEngine.Object luaAsset;          // 绑定的 Lua 脚本资产对象
         public string luaModuleName;     // 自动解析出的 Lua require 模块名
         public string luaAssetPath;      // Lua 文件的相对路径
     }
@@ -41,6 +42,8 @@ public class NPCAssetManagerWindow : EditorWindow
     // UI 辅助变量（已移除 ID 和 搜索变量）
     private Vector2 scrollPosition;
     private string newNPCName = "新角色";
+    private int pendingScrollToNpcIndex = -1;      // 下次绘制时滚动到这个 NPC 卡片（-1 = 不滚动）
+    private int pendingFocusBranchIndex = -1;       // 下次绘制时滚动到这个剧本分支所在的 NPC（-1 = 不滚动）
 
     // 配色
     private Color themeDarkBg = new Color(0.15f, 0.15f, 0.15f);
@@ -109,16 +112,18 @@ public class NPCAssetManagerWindow : EditorWindow
             // 防御性确保 ID 绝对不重复
             while (npcList.Exists(x => x.id == autoId))
             {
-                autoId = "NPC_" + (Random.Range(100, 999)).ToString();
+                autoId = "NPC_" + (UnityEngine.Random.Range(100, 999)).ToString();
             }
 
-            npcList.Add(new NPCCharacter { id = autoId, name = newNPCName });
+            var newNpc = new NPCCharacter { id = autoId, name = newNPCName, isFolded = true }; // 新增角色默认展开
+            npcList.Add(newNpc);
             newNPCName = "新角色";
             GUI.FocusControl(null);
             SaveToLua(false); // 新增后自动静默保存
             
-            // 添加完毕后自动将滚动条拉到最底部
-            scrollPosition.y = float.MaxValue;
+            // 添加完毕后自动滚动到新角色的位置
+            pendingScrollToNpcIndex = npcList.Count - 1;
+            scrollPosition.y = float.MaxValue; // 先滚到底，下次绘制时精确对齐
         }
         GUI.backgroundColor = Color.white;
         EditorGUILayout.EndHorizontal();
@@ -129,6 +134,29 @@ public class NPCAssetManagerWindow : EditorWindow
     /// </summary>
     private void DrawNPCListContainer()
     {
+        // 如果有待滚动目标，在绘制前精确计算 scrollPosition.y
+        if (pendingScrollToNpcIndex >= 0 || pendingFocusBranchIndex >= 0)
+        {
+            int targetIdx = Math.Max(pendingScrollToNpcIndex, pendingFocusBranchIndex);
+            float estimatedY = 0f;
+            for (int i = 0; i < targetIdx && i < npcList.Count; i++)
+            {
+                // 折叠状态约 60px，展开状态按剧本分支数估算
+                if (npcList[i].isFolded)
+                {
+                    estimatedY += 80f + npcList[i].storyGraphs.Count * 50f; // 展开状态
+                }
+                else
+                {
+                    estimatedY += 70f; // 折叠状态
+                }
+                estimatedY += 10f; // 卡片间距
+            }
+            scrollPosition.y = Math.Max(0, estimatedY - 30f);  // 留出一点顶部空间
+            pendingScrollToNpcIndex = -1;
+            pendingFocusBranchIndex = -1;
+        }
+
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, GUILayout.Height(position.height - 120));
 
         for (int i = 0; i < npcList.Count; i++)
@@ -190,53 +218,62 @@ public class NPCAssetManagerWindow : EditorWindow
             EditorGUILayout.LabelField($"剧本绑定数: {npc.storyGraphs.Count} | 点击左侧名字可折叠/展开详细剧本", EditorStyles.miniLabel);
 
             GUILayout.Space(2);
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("🎯 当前执行分支ID:", GUILayout.Width(120));
-            EditorGUI.BeginChangeCheck();
-            
-            // 构建下拉菜单选项
-            if (npc.storyGraphs.Count > 0)
+
+            // 检测当前选中的分支是否包含条件判断分支
+            // 逻辑：如果当前分支绑定的 Lua 文件中有判断分支（有真假两个输出口），则 currentBranchId 选择器不再需要
+            // 如果没有判断分支，则保留 currentBranchId 选择器
+            bool hasConditionBranchesInCurrent = BranchHasConditionBranches(npc, npc.currentBranchId);
+
+            if (!hasConditionBranchesInCurrent)
             {
-                List<string> branchOptions = new List<string>();
-                List<int> branchValues = new List<int>();
-                int selectedIndex = 0;
-
-                for (int j = 0; j < npc.storyGraphs.Count; j++)
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("🎯 当前执行分支ID:", GUILayout.Width(120));
+                EditorGUI.BeginChangeCheck();
+                
+                // 构建下拉菜单选项
+                if (npc.storyGraphs.Count > 0)
                 {
-                    int bId = npc.storyGraphs[j].branchId;
-                    string desc = string.IsNullOrEmpty(npc.storyGraphs[j].storyDescription) ? "未命名分支" : npc.storyGraphs[j].storyDescription;
-                    branchOptions.Add($"[{bId}] {desc}");
-                    branchValues.Add(bId);
+                    List<string> branchOptions = new List<string>();
+                    List<int> branchValues = new List<int>();
+                    int selectedIndex = 0;
 
-                    if (npc.currentBranchId == bId)
+                    for (int j = 0; j < npc.storyGraphs.Count; j++)
                     {
-                        selectedIndex = j;
+                        int bId = npc.storyGraphs[j].branchId;
+                        string desc = string.IsNullOrEmpty(npc.storyGraphs[j].storyDescription) ? "未命名分支" : npc.storyGraphs[j].storyDescription;
+                        branchOptions.Add($"[{bId}] {desc}");
+                        branchValues.Add(bId);
+
+                        if (npc.currentBranchId == bId)
+                        {
+                            selectedIndex = j;
+                        }
                     }
-                }
 
-                // 如果当前保存的 ID 在列表中不存在，默认选择第一个
-                if (!branchValues.Contains(npc.currentBranchId))
+                    // 如果当前保存的 ID 在列表中不存在，默认选择第一个
+                    if (!branchValues.Contains(npc.currentBranchId))
+                    {
+                        npc.currentBranchId = branchValues[0];
+                        selectedIndex = 0;
+                    }
+
+                    selectedIndex = EditorGUILayout.Popup(selectedIndex, branchOptions.ToArray(), GUILayout.Width(150));
+                    npc.currentBranchId = branchValues[selectedIndex];
+                }
+                else
                 {
-                    npc.currentBranchId = branchValues[0];
-                    selectedIndex = 0;
+                    GUI.enabled = false;
+                    EditorGUILayout.TextField("暂无分支", GUILayout.Width(150));
+                    GUI.enabled = true;
+                    npc.currentBranchId = 1; // 默认值
                 }
 
-                selectedIndex = EditorGUILayout.Popup(selectedIndex, branchOptions.ToArray(), GUILayout.Width(150));
-                npc.currentBranchId = branchValues[selectedIndex];
+                if (EditorGUI.EndChangeCheck())
+                {
+                    SaveToLua(false);
+                }
+                EditorGUILayout.EndHorizontal();
             }
-            else
-            {
-                GUI.enabled = false;
-                EditorGUILayout.TextField("暂无分支", GUILayout.Width(150));
-                GUI.enabled = true;
-                npc.currentBranchId = 1; // 默认值
-            }
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                SaveToLua(false);
-            }
-            EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.EndVertical();
 
@@ -271,6 +308,8 @@ public class NPCAssetManagerWindow : EditorWindow
                 if (GUILayout.Button("➕ 添加剧本分支", GUILayout.Width(110)))
                 {
                     npc.storyGraphs.Add(new DialogueGraphData { branchId = npc.storyGraphs.Count + 1, storyDescription = "新剧情路由" });
+                    npc.isFolded = true; // 添加新剧本后确保该 NPC 卡片是展开的
+                    pendingFocusBranchIndex = i; // 记录要滚动到的 NPC 索引
                     SaveToLua(false);
                 }
                 EditorGUILayout.EndHorizontal();
@@ -296,8 +335,8 @@ public class NPCAssetManagerWindow : EditorWindow
                     graph.storyDescription = EditorGUILayout.TextField(graph.storyDescription, GUILayout.Width(120));
 
                     EditorGUILayout.LabelField("🔗 拖入Lua ────►", GUILayout.Width(95));
-                    Object previousAsset = graph.luaAsset;
-                    graph.luaAsset = EditorGUILayout.ObjectField(graph.luaAsset, typeof(Object), false);
+                    UnityEngine.Object previousAsset = graph.luaAsset;
+                    graph.luaAsset = EditorGUILayout.ObjectField(graph.luaAsset, typeof(UnityEngine.Object), false);
 
                     if (graph.luaAsset != previousAsset)
                     {
@@ -457,6 +496,50 @@ public class NPCAssetManagerWindow : EditorWindow
         return sb.ToString();
     }
 
+    /// <summary>
+    /// 检测指定分支绑定的 Lua 对话文件中是否包含条件判断分支（ConditionBranches）
+    /// </summary>
+    private bool BranchHasConditionBranches(NPCCharacter npc, int branchId)
+    {
+        if (npc == null || npc.storyGraphs == null || npc.storyGraphs.Count == 0)
+            return false;
+
+        string luaAssetPath = null;
+        foreach (var graph in npc.storyGraphs)
+        {
+            if (graph.branchId == branchId)
+            {
+                luaAssetPath = graph.luaAssetPath;
+                break;
+            }
+        }
+
+        if (string.IsNullOrEmpty(luaAssetPath))
+            return false;
+
+        // 根据 luaAssetPath（如 Assets/Editor/DialogueData/xxx.lua）解析出文件完整路径
+        string fullPath = luaAssetPath;
+        if (!System.IO.Path.IsPathRooted(fullPath))
+        {
+            string projectPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(UnityEngine.Application.dataPath, ".."));
+            fullPath = System.IO.Path.Combine(projectPath, luaAssetPath);
+        }
+
+        if (!System.IO.File.Exists(fullPath))
+            return false;
+
+        try
+        {
+            string content = System.IO.File.ReadAllText(fullPath);
+            // 同时兼容 "ConditionBranches" 和 "conditionBranches"
+            return content.Contains("ConditionBranches") || content.Contains("conditionBranches");
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     private string EscapeString(string str)
     {
         if (string.IsNullOrEmpty(str))
@@ -493,7 +576,7 @@ public class NPCAssetManagerWindow : EditorWindow
                 {
                     if (!string.IsNullOrEmpty(graph.luaAssetPath))
                     {
-                        graph.luaAsset = AssetDatabase.LoadAssetAtPath<Object>(graph.luaAssetPath);
+                        graph.luaAsset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(graph.luaAssetPath);
                     }
                 }
             }

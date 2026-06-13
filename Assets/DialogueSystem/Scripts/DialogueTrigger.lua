@@ -9,7 +9,95 @@ function Start()
     if _G["_DialogueManager"]==nil then
         logError("场景中缺少DialogueManager预制件")
     end
+    -- 重置所有 NPC 的 currentBranchId = 1，让玩家每次进入都从第一条剧情开始
+    ResetAllBranchesToStart()
     LoadNPCConfig()
+end
+
+-- ========== 新增：每次开始都把所有 NPC 的 currentBranchId 重置为 1 ==========
+function ResetAllBranchesToStart()
+    local projectPath = GetProjectPath()
+    local configPath = CS.System.IO.Path.Combine(projectPath, "Assets/Editor/EidtData/NPCData_Config.lua")
+
+    local success, err = pcall(function()
+        if not CS.System.IO.File.Exists(configPath) then
+            return
+        end
+        local content = CS.System.IO.File.ReadAllText(configPath)
+        local func = load(content)
+        local data = func()
+
+        if data and data.npcList then
+            local changed = false
+            for _, npc in ipairs(data.npcList) do
+                if npc.currentBranchId ~= 1 then
+                    npc.currentBranchId = 1
+                    changed = true
+                end
+            end
+
+            if changed then
+                local newText = SerializeNPCConfigForTrigger(data.npcList)
+                if newText then
+                    CS.System.IO.File.WriteAllText(configPath, newText)
+                    print("NPC: " .. #data.npcList .. "  NPC  " .. configPath)
+                end
+            end
+        end
+    end)
+
+    if not success then
+        print("NPC: " .. tostring(err))
+    end
+end
+
+function SerializeNPCConfigForTrigger(npcList)
+    if not npcList then
+        return nil
+    end
+
+    local sb = {}
+    table.insert(sb, "local NPCData = {")
+    table.insert(sb, "    npcList = {")
+
+    for i, npc in ipairs(npcList) do
+        table.insert(sb, "        {")
+        table.insert(sb, '            id = "' .. tostring(npc.id or "") .. '",')
+        table.insert(sb, '            name = "' .. tostring(npc.name or "") .. '",')
+        table.insert(sb, '            avatarPath = "' .. tostring(npc.avatarPath or "") .. '",')
+        table.insert(sb, "            currentBranchId = " .. tostring(npc.currentBranchId or 1) .. ",")
+
+        if npc.isFolded ~= nil then
+            local foldStr = npc.isFolded and "true" or "false"
+            table.insert(sb, "            isFolded = " .. foldStr .. ",")
+        end
+
+        if npc.storyGraphs and #npc.storyGraphs > 0 then
+            table.insert(sb, "            storyGraphs = {")
+            for j, graph in ipairs(npc.storyGraphs) do
+                table.insert(sb, "                {")
+                table.insert(sb, "                    branchId = " .. tostring(graph.branchId or 1) .. ",")
+                table.insert(sb, '                    storyDescription = "' .. tostring(graph.storyDescription or "") .. '",')
+                table.insert(sb, '                    luaModuleName = "' .. tostring(graph.luaModuleName or "") .. '",')
+                table.insert(sb, '                    luaAssetPath = "' .. tostring(graph.luaAssetPath or "") .. '"')
+                table.insert(sb, "                }")
+                if j < #npc.storyGraphs then
+                    table.insert(sb, "                ,")
+                end
+            end
+            table.insert(sb, "            }")
+        end
+
+        table.insert(sb, "        }")
+        if i < #npcList then
+            table.insert(sb, "        ,")
+        end
+    end
+
+    table.insert(sb, "    }")
+    table.insert(sb, "}")
+    table.insert(sb, "return NPCData")
+    return table.concat(sb, "\n") .. "\n"
 end
 
 function GetProjectPath()

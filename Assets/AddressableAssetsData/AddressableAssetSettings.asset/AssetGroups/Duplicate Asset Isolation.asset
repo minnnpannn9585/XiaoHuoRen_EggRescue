@@ -15,10 +15,25 @@ MonoBehaviour:
   m_GroupName: Duplicate Asset Isolation
   m_Data:
     m_SerializedData: []
-  m_GUID: a26b6d3f139a0ca4bb3e98f781a94186
+  m_GUID: b3663fff254d38c429ec26f2e62a1aca
   m_SerializeEntries:
+  - m_GUID: 211feea29a4364d27bca96926245669d
+    m_Address: Assets/DouyinVCreateSDK/World/WorldResources/Shaders/ENV/World_Lit.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 933532a4fcc9baf4fa0491de14d08ed7
     m_Address: Packages/com.unity.render-pipelines.universal/Shaders/Lit.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 154b912940faf4f0fba65751f4da1856
+    m_Address: Assets/DouyinVCreateSDK/World/WorldResources/Shaders/ENV/World_Lit_AlphaBlend.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 832bc14bf0899bf46a3ee4401bdbf44a
+    m_Address: Assets/DouyinVCreateSDK/World/WorldResources/Shaders/ENV/Glass.shader
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

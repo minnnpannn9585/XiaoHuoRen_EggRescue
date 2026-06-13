@@ -6,54 +6,6 @@ local NPCData = {
             avatarPath = "Assets/DialogueSystem/UI/Npc1.png",
             currentBranchId = 1,
             isFolded = true,
-            storyGraphs = {
-            }
-        }
-        ,
-        {
-            id = "NPC_900",
-            name = "大树",
-            avatarPath = "Assets/Res/UI/Black Cat.png",
-            currentBranchId = 2,
-            isFolded = false,
-            storyGraphs = {
-                {
-                    branchId = 1,
-                    storyDescription = "对话A",
-                    luaModuleName = "Dashu1-A",
-                    luaAssetPath = "Assets/Editor/DialogueData/Dashu1-A.lua"
-                }
-                ,
-                {
-                    branchId = 2,
-                    storyDescription = "对话B",
-                    luaModuleName = "Dashu1-B-1",
-                    luaAssetPath = "Assets/Editor/DialogueData/Dashu1-B-1.lua"
-                }
-            }
-        }
-        ,
-        {
-            id = "NPC_003",
-            name = "闪电蜗牛",
-            avatarPath = "Assets/Plugins/Pixel Crushers/Dialogue System/Prefabs/Art/Textures/Circle/Circle Portrait.png",
-            currentBranchId = 1,
-            isFolded = false,
-            storyGraphs = {
-                {
-                    branchId = 1,
-                    storyDescription = "描述",
-                    luaModuleName = "woniu",
-                    luaAssetPath = "Assets/Editor/DialogueData/woniu.lua"
-                }
-                ,
-                {
-                    branchId = 2,
-                    storyDescription = "对话剧情",
-                    luaModuleName = "woniu",
-                    luaAssetPath = "Assets/Editor/DialogueData/woniu.lua"
-                }
-            }
         }
         ,
         {
@@ -63,6 +15,49 @@ local NPCData = {
             currentBranchId = 1,
             isFolded = false,
             storyGraphs = {
+                {
+                    branchId = 1,
+                    storyDescription = "描述需要一个梯子",
+                    luaModuleName = "miaosu",
+                    luaAssetPath = "Assets/Editor/DialogueData/miaosu.lua"
+                }
+            }
+        }
+        ,
+        {
+            id = "NPC_005",
+            name = "大黄",
+            avatarPath = "",
+            currentBranchId = 1,
+            isFolded = true,
+            storyGraphs = {
+                {
+                    branchId = 1,
+                    storyDescription = "半睡复述（仅首次）",
+                    luaModuleName = "dahuang_01",
+                    luaAssetPath = "Assets/Editor/DialogueData/dahuang_01.lua"
+                }
+                ,
+                {
+                    branchId = 2,
+                    storyDescription = "解锁梯子",
+                    luaModuleName = "dahuang_02",
+                    luaAssetPath = "Assets/Editor/DialogueData/dahuang_02.lua"
+                }
+                ,
+                {
+                    branchId = 3,
+                    storyDescription = "泡水叫醒",
+                    luaModuleName = "dahuang_03",
+                    luaAssetPath = "Assets/Editor/DialogueData/dahuang_03.lua"
+                }
+                ,
+                {
+                    branchId = 4,
+                    storyDescription = "清醒回访",
+                    luaModuleName = "dahuang_04",
+                    luaAssetPath = "Assets/Editor/DialogueData/dahuang_04.lua"
+                }
             }
         }
     }

@@ -41,7 +41,146 @@ local isWaitingForNextAfterOption = false   -- 是否正在等待点击 Next 以
 -- ========== 新增：外部动态加载的对话配置 ==========
 local externalDialogueConfig = nil   -- 动态加载的外部对话数据
 local npcConfigPath = "Assets/Editor/EidtData/NPCData_Config.lua"  -- NPC 配置文件路径
+local globalVariablesPath = "Assets/Editor/EidtData/GlobalVariables.lua"  -- 全局变量文件路径
 local unlockedBranchCache = {}  -- 已处理过的分支缓存，防止同一节点重复解锁
+
+-- ========== 新增：全局变量表（用于条件分支判断） ==========
+local globalVariables = {}   -- 全局变量存储，支持 bool 和 int 类型
+
+-- 获取项目根目录
+local function GetProjectPath()
+    local dataPath = CS.UnityEngine.Application.dataPath
+    local projectPath = dataPath
+    if dataPath:find("DouyinWorldDebugger") or dataPath:find("_Data") then
+        local parts = {}
+        for part in dataPath:gmatch("[^/\\]+") do
+            table.insert(parts, part)
+        end
+        if #parts >= 2 then
+            local newParts = {}
+            for i = 1, #parts - 2 do
+                table.insert(newParts, parts[i])
+            end
+            projectPath = table.concat(newParts, "/")
+        else
+            projectPath = CS.System.IO.Path.GetFullPath(dataPath .. "/../../")
+        end
+    else
+        projectPath = CS.System.IO.Path.GetFullPath(dataPath .. "/../")
+    end
+    return projectPath
+end
+
+-- 从 GlobalVariables.lua 文件重新加载全局变量（每次条件判断前调用一次，确保是最新值）
+function ReloadGlobalVariablesFromFile()
+    local success, err = pcall(function()
+        local projectPath = GetProjectPath()
+        local fullPath = CS.System.IO.Path.Combine(projectPath, globalVariablesPath)
+        if not CS.System.IO.File.Exists(fullPath) then
+            return
+        end
+        local content = CS.System.IO.File.ReadAllText(fullPath)
+        local func = load(content)
+        if not func then return end
+        local data = func()
+        if data == nil then return end
+
+        local freshVars = {}
+        for _, item in ipairs(data) do
+            if item.name and item.type then
+                if item.type == "bool" then
+                    freshVars[item.name] = { type = "bool", value = (item.value == true or item.value == "true" or item.value == 1) }
+                else
+                    freshVars[item.name] = { type = "int", value = tonumber(item.value) or 0 }
+                end
+            end
+        end
+        globalVariables = freshVars
+    end)
+    if not success then
+        print("[ReloadGlobalVariables] 读取失败: " .. tostring(err))
+    end
+end
+
+-- 设置全局变量
+function SetGlobalVariable(varName, value, varType)
+    if varName == nil or varName == "" then return end
+    varType = varType or "bool"
+    if varType == "bool" then
+        globalVariables[varName] = { type = "bool", value = (value == true or value == "true" or value == 1) }
+    else
+        globalVariables[varName] = { type = "int", value = tonumber(value) or 0 }
+    end
+end
+
+-- 获取全局变量值
+function GetGlobalVariable(varName)
+    if varName == nil or globalVariables[varName] == nil then
+        return nil
+    end
+    return globalVariables[varName].value
+end
+
+-- 获取全局变量类型
+function GetGlobalVariableType(varName)
+    if varName == nil or globalVariables[varName] == nil then
+        return nil
+    end
+    return globalVariables[varName].type
+end
+
+-- 打印所有全局变量（调试用）
+function PrintGlobalVariables()
+    print("===== 全局变量表 =====")
+    for k, v in pairs(globalVariables) do
+        print("  [" .. k .. "] type=" .. tostring(v.type) .. ", value=" .. tostring(v.value))
+    end
+    print("=====================")
+end
+
+-- 根据条件分支计算下一个节点 ID
+function GetNextNodeByCondition(data)
+    -- 每次条件判断前，重新从 GlobalVariables.lua 读取最新值
+    ReloadGlobalVariablesFromFile()
+
+    if data == nil or data.ConditionBranches == nil or #data.ConditionBranches == 0 then
+        return nil
+    end
+    for i, cb in ipairs(data.ConditionBranches) do
+        if cb.VarName ~= nil and cb.VarName ~= "" then
+            local varType = cb.VarType or "bool"
+            local varValue = GetGlobalVariable(cb.VarName)
+
+            if varType == "bool" then
+                -- bool 模式：true/false 各走一个分支；未设置的变量视为 false
+                --   true  → TrueNext
+                --   false/nil → FalseNext
+                if varValue == true and cb.TrueNext ~= nil and cb.TrueNext > 0 then
+                    return cb.TrueNext
+                elseif (varValue == false or varValue == nil) and cb.FalseNext ~= nil and cb.FalseNext > 0 then
+                    return cb.FalseNext
+                end
+            else
+                -- int 模式：用操作符比较；未设置的变量视为 0
+                local op = cb.Op or "=="
+                local cmpValue = tonumber(cb.Value) or 0
+                local intVal = tonumber(varValue) or 0
+                local match = false
+                if op == "==" then match = (intVal == cmpValue)
+                elseif op == "!=" then match = (intVal ~= cmpValue)
+                elseif op == ">" then match = (intVal > cmpValue)
+                elseif op == "<" then match = (intVal < cmpValue)
+                elseif op == ">=" then match = (intVal >= cmpValue)
+                elseif op == "<=" then match = (intVal <= cmpValue)
+                end
+                if match and cb.Next ~= nil and cb.Next > 0 then
+                    return cb.Next
+                end
+            end
+        end
+    end
+    return nil  -- 没有任何条件分支匹配
+end
 
 -- ========== 新增：NPC 分支解锁（将 NPC 的 currentBranchId ==========
 -- 功能：当执行到带有 UnlockBranchId 的节点时，修改 NPCData_Config.lua 中的 currentBranchId
@@ -380,7 +519,12 @@ function OnNextClick()
         return
     end
 
-    local nextID = currentData.Next
+    -- 优先检查条件分支（基于全局变量），如果没有匹配则使用默认 Next
+    local nextID = GetNextNodeByCondition(currentData)
+    if nextID == nil then
+        nextID = currentData.Next
+    end
+
     if nextID == -1 then
         EndDialogue()
     elseif GetDialogueData(nextID) ~= nil then
