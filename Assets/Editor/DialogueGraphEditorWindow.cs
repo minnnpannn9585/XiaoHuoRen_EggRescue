@@ -63,7 +63,7 @@ namespace RPGDialogueEditor
 
         public GlobalNPCData NpcConfigList = new GlobalNPCData();
         
-        private string _npcConfigFilePath = "Assets/Editor/EidtData/NPCData_Config.json";
+        private string _npcConfigFilePath = "Assets/Editor/EidtData/NPCData_Config.lua";
 
         // --- 新增：对话文件管理状态 ---
         private string _dialogueDirectory = "Assets/Editor/DialogueData";
@@ -104,16 +104,173 @@ namespace RPGDialogueEditor
         {
             if (System.IO.File.Exists(_npcConfigFilePath))
             {
-                string json = System.IO.File.ReadAllText(_npcConfigFilePath);
-                if (!string.IsNullOrEmpty(json))
+                string luaContent = System.IO.File.ReadAllText(_npcConfigFilePath);
+                if (!string.IsNullOrEmpty(luaContent))
                 {
-                    NpcConfigList = JsonUtility.FromJson<GlobalNPCData>(json);
+                    NpcConfigList = ParseLuaNPCConfig(luaContent);
                 }
             }
 
             if (NpcConfigList == null || NpcConfigList.npcList == null)
             {
                 NpcConfigList = new GlobalNPCData();
+            }
+        }
+
+        private static GlobalNPCData ParseLuaNPCConfig(string luaContent)
+        {
+            GlobalNPCData result = new GlobalNPCData();
+            try
+            {
+                int pos = 0;
+                SkipLuaWhitespace(luaContent, ref pos);
+                SkipThroughKey(luaContent, "npcList", ref pos);
+                SkipLuaWhitespace(luaContent, ref pos);
+                if (pos < luaContent.Length && luaContent[pos] == '=') pos++;
+                SkipLuaWhitespace(luaContent, ref pos);
+                if (pos < luaContent.Length && luaContent[pos] == '{') pos++;
+
+                while (pos < luaContent.Length)
+                {
+                    SkipLuaWhitespace(luaContent, ref pos);
+                    if (pos >= luaContent.Length) break;
+                    if (luaContent[pos] == '}') break;
+
+                    if (luaContent[pos] == ',') { pos++; continue; }
+
+                    SkipLuaWhitespace(luaContent, ref pos);
+                    if (pos < luaContent.Length && luaContent[pos] == '{')
+                    {
+                        pos++;
+                        GlobalNPCCharacter npc = ParseLuaNPC(luaContent, ref pos);
+                        if (npc != null)
+                        {
+                            result.npcList.Add(npc);
+                        }
+                    }
+                    else
+                    {
+                        pos++;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return result;
+        }
+
+        private static GlobalNPCCharacter ParseLuaNPC(string luaContent, ref int pos)
+        {
+            GlobalNPCCharacter npc = new GlobalNPCCharacter();
+            while (pos < luaContent.Length)
+            {
+                SkipLuaWhitespace(luaContent, ref pos);
+                if (pos >= luaContent.Length) break;
+                if (luaContent[pos] == '}') { pos++; break; }
+                if (luaContent[pos] == ',') { pos++; continue; }
+
+                int keyStart = pos;
+                while (pos < luaContent.Length && char.IsLetterOrDigit(luaContent[pos])) pos++;
+                string key = luaContent.Substring(keyStart, pos - keyStart);
+
+                SkipLuaWhitespace(luaContent, ref pos);
+                if (pos < luaContent.Length && luaContent[pos] == '=') pos++;
+                SkipLuaWhitespace(luaContent, ref pos);
+
+                if (key == "id") npc.id = ParseLuaString(luaContent, ref pos);
+                else if (key == "name") npc.name = ParseLuaString(luaContent, ref pos);
+                else if (key == "avatarPath") npc.avatarPath = ParseLuaString(luaContent, ref pos);
+                else if (key == "currentBranchId") npc.currentBranchId = ParseLuaInt(luaContent, ref pos);
+                else SkipLuaValue(luaContent, ref pos);
+            }
+            return npc;
+        }
+
+        private static string ParseLuaString(string luaContent, ref int pos)
+        {
+            SkipLuaWhitespace(luaContent, ref pos);
+            if (pos >= luaContent.Length) return "";
+            if (luaContent[pos] == '"' || luaContent[pos] == '\'')
+            {
+                char quote = luaContent[pos];
+                pos++;
+                int start = pos;
+                while (pos < luaContent.Length && luaContent[pos] != quote)
+                {
+                    if (luaContent[pos] == '\\' && pos + 1 < luaContent.Length)
+                    {
+                        pos += 2;
+                    }
+                    else
+                    {
+                        pos++;
+                    }
+                }
+                string result = luaContent.Substring(start, pos - start);
+                if (pos < luaContent.Length) pos++;
+                return result;
+            }
+            return "";
+        }
+
+        private static int ParseLuaInt(string luaContent, ref int pos)
+        {
+            SkipLuaWhitespace(luaContent, ref pos);
+            int start = pos;
+            if (pos < luaContent.Length && luaContent[pos] == '-') pos++;
+            while (pos < luaContent.Length && char.IsDigit(luaContent[pos])) pos++;
+            string numStr = luaContent.Substring(start, pos - start);
+            int result;
+            if (int.TryParse(numStr, out result)) return result;
+            return 1;
+        }
+
+        private static void SkipLuaValue(string luaContent, ref int pos)
+        {
+            SkipLuaWhitespace(luaContent, ref pos);
+            if (pos >= luaContent.Length) return;
+            if (luaContent[pos] == '"' || luaContent[pos] == '\'')
+            {
+                char quote = luaContent[pos]; pos++;
+                while (pos < luaContent.Length && luaContent[pos] != quote)
+                {
+                    if (luaContent[pos] == '\\' && pos + 1 < luaContent.Length) pos += 2; else pos++;
+                }
+                if (pos < luaContent.Length) pos++;
+            }
+            else if (luaContent[pos] == '{')
+            {
+                int depth = 1; pos++;
+                while (pos < luaContent.Length && depth > 0)
+                {
+                    if (luaContent[pos] == '{') depth++;
+                    else if (luaContent[pos] == '}') depth--;
+                    pos++;
+                }
+            }
+            else
+            {
+                while (pos < luaContent.Length && luaContent[pos] != ',' && luaContent[pos] != '}') pos++;
+            }
+        }
+
+        private static void SkipLuaWhitespace(string luaContent, ref int pos)
+        {
+            while (pos < luaContent.Length && (luaContent[pos] == ' ' || luaContent[pos] == '\t' || luaContent[pos] == '\n' || luaContent[pos] == '\r')) pos++;
+        }
+
+        private static void SkipThroughKey(string luaContent, string targetKey, ref int pos)
+        {
+            while (pos < luaContent.Length)
+            {
+                if (pos + targetKey.Length < luaContent.Length &&
+                    luaContent.Substring(pos, targetKey.Length) == targetKey)
+                {
+                    pos += targetKey.Length;
+                    return;
+                }
+                pos++;
             }
         }
 

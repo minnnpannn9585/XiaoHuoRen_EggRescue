@@ -11,7 +11,7 @@
     <type fullname="DouyinLuaDataDouyinButtonArr" preserve="nothing" serialized="true" />
     <type fullname="DouyinLuaDataEnum" preserve="nothing" serialized="true" />
     <type fullname="DouyinLuaDataFloat" preserve="nothing" serialized="true" />
-    <type fullname="DouyinLuaDataMono" preserve="nothing" serialized="true" />
+    <type fullname="DouyinLuaDataString" preserve="nothing" serialized="true" />
     <type fullname="DouyinLuaDataUObject" preserve="nothing" serialized="true" />
     <type fullname="DouyinLuaDataUObjectArr" preserve="nothing" serialized="true" />
     <type fullname="DouyinLuaDataVarInt" preserve="nothing" serialized="true" />

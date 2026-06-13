@@ -4,9 +4,9 @@ DialogueConfig = {}
 -- 普通对话类型
 DialogueConfig[1] = {
     Type = "Normal",
-    NpcName = "大树",
-    NpcSprite = "Black Cat",
-    Dialogue = "傻子在炫耀，瞎子在到处问。",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "宽叶上，一只极小蜗牛眼柄慢慢转向你。",
     Next = 2  -- 下一段对话ID
 }
 
@@ -14,17 +14,17 @@ DialogueConfig[1] = {
 DialogueConfig[2] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "Black Cat",
-    Dialogue = "谁？大树？大树说话了？",
+    NpcSprite = "Npc1",
+    Dialogue = "我……",
     Next = 3  -- 下一段对话ID
 }
 
 -- 普通对话类型
 DialogueConfig[3] = {
     Type = "Normal",
-    NpcName = "大树",
-    NpcSprite = "Black Cat",
-    Dialogue = "咳咳，嗯……是本树在说话。",
+    NpcName = "玩家",
+    NpcSprite = "Npc1",
+    Dialogue = "看……",
     Next = 4  -- 下一段对话ID
 }
 
@@ -32,26 +32,26 @@ DialogueConfig[3] = {
 DialogueConfig[4] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "Black Cat",
-    Dialogue = "哦！那大树你说的傻子和瞎子是谁？",
+    NpcSprite = "Npc1",
+    Dialogue = "见……",
     Next = 5  -- 下一段对话ID
 }
 
 -- 普通对话类型
 DialogueConfig[5] = {
     Type = "Normal",
-    NpcName = "大树",
-    NpcSprite = "Black Cat",
-    Dialogue = "……",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "眼柄又转回去，像一句话说累了。",
     Next = 6  -- 下一段对话ID
 }
 
 -- 普通对话类型
 DialogueConfig[6] = {
     Type = "Normal",
-    NpcName = "大树",
-    NpcSprite = "Black Cat",
-    Dialogue = "走吧，凡人。别踩我的根。",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "——这蜗牛……话说到一半就没有了？",
     Next = -1  -- 下一段对话ID
 }
 

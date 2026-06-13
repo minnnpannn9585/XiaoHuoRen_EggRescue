@@ -1,4 +1,3 @@
--- 对话配置文件
 DialogueConfig = {}
 
 -- 普通对话类型
@@ -54,4 +53,3 @@ DialogueConfig[6] = {
     Dialogue = "走吧，凡人。别踩我的根。",
     Next = -1  -- 下一段对话ID
 }
-

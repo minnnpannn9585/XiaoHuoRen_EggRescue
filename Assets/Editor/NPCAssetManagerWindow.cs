@@ -36,7 +36,7 @@ public class NPCAssetManagerWindow : EditorWindow
     }
 
     private List<NPCCharacter> npcList = new List<NPCCharacter>();
-    private string jsonSavePath = "Assets/Editor/EidtData/NPCData_Config.json"; // 指向正确的相对路径
+    private string luaSavePath = "Assets/Editor/EidtData/NPCData_Config.lua"; // 指向正确的相对路径
 
     // UI 辅助变量（已移除 ID 和 搜索变量）
     private Vector2 scrollPosition;
@@ -58,12 +58,12 @@ public class NPCAssetManagerWindow : EditorWindow
 
     private void OnEnable()
     {
-        LoadFromJson();
+        LoadFromLua();
     }
 
     private void OnFocus()
     {
-        LoadFromJson();
+        LoadFromLua();
     }
 
     private void OnGUI()
@@ -76,7 +76,7 @@ public class NPCAssetManagerWindow : EditorWindow
         GUILayout.Space(10);
         DrawNPCListContainer(); // 角色列表
         GUILayout.Space(5);
-        DrawBottomJsonPanel(); // 底部存盘栏
+        DrawBottomLuaPanel(); // 底部存盘栏
     }
 
     /// <summary>
@@ -115,7 +115,7 @@ public class NPCAssetManagerWindow : EditorWindow
             npcList.Add(new NPCCharacter { id = autoId, name = newNPCName });
             newNPCName = "新角色";
             GUI.FocusControl(null);
-            SaveToJson(false); // 新增后自动静默保存
+            SaveToLua(false); // 新增后自动静默保存
             
             // 添加完毕后自动将滚动条拉到最底部
             scrollPosition.y = float.MaxValue;
@@ -158,7 +158,7 @@ public class NPCAssetManagerWindow : EditorWindow
             if (EditorGUI.EndChangeCheck())
             {
                 npc.avatarPath = npc.avatar != null ? AssetDatabase.GetAssetPath(npc.avatar) : "";
-                SaveToJson(false); // 头像改变时静默保存
+                SaveToLua(false); // 头像改变时静默保存
             }
             
             GUILayout.Space(10);
@@ -173,7 +173,7 @@ public class NPCAssetManagerWindow : EditorWindow
             npc.isFolded = EditorGUILayout.Foldout(npc.isFolded, $" 角色名: {npc.name}", true, new GUIStyle(EditorStyles.foldout) { fontStyle = FontStyle.Bold, fontSize = 12 });
             if (EditorGUI.EndChangeCheck())
             {
-                SaveToJson(false);
+                SaveToLua(false);
             }
             
             GUILayout.FlexibleSpace();
@@ -183,7 +183,7 @@ public class NPCAssetManagerWindow : EditorWindow
             npc.name = EditorGUILayout.TextField(npc.name, GUILayout.Width(150));
             if (EditorGUI.EndChangeCheck())
             {
-                SaveToJson(false);
+                SaveToLua(false);
             }
             EditorGUILayout.EndHorizontal();
 
@@ -234,7 +234,7 @@ public class NPCAssetManagerWindow : EditorWindow
 
             if (EditorGUI.EndChangeCheck())
             {
-                SaveToJson(false);
+                SaveToLua(false);
             }
             EditorGUILayout.EndHorizontal();
 
@@ -249,7 +249,7 @@ public class NPCAssetManagerWindow : EditorWindow
                 if (EditorUtility.DisplayDialog("警告", $"确定要完全注销【{npc.name}】并清空所有 Lua 映射吗？", "删除", "取消"))
                 {
                     npcList.RemoveAt(i);
-                    SaveToJson(false); // 删除后自动静默保存
+                    SaveToLua(false); // 删除后自动静默保存
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.EndVertical();
                     continue;
@@ -271,7 +271,7 @@ public class NPCAssetManagerWindow : EditorWindow
                 if (GUILayout.Button("➕ 添加剧本分支", GUILayout.Width(110)))
                 {
                     npc.storyGraphs.Add(new DialogueGraphData { branchId = npc.storyGraphs.Count + 1, storyDescription = "新剧情路由" });
-                    SaveToJson(false);
+                    SaveToLua(false);
                 }
                 EditorGUILayout.EndHorizontal();
                 GUILayout.Space(5);
@@ -331,13 +331,13 @@ public class NPCAssetManagerWindow : EditorWindow
                     if (GUILayout.Button("🗑️", GUILayout.Width(26)))
                     {
                         npc.storyGraphs.RemoveAt(j);
-                        SaveToJson(false);
+                        SaveToLua(false);
                         break;
                     }
 
                     if (EditorGUI.EndChangeCheck())
                     {
-                        SaveToJson(false);
+                        SaveToLua(false);
                     }
 
                     EditorGUILayout.EndHorizontal();
@@ -354,9 +354,9 @@ public class NPCAssetManagerWindow : EditorWindow
     }
 
     /// <summary>
-    /// 底部固定的 本地 JSON 持久化面板
+    /// 底部固定的 本地 Lua 持久化面板
     /// </summary>
-    private void DrawBottomJsonPanel()
+    private void DrawBottomLuaPanel()
     {
         GUILayout.FlexibleSpace();
         
@@ -365,31 +365,31 @@ public class NPCAssetManagerWindow : EditorWindow
         
         EditorGUILayout.BeginHorizontal();
         
-        EditorGUILayout.LabelField("💾 核心数据存盘路径 (JSON):", EditorStyles.boldLabel, GUILayout.Width(160));
-        jsonSavePath = EditorGUILayout.TextField(jsonSavePath);
+        EditorGUILayout.LabelField("💾 核心数据存盘路径 (Lua):", EditorStyles.boldLabel, GUILayout.Width(160));
+        luaSavePath = EditorGUILayout.TextField(luaSavePath);
 
         if (GUILayout.Button("选择位置...", GUILayout.Width(80)))
         {
-            string folder = Path.GetDirectoryName(jsonSavePath);
-            string file = Path.GetFileName(jsonSavePath);
-            string path = EditorUtility.SaveFilePanelInProject("选择JSON保存位置", file, "json", "请选择NPC数据文件的导出位置", folder);
+            string folder = Path.GetDirectoryName(luaSavePath);
+            string file = Path.GetFileName(luaSavePath);
+            string path = EditorUtility.SaveFilePanelInProject("选择Lua保存位置", file, "lua", "请选择NPC数据文件的导出位置", folder);
             if (!string.IsNullOrEmpty(path))
             {
-                jsonSavePath = path;
+                luaSavePath = path;
             }
         }
 
         GUILayout.Space(10);
 
-        if (GUILayout.Button("🔄 载入/刷新 JSON", GUILayout.Width(120), GUILayout.Height(22)))
+        if (GUILayout.Button("🔄 载入/刷新 Lua", GUILayout.Width(120), GUILayout.Height(22)))
         {
-            LoadFromJson();
+            LoadFromLua();
         }
 
         GUI.backgroundColor = new Color(0.12f, 0.58f, 0.95f); 
-        if (GUILayout.Button("💾 保存导出 JSON 数据", GUILayout.Width(150), GUILayout.Height(22)))
+        if (GUILayout.Button("💾 保存导出 Lua 数据", GUILayout.Width(150), GUILayout.Height(22)))
         {
-            SaveToJson(true);
+            SaveToLua(true);
         }
         GUI.backgroundColor = Color.white;
 
@@ -397,35 +397,87 @@ public class NPCAssetManagerWindow : EditorWindow
         EditorGUILayout.EndVertical();
     }
 
-    private void SaveToJson(bool showDialog = true)
+    private void SaveToLua(bool showDialog = true)
     {
-        SerializableNPCData container = new SerializableNPCData { npcList = this.npcList };
-        string jsonStr = JsonUtility.ToJson(container, true);
+        string luaStr = GenerateLuaTable();
         
-        string dir = Path.GetDirectoryName(jsonSavePath);
+        string dir = Path.GetDirectoryName(luaSavePath);
         if (!Directory.Exists(dir))
         {
             Directory.CreateDirectory(dir);
         }
 
-        File.WriteAllText(jsonSavePath, jsonStr);
+        File.WriteAllText(luaSavePath, luaStr);
         AssetDatabase.Refresh();
         
         if (showDialog)
         {
-            EditorUtility.DisplayDialog("保存成功", $"数据已成功保存至本地项目路径：\n{jsonSavePath}", "完美");
+            EditorUtility.DisplayDialog("保存成功", $"数据已成功保存至本地项目路径：\n{luaSavePath}", "完美");
         }
     }
 
-    private void LoadFromJson()
+    private string GenerateLuaTable()
     {
-        if (!File.Exists(jsonSavePath))
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+        sb.AppendLine("local NPCData = {");
+        sb.AppendLine("    npcList = {");
+
+        foreach (var npc in npcList)
+        {
+            sb.AppendLine("        {");
+            sb.AppendLine($"            id = \"{EscapeString(npc.id)}\",");
+            sb.AppendLine($"            name = \"{EscapeString(npc.name)}\",");
+            sb.AppendLine($"            avatarPath = \"{EscapeString(npc.avatarPath)}\",");
+            sb.AppendLine($"            currentBranchId = {npc.currentBranchId},");
+            sb.AppendLine($"            isFolded = {BoolToLua(npc.isFolded)},");
+            sb.AppendLine("            storyGraphs = {");
+
+            foreach (var graph in npc.storyGraphs)
+            {
+                sb.AppendLine("                {");
+                sb.AppendLine($"                    branchId = {graph.branchId},");
+                sb.AppendLine($"                    storyDescription = \"{EscapeString(graph.storyDescription)}\",");
+                sb.AppendLine($"                    luaModuleName = \"{EscapeString(graph.luaModuleName)}\",");
+                sb.AppendLine($"                    luaAssetPath = \"{EscapeString(graph.luaAssetPath)}\"");
+                sb.AppendLine("                }");
+                if (npc.storyGraphs.IndexOf(graph) < npc.storyGraphs.Count - 1)
+                    sb.AppendLine("                ,");
+            }
+
+            sb.AppendLine("            }");
+            sb.AppendLine("        }");
+            if (npcList.IndexOf(npc) < npcList.Count - 1)
+                sb.AppendLine("        ,");
+        }
+
+        sb.AppendLine("    }");
+        sb.AppendLine("}");
+        sb.AppendLine("return NPCData");
+
+        return sb.ToString();
+    }
+
+    private string EscapeString(string str)
+    {
+        if (string.IsNullOrEmpty(str))
+            return "";
+        return str.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\n", "\\n").Replace("\r", "\\r");
+    }
+
+    private string BoolToLua(bool value)
+    {
+        return value ? "true" : "false";
+    }
+
+    private void LoadFromLua()
+    {
+        if (!File.Exists(luaSavePath))
             return;
 
-        string jsonStr = File.ReadAllText(jsonSavePath);
-        if (string.IsNullOrEmpty(jsonStr)) return;
+        string luaStr = File.ReadAllText(luaSavePath);
+        if (string.IsNullOrEmpty(luaStr)) return;
 
-        SerializableNPCData container = JsonUtility.FromJson<SerializableNPCData>(jsonStr);
+        SerializableNPCData container = ParseLuaTable(luaStr);
         if (container != null && container.npcList != null)
         {
             this.npcList = container.npcList;
@@ -446,6 +498,378 @@ public class NPCAssetManagerWindow : EditorWindow
                 }
             }
             Repaint(); 
+        }
+    }
+
+    private SerializableNPCData ParseLuaTable(string luaStr)
+    {
+        try
+        {
+            int index = 0;
+            SkipWhitespace(luaStr, ref index);
+            
+            // 跳过 "local NPCData = "
+            if (luaStr.IndexOf("local NPCData =", index) == index)
+            {
+                index += "local NPCData =".Length;
+                SkipWhitespace(luaStr, ref index);
+            }
+            
+            if (luaStr[index] != '{')
+                return null;
+
+            index++;
+            SkipWhitespace(luaStr, ref index);
+
+            SerializableNPCData container = new SerializableNPCData();
+            container.npcList = new List<NPCCharacter>();
+
+            while (index < luaStr.Length && luaStr[index] != '}')
+            {
+                SkipWhitespace(luaStr, ref index);
+                if (index >= luaStr.Length) break;
+
+                // 查找 npcList
+                if (luaStr.Substring(index).StartsWith("npcList"))
+                {
+                    index += "npcList".Length;
+                    SkipWhitespace(luaStr, ref index);
+                    if (luaStr[index] == '=')
+                    {
+                        index++;
+                        SkipWhitespace(luaStr, ref index);
+                        if (luaStr[index] == '{')
+                        {
+                            index++;
+                            container.npcList = ParseNPCList(luaStr, ref index);
+                        }
+                    }
+                }
+                else
+                {
+                    // 跳过其他字段
+                    SkipValue(luaStr, ref index);
+                }
+
+                SkipWhitespace(luaStr, ref index);
+                if (index < luaStr.Length && luaStr[index] == ',')
+                    index++;
+                SkipWhitespace(luaStr, ref index);
+            }
+
+            return container;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private List<NPCCharacter> ParseNPCList(string luaStr, ref int index)
+    {
+        List<NPCCharacter> list = new List<NPCCharacter>();
+        SkipWhitespace(luaStr, ref index);
+
+        while (index < luaStr.Length && luaStr[index] != '}')
+        {
+            SkipWhitespace(luaStr, ref index);
+            if (index >= luaStr.Length) break;
+
+            if (luaStr[index] == '{')
+            {
+                index++;
+                NPCCharacter npc = ParseNPC(luaStr, ref index);
+                if (npc != null)
+                    list.Add(npc);
+            }
+
+            SkipWhitespace(luaStr, ref index);
+            if (index < luaStr.Length && luaStr[index] == ',')
+                index++;
+            SkipWhitespace(luaStr, ref index);
+        }
+
+        index++; // skip closing '}'
+        return list;
+    }
+
+    private NPCCharacter ParseNPC(string luaStr, ref int index)
+    {
+        NPCCharacter npc = new NPCCharacter();
+        npc.storyGraphs = new List<DialogueGraphData>();
+
+        SkipWhitespace(luaStr, ref index);
+
+        while (index < luaStr.Length && luaStr[index] != '}')
+        {
+            SkipWhitespace(luaStr, ref index);
+            if (index >= luaStr.Length) break;
+
+            string key = ReadKey(luaStr, ref index);
+            SkipWhitespace(luaStr, ref index);
+            
+            if (index < luaStr.Length && luaStr[index] == '=')
+            {
+                index++;
+                SkipWhitespace(luaStr, ref index);
+
+                switch (key)
+                {
+                    case "id":
+                        npc.id = ReadString(luaStr, ref index);
+                        break;
+                    case "name":
+                        npc.name = ReadString(luaStr, ref index);
+                        break;
+                    case "avatarPath":
+                        npc.avatarPath = ReadString(luaStr, ref index);
+                        break;
+                    case "currentBranchId":
+                        npc.currentBranchId = ReadInt(luaStr, ref index);
+                        break;
+                    case "isFolded":
+                        npc.isFolded = ReadBool(luaStr, ref index);
+                        break;
+                    case "storyGraphs":
+                        if (luaStr[index] == '{')
+                        {
+                            index++;
+                            npc.storyGraphs = ParseStoryGraphList(luaStr, ref index);
+                        }
+                        break;
+                    default:
+                        SkipValue(luaStr, ref index);
+                        break;
+                }
+            }
+
+            SkipWhitespace(luaStr, ref index);
+            if (index < luaStr.Length && luaStr[index] == ',')
+                index++;
+            SkipWhitespace(luaStr, ref index);
+        }
+
+        index++; // skip closing '}'
+        return npc;
+    }
+
+    private List<DialogueGraphData> ParseStoryGraphList(string luaStr, ref int index)
+    {
+        List<DialogueGraphData> list = new List<DialogueGraphData>();
+        SkipWhitespace(luaStr, ref index);
+
+        while (index < luaStr.Length && luaStr[index] != '}')
+        {
+            SkipWhitespace(luaStr, ref index);
+            if (index >= luaStr.Length) break;
+
+            if (luaStr[index] == '{')
+            {
+                index++;
+                DialogueGraphData graph = ParseStoryGraph(luaStr, ref index);
+                if (graph != null)
+                    list.Add(graph);
+            }
+
+            SkipWhitespace(luaStr, ref index);
+            if (index < luaStr.Length && luaStr[index] == ',')
+                index++;
+            SkipWhitespace(luaStr, ref index);
+        }
+
+        index++; // skip closing '}'
+        return list;
+    }
+
+    private DialogueGraphData ParseStoryGraph(string luaStr, ref int index)
+    {
+        DialogueGraphData graph = new DialogueGraphData();
+
+        SkipWhitespace(luaStr, ref index);
+
+        while (index < luaStr.Length && luaStr[index] != '}')
+        {
+            SkipWhitespace(luaStr, ref index);
+            if (index >= luaStr.Length) break;
+
+            string key = ReadKey(luaStr, ref index);
+            SkipWhitespace(luaStr, ref index);
+            
+            if (index < luaStr.Length && luaStr[index] == '=')
+            {
+                index++;
+                SkipWhitespace(luaStr, ref index);
+
+                switch (key)
+                {
+                    case "branchId":
+                        graph.branchId = ReadInt(luaStr, ref index);
+                        break;
+                    case "storyDescription":
+                        graph.storyDescription = ReadString(luaStr, ref index);
+                        break;
+                    case "luaModuleName":
+                        graph.luaModuleName = ReadString(luaStr, ref index);
+                        break;
+                    case "luaAssetPath":
+                        graph.luaAssetPath = ReadString(luaStr, ref index);
+                        break;
+                    default:
+                        SkipValue(luaStr, ref index);
+                        break;
+                }
+            }
+
+            SkipWhitespace(luaStr, ref index);
+            if (index < luaStr.Length && luaStr[index] == ',')
+                index++;
+            SkipWhitespace(luaStr, ref index);
+        }
+
+        index++; // skip closing '}'
+        return graph;
+    }
+
+    private string ReadKey(string luaStr, ref int index)
+    {
+        SkipWhitespace(luaStr, ref index);
+        int start = index;
+        while (index < luaStr.Length && (char.IsLetterOrDigit(luaStr[index]) || luaStr[index] == '_'))
+        {
+            index++;
+        }
+        return luaStr.Substring(start, index - start);
+    }
+
+    private string ReadString(string luaStr, ref int index)
+    {
+        SkipWhitespace(luaStr, ref index);
+        if (index >= luaStr.Length || luaStr[index] != '"')
+            return "";
+
+        index++; // skip opening quote
+        int start = index;
+        while (index < luaStr.Length)
+        {
+            if (luaStr[index] == '\\' && index + 1 < luaStr.Length)
+            {
+                index += 2; // skip escape sequence
+            }
+            else if (luaStr[index] == '"')
+            {
+                break;
+            }
+            else
+            {
+                index++;
+            }
+        }
+
+        string result = luaStr.Substring(start, index - start);
+        // Unescape
+        result = result.Replace("\\\"", "\"").Replace("\\n", "\n").Replace("\\r", "\r").Replace("\\\\", "\\");
+        
+        if (index < luaStr.Length)
+            index++; // skip closing quote
+
+        return result;
+    }
+
+    private int ReadInt(string luaStr, ref int index)
+    {
+        SkipWhitespace(luaStr, ref index);
+        int start = index;
+        while (index < luaStr.Length && char.IsDigit(luaStr[index]))
+        {
+            index++;
+        }
+        if (start == index)
+            return 0;
+        return int.Parse(luaStr.Substring(start, index - start));
+    }
+
+    private bool ReadBool(string luaStr, ref int index)
+    {
+        SkipWhitespace(luaStr, ref index);
+        if (luaStr.Substring(index).StartsWith("true"))
+        {
+            index += 4;
+            return true;
+        }
+        else if (luaStr.Substring(index).StartsWith("false"))
+        {
+            index += 5;
+            return false;
+        }
+        return false;
+    }
+
+    private void SkipWhitespace(string luaStr, ref int index)
+    {
+        while (index < luaStr.Length && char.IsWhiteSpace(luaStr[index]))
+        {
+            index++;
+        }
+    }
+
+    private void SkipValue(string luaStr, ref int index)
+    {
+        SkipWhitespace(luaStr, ref index);
+        if (index >= luaStr.Length) return;
+
+        if (luaStr[index] == '"')
+        {
+            // Skip string
+            index++;
+            while (index < luaStr.Length)
+            {
+                if (luaStr[index] == '\\' && index + 1 < luaStr.Length)
+                    index += 2;
+                else if (luaStr[index] == '"')
+                {
+                    index++;
+                    break;
+                }
+                else
+                    index++;
+            }
+        }
+        else if (luaStr[index] == '{')
+        {
+            // Skip table
+            int depth = 1;
+            index++;
+            while (index < luaStr.Length && depth > 0)
+            {
+                if (luaStr[index] == '{') depth++;
+                else if (luaStr[index] == '}') depth--;
+                else if (luaStr[index] == '"')
+                {
+                    index++;
+                    while (index < luaStr.Length)
+                    {
+                        if (luaStr[index] == '\\' && index + 1 < luaStr.Length)
+                            index += 2;
+                        else if (luaStr[index] == '"')
+                        {
+                            index++;
+                            break;
+                        }
+                        else
+                            index++;
+                    }
+                    continue;
+                }
+                index++;
+            }
+        }
+        else
+        {
+            // Skip simple value
+            while (index < luaStr.Length && luaStr[index] != ',' && luaStr[index] != '}' && !char.IsWhiteSpace(luaStr[index]))
+            {
+                index++;
+            }
         }
     }
 }

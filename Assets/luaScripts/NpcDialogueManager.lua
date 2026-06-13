@@ -1,5 +1,4 @@
 --对话配置文件
----@var DialogueConfig :DouyinScript
 ---@var dialoguePanel :UnityEngine.GameObject
 ---@var playerNamePanel :UnityEngine.GameObject
 ---@var npcNamePanel :UnityEngine.GameObject
@@ -38,6 +37,9 @@ local optionAnimationSpeed = 0.2
 -- ========== 新增：选项点击后暂存与等待 Next 状态 ==========
 local selectedOptionCache = nil      -- 缓存玩家选择的选项
 local isWaitingForNextAfterOption = false   -- 是否正在等待点击 Next 以完成选项跳转
+
+-- ========== 新增：外部动态加载的对话配置 ==========
+local externalDialogueConfig = nil   -- 动态加载的外部对话数据
 
 function Awake()
     _G["_DialogueManager"] = self.script
@@ -83,8 +85,15 @@ function Start()
     -- StartDialogue(1)
 end
 
+function GetDialogueData(id)
+    if externalDialogueConfig and externalDialogueConfig[id] ~= nil then
+        return externalDialogueConfig[id]
+    end
+    return nil
+end
+
 function StartDialogue(dialogueID)
-    if DialogueConfig == nil or DialogueConfig.script.DialogueConfig[dialogueID] == nil then
+    if GetDialogueData(dialogueID) == nil then
         DouyinUtility.Toast("对话id出现配置错误，请检查～")
         return
     end
@@ -94,10 +103,30 @@ function StartDialogue(dialogueID)
         dialoguePanel:SetActive(true)
     end
 
-
- 
     DouyinUIService.SetUIVisible(false)
 
+    UpdateDialogueUI()
+end
+
+function StartDialogueWithData(dialogueData, startID)
+    externalDialogueConfig = dialogueData
+    local actualID = startID or 1
+    if GetDialogueData(actualID) == nil then
+        for k, v in pairs(dialogueData) do
+            actualID = k
+            break
+        end
+    end
+    if GetDialogueData(actualID) == nil then
+        DouyinUtility.Toast("对话数据为空～")
+        return
+    end
+    SetPlayerNamePanel(false)
+    currentDialogueID = actualID
+    if dialoguePanel then
+        dialoguePanel:SetActive(true)
+    end
+    DouyinUIService.SetUIVisible(false)
     UpdateDialogueUI()
 end
 
@@ -132,7 +161,7 @@ function OnNextClick()
     end
 
     -- 普通对话的 Next 逻辑...
-    local currentData = DialogueConfig.script.DialogueConfig[currentDialogueID]
+    local currentData = GetDialogueData(currentDialogueID)
     if currentData == nil then
         DouyinUtility.Toast("当前对话数据不存在～")
         EndDialogue()
@@ -142,7 +171,7 @@ function OnNextClick()
     local nextID = currentData.Next
     if nextID == -1 then
         EndDialogue()
-    elseif DialogueConfig.script.DialogueConfig[nextID] ~= nil then
+    elseif GetDialogueData(nextID) ~= nil then
         currentDialogueID = nextID
         UpdateDialogueUI()
     else
@@ -152,7 +181,7 @@ function OnNextClick()
 end
 
 function UpdateDialogueUI()
-    local data = DialogueConfig.script.DialogueConfig[currentDialogueID]
+    local data = GetDialogueData(currentDialogueID)
     if data == nil then
         DouyinUtility.Toast("对话数据加载失败～")
         EndDialogue()
@@ -420,7 +449,7 @@ function PerformOptionJump(option)
 
     if nextID == -1 then
         EndDialogue()
-    elseif DialogueConfig.script.DialogueConfig[nextID] ~= nil then
+    elseif GetDialogueData(nextID) ~= nil then
         currentDialogueID = nextID
         UpdateDialogueUI()
     else
@@ -455,6 +484,7 @@ function EndDialogue()
     isAnimatingOptions = false
     isWaitingForNextAfterOption = false
     selectedOptionCache = nil
+    externalDialogueConfig = nil
 
     if dialoguePanel then
         dialoguePanel:SetActive(false)
@@ -472,6 +502,10 @@ end
 
 function dialogueManager.StartDialogue(dialogueID)
     StartDialogue(dialogueID)
+end
+
+function dialogueManager.StartDialogueWithData(dialogueData, startID)
+    StartDialogueWithData(dialogueData, startID)
 end
 
 function dialogueManager.EndDialogue()
