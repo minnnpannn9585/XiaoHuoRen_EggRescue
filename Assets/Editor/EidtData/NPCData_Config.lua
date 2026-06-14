@@ -13,7 +13,7 @@ local NPCData = {
             name = "描述",
             avatarPath = "",
             currentBranchId = 1,
-            isFolded = false,
+            isFolded = true,
             storyGraphs = {
                 {
                     branchId = 1,
@@ -28,7 +28,7 @@ local NPCData = {
             id = "NPC_005",
             name = "大黄",
             avatarPath = "",
-            currentBranchId = 1,
+            currentBranchId = 4,
             isFolded = true,
             storyGraphs = {
                 {

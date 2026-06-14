@@ -27,7 +27,14 @@ DialogueConfig[3] = {
     Dialogue = "我没拦住。这事得查清楚。",
     Options = {  -- 选项列表
         {Text = "大黄，梯子能借我吗？乌鸦在谷仓顶上，我得先翻过入口那道小围墙。", Next = 4, BranchFlag = "Branch_A"},
-        {Text = "谷仓那草窝是谁的？", Next = 9, BranchFlag = "Branch_B"},
+        {  -- 选项#2
+            Text = "谷仓那草窝是谁的？",
+            Next = 9,
+            BranchFlag = "Branch_B",
+            ConditionBranches = {
+                { VarName = "E07_ViewNapSpot", VarType = "bool", TrueNext = 9, FalseNext = -1 }
+            }
+        },
         {Text = "这是你追的蛋吗？", Next = 15, BranchFlag = "Flag_3"}
     }
 }

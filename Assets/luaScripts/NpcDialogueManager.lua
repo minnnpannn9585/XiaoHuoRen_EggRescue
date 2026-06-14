@@ -155,9 +155,10 @@ function GetNextNodeByCondition(data)
                 -- bool 模式：true/false 各走一个分支；未设置的变量视为 false
                 --   true  → TrueNext
                 --   false/nil → FalseNext
-                if varValue == true and cb.TrueNext ~= nil and cb.TrueNext > 0 then
+                -- -1 表示"结束对话"，因此需要允许 -1 被返回
+                if varValue == true and cb.TrueNext ~= nil then
                     return cb.TrueNext
-                elseif (varValue == false or varValue == nil) and cb.FalseNext ~= nil and cb.FalseNext > 0 then
+                elseif (varValue == false or varValue == nil) and cb.FalseNext ~= nil then
                     return cb.FalseNext
                 end
             else
@@ -173,7 +174,7 @@ function GetNextNodeByCondition(data)
                 elseif op == ">=" then match = (intVal >= cmpValue)
                 elseif op == "<=" then match = (intVal <= cmpValue)
                 end
-                if match and cb.Next ~= nil and cb.Next > 0 then
+                if match and cb.Next ~= nil then
                     return cb.Next
                 end
             end
@@ -798,13 +799,64 @@ function SetPlayerNamePanel(active)
     end
 end
 
--- ========== 新增：执行选项的实际分支跳转逻辑 ==========
+-- 根据选项的条件分支计算下一个节点 ID（新增：支持选项内部的条件分支规则）
+function GetOptionNextNode(option)
+    -- 每次条件判断前，重新从 GlobalVariables.lua 读取最新值
+    ReloadGlobalVariablesFromFile()
+
+    -- 有 ConditionBranches 时：按条件分支走
+    if option ~= nil and option.ConditionBranches ~= nil and #option.ConditionBranches > 0 then
+        for i, cb in ipairs(option.ConditionBranches) do
+            if cb.VarName ~= nil and cb.VarName ~= "" then
+                local varType = cb.VarType or "bool"
+                local varValue = GetGlobalVariable(cb.VarName)
+
+                if varType == "bool" then
+                    -- bool 模式：变量为真走 TrueNext，为假/不存在走 FalseNext
+                    -- -1 表示"结束对话"，因此需要允许 -1 被返回
+                    if varValue == true and cb.TrueNext ~= nil then
+                        return cb.TrueNext
+                    elseif (varValue == false or varValue == nil) and cb.FalseNext ~= nil then
+                        return cb.FalseNext
+                    end
+                else
+                    -- int 模式：用操作符比较
+                    local op = cb.Op or "=="
+                    local cmpValue = tonumber(cb.Value) or 0
+                    local intVal = tonumber(varValue) or 0
+                    local match = false
+                    if op == "==" then match = (intVal == cmpValue)
+                    elseif op == "!=" then match = (intVal ~= cmpValue)
+                    elseif op == ">" then match = (intVal > cmpValue)
+                    elseif op == "<" then match = (intVal < cmpValue)
+                    elseif op == ">=" then match = (intVal >= cmpValue)
+                    elseif op == "<=" then match = (intVal <= cmpValue)
+                    end
+                    if match and cb.Next ~= nil then
+                        return cb.Next
+                    end
+                end
+            end
+        end
+        -- 有条件分支，但没有匹配上，返回 nil（调用方决定是否走默认 Next）
+        return nil
+    end
+
+    -- 没有条件分支：走默认的 option.Next
+    return nil
+end
+
+-- ========== 修改：执行选项的实际分支跳转逻辑（支持条件分支）==========
 function PerformOptionJump(option)
     if option.BranchFlag then
         SaveBranchFlag(option.BranchFlag)
     end
 
-    local nextID = option.Next
+    -- 优先检查选项的条件分支（有条件分支 → 按条件走；没条件分支 → 走默认的 option.Next）
+    local nextID = GetOptionNextNode(option)
+    if nextID == nil then
+        nextID = option.Next
+    end
 
     if nextID == -1 then
         EndDialogue()

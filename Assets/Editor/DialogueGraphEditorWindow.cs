@@ -93,6 +93,14 @@ namespace RPGDialogueEditor
         public string tag; // "true" / "false" / "int"
     }
 
+    // 选项条件分支端口绑定标记：区分不同选项的 conditionBranch 端口
+    public class OptionConditionBranchPortTag
+    {
+        public OptionData option;
+        public ConditionBranch branch;
+        public string tag; // "true" / "false" / "int"
+    }
+
     [Serializable]
     public class OptionData
     {
@@ -100,6 +108,7 @@ namespace RPGDialogueEditor
         public string text = "新选项";
         public int next = -1;
         public string branchFlag = "NewBranch";
+        public List<ConditionBranch> conditionBranches = new List<ConditionBranch>(); // 选项内部的条件分支规则：满足走一个，不满足走另一个
     }
 
     /// <summary>
@@ -1375,16 +1384,51 @@ namespace RPGDialogueEditor
                 {
                     foreach (var opt in node.options)
                     {
-                        if (opt.next > 0 && nodeMap.ContainsKey(opt.next))
+                        // 选项内部的条件分支优先
+                        if (opt.conditionBranches != null && opt.conditionBranches.Count > 0)
                         {
-                            adj[node.id].Add(opt.next);
-                            inDegree[opt.next]++;
+                            foreach (var cb in opt.conditionBranches)
+                            {
+                                string varType2 = "bool";
+                                var gv2 = GlobalVariables?.FirstOrDefault(v => v.name == cb.varName);
+                                if (gv2 != null) varType2 = gv2.type;
+
+                                if (varType2 == "bool")
+                                {
+                                    if (cb.trueNextNodeId > 0 && nodeMap.ContainsKey(cb.trueNextNodeId))
+                                    {
+                                        adj[node.id].Add(cb.trueNextNodeId);
+                                        inDegree[cb.trueNextNodeId]++;
+                                    }
+                                    if (cb.falseNextNodeId > 0 && nodeMap.ContainsKey(cb.falseNextNodeId))
+                                    {
+                                        adj[node.id].Add(cb.falseNextNodeId);
+                                        inDegree[cb.falseNextNodeId]++;
+                                    }
+                                }
+                                else
+                                {
+                                    if (cb.intNextNodeId > 0 && nodeMap.ContainsKey(cb.intNextNodeId))
+                                    {
+                                        adj[node.id].Add(cb.intNextNodeId);
+                                        inDegree[cb.intNextNodeId]++;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (opt.next > 0 && nodeMap.ContainsKey(opt.next))
+                            {
+                                adj[node.id].Add(opt.next);
+                                inDegree[opt.next]++;
+                            }
                         }
                     }
                 }
 
-                // 条件分支边：无论 Normal 还是 Question 节点都可能有
-                if (node.conditionBranches != null && node.conditionBranches.Count > 0)
+                // 条件分支边：仅 Normal 节点有节点级别的条件分支
+                if (node.type == "Normal" && node.conditionBranches != null && node.conditionBranches.Count > 0)
                 {
                     foreach (var cb in node.conditionBranches)
                     {
@@ -1561,11 +1605,10 @@ namespace RPGDialogueEditor
 
         private string ExtractStringField(string body, string key)
         {
-            // 兼容单双引号
-            var matchDouble = Regex.Match(body, key + @"\s*=\s*""([^""]*)""", RegexOptions.IgnoreCase);
+            var matchDouble = Regex.Match(body, @"\b" + key + @"\s*=\s*""([^""]*)""", RegexOptions.IgnoreCase);
             if (matchDouble.Success) return matchDouble.Groups[1].Value;
 
-            var matchSingle = Regex.Match(body, key + @"\s*=\s*'([^']*)'", RegexOptions.IgnoreCase);
+            var matchSingle = Regex.Match(body, @"\b" + key + @"\s*=\s*'([^']*)'", RegexOptions.IgnoreCase);
             if (matchSingle.Success) return matchSingle.Groups[1].Value;
 
             return "";
@@ -1573,7 +1616,7 @@ namespace RPGDialogueEditor
 
         private int ExtractIntField(string body, string key, int defaultValue = -1)
         {
-            var match = Regex.Match(body, key + @"\s*=\s*(-?\d+)", RegexOptions.IgnoreCase);
+            var match = Regex.Match(body, @"\b" + key + @"\s*=\s*(-?\d+)", RegexOptions.IgnoreCase);
             return match.Success ? int.Parse(match.Groups[1].Value) : defaultValue;
         }
 
@@ -1653,8 +1696,13 @@ namespace RPGDialogueEditor
                 }
 
                 // 3.7 解析 ConditionBranches 条件分支（基于全局变量的条件跳转）
+                // ⚠️ Question 节点：不解析节点级别的 ConditionBranches（它的条件分支在每个选项内部）
                 var condList = new List<ConditionBranch>();
-                int cbIndex = cleanBody.IndexOf("ConditionBranches", StringComparison.OrdinalIgnoreCase);
+                int cbIndex = -1;
+                if (type != "Question")
+                {
+                    cbIndex = cleanBody.IndexOf("ConditionBranches", StringComparison.OrdinalIgnoreCase);
+                }
                 if (cbIndex != -1)
                 {
                     int cbBrace = cleanBody.IndexOf('{', cbIndex);
@@ -1687,7 +1735,7 @@ namespace RPGDialogueEditor
                                 cond.op = ExtractStringField(cbBody, "Op");
                                 if (string.IsNullOrEmpty(cond.op)) cond.op = "==";
                                 // 解析 Value 字段 — 可能是整数
-                                var valMatch = Regex.Match(cbBody, @"Value\s*=\s*(\S+)", RegexOptions.IgnoreCase);
+                                var valMatch = Regex.Match(cbBody, @"\bValue\s*=\s*(\S+)", RegexOptions.IgnoreCase);
                                 if (valMatch.Success)
                                 {
                                     string valRaw = valMatch.Groups[1].Value.Trim().TrimEnd(',', ' ');
@@ -1748,24 +1796,94 @@ namespace RPGDialogueEditor
                     // 如果成功获取了 Options 区域的内容，进行子结构体反向解析
                     if (!string.IsNullOrEmpty(optionsText))
                     {
-                        // 匹配 `{ Text = "...", Next = ..., BranchFlag = "..." }`
-                        var optMatches = Regex.Matches(optionsText, @"\{([\s\S]*?)\}");
-                        int optIdx = 1;
-                        foreach (Match optMatch in optMatches)
+                        // 解析每个选项（手动花括号计数器，避免嵌套导致的匹配失败）
+                        int optScanIdx = 0;
+                        int optIdx2 = 1;
+                        while (optScanIdx < optionsText.Length)
                         {
-                            string optBody = optMatch.Groups[1].Value;
-                            
-                            string text = ExtractStringField(optBody, "Text");
-                            int nextVal = ExtractIntField(optBody, "Next", -1);
-                            string flag = ExtractStringField(optBody, "BranchFlag");
+                            // 找到第一个 '{'
+                            int optOpenBrace = optionsText.IndexOf('{', optScanIdx);
+                            if (optOpenBrace == -1) break;
 
-                            nodeData.options.Add(new OptionData
+                            // 找到匹配的 '}'
+                            int optBraceCount = 1;
+                            int optInnerScan = optOpenBrace + 1;
+                            while (optInnerScan < optionsText.Length && optBraceCount > 0)
                             {
-                                id = $"opt-{id}-{optIdx++}",
-                                text = text,
-                                next = nextVal,
-                                branchFlag = flag
-                            });
+                                char innerC = optionsText[optInnerScan];
+                                if (innerC == '{') optBraceCount++;
+                                else if (innerC == '}') optBraceCount--;
+                                optInnerScan++;
+                            }
+
+                            if (optBraceCount == 0)
+                            {
+                                string optBody = optionsText.Substring(optOpenBrace + 1, optInnerScan - optOpenBrace - 2);
+
+                                string text = ExtractStringField(optBody, "Text");
+                                int nextVal = ExtractIntField(optBody, "Next", -1);
+                                string flag = ExtractStringField(optBody, "BranchFlag");
+
+                                var option = new OptionData
+                                {
+                                    id = $"opt-{id}-{optIdx2++}",
+                                    text = text,
+                                    next = nextVal,
+                                    branchFlag = flag,
+                                    conditionBranches = new List<ConditionBranch>()
+                                };
+
+                                // 解析选项内部的 ConditionBranches
+                                int optCbIndex = optBody.IndexOf("ConditionBranches", StringComparison.OrdinalIgnoreCase);
+                                if (optCbIndex != -1)
+                                {
+                                    int optCbOpen = optBody.IndexOf('{', optCbIndex);
+                                    if (optCbOpen != -1)
+                                    {
+                                        int optCbBraceCount = 1;
+                                        int optCbScan = optCbOpen + 1;
+                                        while (optCbScan < optBody.Length && optCbBraceCount > 0)
+                                        {
+                                            char cbC = optBody[optCbScan];
+                                            if (cbC == '{') optCbBraceCount++;
+                                            else if (cbC == '}') optCbBraceCount--;
+                                            optCbScan++;
+                                        }
+                                        if (optCbBraceCount == 0)
+                                        {
+                                            string optCbText = optBody.Substring(optCbOpen + 1, optCbScan - optCbOpen - 2);
+                                            var optCbMatches = Regex.Matches(optCbText, @"\{([\s\S]*?)\}");
+                                            foreach (Match cbMatch in optCbMatches)
+                                            {
+                                                string cbBody = cbMatch.Groups[1].Value;
+                                                string cbVarName = ExtractStringField(cbBody, "VarName");
+                                                string cbVarType = ExtractStringField(cbBody, "VarType");
+
+                                                var cbData = new ConditionBranch { varName = cbVarName };
+                                                if (cbVarType == "int")
+                                                {
+                                                    cbData.op = ExtractStringField(cbBody, "Op");
+                                                    cbData.intCompareValue = ExtractIntField(cbBody, "Value", 0);
+                                                    cbData.intNextNodeId = ExtractIntField(cbBody, "Next", -1);
+                                                }
+                                                else
+                                                {
+                                                    cbData.trueNextNodeId = ExtractIntField(cbBody, "TrueNext", -1);
+                                                    cbData.falseNextNodeId = ExtractIntField(cbBody, "FalseNext", -1);
+                                                }
+                                                option.conditionBranches.Add(cbData);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                nodeData.options.Add(option);
+                                optScanIdx = optInnerScan;
+                            }
+                            else
+                            {
+                                optScanIdx = optInnerScan;
+                            }
                         }
                     }
                 }
@@ -1815,7 +1933,7 @@ namespace RPGDialogueEditor
                     }
                 }
 
-                if (node.conditionBranches != null && node.conditionBranches.Count > 0)
+                if (isNormal && node.conditionBranches != null && node.conditionBranches.Count > 0)
                 {
                     var validEntries = node.conditionBranches
                         .Where(c => !string.IsNullOrEmpty(c.varName)
@@ -1859,7 +1977,47 @@ namespace RPGDialogueEditor
                             var opt = node.options[i];
                             string comma = (i == node.options.Count - 1) ? "" : ",";
                             string escapedOptText = (opt.text ?? "").Replace("\"", "\\\"");
-                            sb.AppendLine($"        {{Text = \"{escapedOptText}\", Next = {opt.next}, BranchFlag = \"{opt.branchFlag}\"}}{comma}");
+
+                            // 检查该选项是否有条件分支
+                            bool hasOptCond = opt.conditionBranches != null && opt.conditionBranches.Count > 0;
+
+                            if (hasOptCond)
+                            {
+                                // 有条件分支：使用多行结构，包含 ConditionBranches
+                                sb.AppendLine($"        {{  -- 选项#{i + 1}");
+                                sb.AppendLine($"            Text = \"{escapedOptText}\",");
+                                sb.AppendLine($"            Next = {opt.next},");
+                                sb.AppendLine($"            BranchFlag = \"{opt.branchFlag}\",");
+                                sb.AppendLine($"            ConditionBranches = {{");
+
+                                for (int cbIdx = 0; cbIdx < opt.conditionBranches.Count; cbIdx++)
+                                {
+                                    var cb = opt.conditionBranches[cbIdx];
+                                    string cbComma = (cbIdx == opt.conditionBranches.Count - 1) ? "" : ",";
+
+                                    // 判断变量类型
+                                    string cbVarType = "bool";
+                                    var cbGV = GlobalVariables?.FirstOrDefault(v => v.name == cb.varName);
+                                    if (cbGV != null) cbVarType = cbGV.type;
+
+                                    if (cbVarType == "bool")
+                                    {
+                                        sb.AppendLine($"                {{ VarName = \"{cb.varName}\", VarType = \"bool\", TrueNext = {cb.trueNextNodeId}, FalseNext = {cb.falseNextNodeId} }}{cbComma}");
+                                    }
+                                    else
+                                    {
+                                        sb.AppendLine($"                {{ VarName = \"{cb.varName}\", VarType = \"int\", Op = \"{cb.op}\", Value = {cb.intCompareValue}, Next = {cb.intNextNodeId} }}{cbComma}");
+                                    }
+                                }
+
+                                sb.AppendLine($"            }}");
+                                sb.AppendLine($"        }}{comma}");
+                            }
+                            else
+                            {
+                                // 没有条件分支：使用原来的单行结构
+                                sb.AppendLine($"        {{Text = \"{escapedOptText}\", Next = {opt.next}, BranchFlag = \"{opt.branchFlag}\"}}{comma}");
+                            }
                         }
                     }
                     sb.AppendLine("    }");
@@ -1929,7 +2087,7 @@ namespace RPGDialogueEditor
 
             int targetId = disconnect ? -1 : inputNode.Data.id;
 
-            // 先检查是否是条件分支端口（任何类型节点都可能有）
+            // 先检查是否是 Normal 节点的条件分支端口
             if (edge.output.userData is ConditionBranchPortTag portTag)
             {
                 if (portTag.tag == "true")
@@ -1940,6 +2098,18 @@ namespace RPGDialogueEditor
                     portTag.branch.intNextNodeId = targetId;
 
                 RefreshConditionBranchFieldWithoutRebuild(outputNode, portTag.branch, portTag.tag);
+                return;
+            }
+
+            // 再检查是否是 Question 节点选项的条件分支端口
+            if (edge.output.userData is OptionConditionBranchPortTag optPortTag)
+            {
+                if (optPortTag.tag == "true")
+                    optPortTag.branch.trueNextNodeId = targetId;
+                else if (optPortTag.tag == "false")
+                    optPortTag.branch.falseNextNodeId = targetId;
+                else if (optPortTag.tag == "int")
+                    optPortTag.branch.intNextNodeId = targetId;
                 return;
             }
 
@@ -2101,20 +2271,68 @@ namespace RPGDialogueEditor
                 {
                     foreach (var option in sourceNode.Data.options)
                     {
-                        if (option.next > 0)
+                        // 选项内部的条件分支优先
+                        if (option.conditionBranches != null && option.conditionBranches.Count > 0)
                         {
-                            var targetNode = nodes.Find(n => n.Data.id == option.next);
-                            var optionPort = sourceNode.GetPortByOption(option);
-                            if (targetNode != null && targetNode.InputPort != null && optionPort != null)
+                            foreach (var cb in option.conditionBranches)
                             {
-                                LinkPorts(optionPort, targetNode.InputPort);
+                                string varType = "bool";
+                                var gv = EditorWindow?.GlobalVariables?.FirstOrDefault(v => v.name == cb.varName);
+                                if (gv != null) varType = gv.type;
+
+                                if (varType == "bool")
+                                {
+                                    if (cb.trueNextNodeId > 0)
+                                    {
+                                        var targetNode = nodes.Find(n => n.Data.id == cb.trueNextNodeId);
+                                        var truePort = sourceNode.GetPortByOptionConditionBranch(option, cb, "true");
+                                        if (targetNode != null && targetNode.InputPort != null && truePort != null)
+                                        {
+                                            LinkPorts(truePort, targetNode.InputPort);
+                                        }
+                                    }
+                                    if (cb.falseNextNodeId > 0)
+                                    {
+                                        var targetNode = nodes.Find(n => n.Data.id == cb.falseNextNodeId);
+                                        var falsePort = sourceNode.GetPortByOptionConditionBranch(option, cb, "false");
+                                        if (targetNode != null && targetNode.InputPort != null && falsePort != null)
+                                        {
+                                            LinkPorts(falsePort, targetNode.InputPort);
+                                        }
+                                    }
+                                }
+                                else // int 模式
+                                {
+                                    if (cb.intNextNodeId > 0)
+                                    {
+                                        var targetNode = nodes.Find(n => n.Data.id == cb.intNextNodeId);
+                                        var intPort = sourceNode.GetPortByOptionConditionBranch(option, cb, "int");
+                                        if (targetNode != null && targetNode.InputPort != null && intPort != null)
+                                        {
+                                            LinkPorts(intPort, targetNode.InputPort);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // 没有条件分支的普通选项
+                            if (option.next > 0)
+                            {
+                                var targetNode = nodes.Find(n => n.Data.id == option.next);
+                                var optionPort = sourceNode.GetPortByOption(option);
+                                if (targetNode != null && targetNode.InputPort != null && optionPort != null)
+                                {
+                                    LinkPorts(optionPort, targetNode.InputPort);
+                                }
                             }
                         }
                     }
                 }
 
-                // 条件分支连线（任何类型节点都可能有）
-                if (sourceNode.Data.conditionBranches != null && sourceNode.Data.conditionBranches.Count > 0)
+                // 条件分支连线（仅 Normal 节点有节点级别的条件分支）
+                if (sourceNode.Data.type == "Normal" && sourceNode.Data.conditionBranches != null && sourceNode.Data.conditionBranches.Count > 0)
                 {
                     foreach (var cb in sourceNode.Data.conditionBranches)
                     {
@@ -2206,8 +2424,9 @@ namespace RPGDialogueEditor
 
         public Port InputPort { get; private set; }
         public Port NextPort { get; private set; } // Normal 专用
-        private readonly List<Port> _optionPorts = new List<Port>(); // Question 专用
-        private readonly List<Port> _conditionBranchPorts = new List<Port>(); // 条件分支专用
+        private readonly List<Port> _optionPorts = new List<Port>(); // Question 专用（选项的 simple next 端口）
+        private readonly List<Port> _conditionBranchPorts = new List<Port>(); // Normal 节点的条件分支专用
+        private readonly List<Port> _optionCondBranchPorts = new List<Port>(); // Question 节点中选项内部的条件分支端口
 
         private VisualElement _customContainer;
         private VisualElement _nextPortRow; // 跳转ID行容器（便于动态移除/重建）
@@ -2520,42 +2739,44 @@ namespace RPGDialogueEditor
 
             RefreshUnlockUI();
 
-            // ========= 条件分支：基于全局变量的跳转规则 =========
-            var condHeader = new Label("✦ 条件分支（满足条件时跳转到指定节点，优先于默认 Next）");
-            condHeader.style.color = new Color(0.75f, 0.9f, 1f);
-            condHeader.style.fontSize = 11;
-            condHeader.style.marginTop = 2;
-            condHeader.style.marginBottom = 4;
-            condHeader.style.unityFontStyleAndWeight = FontStyle.Bold;
-            _customContainer.Add(condHeader);
-
-            var condContainer = new VisualElement();
-            condContainer.name = "ConditionBranchesContainer";
-            condContainer.style.marginBottom = 6;
-            condContainer.style.overflow = Overflow.Visible;
-            _customContainer.Add(condContainer);
-
-            void RefreshConditionUI()
+            // ========= 条件分支：基于全局变量的跳转规则（仅 Normal 节点有节点级别的条件分支） =========
+            if (Data.type == "Normal")
             {
-                condContainer.Clear();
-                _conditionBranchPorts.Clear();
-                if (Data.conditionBranches == null)
-                    Data.conditionBranches = new List<ConditionBranch>();
+                var condHeader = new Label("✦ 条件分支（满足条件时跳转到指定节点，优先于默认 Next）");
+                condHeader.style.color = new Color(0.75f, 0.9f, 1f);
+                condHeader.style.fontSize = 11;
+                condHeader.style.marginTop = 2;
+                condHeader.style.marginBottom = 4;
+                condHeader.style.unityFontStyleAndWeight = FontStyle.Bold;
+                _customContainer.Add(condHeader);
 
-                // 拿到全局变量名列表
-                var varNames = new List<string>();
-                if (_graphView.EditorWindow.GlobalVariables != null)
+                var condContainer = new VisualElement();
+                condContainer.name = "ConditionBranchesContainer";
+                condContainer.style.marginBottom = 6;
+                condContainer.style.overflow = Overflow.Visible;
+                _customContainer.Add(condContainer);
+
+                void RefreshConditionUI()
                 {
-                    foreach (var gv in _graphView.EditorWindow.GlobalVariables)
+                    condContainer.Clear();
+                    _conditionBranchPorts.Clear();
+                    if (Data.conditionBranches == null)
+                        Data.conditionBranches = new List<ConditionBranch>();
+
+                    // 拿到全局变量名列表
+                    var varNames = new List<string>();
+                    if (_graphView.EditorWindow.GlobalVariables != null)
                     {
-                        if (!string.IsNullOrEmpty(gv.name)) varNames.Add(gv.name);
+                        foreach (var gv in _graphView.EditorWindow.GlobalVariables)
+                        {
+                            if (!string.IsNullOrEmpty(gv.name)) varNames.Add(gv.name);
+                        }
                     }
-                }
 
-                for (int i = 0; i < Data.conditionBranches.Count; i++)
-                {
-                    int localIdx = i;
-                    var cond = Data.conditionBranches[localIdx];
+                    for (int i = 0; i < Data.conditionBranches.Count; i++)
+                    {
+                        int localIdx = i;
+                        var cond = Data.conditionBranches[localIdx];
 
                     // 根据变量类型决定布局
                     string currentVarType = "bool";
@@ -2822,39 +3043,40 @@ namespace RPGDialogueEditor
                 RefreshExpandedState();
             }
 
-            var addCondBtn = new Button(() =>
-            {
-                if (Data.conditionBranches == null)
-                    Data.conditionBranches = new List<ConditionBranch>();
-
-                // 默认用第一个全局变量，没有则留空
-                string defaultVar = "";
-                if (_graphView.EditorWindow.GlobalVariables != null && _graphView.EditorWindow.GlobalVariables.Count > 0)
+                var addCondBtn = new Button(() =>
                 {
-                    defaultVar = _graphView.EditorWindow.GlobalVariables[0].name;
-                }
+                    if (Data.conditionBranches == null)
+                        Data.conditionBranches = new List<ConditionBranch>();
 
-                Data.conditionBranches.Add(new ConditionBranch
-                {
-                    varName = defaultVar,
-                    op = "==",
-                    intCompareValue = 0,
-                    intNextNodeId = -1,
-                    trueNextNodeId = -1,
-                    falseNextNodeId = -1
-                });
+                    // 默认用第一个全局变量，没有则留空
+                    string defaultVar = "";
+                    if (_graphView.EditorWindow.GlobalVariables != null && _graphView.EditorWindow.GlobalVariables.Count > 0)
+                    {
+                        defaultVar = _graphView.EditorWindow.GlobalVariables[0].name;
+                    }
+
+                    Data.conditionBranches.Add(new ConditionBranch
+                    {
+                        varName = defaultVar,
+                        op = "==",
+                        intCompareValue = 0,
+                        intNextNodeId = -1,
+                        trueNextNodeId = -1,
+                        falseNextNodeId = -1
+                    });
+                    RefreshConditionUI();
+                    RefreshNextPortUI();
+                    _graphView.RebuildEdgesFromDataIds();
+                })
+                { text = "✚ 添加条件分支规则" };
+                addCondBtn.style.marginTop = 0;
+                addCondBtn.style.marginBottom = 4;
+                addCondBtn.style.height = 24;
+                addCondBtn.style.backgroundColor = new Color(0.15f, 0.45f, 0.6f, 0.9f);
+                _customContainer.Add(addCondBtn);
+
                 RefreshConditionUI();
-                RefreshNextPortUI();
-                _graphView.RebuildEdgesFromDataIds();
-            })
-            { text = "✚ 添加条件分支规则" };
-            addCondBtn.style.marginTop = 0;
-            addCondBtn.style.marginBottom = 4;
-            addCondBtn.style.height = 24;
-            addCondBtn.style.backgroundColor = new Color(0.15f, 0.45f, 0.6f, 0.9f);
-            _customContainer.Add(addCondBtn);
-
-            RefreshConditionUI();
+            }
 
             if (Data.type == "Normal")
             {
@@ -2920,6 +3142,7 @@ namespace RPGDialogueEditor
 
         /// <summary>
         /// 全量刷新选项 UI 容器布局，并将每个 Option 的 Output 物理连接口直接嵌入到分支右侧！
+        /// 每个选项还可以配置自己的条件分支规则：满足走一个节点，不满足走另一个
         /// </summary>
         public void RefreshOptionsContainerUI()
         {
@@ -2928,21 +3151,25 @@ namespace RPGDialogueEditor
 
             optContainer.Clear();
             _optionPorts.Clear();
+            _optionCondBranchPorts.Clear();
 
             for (int i = 0; i < Data.options.Count; i++)
             {
                 var option = Data.options[i];
                 var localIndex = i;
 
-                // 大结构体盒模型：水平横向排列，最左侧放置控制内容，最右侧嵌入连线物理口
+                // 整个选项的大容器（垂直方向，上面是选项信息，下面是条件分支区）
+                var optWrapper = new VisualElement();
+                optWrapper.style.marginTop = 4;
+                optWrapper.style.paddingBottom = 4;
+                optWrapper.style.borderBottomWidth = 1;
+                optWrapper.style.borderBottomColor = new Color(0.2f, 0.25f, 0.35f, 0.4f);
+
+                // 选项主行：水平横向排列，最左侧放置控制内容，最右侧嵌入连线物理口
                 var optBox = new VisualElement();
                 optBox.style.flexDirection = FlexDirection.Row;
                 optBox.style.alignItems = Align.Center;
                 optBox.style.height = 54;
-                optBox.style.marginTop = 4;
-                optBox.style.paddingBottom = 4;
-                optBox.style.borderBottomWidth = 1;
-                optBox.style.borderBottomColor = new Color(0.2f, 0.25f, 0.35f, 0.4f);
 
                 // 左侧主要配置区域容器
                 var fieldsContainer = new VisualElement();
@@ -2956,11 +3183,17 @@ namespace RPGDialogueEditor
                 var innerRow = new VisualElement();
                 innerRow.style.flexDirection = FlexDirection.Row;
 
-                var nfNext = new IntegerField("跳转") { value = option.next };
-                nfNext.style.width = 95;
-                nfNext.RegisterValueChangedCallback(evt => option.next = evt.newValue);
-                BeautifyField(nfNext);
-                innerRow.Add(nfNext);
+                bool optionHasCond = option.conditionBranches != null && option.conditionBranches.Count > 0;
+
+                // 只有当选项没有条件分支时，才显示简单的"跳转"字段
+                if (!optionHasCond)
+                {
+                    var nfNext = new IntegerField("跳转") { value = option.next };
+                    nfNext.style.width = 95;
+                    nfNext.RegisterValueChangedCallback(evt => option.next = evt.newValue);
+                    BeautifyField(nfNext);
+                    innerRow.Add(nfNext);
+                }
 
                 var tfFlag = new TextField("标签") { value = option.branchFlag };
                 tfFlag.style.flexGrow = 1;
@@ -2987,25 +3220,360 @@ namespace RPGDialogueEditor
                 btnDel.style.height = 18;
                 innerRow.Add(btnDel);
 
+                fieldsContainer.Add(innerRow);
+
                 optBox.Add(fieldsContainer);
 
-                // 创建专属于选项的 Output 物理连线小圆点（翡翠绿）并放置于最右边，略微拉出卡片外部实现完美平齐
-                var optPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(float));
-                optPort.portName = " ";
-                optPort.portColor = new Color(0.1f, 0.72f, 0.5f); // 翡翠绿连线配色
-                optPort.userData = option;
-                
-                // 细节美化：微调端口位置让圆点自然嵌入在卡片右边框外围，实现极高的质感
-                optPort.style.width = 18;
-                optPort.style.height = 18;
-                optPort.style.alignSelf = Align.Center;
-                optPort.style.marginLeft = 6;
-                optPort.style.marginRight = -14; 
-                
-                optBox.Add(optPort);
-                _optionPorts.Add(optPort);
+                // 如果该选项没有条件分支规则，则显示 simple next 端口
+                if (!optionHasCond)
+                {
+                    var optPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(float));
+                    optPort.portName = " ";
+                    optPort.portColor = new Color(0.1f, 0.72f, 0.5f);
+                    optPort.userData = option;
 
-                optContainer.Add(optBox);
+                    optPort.style.width = 18;
+                    optPort.style.height = 18;
+                    optPort.style.alignSelf = Align.Center;
+                    optPort.style.marginLeft = 6;
+                    optPort.style.marginRight = -14;
+
+                    optBox.Add(optPort);
+                    _optionPorts.Add(optPort);
+                }
+
+                optWrapper.Add(optBox);
+
+                // ========== 条件分支规则编辑区（每个选项独立的 conditionBranches）==========
+                var optionCondHeader = new Label("◆ 条件分支规则");
+                optionCondHeader.style.color = new Color(0.75f, 0.85f, 1f);
+                optionCondHeader.style.fontSize = 10;
+                optionCondHeader.style.unityFontStyleAndWeight = FontStyle.Bold;
+                optionCondHeader.style.marginTop = 2;
+                optionCondHeader.style.marginLeft = 4;
+                optWrapper.Add(optionCondHeader);
+
+                var optionCondContainer = new VisualElement();
+                optionCondContainer.style.overflow = Overflow.Visible;
+                optionCondContainer.style.marginBottom = 2;
+                optWrapper.Add(optionCondContainer);
+
+                // 条件分支动态刷新
+                void RefreshOptionCondUI()
+                {
+                    optionCondContainer.Clear();
+
+                    if (option.conditionBranches == null)
+                        option.conditionBranches = new List<ConditionBranch>();
+
+                    var varNames = new List<string>();
+                    if (_graphView.EditorWindow.GlobalVariables != null)
+                    {
+                        foreach (var gv in _graphView.EditorWindow.GlobalVariables)
+                        {
+                            if (!string.IsNullOrEmpty(gv.name)) varNames.Add(gv.name);
+                        }
+                    }
+
+                    for (int cbIdx = 0; cbIdx < option.conditionBranches.Count; cbIdx++)
+                    {
+                        int localCbIdx = cbIdx;
+                        var cond = option.conditionBranches[localCbIdx];
+
+                        string currentVarType = "bool";
+                        var curVar = _graphView.EditorWindow.GlobalVariables?.FirstOrDefault(v => v.name == cond.varName);
+                        if (curVar != null) currentVarType = curVar.type;
+
+                        if (currentVarType == "bool")
+                        {
+                            // ======= bool 模式：一张卡片 + 两个端口 =======
+                            var card = new VisualElement();
+                            card.style.backgroundColor = new Color(0.08f, 0.12f, 0.2f, 0.9f);
+                            card.style.borderTopLeftRadius = 4;
+                            card.style.borderTopRightRadius = 4;
+                            card.style.borderBottomLeftRadius = 4;
+                            card.style.borderBottomRightRadius = 4;
+                            card.style.paddingTop = 4;
+                            card.style.paddingBottom = 4;
+                            card.style.paddingLeft = 4;
+                            card.style.paddingRight = 0;
+                            card.style.marginBottom = 2;
+                            card.style.overflow = Overflow.Visible;
+
+                            // 第一行：变量名 + 删除按钮
+                            var row0 = new VisualElement();
+                            row0.style.flexDirection = FlexDirection.Row;
+                            row0.style.alignItems = Align.Center;
+                            row0.style.marginBottom = 2;
+                            row0.style.paddingRight = 6;
+
+                            var varDropdown = new DropdownField("变量", varNames,
+                                string.IsNullOrEmpty(cond.varName) ? (varNames.Count > 0 ? varNames[0] : "") : cond.varName);
+                            varDropdown.style.flexGrow = 1;
+                            varDropdown.style.maxWidth = 220;
+                            varDropdown.style.marginRight = 6;
+                            BeautifyField(varDropdown);
+                            varDropdown.RegisterValueChangedCallback(evt =>
+                            {
+                                cond.varName = evt.newValue;
+                                RefreshOptionCondUI();
+                            });
+                            row0.Add(varDropdown);
+
+                            var delBtn = new Button(() =>
+                            {
+                                option.conditionBranches.RemoveAt(localCbIdx);
+                                RefreshOptionCondUI();
+                                RefreshOptionsContainerUI();
+                                _graphView.RebuildEdgesFromDataIds();
+                            })
+                            { text = "✕" };
+                            delBtn.style.width = 20;
+                            delBtn.style.height = 20;
+                            delBtn.style.backgroundColor = new Color(0.6f, 0.25f, 0.25f, 0.9f);
+                            row0.Add(delBtn);
+                            card.Add(row0);
+
+                            // 第二行：true 分支 + 绿色端口
+                            var rowTrue = new VisualElement();
+                            rowTrue.style.flexDirection = FlexDirection.Row;
+                            rowTrue.style.alignItems = Align.Center;
+                            rowTrue.style.marginBottom = 2;
+                            rowTrue.style.overflow = Overflow.Visible;
+                            rowTrue.style.paddingRight = 6;
+
+                            var trueLabel = new Label("✓ true");
+                            trueLabel.style.color = new Color(0.35f, 0.85f, 0.45f);
+                            trueLabel.style.fontSize = 10;
+                            trueLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+                            trueLabel.style.minWidth = 40;
+                            trueLabel.style.width = 40;
+                            rowTrue.Add(trueLabel);
+
+                            var arrow1 = new Label("→");
+                            arrow1.style.color = new Color(0.7f, 0.7f, 0.7f);
+                            arrow1.style.fontSize = 10;
+                            arrow1.style.marginLeft = 4;
+                            arrow1.style.marginRight = 4;
+                            rowTrue.Add(arrow1);
+
+                            var trueNextField = new IntegerField("跳转到") { value = cond.trueNextNodeId };
+                            trueNextField.style.flexGrow = 1;
+                            trueNextField.style.maxWidth = 180;
+                            trueNextField.style.marginRight = 6;
+                            BeautifyField(trueNextField);
+                            trueNextField.RegisterValueChangedCallback(evt => cond.trueNextNodeId = evt.newValue);
+                            rowTrue.Add(trueNextField);
+
+                            var truePort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(float));
+                            truePort.portName = " ";
+                            truePort.portColor = new Color(0.35f, 0.85f, 0.45f);
+                            truePort.userData = new OptionConditionBranchPortTag { option = option, branch = cond, tag = "true" };
+                            truePort.style.width = 18;
+                            truePort.style.height = 18;
+                            truePort.style.alignSelf = Align.Center;
+                            truePort.style.marginRight = -14;
+                            rowTrue.Add(truePort);
+                            _optionCondBranchPorts.Add(truePort);
+
+                            card.Add(rowTrue);
+
+                            // 第三行：false 分支 + 红色端口
+                            var rowFalse = new VisualElement();
+                            rowFalse.style.flexDirection = FlexDirection.Row;
+                            rowFalse.style.alignItems = Align.Center;
+                            rowFalse.style.marginBottom = 2;
+                            rowFalse.style.overflow = Overflow.Visible;
+                            rowFalse.style.paddingRight = 6;
+
+                            var falseLabel = new Label("✗ false");
+                            falseLabel.style.color = new Color(0.85f, 0.4f, 0.4f);
+                            falseLabel.style.fontSize = 10;
+                            falseLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+                            falseLabel.style.minWidth = 40;
+                            falseLabel.style.width = 40;
+                            rowFalse.Add(falseLabel);
+
+                            var arrow2 = new Label("→");
+                            arrow2.style.color = new Color(0.7f, 0.7f, 0.7f);
+                            arrow2.style.fontSize = 10;
+                            arrow2.style.marginLeft = 4;
+                            arrow2.style.marginRight = 4;
+                            rowFalse.Add(arrow2);
+
+                            var falseNextField = new IntegerField("跳转到") { value = cond.falseNextNodeId };
+                            falseNextField.style.flexGrow = 1;
+                            falseNextField.style.maxWidth = 180;
+                            falseNextField.style.marginRight = 6;
+                            BeautifyField(falseNextField);
+                            falseNextField.RegisterValueChangedCallback(evt => cond.falseNextNodeId = evt.newValue);
+                            rowFalse.Add(falseNextField);
+
+                            var falsePort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(float));
+                            falsePort.portName = " ";
+                            falsePort.portColor = new Color(0.85f, 0.4f, 0.4f);
+                            falsePort.userData = new OptionConditionBranchPortTag { option = option, branch = cond, tag = "false" };
+                            falsePort.style.width = 18;
+                            falsePort.style.height = 18;
+                            falsePort.style.alignSelf = Align.Center;
+                            falsePort.style.marginRight = -14;
+                            rowFalse.Add(falsePort);
+                            _optionCondBranchPorts.Add(falsePort);
+
+                            card.Add(rowFalse);
+                            optionCondContainer.Add(card);
+                        }
+                        else // int 模式
+                        {
+                            var card = new VisualElement();
+                            card.style.backgroundColor = new Color(0.08f, 0.12f, 0.2f, 0.9f);
+                            card.style.borderTopLeftRadius = 4;
+                            card.style.borderTopRightRadius = 4;
+                            card.style.borderBottomLeftRadius = 4;
+                            card.style.borderBottomRightRadius = 4;
+                            card.style.paddingTop = 4;
+                            card.style.paddingBottom = 4;
+                            card.style.paddingLeft = 4;
+                            card.style.paddingRight = 0;
+                            card.style.marginBottom = 2;
+                            card.style.overflow = Overflow.Visible;
+
+                            // 第一行：变量名 + 操作符 + 删除按钮
+                            var row0 = new VisualElement();
+                            row0.style.flexDirection = FlexDirection.Row;
+                            row0.style.alignItems = Align.Center;
+                            row0.style.marginBottom = 2;
+                            row0.style.paddingRight = 6;
+
+                            var varDropdown = new DropdownField("变量", varNames,
+                                string.IsNullOrEmpty(cond.varName) ? (varNames.Count > 0 ? varNames[0] : "") : cond.varName);
+                            varDropdown.style.flexGrow = 1;
+                            varDropdown.style.maxWidth = 180;
+                            varDropdown.style.marginRight = 6;
+                            BeautifyField(varDropdown);
+                            varDropdown.RegisterValueChangedCallback(evt =>
+                            {
+                                cond.varName = evt.newValue;
+                                RefreshOptionCondUI();
+                            });
+                            row0.Add(varDropdown);
+
+                            var opChoices = new List<string> { "==", ">", "<", ">=", "<=" };
+                            var opDropdown = new DropdownField("操作", opChoices, cond.op);
+                            opDropdown.style.flexGrow = 0;
+                            opDropdown.style.maxWidth = 60;
+                            BeautifyField(opDropdown);
+                            opDropdown.RegisterValueChangedCallback(evt => cond.op = evt.newValue);
+                            row0.Add(opDropdown);
+
+                            var intField = new IntegerField("") { value = cond.intCompareValue };
+                            intField.style.flexGrow = 1;
+                            intField.style.maxWidth = 90;
+                            BeautifyField(intField);
+                            intField.RegisterValueChangedCallback(evt => cond.intCompareValue = evt.newValue);
+                            row0.Add(intField);
+
+                            var delBtn = new Button(() =>
+                            {
+                                option.conditionBranches.RemoveAt(localCbIdx);
+                                RefreshOptionCondUI();
+                                RefreshOptionsContainerUI();
+                                _graphView.RebuildEdgesFromDataIds();
+                            })
+                            { text = "✕" };
+                            delBtn.style.width = 20;
+                            delBtn.style.height = 20;
+                            delBtn.style.backgroundColor = new Color(0.6f, 0.25f, 0.25f, 0.9f);
+                            delBtn.style.marginRight = 6;
+                            row0.Add(delBtn);
+
+                            card.Add(row0);
+
+                            // 第二行：目标节点 + 端口
+                            var row2 = new VisualElement();
+                            row2.style.flexDirection = FlexDirection.Row;
+                            row2.style.alignItems = Align.Center;
+                            row2.style.overflow = Overflow.Visible;
+                            row2.style.paddingRight = 6;
+
+                            var condLabel = new Label("↳ 满足");
+                            condLabel.style.color = new Color(0.75f, 0.75f, 1f);
+                            condLabel.style.fontSize = 10;
+                            condLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+                            condLabel.style.minWidth = 40;
+                            condLabel.style.width = 40;
+                            row2.Add(condLabel);
+
+                            var arrow3 = new Label("→");
+                            arrow3.style.color = new Color(0.7f, 0.7f, 0.7f);
+                            arrow3.style.fontSize = 10;
+                            arrow3.style.marginLeft = 4;
+                            arrow3.style.marginRight = 4;
+                            row2.Add(arrow3);
+
+                            var nextField = new IntegerField("跳转到") { value = cond.intNextNodeId };
+                            nextField.style.flexGrow = 1;
+                            nextField.style.maxWidth = 180;
+                            nextField.style.marginRight = 6;
+                            BeautifyField(nextField);
+                            nextField.RegisterValueChangedCallback(evt => cond.intNextNodeId = evt.newValue);
+                            row2.Add(nextField);
+
+                            var intPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(float));
+                            intPort.portName = " ";
+                            intPort.portColor = new Color(0.7f, 0.5f, 1f);
+                            intPort.userData = new OptionConditionBranchPortTag { option = option, branch = cond, tag = "int" };
+                            intPort.style.width = 18;
+                            intPort.style.height = 18;
+                            intPort.style.alignSelf = Align.Center;
+                            intPort.style.marginRight = -14;
+                            row2.Add(intPort);
+                            _optionCondBranchPorts.Add(intPort);
+
+                            card.Add(row2);
+                            optionCondContainer.Add(card);
+                        }
+                    }
+
+                    RefreshExpandedState();
+                }
+
+                RefreshOptionCondUI();
+
+                // 添加条件分支按钮
+                var btnAddCond = new Button(() =>
+                {
+                    if (option.conditionBranches == null)
+                        option.conditionBranches = new List<ConditionBranch>();
+
+                    string defaultVar = "";
+                    if (_graphView.EditorWindow.GlobalVariables != null && _graphView.EditorWindow.GlobalVariables.Count > 0)
+                    {
+                        defaultVar = _graphView.EditorWindow.GlobalVariables[0].name;
+                    }
+
+                    option.conditionBranches.Add(new ConditionBranch
+                    {
+                        varName = defaultVar,
+                        op = "==",
+                        intCompareValue = 0,
+                        intNextNodeId = -1,
+                        trueNextNodeId = -1,
+                        falseNextNodeId = -1
+                    });
+                    RefreshOptionsContainerUI();
+                    _graphView.RebuildEdgesFromDataIds();
+                })
+                { text = "✚ 添加条件分支规则" };
+                btnAddCond.style.marginTop = 2;
+                btnAddCond.style.marginBottom = 2;
+                btnAddCond.style.height = 20;
+                btnAddCond.style.backgroundColor = new Color(0.15f, 0.45f, 0.75f, 0.9f);
+                btnAddCond.style.color = Color.white;
+                btnAddCond.style.unityFontStyleAndWeight = FontStyle.Bold;
+                optWrapper.Add(btnAddCond);
+
+                optContainer.Add(optWrapper);
             }
 
             RefreshExpandedState();
@@ -3148,6 +3716,13 @@ namespace RPGDialogueEditor
         {
             return _conditionBranchPorts.FirstOrDefault(p =>
                 p.userData is ConditionBranchPortTag t && t.branch == cond && t.tag == tag);
+        }
+
+        // 通过 option + conditionBranch + tag 查找选项的条件分支端口
+        public Port GetPortByOptionConditionBranch(OptionData option, ConditionBranch cond, string tag)
+        {
+            return _optionCondBranchPorts.FirstOrDefault(p =>
+                p.userData is OptionConditionBranchPortTag t && t.option == option && t.branch == cond && t.tag == tag);
         }
     }
 }
