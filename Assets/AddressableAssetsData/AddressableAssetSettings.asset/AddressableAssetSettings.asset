@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468a46d0ae32c3544b7d98094e6448a9, type: 3}
   m_Name: AddressableAssetSettings
   m_EditorClassIdentifier: 
-  m_DefaultGroup: bcea97e1adc703e4ea2987b2f9b9094c
+  m_DefaultGroup: b3613303b04ceaa43898867515969692
   m_CachedHash:
     serializedVersion: 2
     Hash: 00000000000000000000000000000000
@@ -39,8 +39,10 @@ MonoBehaviour:
   m_RemoteCatalogLoadPath:
     m_Id: 
   m_ContentStateBuildPathProfileVariableName: <custom>
-  m_CustomContentStateBuildPath: J:\UnityProject\XiaoHuoRen_EggRescue_0609\XiaoHuoRen_EggRescue\AddressableAssetsData\StandaloneWindows64\Main_0610
-  m_ContentStateBuildPath: J:\UnityProject\XiaoHuoRen_EggRescue_0609\XiaoHuoRen_EggRescue\AddressableAssetsData\StandaloneWindows64\Main_0610
+  m_CustomContentStateBuildPath: E:\githubProjects\XiaoHuoRen_EggRescue\AddressableAssetsData\StandaloneWindows64\Test
+    3
+  m_ContentStateBuildPath: E:\githubProjects\XiaoHuoRen_EggRescue\AddressableAssetsData\StandaloneWindows64\Test
+    3
   m_BuildAddressablesWithPlayerBuild: 0
   m_overridePlayerVersion: 1.0
   m_GroupAssets:
@@ -53,6 +55,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 91cfd074a31af4789a67d61ae6c184f1, type: 2}
   - {fileID: 11400000, guid: 8a5f98ffeafdd7f4d849444a9e20b137, type: 2}
   - {fileID: 11400000, guid: 051619c12359db34aac9252a803e685a, type: 2}
+  - {fileID: 11400000, guid: 59c43c771f7a31a489edea4e4445a710, type: 2}
   - {fileID: 11400000, guid: 6cae2e8db9ae04b49b9f319b7e431e02, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
@@ -82,11 +85,13 @@ MonoBehaviour:
       - m_Id: 4beb980fb29ae0841b4c48fc2462739e
         m_Value: StandaloneWindows64
       - m_Id: 0a1deb51f5f21ab47bebadb7736d474d
-        m_Value: J:\UnityProject\XiaoHuoRen_EggRescue_0609\XiaoHuoRen_EggRescue\AddressableAssetsData\StandaloneWindows64\Main_0610
+        m_Value: E:\githubProjects\XiaoHuoRen_EggRescue\AddressableAssetsData\StandaloneWindows64\Test
+          3
       - m_Id: f7d42a6c7ab828f419d7f4f33caa4fc4
         m_Value: '{SimulatorLocalLoadPath}'
       - m_Id: 9f8bffeba2e7d054cafaac76622431b1
-        m_Value: J:\UnityProject\XiaoHuoRen_EggRescue_0609\XiaoHuoRen_EggRescue\AddressableAssetsData\StandaloneWindows64\Main_0610
+        m_Value: E:\githubProjects\XiaoHuoRen_EggRescue\AddressableAssetsData\StandaloneWindows64\Test
+          3
       - m_Id: 56f3bc114def8ac429f19a32b6fc3d63
         m_Value: '{SimulatorLocalLoadPath}'
     m_ProfileEntryNames:
