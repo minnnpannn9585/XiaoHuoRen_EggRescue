@@ -103,3 +103,18 @@ TextField #unity-text-input.placeholder {
     min-width: 102px;
     color: white;
 }
+
+.radio-horizontal {
+    flex-direction: row !important;
+    align-items: center;
+}
+
+.radio-horizontal > .unity-content-container {
+    flex-direction: row !important;
+    align-items: center;
+}
+
+.radio-horizontal > .unity-content-container > RadioButton {
+    flex-direction: row;
+    margin-right: 0;
+}

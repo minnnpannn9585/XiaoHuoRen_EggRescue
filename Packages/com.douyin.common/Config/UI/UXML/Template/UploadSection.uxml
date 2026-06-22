@@ -16,6 +16,13 @@
             </ui:RadioButtonGroup>
             <ui:DropdownField name="uploadType" class="dropdown" style="display: none;" />
         </ui:VisualElement>
+        <ui:VisualElement name="worldSubTypeContainer" class="upload-section-container" style="display: none;">
+            <ui:Label text="世界类型" name="worldSubTypeText" class="label" />
+            <ui:RadioButtonGroup value="-1" class="radio-group">
+                <ui:RadioButton text="火人世界" name="huorenOption" value="true" class="quality-title" />
+                <ui:RadioButton text="仔仔世界" name="zaiziOption" class="quality-title" style="border-left-width: 10px;" />
+            </ui:RadioButtonGroup>
+        </ui:VisualElement>
         <ui:VisualElement name="dynamicContainer" class="upload-section-container" />
     </ui:VisualElement>
 </ui:UXML>
