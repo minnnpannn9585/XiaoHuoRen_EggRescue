@@ -44,6 +44,67 @@ local npcConfigPath = "Assets/Editor/EidtData/NPCData_Config.lua"  -- NPC 配置
 local globalVariablesPath = "Assets/Editor/EidtData/GlobalVariables.lua"  -- 全局变量文件路径
 local unlockedBranchCache = {}  -- 已处理过的分支缓存，防止同一节点重复解锁
 
+-- ========== 新增：头像辅助功能 ==========
+local _npcConfigsCache = nil  -- NPC 配置缓存，避免重复读取文件
+
+-- 从 avatarPath 中提取 sprite 名称（去掉路径和扩展名）
+-- 例如: "Assets/Res/TouXiang_LiHui/Dog/Dog01.png" -> "Dog01"
+local function ExtractSpriteNameFromPath(avatarPath)
+    if not avatarPath or avatarPath == "" then
+        return nil
+    end
+    -- 提取文件名（不带路径）
+    local fileName = avatarPath:match("[^/\\]+$")
+    if not fileName then
+        return nil
+    end
+    -- 去掉扩展名
+    local spriteName = fileName:match("(.+)%..+$")
+    return spriteName or fileName
+end
+
+-- 确保 NPC 配置已加载（如果还没加载则读取文件）
+local function EnsureNPCConfigsLoaded()
+    -- 优先复用 DialogueTrigger 加载的全局 _NPCConfigs
+    if _G["_NPCConfigs"] and _G["_NPCConfigs"].byName then
+        _npcConfigsCache = _G["_NPCConfigs"]
+        return _npcConfigsCache
+    end
+    
+    -- 如果已有缓存，直接返回
+    if _npcConfigsCache and _npcConfigsCache.byName then
+        return _npcConfigsCache
+    end
+    
+    -- 否则从文件加载
+    local projectPath = GetProjectPath_DM()
+    local fullPath = CS.System.IO.Path.Combine(projectPath, npcConfigPath)
+    
+    local success, result = pcall(function()
+        if not CS.System.IO.File.Exists(fullPath) then
+            return nil
+        end
+        local content = CS.System.IO.File.ReadAllText(fullPath)
+        local func = load(content)
+        local data = func()
+        
+        if data and data.npcList then
+            _npcConfigsCache = { byId = {}, byName = {} }
+            for _, npc in ipairs(data.npcList) do
+                if npc.id then _npcConfigsCache.byId[npc.id] = npc end
+                if npc.name then _npcConfigsCache.byName[npc.name] = npc end
+            end
+            return _npcConfigsCache
+        end
+        return nil
+    end)
+    
+    if success then
+        return result
+    end
+    return nil
+end
+
 -- ========== 新增：全局变量表（用于条件分支判断） ==========
 local globalVariables = {}   -- 全局变量存储，支持 bool 和 int 类型
 
@@ -449,6 +510,11 @@ function StartDialogue(dialogueID)
         DouyinUtility.Toast("对话id出现配置错误，请检查～")
         return
     end
+
+    -- 重置 NPC 配置缓存，确保每次对话都读取最新的配置文件
+    _npcConfigsCache = nil
+    if _G["_NPCConfigs"] then _G["_NPCConfigs"] = nil end
+
     SetPlayerNamePanel(false)
     currentDialogueID = dialogueID
     if dialoguePanel then
@@ -462,6 +528,11 @@ end
 
 function StartDialogueWithData(dialogueData, startID)
     externalDialogueConfig = dialogueData
+
+    -- 重置 NPC 配置缓存，确保每次对话都读取最新的配置文件
+    _npcConfigsCache = nil
+    if _G["_NPCConfigs"] then _G["_NPCConfigs"] = nil end
+
     local actualID = startID or 1
     if GetDialogueData(actualID) == nil then
         for k, v in pairs(dialogueData) do
@@ -562,16 +633,50 @@ function UpdateDialogueUI()
 end
 
 function UpdateNPCInfo(data)
+    -- 根据对话者身份切换名字面板：玩家 -> 显示 playerNamePanel；其他 -> 显示 npcNamePanel
+    local isPlayer = data.NpcName and data.NpcName == "玩家"
+    SetPlayerNamePanel(isPlayer)
+
     if npcName then
         npcName.text = data.NpcName or ""
     end
 
     if npcSprite then
-        if data.NpcSprite and allSprites[data.NpcSprite] then
-            npcSprite.sprite = allSprites[data.NpcSprite]
-            npcSprite.gameObject:SetActive(true)
-        else
+        -- 玩家对话时不显示头像图片，直接隐藏
+        if isPlayer then
             npcSprite.gameObject:SetActive(false)
+        else
+            local spriteKey = nil
+
+            -- 1. 优先使用节点中配置的 NpcSprite
+            if data.NpcSprite and data.NpcSprite ~= "" then
+                spriteKey = data.NpcSprite
+            end
+
+            -- 2. 如果 NpcSprite 为空，则尝试从 NPC 配置中获取 avatarPath
+            if (not spriteKey or spriteKey == "") and data.NpcName and data.NpcName ~= "" then
+                local npcConfigs = EnsureNPCConfigsLoaded()
+                if npcConfigs and npcConfigs.byName and npcConfigs.byName[data.NpcName] then
+                    local npcConfig = npcConfigs.byName[data.NpcName]
+                    if npcConfig.avatarPath and npcConfig.avatarPath ~= "" then
+                        spriteKey = ExtractSpriteNameFromPath(npcConfig.avatarPath)
+                        print("[头像加载] NPC[" .. data.NpcName .. "] avatarPath: " .. npcConfig.avatarPath .. " -> spriteName: " .. tostring(spriteKey))
+                    end
+                end
+            end
+
+            -- 3. 在 allSprites 中查找并显示
+            if spriteKey and spriteKey ~= "" and allSprites[spriteKey] then
+                npcSprite.sprite = allSprites[spriteKey]
+                npcSprite.gameObject:SetActive(true)
+            else
+                local availableKeys = {}
+                for k, v in pairs(allSprites) do
+                    table.insert(availableKeys, k)
+                end
+                print("[头像加载] 找不到 spriteKey: " .. tostring(spriteKey) .. ". 可用 keys: " .. table.concat(availableKeys, ", "))
+                npcSprite.gameObject:SetActive(false)
+            end
         end
     end
 
@@ -663,8 +768,9 @@ function ShowNPCConversationUI(data)
     end
     ClearOptionButtons()
 
-    -- 显示NPC名字，隐藏玩家名字
-    SetPlayerNamePanel(false)
+    -- 根据对话者身份切换名字面板（UpdateNPCInfo 中已设置，这里确保一致性）
+    local isPlayer = data.NpcName and data.NpcName == "玩家"
+    SetPlayerNamePanel(isPlayer)
 
     if next then
         next.gameObject:SetActive(true)

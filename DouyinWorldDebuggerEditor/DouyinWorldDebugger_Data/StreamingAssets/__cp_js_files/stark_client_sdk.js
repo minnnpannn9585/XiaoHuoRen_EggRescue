@@ -11199,6 +11199,13 @@
 			inst.destroy();
 		}
 	}
+	function socketClose(handle) {
+		const inst = _handles.fetch(handle);
+		console.log('[StarkNetLib] socketClose', handle);
+		if (inst) {
+			inst.close();
+		}
+	}
 	window.starkNetLib = {
 		init,
 		objectCreate,
@@ -11210,6 +11217,7 @@
 		objectSetStringValue,
 		socketStart,
 		socketDestroy,
+		socketClose,
 		socketSend,
 	};
 

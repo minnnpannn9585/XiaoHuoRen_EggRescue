@@ -3,7 +3,7 @@ local NPCData = {
         {
             id = "Player_001",
             name = "玩家",
-            avatarPath = "Assets/DialogueSystem/UI/Npc1.png",
+            avatarPath = "",
             currentBranchId = 1,
             isFolded = true,
         }
@@ -27,8 +27,8 @@ local NPCData = {
         {
             id = "NPC_005",
             name = "大黄",
-            avatarPath = "",
-            currentBranchId = 4,
+            avatarPath = "Assets/Res/TouXiang_LiHui/Dog/Dog01.png",
+            currentBranchId = 1,
             isFolded = true,
             storyGraphs = {
                 {
@@ -57,6 +57,43 @@ local NPCData = {
                     storyDescription = "清醒回访",
                     luaModuleName = "dahuang_04",
                     luaAssetPath = "Assets/Editor/DialogueData/dahuang_04.lua"
+                }
+            }
+        }
+        ,
+        {
+            id = "NPC_488",
+            name = "淑芬",
+            avatarPath = "Assets/Res/TouXiang_LiHui/母鸡/守望.png",
+            currentBranchId = 2,
+            isFolded = false,
+            storyGraphs = {
+                {
+                    branchId = 1,
+                    storyDescription = "初次相遇与委托",
+                    luaModuleName = "shufang_01",
+                    luaAssetPath = "Assets/Editor/DialogueData/shufang_01.lua"
+                }
+                ,
+                {
+                    branchId = 2,
+                    storyDescription = "默认回访R1",
+                    luaModuleName = "shufang_02_R1",
+                    luaAssetPath = "Assets/Editor/DialogueData/shufang_02_R1.lua"
+                }
+                ,
+                {
+                    branchId = 3,
+                    storyDescription = "默认回访R2",
+                    luaModuleName = "shufang_02_R2",
+                    luaAssetPath = "Assets/Editor/DialogueData/shufang_02_R2.lua"
+                }
+                ,
+                {
+                    branchId = 4,
+                    storyDescription = "默认回访R3",
+                    luaModuleName = "shufang_02_R3",
+                    luaAssetPath = "Assets/Editor/DialogueData/shufang_02_R3.lua"
                 }
             }
         }
