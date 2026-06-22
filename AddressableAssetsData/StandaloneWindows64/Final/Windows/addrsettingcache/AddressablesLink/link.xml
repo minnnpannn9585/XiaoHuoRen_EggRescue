@@ -1,9 +1,6 @@
 <linker>
   <assembly fullname="com.douyin.object, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="DouyinCanvasAdapter" preserve="all" />
-    <type fullname="DouyinUIHVAdapterinOnePrefab_new" preserve="all" />
-    <type fullname="DouyinUIHVTransfromData" preserve="all" />
-    <type fullname="DouyinUIHVTransfromData/DouyinUIRootsRecttransformData" preserve="nothing" serialized="true" />
   </assembly>
   <assembly fullname="com.douyin.script, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="DouyinScript" preserve="all" />
@@ -39,8 +36,6 @@
     <type fullname="UnityEngine.ResourceManagement.ResourceProviders.SceneProvider" preserve="all" />
   </assembly>
   <assembly fullname="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-    <type fullname="UnityEngine.Animation" preserve="all" />
-    <type fullname="UnityEngine.AnimationClip" preserve="all" />
     <type fullname="UnityEngine.Animator" preserve="all" />
   </assembly>
   <assembly fullname="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -76,8 +71,6 @@
     <type fullname="UnityEngine.UI.CanvasScaler" preserve="all" />
     <type fullname="UnityEngine.UI.GraphicRaycaster" preserve="all" />
     <type fullname="UnityEngine.UI.Image" preserve="all" />
-    <type fullname="UnityEngine.UI.Outline" preserve="all" />
-    <type fullname="UnityEngine.UI.Shadow" preserve="all" />
     <type fullname="UnityEngine.UI.Text" preserve="all" />
     <type fullname="UnityEngine.UI.VerticalLayoutGroup" preserve="all" />
     <type fullname="UnityEngine.UI.AnimationTriggers" preserve="nothing" serialized="true" />
