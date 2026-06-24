@@ -255,11 +255,12 @@ function LoadNPCScript(npcName)
     end
 
     -- 缓存 key 同时包含 NPC 名和 branchId，切换分支时自动走新缓存
+    -- ⚠️ 开发阶段：每次都重新读取文件，确保拿到最新的配置
     local cacheKey = npcName .. "_b" .. currentBranchId
-    if loadedNPCScripts[cacheKey] then
-        print("NPC: " .. npcName .. " ( " .. currentBranchId .. ")")
-        return loadedNPCScripts[cacheKey]
-    end
+    -- if loadedNPCScripts[cacheKey] then
+    --     print("NPC: " .. npcName .. " ( " .. currentBranchId .. ")")
+    --     return loadedNPCScripts[cacheKey]
+    -- end
 
     print("=== NPC ===")
     print("NPC: " .. npcName)
@@ -286,6 +287,20 @@ function LoadNPCScript(npcName)
     if normalizedData == nil then
         logError("NPC " .. npcName .. " ")
         return nil
+    end
+
+    -- 调试：检查节点 22 是否有 SetVariables
+    if normalizedData[22] then
+        print("[DialogueTrigger] 节点 22 数据:")
+        print("[DialogueTrigger]   Type: " .. tostring(normalizedData[22].Type))
+        print("[DialogueTrigger]   NpcName: " .. tostring(normalizedData[22].NpcName))
+        print("[DialogueTrigger]   SetVariables 是否存在: " .. tostring(normalizedData[22].SetVariables ~= nil))
+        if normalizedData[22].SetVariables then
+            print("[DialogueTrigger]   SetVariables 数量: " .. #normalizedData[22].SetVariables)
+            for i, sv in ipairs(normalizedData[22].SetVariables) do
+                print("[DialogueTrigger]     SetVariables[" .. i .. "] = " .. tostring(sv.VarName) .. ", " .. tostring(sv.VarType) .. ", " .. tostring(sv.Value))
+            end
+        end
     end
 
     loadedNPCScripts[cacheKey] = normalizedData
