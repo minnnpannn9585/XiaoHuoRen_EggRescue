@@ -6,6 +6,8 @@ local NPCData = {
             avatarPath = "",
             currentBranchId = 1,
             isFolded = true,
+            storyGraphs = {
+            }
         }
         ,
         {
@@ -66,7 +68,7 @@ local NPCData = {
             name = "淑芬",
             avatarPath = "Assets/Res/TouXiang_LiHui/母鸡/守望.png",
             currentBranchId = 2,
-            isFolded = false,
+            isFolded = true,
             storyGraphs = {
                 {
                     branchId = 1,
@@ -94,6 +96,68 @@ local NPCData = {
                     storyDescription = "默认回访R3",
                     luaModuleName = "shufang_02_R3",
                     luaAssetPath = "Assets/Editor/DialogueData/shufang_02_R3.lua"
+                }
+            }
+        }
+        ,
+        {
+            id = "NPC_142",
+            name = "豆豆",
+            avatarPath = "",
+            currentBranchId = 1,
+            isFolded = true,
+            storyGraphs = {
+                {
+                    branchId = 1,
+                    storyDescription = "身后偷听",
+                    luaModuleName = "zttTouTing",
+                    luaAssetPath = "Assets/Editor/DialogueData/zttTouTing.lua"
+                }
+            }
+        }
+        ,
+        {
+            id = "NPC_006",
+            name = "米粒",
+            avatarPath = "",
+            currentBranchId = 1,
+            isFolded = true,
+            storyGraphs = {
+            }
+        }
+        ,
+        {
+            id = "NPC_007",
+            name = "瓜子",
+            avatarPath = "",
+            currentBranchId = 1,
+            isFolded = true,
+            storyGraphs = {
+            }
+        }
+        ,
+        {
+            id = "NPC_008",
+            name = "阿满",
+            avatarPath = "",
+            currentBranchId = 1,
+            isFolded = true,
+            storyGraphs = {
+            }
+        }
+        ,
+        {
+            id = "NPC_009",
+            name = "小鸡侦探团",
+            avatarPath = "",
+            currentBranchId = 1,
+            isFolded = false,
+            storyGraphs = {
+                {
+                    branchId = 1,
+                    storyDescription = "首次接触",
+                    luaModuleName = "xiaojiZTT",
+                    luaAssetPath = "Assets/Editor/DialogueData/xiaojiZTT.lua"
                 }
             }
         }

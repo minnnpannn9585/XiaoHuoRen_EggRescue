@@ -52,6 +52,7 @@ namespace RPGDialogueEditor
         public List<OptionData> options = new List<OptionData>();
         public List<UnlockBranchData> unlockBranches = new List<UnlockBranchData>(); // 执行到该节点时，将指定 NPC 的 currentBranchId 改为对应值
         public List<ConditionBranch> conditionBranches = new List<ConditionBranch>(); // 基于全局变量的条件分支：按顺序判断，第一个满足条件的分支生效
+        public List<SetVariableData> setVariables = new List<SetVariableData>(); // 执行到该节点时，设置全局变量的值
 
         // 记录节点在画布中的二维坐标，确保导入时完美还原排版
         public Vector2 position;
@@ -62,6 +63,15 @@ namespace RPGDialogueEditor
     {
         public string npcName = "";  // 要解锁的 NPC 名称
         public int branchId = 0;     // 解锁到的分支 ID（>0 才有效）
+    }
+
+    [Serializable]
+    public class SetVariableData
+    {
+        public string varName = "";  // 要设置的全局变量名
+        public string varType = "bool";  // "bool" 或 "int"
+        public bool boolValue = false;   // bool 值
+        public int intValue = 0;         // int 值
     }
 
     [Serializable]
@@ -109,6 +119,10 @@ namespace RPGDialogueEditor
         public int next = -1;
         public string branchFlag = "NewBranch";
         public List<ConditionBranch> conditionBranches = new List<ConditionBranch>(); // 选项内部的条件分支规则：满足走一个，不满足走另一个
+        
+        // 显示条件：只有满足条件的选项才会在对话中显示给玩家
+        // 多个条件之间是 AND 关系（所有条件都满足才显示）
+        public List<ConditionBranch> displayConditions = new List<ConditionBranch>();
     }
 
     /// <summary>
@@ -1695,6 +1709,47 @@ namespace RPGDialogueEditor
                     }
                 }
 
+                // 3.6 解析 SetVariables（执行节点时设置全局变量）
+                var setVarList = new List<SetVariableData>();
+                int svIndex = cleanBody.IndexOf("SetVariables", StringComparison.OrdinalIgnoreCase);
+                if (svIndex != -1)
+                {
+                    int svBrace = cleanBody.IndexOf('{', svIndex);
+                    if (svBrace != -1)
+                    {
+                        int svDepth = 1;
+                        int svScan = svBrace + 1;
+                        while (svScan < cleanBody.Length && svDepth > 0)
+                        {
+                            if (cleanBody[svScan] == '{') svDepth++;
+                            else if (cleanBody[svScan] == '}') svDepth--;
+                            svScan++;
+                        }
+                        string svText = cleanBody.Substring(svBrace + 1, svScan - svBrace - 2);
+                        var svMatches = Regex.Matches(svText, @"\{([\s\S]*?)\}");
+                        foreach (Match svm in svMatches)
+                        {
+                            string svBody = svm.Groups[1].Value;
+                            string svVarName = ExtractStringField(svBody, "VarName");
+                            string svVarType = ExtractStringField(svBody, "VarType");
+                            if (!string.IsNullOrEmpty(svVarName))
+                            {
+                                var svData = new SetVariableData { varName = svVarName, varType = svVarType };
+                                if (svVarType == "bool")
+                                {
+                                    string boolValue = ExtractStringField(svBody, "Value");
+                                    svData.boolValue = boolValue.ToLower() == "true";
+                                }
+                                else
+                                {
+                                    svData.intValue = ExtractIntField(svBody, "Value", 0);
+                                }
+                                setVarList.Add(svData);
+                            }
+                        }
+                    }
+                }
+
                 // 3.7 解析 ConditionBranches 条件分支（基于全局变量的条件跳转）
                 // ⚠️ Question 节点：不解析节点级别的 ConditionBranches（它的条件分支在每个选项内部）
                 var condList = new List<ConditionBranch>();
@@ -1762,6 +1817,7 @@ namespace RPGDialogueEditor
                     dialogue = dialogue.Replace("\\\"", "\""),
                     next = next,
                     unlockBranches = unlockList,
+                    setVariables = setVarList,
                     conditionBranches = condList,
                     position = pos,
                     options = new List<OptionData>()
@@ -1830,8 +1886,52 @@ namespace RPGDialogueEditor
                                     text = text,
                                     next = nextVal,
                                     branchFlag = flag,
-                                    conditionBranches = new List<ConditionBranch>()
+                                    conditionBranches = new List<ConditionBranch>(),
+                                    displayConditions = new List<ConditionBranch>()
                                 };
+
+                                // 解析选项内部的 DisplayConditions（显示条件）
+                                int optDcIndex = optBody.IndexOf("DisplayConditions", StringComparison.OrdinalIgnoreCase);
+                                if (optDcIndex != -1)
+                                {
+                                    int optDcOpen = optBody.IndexOf('{', optDcIndex);
+                                    if (optDcOpen != -1)
+                                    {
+                                        int optDcBraceCount = 1;
+                                        int optDcScan = optDcOpen + 1;
+                                        while (optDcScan < optBody.Length && optDcBraceCount > 0)
+                                        {
+                                            char dcC = optBody[optDcScan];
+                                            if (dcC == '{') optDcBraceCount++;
+                                            else if (dcC == '}') optDcBraceCount--;
+                                            optDcScan++;
+                                        }
+                                        if (optDcBraceCount == 0)
+                                        {
+                                            string optDcText = optBody.Substring(optDcOpen + 1, optDcScan - optDcOpen - 2);
+                                            var optDcMatches = Regex.Matches(optDcText, @"\{([\s\S]*?)\}");
+                                            foreach (Match dcMatch in optDcMatches)
+                                            {
+                                                string dcBody = dcMatch.Groups[1].Value;
+                                                string dcVarName = ExtractStringField(dcBody, "VarName");
+                                                string dcVarType = ExtractStringField(dcBody, "VarType");
+
+                                                var dcData = new ConditionBranch { varName = dcVarName };
+                                                if (dcVarType == "int")
+                                                {
+                                                    dcData.op = ExtractStringField(dcBody, "Op");
+                                                    dcData.intCompareValue = ExtractIntField(dcBody, "Value", 0);
+                                                }
+                                                else
+                                                {
+                                                    string boolValue = ExtractStringField(dcBody, "Value");
+                                                    dcData.intCompareValue = (boolValue.ToLower() == "true") ? 1 : 0;
+                                                }
+                                                option.displayConditions.Add(dcData);
+                                            }
+                                        }
+                                    }
+                                }
 
                                 // 解析选项内部的 ConditionBranches
                                 int optCbIndex = optBody.IndexOf("ConditionBranches", StringComparison.OrdinalIgnoreCase);
@@ -1933,6 +2033,33 @@ namespace RPGDialogueEditor
                     }
                 }
 
+                if (node.setVariables != null && node.setVariables.Count > 0)
+                {
+                    var validEntries = node.setVariables.Where(s => !string.IsNullOrEmpty(s.varName)).ToList();
+                    if (validEntries.Count > 0)
+                    {
+                        sb.AppendLine($"    SetVariables = {{");
+                        for (int i = 0; i < validEntries.Count; i++)
+                        {
+                            var sv = validEntries[i];
+                            string comma = (i == validEntries.Count - 1) ? "" : ",";
+                            string varType = sv.varType;
+                            var gv = GlobalVariables?.FirstOrDefault(v => v.name == sv.varName);
+                            if (gv != null) varType = gv.type;
+
+                            if (varType == "bool")
+                            {
+                                sb.AppendLine($"        {{ VarName = \"{sv.varName}\", VarType = \"bool\", Value = {sv.boolValue.ToString().ToLower()} }}{comma}");
+                            }
+                            else
+                            {
+                                sb.AppendLine($"        {{ VarName = \"{sv.varName}\", VarType = \"int\", Value = {sv.intValue} }}{comma}");
+                            }
+                        }
+                        sb.AppendLine("    },");
+                    }
+                }
+
                 if (isNormal && node.conditionBranches != null && node.conditionBranches.Count > 0)
                 {
                     var validEntries = node.conditionBranches
@@ -1978,44 +2105,70 @@ namespace RPGDialogueEditor
                             string comma = (i == node.options.Count - 1) ? "" : ",";
                             string escapedOptText = (opt.text ?? "").Replace("\"", "\\\"");
 
-                            // 检查该选项是否有条件分支
                             bool hasOptCond = opt.conditionBranches != null && opt.conditionBranches.Count > 0;
+                            bool hasDisplayCond = opt.displayConditions != null && opt.displayConditions.Count > 0;
 
-                            if (hasOptCond)
+                            if (hasOptCond || hasDisplayCond)
                             {
-                                // 有条件分支：使用多行结构，包含 ConditionBranches
                                 sb.AppendLine($"        {{  -- 选项#{i + 1}");
                                 sb.AppendLine($"            Text = \"{escapedOptText}\",");
                                 sb.AppendLine($"            Next = {opt.next},");
                                 sb.AppendLine($"            BranchFlag = \"{opt.branchFlag}\",");
-                                sb.AppendLine($"            ConditionBranches = {{");
 
-                                for (int cbIdx = 0; cbIdx < opt.conditionBranches.Count; cbIdx++)
+                                if (hasDisplayCond)
                                 {
-                                    var cb = opt.conditionBranches[cbIdx];
-                                    string cbComma = (cbIdx == opt.conditionBranches.Count - 1) ? "" : ",";
-
-                                    // 判断变量类型
-                                    string cbVarType = "bool";
-                                    var cbGV = GlobalVariables?.FirstOrDefault(v => v.name == cb.varName);
-                                    if (cbGV != null) cbVarType = cbGV.type;
-
-                                    if (cbVarType == "bool")
+                                    sb.AppendLine($"            DisplayConditions = {{");
+                                    for (int dcIdx = 0; dcIdx < opt.displayConditions.Count; dcIdx++)
                                     {
-                                        sb.AppendLine($"                {{ VarName = \"{cb.varName}\", VarType = \"bool\", TrueNext = {cb.trueNextNodeId}, FalseNext = {cb.falseNextNodeId} }}{cbComma}");
+                                        var dc = opt.displayConditions[dcIdx];
+                                        string dcComma = (dcIdx == opt.displayConditions.Count - 1) ? "" : ",";
+                                        string dcVarType = "bool";
+                                        var dcGV = GlobalVariables?.FirstOrDefault(v => v.name == dc.varName);
+                                        if (dcGV != null) dcVarType = dcGV.type;
+
+                                        if (dcVarType == "bool")
+                                        {
+                                            bool dcBoolValue = dc.intCompareValue != 0;
+                                            sb.AppendLine($"                {{ VarName = \"{dc.varName}\", VarType = \"bool\", Value = {dcBoolValue.ToString().ToLower()} }}{dcComma}");
+                                        }
+                                        else
+                                        {
+                                            sb.AppendLine($"                {{ VarName = \"{dc.varName}\", VarType = \"int\", Op = \"{dc.op}\", Value = {dc.intCompareValue} }}{dcComma}");
+                                        }
                                     }
-                                    else
-                                    {
-                                        sb.AppendLine($"                {{ VarName = \"{cb.varName}\", VarType = \"int\", Op = \"{cb.op}\", Value = {cb.intCompareValue}, Next = {cb.intNextNodeId} }}{cbComma}");
-                                    }
+                                    sb.AppendLine($"            }},");
                                 }
 
-                                sb.AppendLine($"            }}");
+                                if (hasOptCond)
+                                {
+                                    sb.AppendLine($"            ConditionBranches = {{");
+
+                                    for (int cbIdx = 0; cbIdx < opt.conditionBranches.Count; cbIdx++)
+                                    {
+                                        var cb = opt.conditionBranches[cbIdx];
+                                        string cbComma = (cbIdx == opt.conditionBranches.Count - 1) ? "" : ",";
+
+                                        string cbVarType = "bool";
+                                        var cbGV = GlobalVariables?.FirstOrDefault(v => v.name == cb.varName);
+                                        if (cbGV != null) cbVarType = cbGV.type;
+
+                                        if (cbVarType == "bool")
+                                        {
+                                            sb.AppendLine($"                {{ VarName = \"{cb.varName}\", VarType = \"bool\", TrueNext = {cb.trueNextNodeId}, FalseNext = {cb.falseNextNodeId} }}{cbComma}");
+                                        }
+                                        else
+                                        {
+                                            sb.AppendLine($"                {{ VarName = \"{cb.varName}\", VarType = \"int\", Op = \"{cb.op}\", Value = {cb.intCompareValue}, Next = {cb.intNextNodeId} }}{cbComma}");
+                                        }
+                                    }
+
+                                    sb.AppendLine($"            }}");
+                                }
+
                                 sb.AppendLine($"        }}{comma}");
                             }
                             else
                             {
-                                // 没有条件分支：使用原来的单行结构
                                 sb.AppendLine($"        {{Text = \"{escapedOptText}\", Next = {opt.next}, BranchFlag = \"{opt.branchFlag}\"}}{comma}");
                             }
                         }
@@ -2739,6 +2892,154 @@ namespace RPGDialogueEditor
 
             RefreshUnlockUI();
 
+            // ========== 设置变量（执行该节点后自动设置全局变量的值） ==========
+            var setVarHeader = new Label("✧ 设置变量（执行该节点后自动更新全局变量）");
+            setVarHeader.style.color = new Color(0.7f, 0.8f, 0.95f);
+            setVarHeader.style.fontSize = 11;
+            setVarHeader.style.marginBottom = 4;
+            setVarHeader.style.unityFontStyleAndWeight = FontStyle.Bold;
+            _customContainer.Add(setVarHeader);
+
+            var setVarContainer = new VisualElement();
+            setVarContainer.name = "SetVariablesContainer";
+            setVarContainer.style.marginBottom = 6;
+            _customContainer.Add(setVarContainer);
+
+            void RefreshSetVarUI()
+            {
+                setVarContainer.Clear();
+
+                if (Data.setVariables == null)
+                    Data.setVariables = new List<SetVariableData>();
+
+                var varNames = new List<string>();
+                if (_graphView.EditorWindow.GlobalVariables != null)
+                {
+                    foreach (var gv in _graphView.EditorWindow.GlobalVariables)
+                    {
+                        if (!string.IsNullOrEmpty(gv.name)) varNames.Add(gv.name);
+                    }
+                }
+
+                for (int i = 0; i < Data.setVariables.Count; i++)
+                {
+                    int localIdx = i;
+                    var svData = Data.setVariables[localIdx];
+
+                    var card = new VisualElement();
+                    card.style.flexDirection = FlexDirection.Column;
+                    card.style.marginBottom = 4;
+                    card.style.backgroundColor = new Color(0.1f, 0.12f, 0.18f, 0.8f);
+                    card.style.borderTopLeftRadius = 4;
+                    card.style.borderTopRightRadius = 4;
+                    card.style.borderBottomLeftRadius = 4;
+                    card.style.borderBottomRightRadius = 4;
+                    card.style.paddingTop = 3;
+                    card.style.paddingBottom = 3;
+                    card.style.paddingLeft = 4;
+                    card.style.paddingRight = 4;
+
+                    var row = new VisualElement();
+                    row.style.flexDirection = FlexDirection.Row;
+                    row.style.alignItems = Align.Center;
+
+                    var varDropdown = new DropdownField("变量", varNames,
+                        string.IsNullOrEmpty(svData.varName) ? (varNames.Count > 0 ? varNames[0] : "") : svData.varName);
+                    varDropdown.style.flexGrow = 1;
+                    varDropdown.style.maxWidth = 180;
+                    varDropdown.style.marginRight = 6;
+                    BeautifyField(varDropdown);
+                    varDropdown.RegisterValueChangedCallback(evt =>
+                    {
+                        svData.varName = evt.newValue;
+                        var gv = _graphView.EditorWindow.GlobalVariables?.FirstOrDefault(v => v.name == evt.newValue);
+                        if (gv != null)
+                        {
+                            svData.varType = gv.type;
+                            if (gv.type == "bool")
+                            {
+                                svData.intValue = 0;
+                            }
+                            else
+                            {
+                                svData.boolValue = false;
+                            }
+                        }
+                        RefreshSetVarUI();
+                    });
+                    row.Add(varDropdown);
+
+                    var gvType = _graphView.EditorWindow.GlobalVariables?.FirstOrDefault(v => v.name == svData.varName)?.type ?? "bool";
+                    svData.varType = gvType;
+
+                    if (gvType == "bool")
+                    {
+                        var boolChoices = new List<string> { "true", "false" };
+                        string currentBoolValue = svData.boolValue ? "true" : "false";
+                        var boolDropdown = new DropdownField("", boolChoices, currentBoolValue);
+                        boolDropdown.style.flexGrow = 0;
+                        boolDropdown.style.maxWidth = 65;
+                        BeautifyField(boolDropdown);
+                        boolDropdown.RegisterValueChangedCallback(evt =>
+                        {
+                            svData.boolValue = evt.newValue == "true";
+                        });
+                        row.Add(boolDropdown);
+                    }
+                    else
+                    {
+                        var intField = new IntegerField("") { value = svData.intValue };
+                        intField.style.flexGrow = 0;
+                        intField.style.maxWidth = 70;
+                        BeautifyField(intField);
+                        intField.RegisterValueChangedCallback(evt => svData.intValue = evt.newValue);
+                        row.Add(intField);
+                    }
+
+                    var delBtn = new Button(() =>
+                    {
+                        Data.setVariables.RemoveAt(localIdx);
+                        RefreshSetVarUI();
+                    })
+                    { text = "✕" };
+                    delBtn.style.width = 18;
+                    delBtn.style.height = 18;
+                    delBtn.style.fontSize = 10;
+                    delBtn.style.marginLeft = 4;
+                    delBtn.style.backgroundColor = new Color(0.6f, 0.25f, 0.25f, 0.9f);
+                    row.Add(delBtn);
+
+                    card.Add(row);
+                    setVarContainer.Add(card);
+                }
+
+                var hintLabel = new Label(Data.setVariables.Count(s => !string.IsNullOrEmpty(s.varName)) > 0
+                    ? $"✓ 共 {Data.setVariables.Count(s => !string.IsNullOrEmpty(s.varName))} 条变量设置"
+                    : "（当前无变量设置，点击下方按钮添加）");
+                hintLabel.style.color = new Color(0.55f, 0.75f, 0.55f);
+                hintLabel.style.fontSize = 10;
+                hintLabel.style.marginLeft = 4;
+                hintLabel.style.marginTop = 2;
+                setVarContainer.Add(hintLabel);
+            }
+
+            var addSetVarBtn = new Button(() =>
+            {
+                if (Data.setVariables == null)
+                    Data.setVariables = new List<SetVariableData>();
+
+                Data.setVariables.Add(new SetVariableData { varName = "", varType = "bool", boolValue = true });
+                RefreshSetVarUI();
+            })
+            { text = "✚ 添加变量设置" };
+            addSetVarBtn.style.marginTop = 0;
+            addSetVarBtn.style.marginBottom = 4;
+            addSetVarBtn.style.height = 24;
+            addSetVarBtn.style.backgroundColor = new Color(0.15f, 0.35f, 0.5f, 0.9f);
+            _customContainer.Add(addSetVarBtn);
+
+            RefreshSetVarUI();
+
             // ========= 条件分支：基于全局变量的跳转规则（仅 Normal 节点有节点级别的条件分支） =========
             if (Data.type == "Normal")
             {
@@ -3162,8 +3463,18 @@ namespace RPGDialogueEditor
                 var optWrapper = new VisualElement();
                 optWrapper.style.marginTop = 4;
                 optWrapper.style.paddingBottom = 4;
-                optWrapper.style.borderBottomWidth = 1;
-                optWrapper.style.borderBottomColor = new Color(0.2f, 0.25f, 0.35f, 0.4f);
+                // 选项分隔线（更明显）
+                optWrapper.style.borderBottomWidth = 2;
+                optWrapper.style.borderBottomColor = new Color(0.35f, 0.45f, 0.6f, 0.8f);
+
+                // 选项序号标签（更清晰地区分每个选项）
+                var optNumLabel = new Label($"选项 {i + 1}");
+                optNumLabel.style.color = new Color(0.6f, 0.85f, 1f);
+                optNumLabel.style.fontSize = 10;
+                optNumLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+                optNumLabel.style.marginLeft = 4;
+                optNumLabel.style.marginBottom = 2;
+                optWrapper.Add(optNumLabel);
 
                 // 选项主行：水平横向排列，最左侧放置控制内容，最右侧嵌入连线物理口
                 var optBox = new VisualElement();
@@ -3572,6 +3883,156 @@ namespace RPGDialogueEditor
                 btnAddCond.style.color = Color.white;
                 btnAddCond.style.unityFontStyleAndWeight = FontStyle.Bold;
                 optWrapper.Add(btnAddCond);
+
+                // ========== 显示条件编辑区（控制选项是否显示给玩家）==========
+                var displayCondHeader = new Label("◇ 显示条件（满足所有条件才显示该选项）");
+                displayCondHeader.style.color = new Color(0.85f, 0.75f, 0.65f);
+                displayCondHeader.style.fontSize = 10;
+                displayCondHeader.style.unityFontStyleAndWeight = FontStyle.Bold;
+                displayCondHeader.style.marginTop = 4;
+                displayCondHeader.style.marginLeft = 4;
+                optWrapper.Add(displayCondHeader);
+
+                var displayCondContainer = new VisualElement();
+                displayCondContainer.style.overflow = Overflow.Visible;
+                displayCondContainer.style.marginBottom = 2;
+                optWrapper.Add(displayCondContainer);
+
+                void RefreshDisplayCondUI()
+                {
+                    displayCondContainer.Clear();
+
+                    if (option.displayConditions == null)
+                        option.displayConditions = new List<ConditionBranch>();
+
+                    var varNames = new List<string>();
+                    if (_graphView.EditorWindow.GlobalVariables != null)
+                    {
+                        foreach (var gv in _graphView.EditorWindow.GlobalVariables)
+                        {
+                            if (!string.IsNullOrEmpty(gv.name)) varNames.Add(gv.name);
+                        }
+                    }
+
+                    for (int dcIdx = 0; dcIdx < option.displayConditions.Count; dcIdx++)
+                    {
+                        int localDcIdx = dcIdx;
+                        var cond = option.displayConditions[localDcIdx];
+
+                        string currentVarType = "bool";
+                        var curVar = _graphView.EditorWindow.GlobalVariables?.FirstOrDefault(v => v.name == cond.varName);
+                        if (curVar != null) currentVarType = curVar.type;
+
+                        var card = new VisualElement();
+                        card.style.backgroundColor = new Color(0.12f, 0.1f, 0.08f, 0.9f);
+                        card.style.borderTopLeftRadius = 4;
+                        card.style.borderTopRightRadius = 4;
+                        card.style.borderBottomLeftRadius = 4;
+                        card.style.borderBottomRightRadius = 4;
+                        card.style.paddingTop = 3;
+                        card.style.paddingBottom = 3;
+                        card.style.paddingLeft = 4;
+                        card.style.paddingRight = 4;
+                        card.style.marginBottom = 2;
+
+                        var row0 = new VisualElement();
+                        row0.style.flexDirection = FlexDirection.Row;
+                        row0.style.alignItems = Align.Center;
+
+                        var varDropdown = new DropdownField("变量", varNames,
+                            string.IsNullOrEmpty(cond.varName) ? (varNames.Count > 0 ? varNames[0] : "") : cond.varName);
+                        varDropdown.style.flexGrow = 1;
+                        varDropdown.style.maxWidth = 180;
+                        varDropdown.style.marginRight = 6;
+                        BeautifyField(varDropdown);
+                        varDropdown.RegisterValueChangedCallback(evt =>
+                        {
+                            cond.varName = evt.newValue;
+                            RefreshDisplayCondUI();
+                        });
+                        row0.Add(varDropdown);
+
+                        if (currentVarType == "bool")
+                        {
+                            var boolChoices = new List<string> { "true", "false" };
+                            string currentBoolValue = cond.intCompareValue != 0 ? "true" : "false";
+                            var boolDropdown = new DropdownField("", boolChoices, currentBoolValue);
+                            boolDropdown.style.flexGrow = 0;
+                            boolDropdown.style.maxWidth = 65;
+                            BeautifyField(boolDropdown);
+                            boolDropdown.RegisterValueChangedCallback(evt =>
+                            {
+                                cond.intCompareValue = evt.newValue == "true" ? 1 : 0;
+                            });
+                            row0.Add(boolDropdown);
+                        }
+                        else
+                        {
+                            var opChoices = new List<string> { "==", ">", "<", ">=", "<=" };
+                            var opDropdown = new DropdownField("", opChoices, cond.op);
+                            opDropdown.style.flexGrow = 0;
+                            opDropdown.style.maxWidth = 55;
+                            BeautifyField(opDropdown);
+                            opDropdown.RegisterValueChangedCallback(evt => cond.op = evt.newValue);
+                            row0.Add(opDropdown);
+
+                            var intField = new IntegerField("") { value = cond.intCompareValue };
+                            intField.style.flexGrow = 0;
+                            intField.style.maxWidth = 70;
+                            BeautifyField(intField);
+                            intField.RegisterValueChangedCallback(evt => cond.intCompareValue = evt.newValue);
+                            row0.Add(intField);
+                        }
+
+                        var delBtn = new Button(() =>
+                        {
+                            option.displayConditions.RemoveAt(localDcIdx);
+                            RefreshOptionsContainerUI();
+                        })
+                        { text = "✕" };
+                        delBtn.style.width = 18;
+                        delBtn.style.height = 18;
+                        delBtn.style.backgroundColor = new Color(0.6f, 0.25f, 0.25f, 0.9f);
+                        delBtn.style.marginLeft = 6;
+                        row0.Add(delBtn);
+
+                        card.Add(row0);
+                        displayCondContainer.Add(card);
+                    }
+                }
+
+                RefreshDisplayCondUI();
+
+                var btnAddDisplayCond = new Button(() =>
+                {
+                    if (option.displayConditions == null)
+                        option.displayConditions = new List<ConditionBranch>();
+
+                    string defaultVar = "";
+                    if (_graphView.EditorWindow.GlobalVariables != null && _graphView.EditorWindow.GlobalVariables.Count > 0)
+                    {
+                        defaultVar = _graphView.EditorWindow.GlobalVariables[0].name;
+                    }
+
+                    option.displayConditions.Add(new ConditionBranch
+                    {
+                        varName = defaultVar,
+                        op = "==",
+                        intCompareValue = 0,
+                        intNextNodeId = -1,
+                        trueNextNodeId = -1,
+                        falseNextNodeId = -1
+                    });
+                    RefreshOptionsContainerUI();
+                })
+                { text = "✚ 添加显示条件" };
+                btnAddDisplayCond.style.marginTop = 2;
+                btnAddDisplayCond.style.marginBottom = 4;
+                btnAddDisplayCond.style.height = 18;
+                btnAddDisplayCond.style.backgroundColor = new Color(0.45f, 0.35f, 0.15f, 0.9f);
+                btnAddDisplayCond.style.color = Color.white;
+                btnAddDisplayCond.style.fontSize = 10;
+                optWrapper.Add(btnAddDisplayCond);
 
                 optContainer.Add(optWrapper);
             }

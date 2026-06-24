@@ -411,7 +411,40 @@ function SerializeNPCConfig(npcList)
     return table.concat(sb, "\n") .. "\n"
 end
 
--- ========== 新增：检查并处理 UnlockBranches（节点执行时解锁指定 NPC 的分支）==========
+----- ========== 新增：应用 SetVariables（节点执行时设置全局变量的值）==========
+function ApplySetVariables(data)
+    if not data then
+        return
+    end
+
+    if not data.SetVariables or #data.SetVariables == 0 then
+        return
+    end
+
+    for _, setVar in ipairs(data.SetVariables) do
+        local varName = setVar.VarName or setVar.varName
+        local varType = setVar.VarType or setVar.varType or "bool"
+        local value = setVar.Value
+
+        if not varName or varName == "" then
+            goto continue
+        end
+
+        if varType == "bool" then
+            local boolVal = value == true or value == "true" or value == 1
+            SetGlobalVar(varName, boolVal)
+            print("[SetVariables] 设置 bool 变量: " .. varName .. " = " .. tostring(boolVal))
+        else
+            local intVal = tonumber(value) or 0
+            SetGlobalVar(varName, intVal)
+            print("[SetVariables] 设置 int 变量: " .. varName .. " = " .. tostring(intVal))
+        end
+
+        ::continue::
+    end
+end
+
+--- ========== 新增：检查并处理 UnlockBranches（节点执行时解锁指定 NPC 的分支）==========
 function CheckAndUnlockBranch(data)
     if not data then
         return
@@ -621,6 +654,9 @@ function UpdateDialogueUI()
     -- 检查是否需要解锁分支
     CheckAndUnlockBranch(data)
 
+    -- 应用变量设置
+    ApplySetVariables(data)
+
     if next then
         next.gameObject:SetActive(false)
     end
@@ -778,6 +814,51 @@ function ShowNPCConversationUI(data)
     end
 end
 
+-- 根据显示条件检查选项是否应该显示
+-- 多个条件之间是 AND 关系（所有条件都满足才显示）
+function CheckOptionDisplayConditions(option)
+    if not option or not option.DisplayConditions then
+        return true
+    end
+
+    local conditions = option.DisplayConditions
+    if #conditions == 0 then
+        return true
+    end
+
+    ReloadGlobalVariablesFromFile()
+
+    for _, cond in ipairs(conditions) do
+        local varName = cond.VarName
+        local varType = cond.VarType or "bool"
+        local varValue = globalVariables[varName]
+
+        if varType == "bool" then
+            local expectedValue = cond.Value or true
+            if varValue ~= expectedValue then
+                return false
+            end
+        else
+            local op = cond.Op or "=="
+            local cmpValue = tonumber(cond.Value) or 0
+            local intVal = tonumber(varValue) or 0
+            local match = false
+            if op == "==" then match = (intVal == cmpValue)
+            elseif op == "!=" then match = (intVal ~= cmpValue)
+            elseif op == ">" then match = (intVal > cmpValue)
+            elseif op == "<" then match = (intVal < cmpValue)
+            elseif op == ">=" then match = (intVal >= cmpValue)
+            elseif op == "<=" then match = (intVal <= cmpValue)
+            end
+            if not match then
+                return false
+            end
+        end
+    end
+
+    return true
+end
+
 function ShowQuestionUI(data)
     isWaitingForChoice = true
 
@@ -799,8 +880,17 @@ function ShowQuestionUI(data)
 
     currentOptions = data.Options or {}
 
+    -- 根据显示条件过滤选项：只有满足所有 DisplayConditions 的选项才显示给玩家
+    local filteredOptions = {}
+    for _, option in ipairs(currentOptions) do
+        if CheckOptionDisplayConditions(option) then
+            table.insert(filteredOptions, option)
+        end
+    end
+    currentOptions = filteredOptions
+
     if #currentOptions == 0 then
-        DouyinUtility.Toast("提问模式缺少选项配置～")
+        DouyinUtility.Toast("提问模式缺少满足条件的选项～")
         EndDialogue()
         return
     end
