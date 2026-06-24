@@ -6,8 +6,6 @@ local NPCData = {
             avatarPath = "",
             currentBranchId = 1,
             isFolded = true,
-            storyGraphs = {
-            }
         }
         ,
         {
@@ -67,7 +65,7 @@ local NPCData = {
             id = "NPC_488",
             name = "淑芬",
             avatarPath = "Assets/Res/TouXiang_LiHui/母鸡/守望.png",
-            currentBranchId = 2,
+            currentBranchId = 1,
             isFolded = true,
             storyGraphs = {
                 {
@@ -105,7 +103,7 @@ local NPCData = {
             name = "豆豆",
             avatarPath = "",
             currentBranchId = 1,
-            isFolded = true,
+            isFolded = false,
             storyGraphs = {
                 {
                     branchId = 1,
@@ -122,8 +120,6 @@ local NPCData = {
             avatarPath = "",
             currentBranchId = 1,
             isFolded = true,
-            storyGraphs = {
-            }
         }
         ,
         {
@@ -132,8 +128,6 @@ local NPCData = {
             avatarPath = "",
             currentBranchId = 1,
             isFolded = true,
-            storyGraphs = {
-            }
         }
         ,
         {
@@ -142,8 +136,6 @@ local NPCData = {
             avatarPath = "",
             currentBranchId = 1,
             isFolded = true,
-            storyGraphs = {
-            }
         }
         ,
         {
@@ -156,8 +148,8 @@ local NPCData = {
                 {
                     branchId = 1,
                     storyDescription = "首次接触",
-                    luaModuleName = "xiaojiZTT",
-                    luaAssetPath = "Assets/Editor/DialogueData/xiaojiZTT.lua"
+                    luaModuleName = "xiaojiZTT_01",
+                    luaAssetPath = "Assets/Editor/DialogueData/xiaojiZTT_01.lua"
                 }
             }
         }

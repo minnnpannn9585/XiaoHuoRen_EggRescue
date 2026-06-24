@@ -146,17 +146,17 @@ function ReloadGlobalVariablesFromFile()
         local data = func()
         if data == nil then return end
 
-        local freshVars = {}
         for _, item in ipairs(data) do
             if item.name and item.type then
-                if item.type == "bool" then
-                    freshVars[item.name] = { type = "bool", value = (item.value == true or item.value == "true" or item.value == 1) }
-                else
-                    freshVars[item.name] = { type = "int", value = tonumber(item.value) or 0 }
+                if globalVariables[item.name] == nil then
+                    if item.type == "bool" then
+                        globalVariables[item.name] = { type = "bool", value = (item.value == true or item.value == "true" or item.value == 1) }
+                    else
+                        globalVariables[item.name] = { type = "int", value = tonumber(item.value) or 0 }
+                    end
                 end
             end
         end
-        globalVariables = freshVars
     end)
     if not success then
         print("[ReloadGlobalVariables] 读取失败: " .. tostring(err))
@@ -201,16 +201,16 @@ end
 
 -- 根据条件分支计算下一个节点 ID
 function GetNextNodeByCondition(data)
-    -- 每次条件判断前，重新从 GlobalVariables.lua 读取最新值
-    ReloadGlobalVariablesFromFile()
-
     if data == nil or data.ConditionBranches == nil or #data.ConditionBranches == 0 then
         return nil
     end
+    
+    local getFunc = _G["GetGlobalVar"] or GetGlobalVariable
+    
     for i, cb in ipairs(data.ConditionBranches) do
         if cb.VarName ~= nil and cb.VarName ~= "" then
             local varType = cb.VarType or "bool"
-            local varValue = GetGlobalVariable(cb.VarName)
+            local varValue = getFunc(cb.VarName)
 
             if varType == "bool" then
                 -- bool 模式：true/false 各走一个分支；未设置的变量视为 false
@@ -413,31 +413,23 @@ end
 
 ----- ========== 新增：应用 SetVariables（节点执行时设置全局变量的值）==========
 function ApplySetVariables(data)
-    if not data then
-        return
-    end
-
-    if not data.SetVariables or #data.SetVariables == 0 then
-        return
-    end
+    if not data then return end
+    if not data.SetVariables or #data.SetVariables == 0 then return end
 
     for _, setVar in ipairs(data.SetVariables) do
         local varName = setVar.VarName or setVar.varName
         local varType = setVar.VarType or setVar.varType or "bool"
         local value = setVar.Value
 
-        if not varName or varName == "" then
-            goto continue
-        end
+        if not varName or varName == "" then goto continue end
 
+        local setFunc = _G["SetGlobalVar"] or SetGlobalVariable
         if varType == "bool" then
             local boolVal = value == true or value == "true" or value == 1
-            SetGlobalVar(varName, boolVal)
-            print("[SetVariables] 设置 bool 变量: " .. varName .. " = " .. tostring(boolVal))
+            setFunc(varName, boolVal, "bool")
         else
             local intVal = tonumber(value) or 0
-            SetGlobalVar(varName, intVal)
-            print("[SetVariables] 设置 int 变量: " .. varName .. " = " .. tostring(intVal))
+            setFunc(varName, intVal, "int")
         end
 
         ::continue::
@@ -490,6 +482,10 @@ end
 function Awake()
     _G["_DialogueManager"] = self.script
     dialogueManager = self.script
+    
+    _G["_GlobalVariables"] = globalVariables
+    _G["GetGlobalVariable"] = GetGlobalVariable
+    _G["SetGlobalVariable"] = SetGlobalVariable
 
     if Sprites then
         for i = 1, Sprites.Length do
@@ -642,8 +638,12 @@ function OnNextClick()
 end
 
 function UpdateDialogueUI()
+    print("[Dialogue] === UpdateDialogueUI 开始 ===")
+    print("[Dialogue] currentDialogueID: " .. tostring(currentDialogueID))
+    
     local data = GetDialogueData(currentDialogueID)
     if data == nil then
+        print("[Dialogue] 对话数据为空，返回")
         DouyinUtility.Toast("对话数据加载失败～")
         EndDialogue()
         return
@@ -651,11 +651,34 @@ function UpdateDialogueUI()
 
     currentDataCache = data
 
+    print("[Dialogue] 对话数据类型: " .. tostring(data.Type))
+    print("[Dialogue] 对话数据 NpcName: " .. tostring(data.NpcName))
+    print("[Dialogue] 对话数据 Next: " .. tostring(data.Next))
+
     -- 检查是否需要解锁分支
     CheckAndUnlockBranch(data)
 
     -- 应用变量设置
+    print("[Dialogue] data.SetVariables 是否存在: " .. tostring(data.SetVariables ~= nil))
+    if data.SetVariables then
+        print("[Dialogue] data.SetVariables 数量: " .. #data.SetVariables)
+        for i, sv in ipairs(data.SetVariables) do
+            print("[Dialogue]   SetVariables[" .. i .. "] = " .. tostring(sv.VarName or sv.varName) .. ", " .. tostring(sv.VarType) .. ", " .. tostring(sv.Value))
+        end
+    else
+        print("[Dialogue] data.SetVariables 不存在！")
+    end
+    
     ApplySetVariables(data)
+    
+    -- 设置后检查变量值
+    if data.SetVariables and #data.SetVariables > 0 then
+        print("[Dialogue] === 设置后的变量值 ===")
+        for _, sv in ipairs(data.SetVariables) do
+            local varName = sv.VarName or sv.varName
+            print("[Dialogue]   " .. varName .. " = " .. tostring(globalVariables[varName] and globalVariables[varName].value))
+        end
+    end
 
     if next then
         next.gameObject:SetActive(false)
@@ -826,12 +849,12 @@ function CheckOptionDisplayConditions(option)
         return true
     end
 
-    ReloadGlobalVariablesFromFile()
+    local getFunc = _G["GetGlobalVar"] or GetGlobalVariable
 
     for _, cond in ipairs(conditions) do
         local varName = cond.VarName
         local varType = cond.VarType or "bool"
-        local varValue = globalVariables[varName]
+        local varValue = getFunc(varName)
 
         if varType == "bool" then
             local expectedValue = cond.Value or true

@@ -3064,7 +3064,6 @@ namespace RPGDialogueEditor
                     if (Data.conditionBranches == null)
                         Data.conditionBranches = new List<ConditionBranch>();
 
-                    // 拿到全局变量名列表
                     var varNames = new List<string>();
                     if (_graphView.EditorWindow.GlobalVariables != null)
                     {
@@ -3079,277 +3078,284 @@ namespace RPGDialogueEditor
                         int localIdx = i;
                         var cond = Data.conditionBranches[localIdx];
 
-                    // 根据变量类型决定布局
-                    string currentVarType = "bool";
-                    var curVar = _graphView.EditorWindow.GlobalVariables?.FirstOrDefault(v => v.name == cond.varName);
-                    if (curVar != null) currentVarType = curVar.type;
-
-                    if (currentVarType == "bool")
-                    {
-                        // ============ bool 模式：一张卡片 + 两个端口 ============
-                        var card = new VisualElement();
-                        card.name = "CondCard_" + localIdx;
-                        card.style.backgroundColor = new Color(0.1f, 0.14f, 0.22f, 0.9f);
-                        card.style.borderTopLeftRadius = 6;
-                        card.style.borderTopRightRadius = 6;
-                        card.style.borderBottomLeftRadius = 6;
-                        card.style.borderBottomRightRadius = 6;
-                        card.style.paddingTop = 6;
-                        card.style.paddingBottom = 6;
-                        card.style.paddingLeft = 6;
-                        card.style.paddingRight = 0;
-                        card.style.marginBottom = 4;
-                        card.style.overflow = Overflow.Visible;
-
-                        // 第一行：变量名 + 删除按钮
-                        var row0 = new VisualElement();
-                        row0.style.flexDirection = FlexDirection.Row;
-                        row0.style.alignItems = Align.Center;
-                        row0.style.marginBottom = 4;
-                        row0.style.paddingRight = 6;
-
-                        var varDropdown = new DropdownField("变量", varNames,
-                            string.IsNullOrEmpty(cond.varName) ? (varNames.Count > 0 ? varNames[0] : "") : cond.varName);
-                        varDropdown.style.flexGrow = 1;
-                        varDropdown.style.maxWidth = 220;
-                        varDropdown.style.marginRight = 6;
-                        BeautifyField(varDropdown);
-                        varDropdown.RegisterValueChangedCallback(evt =>
+                        string currentVarType = "bool";
+                        if (!string.IsNullOrEmpty(cond.varName) && _graphView.EditorWindow.GlobalVariables != null)
                         {
-                            cond.varName = evt.newValue;
-                        });
-                        row0.Add(varDropdown);
+                            var curVar = _graphView.EditorWindow.GlobalVariables.FirstOrDefault(v => v.name == cond.varName);
+                            if (curVar != null)
+                            {
+                                currentVarType = curVar.type;
+                            }
+                            else
+                            {
+                                curVar = _graphView.EditorWindow.GlobalVariables.FirstOrDefault(v => v.name.Trim() == cond.varName);
+                                if (curVar != null)
+                                {
+                                    currentVarType = curVar.type;
+                                    cond.varName = curVar.name;
+                                }
+                            }
+                        }
 
-                        var delBtn = new Button(() =>
+                        if (currentVarType == "bool")
                         {
-                            Data.conditionBranches.RemoveAt(localIdx);
-                            RefreshConditionUI();
-                            RefreshNextPortUI();
-                            _graphView.RebuildEdgesFromDataIds();
-                        })
-                        { text = "✕" };
-                        delBtn.style.width = 20;
-                        delBtn.style.height = 20;
-                        delBtn.style.backgroundColor = new Color(0.6f, 0.25f, 0.25f, 0.9f);
-                        row0.Add(delBtn);
+                            var card = new VisualElement();
+                            card.name = "CondCard_" + localIdx;
+                            card.style.backgroundColor = new Color(0.1f, 0.14f, 0.22f, 0.9f);
+                            card.style.borderTopLeftRadius = 6;
+                            card.style.borderTopRightRadius = 6;
+                            card.style.borderBottomLeftRadius = 6;
+                            card.style.borderBottomRightRadius = 6;
+                            card.style.paddingTop = 6;
+                            card.style.paddingBottom = 6;
+                            card.style.paddingLeft = 6;
+                            card.style.paddingRight = 0;
+                            card.style.marginBottom = 4;
+                            card.style.overflow = Overflow.Visible;
 
-                        card.Add(row0);
+                            var row0 = new VisualElement();
+                            row0.style.flexDirection = FlexDirection.Row;
+                            row0.style.alignItems = Align.Center;
+                            row0.style.marginBottom = 4;
 
-                        // 第二行：true 分支 + 绿色端口
-                        var rowTrue = new VisualElement();
-                        rowTrue.style.flexDirection = FlexDirection.Row;
-                        rowTrue.style.alignItems = Align.Center;
-                        rowTrue.style.marginBottom = 3;
-                        rowTrue.style.overflow = Overflow.Visible;
-                        rowTrue.style.paddingRight = 6;
+                            var varDropdown = new DropdownField("变量", varNames,
+                                string.IsNullOrEmpty(cond.varName) ? (varNames.Count > 0 ? varNames[0] : "") : cond.varName);
+                            varDropdown.style.flexGrow = 1;
+                            varDropdown.style.maxWidth = 220;
+                            varDropdown.style.marginRight = 6;
+                            BeautifyField(varDropdown);
+                            varDropdown.RegisterValueChangedCallback(evt =>
+                            {
+                                cond.varName = evt.newValue;
+                                RefreshConditionUI();
+                                RefreshNextPortUI();
+                                _graphView.RebuildEdgesFromDataIds();
+                            });
+                            row0.Add(varDropdown);
 
-                        var trueLabel = new Label("✓ true");
-                        trueLabel.style.color = new Color(0.35f, 0.85f, 0.45f);
-                        trueLabel.style.fontSize = 11;
-                        trueLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
-                        trueLabel.style.minWidth = 40;
-                        trueLabel.style.width = 40;
-                        rowTrue.Add(trueLabel);
+                            var delBtn = new Button(() =>
+                            {
+                                Data.conditionBranches.RemoveAt(localIdx);
+                                RefreshConditionUI();
+                                RefreshNextPortUI();
+                                _graphView.RebuildEdgesFromDataIds();
+                            })
+                            { text = "✕" };
+                            delBtn.style.width = 20;
+                            delBtn.style.height = 20;
+                            delBtn.style.backgroundColor = new Color(0.6f, 0.25f, 0.25f, 0.9f);
+                            row0.Add(delBtn);
 
-                        var arrow1 = new Label("→");
-                        arrow1.style.color = new Color(0.7f, 0.7f, 0.7f);
-                        arrow1.style.fontSize = 11;
-                        arrow1.style.marginLeft = 4;
-                        arrow1.style.marginRight = 4;
-                        rowTrue.Add(arrow1);
+                            card.Add(row0);
 
-                        var trueNextField = new IntegerField("跳转到") { value = cond.trueNextNodeId };
-                        trueNextField.style.flexGrow = 1;
-                        trueNextField.style.maxWidth = 200;
-                        trueNextField.style.marginRight = 6;
-                        BeautifyField(trueNextField);
-                        trueNextField.RegisterValueChangedCallback(evt => cond.trueNextNodeId = evt.newValue);
-                        rowTrue.Add(trueNextField);
+                            var rowTrue = new VisualElement();
+                            rowTrue.style.flexDirection = FlexDirection.Row;
+                            rowTrue.style.alignItems = Align.Center;
+                            rowTrue.style.marginBottom = 3;
+                            rowTrue.style.overflow = Overflow.Visible;
 
-                        // true 端口（绿色）— 伸出卡片右侧，便于连线
-                        var truePort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(float));
-                        truePort.portName = " ";
-                        truePort.portColor = new Color(0.35f, 0.85f, 0.45f);
-                        truePort.userData = new ConditionBranchPortTag { branch = cond, tag = "true" };
-                        truePort.style.width = 22;
-                        truePort.style.height = 22;
-                        truePort.style.alignSelf = Align.Center;
-                        truePort.style.marginRight = -28;
-                        rowTrue.Add(truePort);
-                        _conditionBranchPorts.Add(truePort);
+                            var trueLabel = new Label("✓ true");
+                            trueLabel.style.color = new Color(0.35f, 0.85f, 0.45f);
+                            trueLabel.style.fontSize = 11;
+                            trueLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+                            trueLabel.style.minWidth = 40;
+                            trueLabel.style.width = 40;
+                            rowTrue.Add(trueLabel);
 
-                        card.Add(rowTrue);
+                            var arrow1 = new Label("→");
+                            arrow1.style.color = new Color(0.7f, 0.7f, 0.7f);
+                            arrow1.style.fontSize = 11;
+                            arrow1.style.marginLeft = 4;
+                            arrow1.style.marginRight = 4;
+                            rowTrue.Add(arrow1);
 
-                        // 第三行：false 分支 + 红色端口
-                        var rowFalse = new VisualElement();
-                        rowFalse.style.flexDirection = FlexDirection.Row;
-                        rowFalse.style.alignItems = Align.Center;
-                        rowFalse.style.overflow = Overflow.Visible;
-                        rowFalse.style.paddingRight = 6;
+                            var trueNextField = new IntegerField("跳转到") { value = cond.trueNextNodeId };
+                            trueNextField.style.flexGrow = 1;
+                            trueNextField.style.maxWidth = 200;
+                            trueNextField.style.marginRight = 6;
+                            BeautifyField(trueNextField);
+                            trueNextField.RegisterValueChangedCallback(evt => cond.trueNextNodeId = evt.newValue);
+                            rowTrue.Add(trueNextField);
 
-                        var falseLabel = new Label("✗ false");
-                        falseLabel.style.color = new Color(0.9f, 0.35f, 0.35f);
-                        falseLabel.style.fontSize = 11;
-                        falseLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
-                        falseLabel.style.minWidth = 40;
-                        falseLabel.style.width = 40;
-                        rowFalse.Add(falseLabel);
+                            var truePort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(float));
+                            truePort.portName = " ";
+                            truePort.portColor = new Color(0.35f, 0.85f, 0.45f);
+                            truePort.userData = new ConditionBranchPortTag { branch = cond, tag = "true" };
+                            truePort.style.width = 22;
+                            truePort.style.height = 22;
+                            truePort.style.alignSelf = Align.Center;
+                            rowTrue.Add(truePort);
+                            _conditionBranchPorts.Add(truePort);
 
-                        var arrow2 = new Label("→");
-                        arrow2.style.color = new Color(0.7f, 0.7f, 0.7f);
-                        arrow2.style.fontSize = 11;
-                        arrow2.style.marginLeft = 4;
-                        arrow2.style.marginRight = 4;
-                        rowFalse.Add(arrow2);
+                            card.Add(rowTrue);
 
-                        var falseNextField = new IntegerField("跳转到") { value = cond.falseNextNodeId };
-                        falseNextField.style.flexGrow = 1;
-                        falseNextField.style.maxWidth = 200;
-                        falseNextField.style.marginRight = 6;
-                        BeautifyField(falseNextField);
-                        falseNextField.RegisterValueChangedCallback(evt => cond.falseNextNodeId = evt.newValue);
-                        rowFalse.Add(falseNextField);
+                            var rowFalse = new VisualElement();
+                            rowFalse.style.flexDirection = FlexDirection.Row;
+                            rowFalse.style.alignItems = Align.Center;
+                            rowFalse.style.overflow = Overflow.Visible;
 
-                        // false 端口（红色）— 伸出卡片右侧，便于连线
-                        var falsePort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(float));
-                        falsePort.portName = " ";
-                        falsePort.portColor = new Color(0.9f, 0.35f, 0.35f);
-                        falsePort.userData = new ConditionBranchPortTag { branch = cond, tag = "false" };
-                        falsePort.style.width = 22;
-                        falsePort.style.height = 22;
-                        falsePort.style.alignSelf = Align.Center;
-                        falsePort.style.marginRight = -28;
-                        rowFalse.Add(falsePort);
-                        _conditionBranchPorts.Add(falsePort);
+                            var falseLabel = new Label("✗ false");
+                            falseLabel.style.color = new Color(0.9f, 0.35f, 0.35f);
+                            falseLabel.style.fontSize = 11;
+                            falseLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+                            falseLabel.style.minWidth = 40;
+                            falseLabel.style.width = 40;
+                            rowFalse.Add(falseLabel);
 
-                        card.Add(rowFalse);
+                            var arrow2 = new Label("→");
+                            arrow2.style.color = new Color(0.7f, 0.7f, 0.7f);
+                            arrow2.style.fontSize = 11;
+                            arrow2.style.marginLeft = 4;
+                            arrow2.style.marginRight = 4;
+                            rowFalse.Add(arrow2);
 
-                        condContainer.Add(card);
+                            var falseNextField = new IntegerField("跳转到") { value = cond.falseNextNodeId };
+                            falseNextField.style.flexGrow = 1;
+                            falseNextField.style.maxWidth = 200;
+                            falseNextField.style.marginRight = 6;
+                            BeautifyField(falseNextField);
+                            falseNextField.RegisterValueChangedCallback(evt => cond.falseNextNodeId = evt.newValue);
+                            rowFalse.Add(falseNextField);
+
+                            var falsePort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(float));
+                            falsePort.portName = " ";
+                            falsePort.portColor = new Color(0.9f, 0.35f, 0.35f);
+                            falsePort.userData = new ConditionBranchPortTag { branch = cond, tag = "false" };
+                            falsePort.style.width = 22;
+                            falsePort.style.height = 22;
+                            falsePort.style.alignSelf = Align.Center;
+                            rowFalse.Add(falsePort);
+                            _conditionBranchPorts.Add(falsePort);
+
+                            card.Add(rowFalse);
+                            condContainer.Add(card);
+                        }
+                        else
+                        {
+                            var card = new VisualElement();
+                            card.name = "CondCard_" + localIdx;
+                            card.style.backgroundColor = new Color(0.1f, 0.14f, 0.22f, 0.9f);
+                            card.style.borderTopLeftRadius = 6;
+                            card.style.borderTopRightRadius = 6;
+                            card.style.borderBottomLeftRadius = 6;
+                            card.style.borderBottomRightRadius = 6;
+                            card.style.paddingTop = 6;
+                            card.style.paddingBottom = 6;
+                            card.style.paddingLeft = 6;
+                            card.style.paddingRight = 0;
+                            card.style.marginBottom = 4;
+                            card.style.overflow = Overflow.Visible;
+
+                            var row1 = new VisualElement();
+                            row1.style.flexDirection = FlexDirection.Row;
+                            row1.style.alignItems = Align.Center;
+                            row1.style.marginBottom = 4;
+
+                            var varDropdown = new DropdownField("变量", varNames,
+                                string.IsNullOrEmpty(cond.varName) ? (varNames.Count > 0 ? varNames[0] : "") : cond.varName);
+                            varDropdown.style.flexGrow = 0;
+                            varDropdown.style.width = 150;
+                            varDropdown.style.marginRight = 6;
+                            BeautifyField(varDropdown);
+                            varDropdown.RegisterValueChangedCallback(evt =>
+                            {
+                                cond.varName = evt.newValue;
+                                RefreshConditionUI();
+                                RefreshNextPortUI();
+                                _graphView.RebuildEdgesFromDataIds();
+                            });
+                            row1.Add(varDropdown);
+
+                            var ops = new List<string> { "==", "!=", ">", "<", ">=", "<=" };
+                            var opDropdown = new DropdownField("", ops, string.IsNullOrEmpty(cond.op) ? "==" : cond.op);
+                            opDropdown.style.flexGrow = 0;
+                            opDropdown.style.width = 55;
+                            opDropdown.style.marginRight = 4;
+                            BeautifyField(opDropdown);
+                            var opLabel = opDropdown.Q<Label>();
+                            if (opLabel != null) { opLabel.style.display = DisplayStyle.None; }
+                            opDropdown.RegisterValueChangedCallback(evt => cond.op = evt.newValue);
+                            row1.Add(opDropdown);
+
+                            var intField = new IntegerField("");
+                            intField.value = cond.intCompareValue;
+                            intField.style.flexGrow = 0;
+                            intField.style.width = 60;
+                            BeautifyField(intField);
+                            var intLabel = intField.Q<Label>();
+                            if (intLabel != null) { intLabel.style.display = DisplayStyle.None; }
+                            intField.RegisterValueChangedCallback(evt => cond.intCompareValue = evt.newValue);
+                            row1.Add(intField);
+
+                            card.Add(row1);
+
+                            var row2 = new VisualElement();
+                            row2.style.flexDirection = FlexDirection.Row;
+                            row2.style.alignItems = Align.Center;
+                            row2.style.overflow = Overflow.Visible;
+
+                            var condLabel = new Label("→ 跳转到");
+                            condLabel.style.color = new Color(0.85f, 0.3f, 0.75f);
+                            condLabel.style.fontSize = 11;
+                            condLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+                            condLabel.style.minWidth = 60;
+                            condLabel.style.width = 60;
+                            row2.Add(condLabel);
+
+                            var nextField = new IntegerField("") { value = cond.intNextNodeId };
+                            nextField.style.flexGrow = 1;
+                            nextField.style.maxWidth = 200;
+                            nextField.style.marginRight = 6;
+                            BeautifyField(nextField);
+                            nextField.RegisterValueChangedCallback(evt => cond.intNextNodeId = evt.newValue);
+                            row2.Add(nextField);
+
+                            var delBtn = new Button(() =>
+                            {
+                                Data.conditionBranches.RemoveAt(localIdx);
+                                RefreshConditionUI();
+                                RefreshNextPortUI();
+                                _graphView.RebuildEdgesFromDataIds();
+                            })
+                            { text = "✕" };
+                            delBtn.style.width = 20;
+                            delBtn.style.height = 20;
+                            delBtn.style.backgroundColor = new Color(0.6f, 0.25f, 0.25f, 0.9f);
+                            delBtn.style.marginRight = 6;
+                            row2.Add(delBtn);
+
+                            var intPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(float));
+                            intPort.portName = " ";
+                            intPort.portColor = new Color(0.85f, 0.3f, 0.75f);
+                            intPort.userData = new ConditionBranchPortTag { branch = cond, tag = "int" };
+                            intPort.style.width = 22;
+                            intPort.style.height = 22;
+                            intPort.style.alignSelf = Align.Center;
+                            row2.Add(intPort);
+                            _conditionBranchPorts.Add(intPort);
+
+                            card.Add(row2);
+                            condContainer.Add(card);
+                        }
                     }
-                    else
-                    {
-                        // ============ int 模式：一张卡片 + 一个端口 ============
-                        var card = new VisualElement();
-                        card.name = "CondCard_" + localIdx;
-                        card.style.backgroundColor = new Color(0.1f, 0.14f, 0.22f, 0.9f);
-                        card.style.borderTopLeftRadius = 6;
-                        card.style.borderTopRightRadius = 6;
-                        card.style.borderBottomLeftRadius = 6;
-                        card.style.borderBottomRightRadius = 6;
-                        card.style.paddingTop = 6;
-                        card.style.paddingBottom = 6;
-                        card.style.paddingLeft = 6;
-                        card.style.paddingRight = 0;
-                        card.style.marginBottom = 4;
-                        card.style.overflow = Overflow.Visible;
 
-                        // 第一行：变量名 + 操作符 + 比较值
-                        var row1 = new VisualElement();
-                        row1.style.flexDirection = FlexDirection.Row;
-                        row1.style.alignItems = Align.Center;
-                        row1.style.marginBottom = 4;
-                        row1.style.paddingRight = 6;
+                    var hintLabel2 = new Label(Data.conditionBranches.Count > 0
+                        ? $"✓ 共 {Data.conditionBranches.Count} 条条件规则（bool 双分支，int 单分支）"
+                        : "（当前无条件规则，点击下方按钮添加）");
+                    hintLabel2.style.color = new Color(0.55f, 0.7f, 0.9f);
+                    hintLabel2.style.fontSize = 10;
+                    hintLabel2.style.marginLeft = 4;
+                    hintLabel2.style.marginTop = 2;
+                    condContainer.Add(hintLabel2);
 
-                        var varDropdown = new DropdownField("变量", varNames,
-                            string.IsNullOrEmpty(cond.varName) ? (varNames.Count > 0 ? varNames[0] : "") : cond.varName);
-                        varDropdown.style.flexGrow = 1;
-                        varDropdown.style.maxWidth = 160;
-                        varDropdown.style.marginRight = 6;
-                        BeautifyField(varDropdown);
-                        varDropdown.RegisterValueChangedCallback(evt => cond.varName = evt.newValue);
-                        row1.Add(varDropdown);
-
-                        var ops = new List<string> { "==", "!=", ">", "<", ">=", "<=" };
-                        var opDropdown = new DropdownField("操作", ops, string.IsNullOrEmpty(cond.op) ? "==" : cond.op);
-                        opDropdown.style.flexGrow = 0;
-                        opDropdown.style.width = 65;
-                        opDropdown.style.marginRight = 6;
-                        BeautifyField(opDropdown);
-                        opDropdown.RegisterValueChangedCallback(evt => cond.op = evt.newValue);
-                        row1.Add(opDropdown);
-
-                        var intField = new IntegerField("值");
-                        intField.value = cond.intCompareValue;
-                        intField.style.flexGrow = 1;
-                        intField.style.maxWidth = 120;
-                        BeautifyField(intField);
-                        intField.RegisterValueChangedCallback(evt => cond.intCompareValue = evt.newValue);
-                        row1.Add(intField);
-
-                        card.Add(row1);
-
-                        // 第二行：目标节点 + 删除按钮 + 品红色端口
-                        var row2 = new VisualElement();
-                        row2.style.flexDirection = FlexDirection.Row;
-                        row2.style.alignItems = Align.Center;
-                        row2.style.overflow = Overflow.Visible;
-                        row2.style.paddingRight = 6;
-
-                        var condLabel = new Label("→ 跳转到");
-                        condLabel.style.color = new Color(0.85f, 0.3f, 0.75f);
-                        condLabel.style.fontSize = 11;
-                        condLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
-                        condLabel.style.minWidth = 60;
-                        condLabel.style.width = 60;
-                        row2.Add(condLabel);
-
-                        var nextField = new IntegerField("") { value = cond.intNextNodeId };
-                        nextField.style.flexGrow = 1;
-                        nextField.style.maxWidth = 200;
-                        nextField.style.marginRight = 6;
-                        BeautifyField(nextField);
-                        nextField.RegisterValueChangedCallback(evt => cond.intNextNodeId = evt.newValue);
-                        row2.Add(nextField);
-
-                        var delBtn = new Button(() =>
-                        {
-                            Data.conditionBranches.RemoveAt(localIdx);
-                            RefreshConditionUI();
-                            RefreshNextPortUI();
-                            _graphView.RebuildEdgesFromDataIds();
-                        })
-                        { text = "✕" };
-                        delBtn.style.width = 20;
-                        delBtn.style.height = 20;
-                        delBtn.style.backgroundColor = new Color(0.6f, 0.25f, 0.25f, 0.9f);
-                        delBtn.style.marginRight = 6;
-                        row2.Add(delBtn);
-
-                        // int 端口（品红色）— 伸出卡片右侧，便于连线
-                        var intPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(float));
-                        intPort.portName = " ";
-                        intPort.portColor = new Color(0.85f, 0.3f, 0.75f);
-                        intPort.userData = new ConditionBranchPortTag { branch = cond, tag = "int" };
-                        intPort.style.width = 22;
-                        intPort.style.height = 22;
-                        intPort.style.alignSelf = Align.Center;
-                        intPort.style.marginRight = -28;
-                        row2.Add(intPort);
-                        _conditionBranchPorts.Add(intPort);
-
-                        card.Add(row2);
-                        condContainer.Add(card);
-                    }
+                    RefreshExpandedState();
                 }
-
-                var hintLabel2 = new Label(Data.conditionBranches.Count > 0
-                    ? $"✓ 共 {Data.conditionBranches.Count} 条条件规则（bool 双分支，int 单分支）"
-                    : "（当前无条件规则，点击下方按钮添加）");
-                hintLabel2.style.color = new Color(0.55f, 0.7f, 0.9f);
-                hintLabel2.style.fontSize = 10;
-                hintLabel2.style.marginLeft = 4;
-                hintLabel2.style.marginTop = 2;
-                condContainer.Add(hintLabel2);
-
-                RefreshExpandedState();
-            }
 
                 var addCondBtn = new Button(() =>
                 {
                     if (Data.conditionBranches == null)
                         Data.conditionBranches = new List<ConditionBranch>();
 
-                    // 默认用第一个全局变量，没有则留空
                     string defaultVar = "";
                     if (_graphView.EditorWindow.GlobalVariables != null && _graphView.EditorWindow.GlobalVariables.Count > 0)
                     {
@@ -3547,7 +3553,6 @@ namespace RPGDialogueEditor
                     optPort.style.height = 18;
                     optPort.style.alignSelf = Align.Center;
                     optPort.style.marginLeft = 6;
-                    optPort.style.marginRight = -14;
 
                     optBox.Add(optPort);
                     _optionPorts.Add(optPort);
@@ -3592,8 +3597,24 @@ namespace RPGDialogueEditor
                         var cond = option.conditionBranches[localCbIdx];
 
                         string currentVarType = "bool";
-                        var curVar = _graphView.EditorWindow.GlobalVariables?.FirstOrDefault(v => v.name == cond.varName);
-                        if (curVar != null) currentVarType = curVar.type;
+                        if (!string.IsNullOrEmpty(cond.varName) && _graphView.EditorWindow.GlobalVariables != null)
+                        {
+                            var curVar = _graphView.EditorWindow.GlobalVariables.FirstOrDefault(v => v.name == cond.varName);
+                            if (curVar != null)
+                            {
+                                currentVarType = curVar.type;
+                            }
+                            else
+                            {
+                                // 尝试 Trim 后再匹配
+                                curVar = _graphView.EditorWindow.GlobalVariables.FirstOrDefault(v => v.name.Trim() == cond.varName);
+                                if (curVar != null)
+                                {
+                                    currentVarType = curVar.type;
+                                    cond.varName = curVar.name; // 修正变量名
+                                }
+                            }
+                        }
 
                         if (currentVarType == "bool")
                         {
@@ -3616,7 +3637,6 @@ namespace RPGDialogueEditor
                             row0.style.flexDirection = FlexDirection.Row;
                             row0.style.alignItems = Align.Center;
                             row0.style.marginBottom = 2;
-                            row0.style.paddingRight = 6;
 
                             var varDropdown = new DropdownField("变量", varNames,
                                 string.IsNullOrEmpty(cond.varName) ? (varNames.Count > 0 ? varNames[0] : "") : cond.varName);
@@ -3651,7 +3671,6 @@ namespace RPGDialogueEditor
                             rowTrue.style.alignItems = Align.Center;
                             rowTrue.style.marginBottom = 2;
                             rowTrue.style.overflow = Overflow.Visible;
-                            rowTrue.style.paddingRight = 6;
 
                             var trueLabel = new Label("✓ true");
                             trueLabel.style.color = new Color(0.35f, 0.85f, 0.45f);
@@ -3683,7 +3702,6 @@ namespace RPGDialogueEditor
                             truePort.style.width = 18;
                             truePort.style.height = 18;
                             truePort.style.alignSelf = Align.Center;
-                            truePort.style.marginRight = -14;
                             rowTrue.Add(truePort);
                             _optionCondBranchPorts.Add(truePort);
 
@@ -3695,7 +3713,6 @@ namespace RPGDialogueEditor
                             rowFalse.style.alignItems = Align.Center;
                             rowFalse.style.marginBottom = 2;
                             rowFalse.style.overflow = Overflow.Visible;
-                            rowFalse.style.paddingRight = 6;
 
                             var falseLabel = new Label("✗ false");
                             falseLabel.style.color = new Color(0.85f, 0.4f, 0.4f);
@@ -3727,7 +3744,6 @@ namespace RPGDialogueEditor
                             falsePort.style.width = 18;
                             falsePort.style.height = 18;
                             falsePort.style.alignSelf = Align.Center;
-                            falsePort.style.marginRight = -14;
                             rowFalse.Add(falsePort);
                             _optionCondBranchPorts.Add(falsePort);
 
@@ -3754,7 +3770,6 @@ namespace RPGDialogueEditor
                             row0.style.flexDirection = FlexDirection.Row;
                             row0.style.alignItems = Align.Center;
                             row0.style.marginBottom = 2;
-                            row0.style.paddingRight = 6;
 
                             var varDropdown = new DropdownField("变量", varNames,
                                 string.IsNullOrEmpty(cond.varName) ? (varNames.Count > 0 ? varNames[0] : "") : cond.varName);
@@ -3769,18 +3784,22 @@ namespace RPGDialogueEditor
                             });
                             row0.Add(varDropdown);
 
-                            var opChoices = new List<string> { "==", ">", "<", ">=", "<=" };
-                            var opDropdown = new DropdownField("操作", opChoices, cond.op);
+                            var opChoices = new List<string> { "==", "!=", ">", "<", ">=", "<=" };
+                            var opDropdown = new DropdownField("", opChoices, cond.op);
                             opDropdown.style.flexGrow = 0;
-                            opDropdown.style.maxWidth = 60;
+                            opDropdown.style.maxWidth = 50;
                             BeautifyField(opDropdown);
+                            var opLabel2 = opDropdown.Q<Label>();
+                            if (opLabel2 != null) { opLabel2.style.display = DisplayStyle.None; }
                             opDropdown.RegisterValueChangedCallback(evt => cond.op = evt.newValue);
                             row0.Add(opDropdown);
 
                             var intField = new IntegerField("") { value = cond.intCompareValue };
                             intField.style.flexGrow = 1;
-                            intField.style.maxWidth = 90;
+                            intField.style.maxWidth = 70;
                             BeautifyField(intField);
+                            var intLabel2 = intField.Q<Label>();
+                            if (intLabel2 != null) { intLabel2.style.display = DisplayStyle.None; }
                             intField.RegisterValueChangedCallback(evt => cond.intCompareValue = evt.newValue);
                             row0.Add(intField);
 
@@ -3805,7 +3824,6 @@ namespace RPGDialogueEditor
                             row2.style.flexDirection = FlexDirection.Row;
                             row2.style.alignItems = Align.Center;
                             row2.style.overflow = Overflow.Visible;
-                            row2.style.paddingRight = 6;
 
                             var condLabel = new Label("↳ 满足");
                             condLabel.style.color = new Color(0.75f, 0.75f, 1f);
@@ -3837,7 +3855,6 @@ namespace RPGDialogueEditor
                             intPort.style.width = 18;
                             intPort.style.height = 18;
                             intPort.style.alignSelf = Align.Center;
-                            intPort.style.marginRight = -14;
                             row2.Add(intPort);
                             _optionCondBranchPorts.Add(intPort);
 
@@ -3920,8 +3937,24 @@ namespace RPGDialogueEditor
                         var cond = option.displayConditions[localDcIdx];
 
                         string currentVarType = "bool";
-                        var curVar = _graphView.EditorWindow.GlobalVariables?.FirstOrDefault(v => v.name == cond.varName);
-                        if (curVar != null) currentVarType = curVar.type;
+                        if (!string.IsNullOrEmpty(cond.varName) && _graphView.EditorWindow.GlobalVariables != null)
+                        {
+                            var curVar = _graphView.EditorWindow.GlobalVariables.FirstOrDefault(v => v.name == cond.varName);
+                            if (curVar != null)
+                            {
+                                currentVarType = curVar.type;
+                            }
+                            else
+                            {
+                                // 尝试 Trim 后再匹配
+                                curVar = _graphView.EditorWindow.GlobalVariables.FirstOrDefault(v => v.name.Trim() == cond.varName);
+                                if (curVar != null)
+                                {
+                                    currentVarType = curVar.type;
+                                    cond.varName = curVar.name; // 修正变量名
+                                }
+                            }
+                        }
 
                         var card = new VisualElement();
                         card.style.backgroundColor = new Color(0.12f, 0.1f, 0.08f, 0.9f);
@@ -3968,18 +4001,22 @@ namespace RPGDialogueEditor
                         }
                         else
                         {
-                            var opChoices = new List<string> { "==", ">", "<", ">=", "<=" };
+                            var opChoices = new List<string> { "==", "!=", ">", "<", ">=", "<=" };
                             var opDropdown = new DropdownField("", opChoices, cond.op);
                             opDropdown.style.flexGrow = 0;
-                            opDropdown.style.maxWidth = 55;
+                            opDropdown.style.maxWidth = 50;
                             BeautifyField(opDropdown);
+                            var opLabel3 = opDropdown.Q<Label>();
+                            if (opLabel3 != null) { opLabel3.style.display = DisplayStyle.None; }
                             opDropdown.RegisterValueChangedCallback(evt => cond.op = evt.newValue);
                             row0.Add(opDropdown);
 
                             var intField = new IntegerField("") { value = cond.intCompareValue };
                             intField.style.flexGrow = 0;
-                            intField.style.maxWidth = 70;
+                            intField.style.maxWidth = 65;
                             BeautifyField(intField);
+                            var intLabel3 = intField.Q<Label>();
+                            if (intLabel3 != null) { intLabel3.style.display = DisplayStyle.None; }
                             intField.RegisterValueChangedCallback(evt => cond.intCompareValue = evt.newValue);
                             row0.Add(intField);
                         }
@@ -4091,7 +4128,6 @@ namespace RPGDialogueEditor
                 NextPort.style.height = 22;
                 NextPort.style.alignSelf = Align.Center;
                 NextPort.style.marginLeft = 6;
-                NextPort.style.marginRight = -28;
                 _nextPortRow.Add(NextPort);
 
                 _customContainer.Add(_nextPortRow);
