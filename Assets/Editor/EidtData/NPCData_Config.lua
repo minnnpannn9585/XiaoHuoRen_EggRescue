@@ -27,7 +27,7 @@ local NPCData = {
         {
             id = "NPC_005",
             name = "大黄",
-            avatarPath = "Assets/Res/TouXiang_LiHui/Dog/Dog01.png",
+            avatarPath = "Assets/Res/TouXiang_LiHui/Dog/大黄.png",
             currentBranchId = 1,
             isFolded = true,
             storyGraphs = {
@@ -103,7 +103,7 @@ local NPCData = {
             name = "豆豆",
             avatarPath = "",
             currentBranchId = 1,
-            isFolded = false,
+            isFolded = true,
             storyGraphs = {
                 {
                     branchId = 1,
@@ -143,13 +143,121 @@ local NPCData = {
             name = "小鸡侦探团",
             avatarPath = "",
             currentBranchId = 1,
-            isFolded = false,
+            isFolded = true,
             storyGraphs = {
                 {
                     branchId = 1,
                     storyDescription = "首次接触",
                     luaModuleName = "xiaojiZTT_01",
                     luaAssetPath = "Assets/Editor/DialogueData/xiaojiZTT_01.lua"
+                }
+            }
+        }
+        ,
+        {
+            id = "NPC_010",
+            name = "黑猫",
+            avatarPath = "Assets/Res/TouXiang_LiHui/猫/高傲.png",
+            currentBranchId = 1,
+            isFolded = true,
+            storyGraphs = {
+                {
+                    branchId = 1,
+                    storyDescription = "首次靠近",
+                    luaModuleName = "heimao_01",
+                    luaAssetPath = "Assets/Editor/DialogueData/heimao_01.lua"
+                }
+                ,
+                {
+                    branchId = 2,
+                    storyDescription = "2-B · 案情汇报线",
+                    luaModuleName = "heimao_02",
+                    luaAssetPath = "Assets/Editor/DialogueData/heimao_02.lua"
+                }
+                ,
+                {
+                    branchId = 3,
+                    storyDescription = "2-B-hub · 回访菜单",
+                    luaModuleName = "heimao_03",
+                    luaAssetPath = "Assets/Editor/DialogueData/heimao_03.lua"
+                }
+            }
+        }
+        ,
+        {
+            id = "NPC_011",
+            name = "大树",
+            avatarPath = "",
+            currentBranchId = 1,
+            isFolded = true,
+            storyGraphs = {
+                {
+                    branchId = 1,
+                    storyDescription = "首次靠近",
+                    luaModuleName = "heimao_01",
+                    luaAssetPath = "Assets/Editor/DialogueData/heimao_01.lua"
+                }
+                ,
+                {
+                    branchId = 2,
+                    storyDescription = "大树（轮播）",
+                    luaModuleName = "heimao_02",
+                    luaAssetPath = "Assets/Editor/DialogueData/heimao_02.lua"
+                }
+            }
+        }
+        ,
+        {
+            id = "NPC_012",
+            name = "悲伤蛙",
+            avatarPath = "Assets/Res/TouXiang_LiHui/青蛙/介入.png",
+            currentBranchId = 1,
+            isFolded = false,
+            storyGraphs = {
+                {
+                    branchId = 1,
+                    storyDescription = "首次对话",
+                    luaModuleName = "qingwa_01",
+                    luaAssetPath = "Assets/Editor/DialogueData/qingwa_01.lua"
+                }
+                ,
+                {
+                    branchId = 2,
+                    storyDescription = "轮播",
+                    luaModuleName = "qingwa_02",
+                    luaAssetPath = "Assets/Editor/DialogueData/qingwa_02.lua"
+                }
+            }
+        }
+        ,
+        {
+            id = "NPC_013",
+            name = "闪电蜗牛",
+            avatarPath = "Assets/Res/TouXiang_LiHui/蜗牛/闪电蜗牛.png",
+            currentBranchId = 1,
+            isFolded = false,
+            storyGraphs = {
+                {
+                    branchId = 1,
+                    storyDescription = "首次对话",
+                    luaModuleName = "wuniu_01",
+                    luaAssetPath = "Assets/Editor/DialogueData/wuniu_01.lua"
+                }
+            }
+        }
+        ,
+        {
+            id = "NPC_014",
+            name = "乌鸦",
+            avatarPath = "Assets/Res/TouXiang_LiHui/乌鸦/得意.png",
+            currentBranchId = 1,
+            isFolded = false,
+            storyGraphs = {
+                {
+                    branchId = 1,
+                    storyDescription = "谷仓底部仰望",
+                    luaModuleName = "wuya_01",
+                    luaAssetPath = "Assets/Editor/DialogueData/wuya_01.lua"
                 }
             }
         }
