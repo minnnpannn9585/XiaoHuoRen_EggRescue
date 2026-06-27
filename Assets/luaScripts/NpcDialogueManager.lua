@@ -35,17 +35,17 @@ local currentAnimatingOptionIndex = 0
 local optionAnimationSpeed = 0.2
 
 -- ========== 新增：选项点击后暂存与等待 Next 状态 ==========
-local selectedOptionCache = nil      -- 缓存玩家选择的选项
-local isWaitingForNextAfterOption = false   -- 是否正在等待点击 Next 以完成选项跳转
+local selectedOptionCache = nil           -- 缓存玩家选择的选项
+local isWaitingForNextAfterOption = false -- 是否正在等待点击 Next 以完成选项跳转
 
 -- ========== 新增：外部动态加载的对话配置 ==========
-local externalDialogueConfig = nil   -- 动态加载的外部对话数据
-local npcConfigPath = "Assets/Editor/EidtData/NPCData_Config.lua"  -- NPC 配置文件路径
-local globalVariablesPath = "Assets/Editor/EidtData/GlobalVariables.lua"  -- 全局变量文件路径
-local unlockedBranchCache = {}  -- 已处理过的分支缓存，防止同一节点重复解锁
+local externalDialogueConfig = nil                                       -- 动态加载的外部对话数据
+local npcConfigPath = "Assets/Editor/EidtData/NPCData_Config.lua"        -- NPC 配置文件路径
+local globalVariablesPath = "Assets/Editor/EidtData/GlobalVariables.lua" -- 全局变量文件路径
+local unlockedBranchCache = {}                                           -- 已处理过的分支缓存，防止同一节点重复解锁
 
 -- ========== 新增：头像辅助功能 ==========
-local _npcConfigsCache = nil  -- NPC 配置缓存，避免重复读取文件
+local _npcConfigsCache = nil -- NPC 配置缓存，避免重复读取文件
 
 -- 从 avatarPath 中提取 sprite 名称（去掉路径和扩展名）
 -- 例如: "Assets/Res/TouXiang_LiHui/Dog/Dog01.png" -> "Dog01"
@@ -70,16 +70,16 @@ local function EnsureNPCConfigsLoaded()
         _npcConfigsCache = _G["_NPCConfigs"]
         return _npcConfigsCache
     end
-    
+
     -- 如果已有缓存，直接返回
     if _npcConfigsCache and _npcConfigsCache.byName then
         return _npcConfigsCache
     end
-    
+
     -- 否则从文件加载
     local projectPath = GetProjectPath_DM()
     local fullPath = CS.System.IO.Path.Combine(projectPath, npcConfigPath)
-    
+
     local success, result = pcall(function()
         if not CS.System.IO.File.Exists(fullPath) then
             return nil
@@ -87,7 +87,7 @@ local function EnsureNPCConfigsLoaded()
         local content = CS.System.IO.File.ReadAllText(fullPath)
         local func = load(content)
         local data = func()
-        
+
         if data and data.npcList then
             _npcConfigsCache = { byId = {}, byName = {} }
             for _, npc in ipairs(data.npcList) do
@@ -98,7 +98,7 @@ local function EnsureNPCConfigsLoaded()
         end
         return nil
     end)
-    
+
     if success then
         return result
     end
@@ -106,7 +106,7 @@ local function EnsureNPCConfigsLoaded()
 end
 
 -- ========== 新增：全局变量表（用于条件分支判断） ==========
-local globalVariables = {}   -- 全局变量存储，支持 bool 和 int 类型
+local globalVariables = {} -- 全局变量存储，支持 bool 和 int 类型
 
 -- 获取项目根目录
 local function GetProjectPath()
@@ -204,9 +204,9 @@ function GetNextNodeByCondition(data)
     if data == nil or data.ConditionBranches == nil or #data.ConditionBranches == 0 then
         return nil
     end
-    
+
     local getFunc = _G["GetGlobalVar"] or GetGlobalVariable
-    
+
     for i, cb in ipairs(data.ConditionBranches) do
         if cb.VarName ~= nil and cb.VarName ~= "" then
             local varType = cb.VarType or "bool"
@@ -228,12 +228,18 @@ function GetNextNodeByCondition(data)
                 local cmpValue = tonumber(cb.Value) or 0
                 local intVal = tonumber(varValue) or 0
                 local match = false
-                if op == "==" then match = (intVal == cmpValue)
-                elseif op == "!=" then match = (intVal ~= cmpValue)
-                elseif op == ">" then match = (intVal > cmpValue)
-                elseif op == "<" then match = (intVal < cmpValue)
-                elseif op == ">=" then match = (intVal >= cmpValue)
-                elseif op == "<=" then match = (intVal <= cmpValue)
+                if op == "==" then
+                    match = (intVal == cmpValue)
+                elseif op == "!=" then
+                    match = (intVal ~= cmpValue)
+                elseif op == ">" then
+                    match = (intVal > cmpValue)
+                elseif op == "<" then
+                    match = (intVal < cmpValue)
+                elseif op == ">=" then
+                    match = (intVal >= cmpValue)
+                elseif op == "<=" then
+                    match = (intVal <= cmpValue)
                 end
                 if match and cb.Next ~= nil then
                     return cb.Next
@@ -241,7 +247,7 @@ function GetNextNodeByCondition(data)
             end
         end
     end
-    return nil  -- 没有任何条件分支匹配
+    return nil -- 没有任何条件分支匹配
 end
 
 -- ========== 新增：NPC 分支解锁（将 NPC 的 currentBranchId ==========
@@ -387,7 +393,8 @@ function SerializeNPCConfig(npcList)
             for j, graph in ipairs(npc.storyGraphs) do
                 table.insert(sb, "                {")
                 table.insert(sb, "                    branchId = " .. tostring(graph.branchId or 1) .. ",")
-                table.insert(sb, '                    storyDescription = "' .. tostring(graph.storyDescription or "") .. '",')
+                table.insert(sb,
+                    '                    storyDescription = "' .. tostring(graph.storyDescription or "") .. '",')
                 table.insert(sb, '                    luaModuleName = "' .. tostring(graph.luaModuleName or "") .. '",')
                 table.insert(sb, '                    luaAssetPath = "' .. tostring(graph.luaAssetPath or "") .. '"')
                 table.insert(sb, "                }")
@@ -482,15 +489,15 @@ end
 function Awake()
     _G["_DialogueManager"] = self.script
     dialogueManager = self.script
-    
+
     _G["_GlobalVariables"] = globalVariables
     _G["GetGlobalVariable"] = GetGlobalVariable
     _G["SetGlobalVariable"] = SetGlobalVariable
 
     if Sprites then
         for i = 1, Sprites.Length do
-            if Sprites[i-1] then
-                allSprites[Sprites[i-1].name] = Sprites[i-1]
+            if Sprites[i - 1] then
+                allSprites[Sprites[i - 1].name] = Sprites[i - 1]
             end
         end
     end
@@ -604,7 +611,7 @@ function OnNextClick()
             next.gameObject:SetActive(false)
         end
         -- 切换回 NPC 名字面板
-        SetPlayerNamePanel(false)   -- 显示NPC名字，隐藏玩家名字
+        SetPlayerNamePanel(false) -- 显示NPC名字，隐藏玩家名字
         -- 执行选项跳转
         PerformOptionJump(selectedOptionCache)
         selectedOptionCache = nil
@@ -640,7 +647,7 @@ end
 function UpdateDialogueUI()
     print("[Dialogue] === UpdateDialogueUI 开始 ===")
     print("[Dialogue] currentDialogueID: " .. tostring(currentDialogueID))
-    
+
     local data = GetDialogueData(currentDialogueID)
     if data == nil then
         print("[Dialogue] 对话数据为空，返回")
@@ -663,20 +670,24 @@ function UpdateDialogueUI()
     if data.SetVariables then
         print("[Dialogue] data.SetVariables 数量: " .. #data.SetVariables)
         for i, sv in ipairs(data.SetVariables) do
-            print("[Dialogue]   SetVariables[" .. i .. "] = " .. tostring(sv.VarName or sv.varName) .. ", " .. tostring(sv.VarType) .. ", " .. tostring(sv.Value))
+            print("[Dialogue]   SetVariables[" ..
+                i ..
+                "] = " ..
+                tostring(sv.VarName or sv.varName) .. ", " .. tostring(sv.VarType) .. ", " .. tostring(sv.Value))
         end
     else
         print("[Dialogue] data.SetVariables 不存在！")
     end
-    
+
     ApplySetVariables(data)
-    
+
     -- 设置后检查变量值
     if data.SetVariables and #data.SetVariables > 0 then
         print("[Dialogue] === 设置后的变量值 ===")
         for _, sv in ipairs(data.SetVariables) do
             local varName = sv.VarName or sv.varName
-            print("[Dialogue]   " .. varName .. " = " .. tostring(globalVariables[varName] and globalVariables[varName].value))
+            print("[Dialogue]   " ..
+                varName .. " = " .. tostring(globalVariables[varName] and globalVariables[varName].value))
         end
     end
 
@@ -719,7 +730,9 @@ function UpdateNPCInfo(data)
                     local npcConfig = npcConfigs.byName[data.NpcName]
                     if npcConfig.avatarPath and npcConfig.avatarPath ~= "" then
                         spriteKey = ExtractSpriteNameFromPath(npcConfig.avatarPath)
-                        print("[头像加载] NPC[" .. data.NpcName .. "] avatarPath: " .. npcConfig.avatarPath .. " -> spriteName: " .. tostring(spriteKey))
+                        print("[头像加载] NPC[" ..
+                            data.NpcName ..
+                            "] avatarPath: " .. npcConfig.avatarPath .. " -> spriteName: " .. tostring(spriteKey))
                     end
                 end
             end
@@ -733,7 +746,8 @@ function UpdateNPCInfo(data)
                 for k, v in pairs(allSprites) do
                     table.insert(availableKeys, k)
                 end
-                print("[头像加载] 找不到 spriteKey: " .. tostring(spriteKey) .. ". 可用 keys: " .. table.concat(availableKeys, ", "))
+                print("[头像加载] 找不到 spriteKey: " ..
+                    tostring(spriteKey) .. ". 可用 keys: " .. table.concat(availableKeys, ", "))
                 npcSprite.gameObject:SetActive(false)
             end
         end
@@ -758,7 +772,7 @@ function CompleteTypingEffect()
 
     if isWaitingForNextAfterOption then
         -- 选项文本播放完成：切换到玩家名字面板，显示 Next 按钮
-        SetPlayerNamePanel(true)   -- 显示玩家名字，隐藏NPC名字
+        SetPlayerNamePanel(true) -- 显示玩家名字，隐藏NPC名字
         if next then
             next.gameObject:SetActive(true)
             next.interactable = true
@@ -851,34 +865,79 @@ function CheckOptionDisplayConditions(option)
 
     local getFunc = _G["GetGlobalVar"] or GetGlobalVariable
 
-    for _, cond in ipairs(conditions) do
+    print(string.format("[DisplayCond] 检查选项: %s, 条件数量: %d", tostring(option.Text), #conditions))
+
+    for i, cond in ipairs(conditions) do
         local varName = cond.VarName
         local varType = cond.VarType or "bool"
         local varValue = getFunc(varName)
+        local op = cond.Op or "=="
+        local condValue = cond.Value
+
+        print(string.format("[DisplayCond] [%d] varName=%s, varType=%s, op=%s, condValue=%s(type=%s)",
+            i, tostring(varName), tostring(varType), tostring(op), tostring(condValue), type(condValue)))
+        print(string.format("[DisplayCond] [%d] varValue=%s(type=%s)",
+            i, tostring(varValue), type(varValue)))
 
         if varType == "bool" then
-            local expectedValue = cond.Value or true
-            if varValue ~= expectedValue then
-                return false
+            local expectedValue = condValue
+            if expectedValue == nil then
+                expectedValue = true
+            end
+            if type(expectedValue) == "string" then
+                expectedValue = (expectedValue == "true" or expectedValue == "1")
+            end
+
+            local varBool = varValue
+            if varValue == nil then
+                varBool = false
+            elseif type(varValue) == "number" then
+                varBool = (varValue ~= 0)
+            elseif type(varValue) == "string" then
+                varBool = (varValue == "true" or varValue == "1")
+            end
+
+            print(string.format("[DisplayCond] [%d] 比较: varBool=%s, expectedValue=%s, 结果=%s",
+                i, tostring(varBool), tostring(expectedValue), tostring(varBool == expectedValue)))
+
+            if op == "==" then
+                if varBool ~= expectedValue then
+                    print(string.format("[DisplayCond] [%d] 条件不满足，返回 false", i))
+                    return false
+                end
+            elseif op == "!=" then
+                if varBool == expectedValue then
+                    print(string.format("[DisplayCond] [%d] 条件不满足，返回 false", i))
+                    return false
+                end
             end
         else
-            local op = cond.Op or "=="
-            local cmpValue = tonumber(cond.Value) or 0
+            local cmpValue = tonumber(condValue) or 0
             local intVal = tonumber(varValue) or 0
             local match = false
-            if op == "==" then match = (intVal == cmpValue)
-            elseif op == "!=" then match = (intVal ~= cmpValue)
-            elseif op == ">" then match = (intVal > cmpValue)
-            elseif op == "<" then match = (intVal < cmpValue)
-            elseif op == ">=" then match = (intVal >= cmpValue)
-            elseif op == "<=" then match = (intVal <= cmpValue)
+            if op == "==" then
+                match = (intVal == cmpValue)
+            elseif op == "!=" then
+                match = (intVal ~= cmpValue)
+            elseif op == ">" then
+                match = (intVal > cmpValue)
+            elseif op == "<" then
+                match = (intVal < cmpValue)
+            elseif op == ">=" then
+                match = (intVal >= cmpValue)
+            elseif op == "<=" then
+                match = (intVal <= cmpValue)
             end
+            print(string.format("[DisplayCond] [%d] 比较: intVal=%d %s cmpValue=%d, 结果=%s",
+                i, intVal, op, cmpValue, tostring(match)))
             if not match then
+                print(string.format("[DisplayCond] [%d] 条件不满足，返回 false", i))
                 return false
             end
         end
     end
 
+    print("[DisplayCond] 所有条件通过，选项显示")
     return true
 end
 
@@ -996,7 +1055,7 @@ function OnOptionSelected(option)
     -- 清除等待选项状态，隐藏选项按钮面板（但保留当前名字面板状态，不立即切换）
     isWaitingForChoice = false
     if playerPanel then
-        playerPanel:SetActive(false)   -- 隐藏选项按钮容器
+        playerPanel:SetActive(false) -- 隐藏选项按钮容器
     end
     ClearOptionButtons()
 
@@ -1044,12 +1103,18 @@ function GetOptionNextNode(option)
                     local cmpValue = tonumber(cb.Value) or 0
                     local intVal = tonumber(varValue) or 0
                     local match = false
-                    if op == "==" then match = (intVal == cmpValue)
-                    elseif op == "!=" then match = (intVal ~= cmpValue)
-                    elseif op == ">" then match = (intVal > cmpValue)
-                    elseif op == "<" then match = (intVal < cmpValue)
-                    elseif op == ">=" then match = (intVal >= cmpValue)
-                    elseif op == "<=" then match = (intVal <= cmpValue)
+                    if op == "==" then
+                        match = (intVal == cmpValue)
+                    elseif op == "!=" then
+                        match = (intVal ~= cmpValue)
+                    elseif op == ">" then
+                        match = (intVal > cmpValue)
+                    elseif op == "<" then
+                        match = (intVal < cmpValue)
+                    elseif op == ">=" then
+                        match = (intVal >= cmpValue)
+                    elseif op == "<=" then
+                        match = (intVal <= cmpValue)
                     end
                     if match and cb.Next ~= nil then
                         return cb.Next

@@ -118,6 +118,9 @@ DialogueConfig[13] = {
     UnlockBranches = {
         { NpcName = "淑芬", BranchId = 2 }
     },
+    SetVariables = {
+        { VarName = "Shufen_CommissionDone", VarType = "bool", Value = true }
+    },
     Next = -1  -- 下一段对话ID
 }
 

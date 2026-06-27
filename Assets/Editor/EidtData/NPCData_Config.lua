@@ -13,7 +13,7 @@ local NPCData = {
             name = "描述",
             avatarPath = "",
             currentBranchId = 1,
-            isFolded = true,
+            isFolded = false,
             storyGraphs = {
                 {
                     branchId = 1,
@@ -65,7 +65,7 @@ local NPCData = {
             id = "NPC_488",
             name = "淑芬",
             avatarPath = "Assets/Res/TouXiang_LiHui/母鸡/守望.png",
-            currentBranchId = 1,
+            currentBranchId = 2,
             isFolded = true,
             storyGraphs = {
                 {
@@ -142,14 +142,21 @@ local NPCData = {
             id = "NPC_009",
             name = "小鸡侦探团",
             avatarPath = "",
-            currentBranchId = 1,
-            isFolded = true,
+            currentBranchId = 2,
+            isFolded = false,
             storyGraphs = {
                 {
                     branchId = 1,
                     storyDescription = "首次接触",
                     luaModuleName = "xiaojiZTT_01",
                     luaAssetPath = "Assets/Editor/DialogueData/xiaojiZTT_01.lua"
+                }
+                ,
+                {
+                    branchId = 2,
+                    storyDescription = "主菜单 hub",
+                    luaModuleName = "xiaojiZTT_02",
+                    luaAssetPath = "Assets/Editor/DialogueData/xiaojiZTT_02.lua"
                 }
             }
         }
@@ -211,7 +218,7 @@ local NPCData = {
             id = "NPC_012",
             name = "悲伤蛙",
             avatarPath = "Assets/Res/TouXiang_LiHui/青蛙/介入.png",
-            currentBranchId = 1,
+            currentBranchId = 2,
             isFolded = false,
             storyGraphs = {
                 {

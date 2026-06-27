@@ -6711,7 +6711,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6343274249052623675, guid: 9e4e56f5c7d446b43a7c2d235292cbb0, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 6343274249052623675, guid: 9e4e56f5c7d446b43a7c2d235292cbb0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -16862,7 +16862,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4065596105195919463, guid: 521f53d7599770e49a6a68979184cf64, type: 3}
       propertyPath: m_RootOrder
-      value: 15
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4065596105195919463, guid: 521f53d7599770e49a6a68979184cf64, type: 3}
       propertyPath: m_AnchorMax.x
@@ -17473,7 +17473,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3885426773814411347, guid: d6f145feda9074cd49a7a826ed81dcd4, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 3885426773814411347, guid: d6f145feda9074cd49a7a826ed81dcd4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -22388,13 +22388,13 @@ MonoBehaviour:
       type: {class: DouyinLuaDataUObject, ns: , asm: com.douyin.script}
       data:
         varName: infoText
-        Data: {fileID: 1311386579}
+        Data: {fileID: 0}
         varType: UnityEngine.UI.Text
     - rid: 1482841519690612739
       type: {class: DouyinLuaDataUObject, ns: , asm: com.douyin.script}
       data:
         varName: ShowBtn
-        Data: {fileID: 1241008958}
+        Data: {fileID: 0}
         varType: UnityEngine.UI.Button
 --- !u!114 &1104306480
 MonoBehaviour:
@@ -22425,7 +22425,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1107276240
 GameObject:
@@ -33543,7 +33543,7 @@ Transform:
   - {fileID: 1176394741}
   - {fileID: 1006186876}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1588421740
 GameObject:
@@ -38673,7 +38673,7 @@ RectTransform:
   m_Children:
   - {fileID: 1241008955}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -45724,9 +45724,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1956517095}
     m_Modifications:
+    - target: {fileID: 1394699997786725298, guid: 259edef7c8ce47d4a8079279fc5932f1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1395561080564463734, guid: 259edef7c8ce47d4a8079279fc5932f1, type: 3}
       propertyPath: m_Name
       value: Land
+      objectReference: {fileID: 0}
+    - target: {fileID: 1395561080564463734, guid: 259edef7c8ce47d4a8079279fc5932f1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1395561080564463735, guid: 259edef7c8ce47d4a8079279fc5932f1, type: 3}
       propertyPath: m_RootOrder
@@ -46949,7 +46957,7 @@ Transform:
   m_Children:
   - {fileID: 9128167487745446664}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8921535712972615881
 MonoBehaviour:
