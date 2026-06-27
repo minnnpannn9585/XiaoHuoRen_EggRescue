@@ -50,22 +50,15 @@ DialogueConfig[6] = {
     Next = -1  -- 下一段对话ID
 }
 
--- 解锁池塘边小鸡脚印
+-- 解锁池塘岸边蹚水痕迹
 DialogueConfig[7] = {
     Type = "Normal",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "蛙端坐的地方比周边荷叶略高，身下垫着一截绿色的东西，近闻有股奇异的气味。",
-    Next = 8  -- 下一段对话ID
-}
-
-DialogueConfig[8] = {
-    Type = "Normal",
-    NpcName = "玩家",
-    NpcSprite = "",
-    Dialogue = "那个气味……垫着什么？",
+    Dialogue = "池塘近岸处有几处被踩进的浅坑，旁边留有一个圆底压印，底部粘着带水草腥气的湿泥。",
     Next = -1  -- 下一段对话ID
 }
+
 
 -- 解锁梯子
 DialogueConfig[9] = {

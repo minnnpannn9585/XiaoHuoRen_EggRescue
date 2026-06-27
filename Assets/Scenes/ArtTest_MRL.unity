@@ -5359,7 +5359,7 @@ MonoBehaviour:
             normalImage: {fileID: 0}
             normalBackgroundImage: {fileID: 0}
           ButtonText: 1
-          Text: "\u60B2\u4F24\u86D9\u8EAB\u4E0B\u7EFF\u57AB"
+          Text: "\u6C60\u5858\u8FB9\u5C0F\u9E21\u811A\u5370"
           TextSize: 0
           TextColor: {r: 0.03137255, g: 0.023529412, b: 0.13725491, a: 1}
           ButtonActions:

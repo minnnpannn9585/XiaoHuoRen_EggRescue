@@ -65,7 +65,7 @@ local NPCData = {
             id = "NPC_488",
             name = "淑芬",
             avatarPath = "Assets/Res/TouXiang_LiHui/母鸡/守望.png",
-            currentBranchId = 2,
+            currentBranchId = 1,
             isFolded = true,
             storyGraphs = {
                 {
@@ -142,7 +142,7 @@ local NPCData = {
             id = "NPC_009",
             name = "小鸡侦探团",
             avatarPath = "",
-            currentBranchId = 2,
+            currentBranchId = 1,
             isFolded = false,
             storyGraphs = {
                 {
@@ -218,7 +218,7 @@ local NPCData = {
             id = "NPC_012",
             name = "悲伤蛙",
             avatarPath = "Assets/Res/TouXiang_LiHui/青蛙/介入.png",
-            currentBranchId = 2,
+            currentBranchId = 1,
             isFolded = false,
             storyGraphs = {
                 {
