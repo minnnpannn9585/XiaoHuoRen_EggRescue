@@ -109,7 +109,7 @@ DialogueConfig[10] = {
         },
         {Text = "主人那边……你说他最近老在你窝边转悠？", Next = 11, BranchFlag = "Flag_3"},
         {  -- 选项#4
-            Text = "大黄好像喝多了，有什么办法叫醒他吗？ 4",
+            Text = "大黄好像喝多了，有什么办法叫醒他吗？",
             Next = 29,
             BranchFlag = "Flag_4",
             DisplayConditions = {
@@ -130,7 +130,7 @@ DialogueConfig[10] = {
             Next = 19,
             BranchFlag = "Flag_6",
             DisplayConditions = {
-                { VarName = "Frog_FirstMeetShown", VarType = "bool", Value = true }
+                { VarName = "Frog_FirstMeetShown", VarType = "bool", Value = false }
             },
         },
         {  -- 选项#7
@@ -138,7 +138,7 @@ DialogueConfig[10] = {
             Next = 23,
             BranchFlag = "Flag_7",
             DisplayConditions = {
-                { VarName = "Mouse_FirstGreetShown", VarType = "bool", Value = true }
+                { VarName = "Mouse_FirstGreetShown", VarType = "bool", Value = false }
             },
         },
         {  -- 选项#8
@@ -146,7 +146,7 @@ DialogueConfig[10] = {
             Next = 27,
             BranchFlag = "Flag_8",
             DisplayConditions = {
-                { VarName = "E07_ViewNapSpot", VarType = "bool", Value = true },
+                { VarName = "E07_ViewNapSpot", VarType = "bool", Value = false },
                 { VarName = "Shufen_NapSpotAsked", VarType = "bool", Value = false }
             },
         },
@@ -322,6 +322,9 @@ DialogueConfig[29] = {
     NpcName = "淑芬",
     NpcSprite = "守望",
     Dialogue = "那条蠢狗又喝多了？",
+    SetVariables = {
+        { VarName = "E08_TreatingHangover", VarType = "bool", Value = true }
+    },
     Next = 30  -- 下一段对话ID
 }
 

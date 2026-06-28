@@ -5,7 +5,7 @@ DialogueConfig = {}
 DialogueConfig[1] = {
     Type = "Normal",
     NpcName = "大黄",
-    NpcSprite = "",
+    NpcSprite = "大黄",
     Dialogue = "嗝——",
     Next = 2  -- 下一段对话ID
 }
@@ -14,7 +14,7 @@ DialogueConfig[1] = {
 DialogueConfig[2] = {
     Type = "Normal",
     NpcName = "大黄",
-    NpcSprite = "",
+    NpcSprite = "大黄",
     Dialogue = "谁……",
     Next = 3  -- 下一段对话ID
 }
@@ -23,7 +23,7 @@ DialogueConfig[2] = {
 DialogueConfig[3] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "Npc1",
+    NpcSprite = "",
     Dialogue = "淑芬的蛋不见了。你看到过什么吗？",
     Next = 4  -- 下一段对话ID
 }
@@ -41,7 +41,7 @@ DialogueConfig[4] = {
 DialogueConfig[5] = {
     Type = "Normal",
     NpcName = "大黄",
-    NpcSprite = "",
+    NpcSprite = "大黄",
     Dialogue = "蛋……乌鸦……叼走了。",
     Next = 6  -- 下一段对话ID
 }
@@ -50,7 +50,7 @@ DialogueConfig[5] = {
 DialogueConfig[6] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "Npc1",
+    NpcSprite = "",
     Dialogue = "乌鸦？",
     Next = 7  -- 下一段对话ID
 }
@@ -59,7 +59,7 @@ DialogueConfig[6] = {
 DialogueConfig[7] = {
     Type = "Normal",
     NpcName = "大黄",
-    NpcSprite = "",
+    NpcSprite = "大黄",
     Dialogue = "嗯……飞到谷仓屋顶去了。我追了……跳不上去，只咬到空气。",
     Next = 8  -- 下一段对话ID
 }
@@ -77,8 +77,11 @@ DialogueConfig[8] = {
 DialogueConfig[9] = {
     Type = "Normal",
     NpcName = "大黄",
-    NpcSprite = "",
+    NpcSprite = "大黄",
     Dialogue = "我失职了……没有保护好淑芬的蛋。",
+    SetVariables = {
+        { VarName = "DogStatus", VarType = "int", Value = 2 }
+    },
     Next = -1  -- 下一段对话ID
 }
 

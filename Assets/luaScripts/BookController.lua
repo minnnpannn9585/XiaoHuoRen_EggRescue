@@ -4,14 +4,16 @@
 ---@var rightBtn :UnityEngine.UI.Button
 ---@var pageContents :UnityEngine.GameObject[]
 ---@var page1 :UnityEngine.GameObject[]
+---@var page2 :UnityEngine.GameObject[]
+---@var page3 :UnityEngine.GameObject[]
 
 local currentIndex = 1
-local unlockedItems = {}
+local unlockedItems = { page1 = {}, page2 = {}, page3 = {} }
 local fadingItems = {}
 local unlockConfig = {
     fadeDuration = 1.0,
 
-    conditions = {
+    page1Conditions = {
         "Shufen_CommissionDone==true",
         "E01_ViewCharcoal==true",
         "E03_Overheard==true",
@@ -20,6 +22,28 @@ local unlockConfig = {
         "Frog_WaterMonsterQueried==true",
         "E23_dabble==true",
         "E25_ChickenFootprints==true"
+    },
+    page2Conditions = {
+        "DogStatus==2",
+        "DogStatus==2",
+        "E08_TreatingHangover==true",
+        "E06_ViewNeedLadder==true",
+        "E06_LadderBorrowed==true",
+        "E09_AnimalPawPrints==true",
+        "E07_NapSpotAsked==true",
+        "E08_ViewBurnMark==true",
+        "E27_ColorReflective==true",
+        "E34_Glass==true"
+    },
+    page3Conditions = {
+        "Frog_WaterMonsterQueried==true",
+        "E23_dabble==true",
+        "E25_ChickenFootprints==true",
+        "ChickStatus==3",
+        "E10_ViewWhiteStone==true",
+        "ChickTraceCount>=2",
+        "E06_LadderBorrowed==true",
+        "DogStatus>=2"
     }
 }
 
@@ -31,14 +55,18 @@ function Start()
     rightBtn.onClick:AddListener(OnRightClick)
 
     print("[BookController] 配置加载成功, fadeDuration=" .. tostring(unlockConfig.fadeDuration))
-    if unlockConfig.conditions then
-        print("[BookController] 条件数量: " .. #unlockConfig.conditions)
-        for i, cond in ipairs(unlockConfig.conditions) do
-            print("[BookController] 条件[" .. i .. "]: " .. cond)
+    for pageName, conditions in pairs({ page1 = unlockConfig.page1Conditions, page2 = unlockConfig.page2Conditions, page3 = unlockConfig.page3Conditions }) do
+        if conditions then
+            print("[BookController] " .. pageName .. "条件数量: " .. #conditions)
+            for i, cond in ipairs(conditions) do
+                print("[BookController] " .. pageName .. "条件[" .. i .. "]: " .. cond)
+            end
         end
     end
 
     InitializePage1()
+    InitializePage2()
+    InitializePage3()
     HideAllPages()
     if pageContents and pageContents.Length > 0 then
         pageContents[currentIndex - 1]:SetActive(true)
@@ -56,7 +84,39 @@ function InitializePage1()
                 canvasGroup = obj:AddComponent(typeof(CS.UnityEngine.CanvasGroup))
             end
             canvasGroup.alpha = 0
-            unlockedItems[i] = false
+            unlockedItems.page1[i] = false
+        end
+    end
+end
+
+function InitializePage2()
+    if not page2 then return end
+    for i = 0, page2.Length - 1 do
+        local obj = page2[i]
+        if obj then
+            obj:SetActive(false)
+            local canvasGroup = obj:GetComponent(typeof(CS.UnityEngine.CanvasGroup))
+            if not canvasGroup then
+                canvasGroup = obj:AddComponent(typeof(CS.UnityEngine.CanvasGroup))
+            end
+            canvasGroup.alpha = 0
+            unlockedItems.page2[i] = false
+        end
+    end
+end
+
+function InitializePage3()
+    if not page3 then return end
+    for i = 0, page3.Length - 1 do
+        local obj = page3[i]
+        if obj then
+            obj:SetActive(false)
+            local canvasGroup = obj:GetComponent(typeof(CS.UnityEngine.CanvasGroup))
+            if not canvasGroup then
+                canvasGroup = obj:AddComponent(typeof(CS.UnityEngine.CanvasGroup))
+            end
+            canvasGroup.alpha = 0
+            unlockedItems.page3[i] = false
         end
     end
 end
@@ -85,7 +145,7 @@ end
 function OnOpenClick()
     boolPanel:SetActive(not boolPanel.activeSelf)
     if boolPanel.activeSelf then
-        CheckAndUnlockPage1()
+        CheckAndUnlockAllPages()
         HideAllPages()
         if pageContents and pageContents.Length > 0 then
             pageContents[currentIndex - 1]:SetActive(true)
@@ -93,48 +153,63 @@ function OnOpenClick()
     end
 end
 
+function CheckAndUnlockAllPages()
+    CheckAndUnlockPage1()
+    CheckAndUnlockPage2()
+    CheckAndUnlockPage3()
+end
+
 function CheckAndUnlockPage1()
     print("[BookController] CheckAndUnlockPage1 开始")
+    CheckAndUnlockPage("page1", page1, unlockConfig.page1Conditions)
+    print("[BookController] CheckAndUnlockPage1 结束")
+end
 
-    if not page1 then
-        print("[BookController] page1 为空")
+function CheckAndUnlockPage2()
+    print("[BookController] CheckAndUnlockPage2 开始")
+    CheckAndUnlockPage("page2", page2, unlockConfig.page2Conditions)
+    print("[BookController] CheckAndUnlockPage2 结束")
+end
+
+function CheckAndUnlockPage3()
+    print("[BookController] CheckAndUnlockPage3 开始")
+    CheckAndUnlockPage("page3", page3, unlockConfig.page3Conditions)
+    print("[BookController] CheckAndUnlockPage3 结束")
+end
+
+function CheckAndUnlockPage(pageName, pageObj, conditions)
+    if not pageObj then
+        print("[BookController] " .. pageName .. " 为空")
         return
     end
-    print("[BookController] page1 物体数量: " .. page1.Length)
+    print("[BookController] " .. pageName .. " 物体数量: " .. pageObj.Length)
 
-    if not unlockConfig then
-        print("[BookController] unlockConfig 为空")
-        return
-    end
-
-    local conditions = unlockConfig.conditions
     if not conditions then
-        print("[BookController] conditions 为空")
+        print("[BookController] " .. pageName .. " conditions 为空")
         return
     end
-    print("[BookController] conditions 数量: " .. #conditions)
+    print("[BookController] " .. pageName .. " conditions 数量: " .. #conditions)
 
-    for i = 0, page1.Length - 1 do
-        local obj = page1[i]
+    for i = 0, pageObj.Length - 1 do
+        local obj = pageObj[i]
         local condition = conditions[i + 1]
 
-        print("[BookController] 检查索引[" .. i .. "]: obj=" .. tostring(obj) .. ", condition=" .. tostring(condition))
+        print("[BookController] " ..
+            pageName .. "检查索引[" .. i .. "]: obj=" .. tostring(obj) .. ", condition=" .. tostring(condition))
 
         if obj and condition and condition ~= "" then
-            if unlockedItems[i] then
-                print("[BookController] 索引[" .. i .. "] 已解锁，跳过")
+            if unlockedItems[pageName][i] then
+                print("[BookController] " .. pageName .. "索引[" .. i .. "] 已解锁，跳过")
             else
                 local result = CheckUnlockCondition(condition)
-                print("[BookController] 索引[" .. i .. "] 条件检查结果: " .. tostring(result))
+                print("[BookController] " .. pageName .. "索引[" .. i .. "] 条件检查结果: " .. tostring(result))
                 if result then
-                    print("[BookController] 索引[" .. i .. "] 解锁成功!")
-                    UnlockItem(i, obj)
+                    print("[BookController] " .. pageName .. "索引[" .. i .. "] 解锁成功!")
+                    UnlockItem(pageName, i, obj)
                 end
             end
         end
     end
-
-    print("[BookController] CheckAndUnlockPage1 结束")
 end
 
 function CheckUnlockCondition(condition)
@@ -225,9 +300,9 @@ function CheckSingleCondition(subCond, globalVars)
     return result
 end
 
-function UnlockItem(index, obj)
+function UnlockItem(pageName, index, obj)
     obj:SetActive(true)
-    unlockedItems[index] = true
+    unlockedItems[pageName][index] = true
 
     local canvasGroup = obj:GetComponent(typeof(CS.UnityEngine.CanvasGroup))
     if not canvasGroup then
@@ -235,7 +310,7 @@ function UnlockItem(index, obj)
     end
     canvasGroup.alpha = 0
 
-    fadingItems[index] = {
+    fadingItems[pageName .. "_" .. index] = {
         canvasGroup = canvasGroup,
         elapsed = 0
     }

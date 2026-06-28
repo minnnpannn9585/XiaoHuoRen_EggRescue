@@ -64,6 +64,6 @@ DialogueConfig[7] = {
     SetVariables = {
         { VarName = "E03_Overheard", VarType = "bool", Value = true }
     },
-    Next = 0  -- 下一段对话ID
+    Next = -1  -- 下一段对话ID
 }
 

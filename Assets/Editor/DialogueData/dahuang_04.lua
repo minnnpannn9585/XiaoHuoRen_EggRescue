@@ -5,7 +5,7 @@ DialogueConfig = {}
 DialogueConfig[1] = {
     Type = "Normal",
     NpcName = "大黄",
-    NpcSprite = "",
+    NpcSprite = "大黄",
     Dialogue = "我清醒多了。刚才说的是真的——乌鸦叼着那个白色圆东西，飞到谷仓屋顶去了。",
     Next = 2  -- 下一段对话ID
 }
@@ -23,7 +23,7 @@ DialogueConfig[2] = {
 DialogueConfig[3] = {
     Type = "Question",
     NpcName = "玩家",
-    NpcSprite = "Npc1",
+    NpcSprite = "",
     Dialogue = "我没拦住。这事得查清楚。",
     Options = {  -- 选项列表
         {Text = "大黄，梯子能借我吗？乌鸦在谷仓顶上，我得先翻过入口那道小围墙。", Next = 4, BranchFlag = "Branch_A"},
@@ -43,7 +43,7 @@ DialogueConfig[3] = {
 DialogueConfig[4] = {
     Type = "Normal",
     NpcName = "大黄",
-    NpcSprite = "",
+    NpcSprite = "大黄",
     Dialogue = "梯子？",
     Next = 5  -- 下一段对话ID
 }
@@ -61,8 +61,11 @@ DialogueConfig[5] = {
 DialogueConfig[6] = {
     Type = "Normal",
     NpcName = "大黄",
-    NpcSprite = "",
+    NpcSprite = "大黄",
     Dialogue = "哦。对哦。拿去吧。",
+    SetVariables = {
+        { VarName = "E06_LadderBorrowed", VarType = "bool", Value = true }
+    },
     Next = 7  -- 下一段对话ID
 }
 
@@ -79,7 +82,7 @@ DialogueConfig[7] = {
 DialogueConfig[8] = {
     Type = "Normal",
     NpcName = "大黄",
-    NpcSprite = "",
+    NpcSprite = "大黄",
     Dialogue = "架稳了再翻。别摔着。",
     Next = -1  -- 下一段对话ID
 }
@@ -88,7 +91,7 @@ DialogueConfig[8] = {
 DialogueConfig[9] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "Npc1",
+    NpcSprite = "",
     Dialogue = "谷仓角落有一片被压扁的草窝，你知道是哪个动物的吗？",
     Next = 10  -- 下一段对话ID
 }
@@ -97,7 +100,7 @@ DialogueConfig[9] = {
 DialogueConfig[10] = {
     Type = "Normal",
     NpcName = "大黄",
-    NpcSprite = "",
+    NpcSprite = "大黄",
     Dialogue = "谷仓角落……",
     Next = 11  -- 下一段对话ID
 }
@@ -115,7 +118,7 @@ DialogueConfig[11] = {
 DialogueConfig[12] = {
     Type = "Normal",
     NpcName = "大黄",
-    NpcSprite = "",
+    NpcSprite = "大黄",
     Dialogue = "我嚎叫那会儿脑子糊着……好像看见两个灰乎乎的东西，抱着什么往红顶屋那边跑。太快了，没看清。",
     Next = 13  -- 下一段对话ID
 }
@@ -124,7 +127,7 @@ DialogueConfig[12] = {
 DialogueConfig[13] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "Npc1",
+    NpcSprite = "",
     Dialogue = "两个灰乎乎的……",
     Next = 14  -- 下一段对话ID
 }
@@ -133,7 +136,7 @@ DialogueConfig[13] = {
 DialogueConfig[14] = {
     Type = "Normal",
     NpcName = "大黄",
-    NpcSprite = "",
+    NpcSprite = "大黄",
     Dialogue = "嗯。也可能是我那两天喝糊涂了产生的幻觉，就那么一眼。",
     Next = -1  -- 下一段对话ID
 }
@@ -142,7 +145,7 @@ DialogueConfig[14] = {
 DialogueConfig[15] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "Npc1",
+    NpcSprite = "",
     Dialogue = "大黄，你看这个——是不是你那天追的蛋？",
     Next = 16  -- 下一段对话ID
 }
@@ -160,7 +163,7 @@ DialogueConfig[16] = {
 DialogueConfig[17] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "Npc1",
+    NpcSprite = "",
     Dialogue = "这是……什么？",
     Next = 18  -- 下一段对话ID
 }
@@ -178,7 +181,7 @@ DialogueConfig[18] = {
 DialogueConfig[19] = {
     Type = "Normal",
     NpcName = "大黄",
-    NpcSprite = "",
+    NpcSprite = "大黄",
     Dialogue = "一块石头？",
     Next = 20  -- 下一段对话ID
 }
@@ -196,7 +199,7 @@ DialogueConfig[20] = {
 DialogueConfig[21] = {
     Type = "Normal",
     NpcName = "大黄",
-    NpcSprite = "",
+    NpcSprite = "大黄",
     Dialogue = "……这跟乌鸦叼走的……形状差不多。",
     Next = 22  -- 下一段对话ID
 }
@@ -205,7 +208,7 @@ DialogueConfig[21] = {
 DialogueConfig[22] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "Npc1",
+    NpcSprite = "",
     Dialogue = "乌鸦一直守着这块石头，说是他的部落图腾宝石。",
     Next = 23  -- 下一段对话ID
 }
@@ -223,7 +226,7 @@ DialogueConfig[23] = {
 DialogueConfig[24] = {
     Type = "Normal",
     NpcName = "大黄",
-    NpcSprite = "",
+    NpcSprite = "大黄",
     Dialogue = "所以乌鸦叼走的……不是淑芬的蛋？",
     Next = 25  -- 下一段对话ID
 }
@@ -232,7 +235,7 @@ DialogueConfig[24] = {
 DialogueConfig[25] = {
     Type = "Normal",
     NpcName = "大黄",
-    NpcSprite = "",
+    NpcSprite = "大黄",
     Dialogue = "……我",
     Next = 26  -- 下一段对话ID
 }
@@ -241,7 +244,7 @@ DialogueConfig[25] = {
 DialogueConfig[26] = {
     Type = "Normal",
     NpcName = "大黄",
-    NpcSprite = "",
+    NpcSprite = "大黄",
     Dialogue = "那我不是废柴保安！！",
     Next = 27  -- 下一段对话ID
 }
@@ -259,7 +262,7 @@ DialogueConfig[27] = {
 DialogueConfig[28] = {
     Type = "Normal",
     NpcName = "大黄",
-    NpcSprite = "",
+    NpcSprite = "大黄",
     Dialogue = "蛋一定还在！！",
     Next = 29  -- 下一段对话ID
 }
@@ -286,7 +289,7 @@ DialogueConfig[30] = {
 DialogueConfig[31] = {
     Type = "Normal",
     NpcName = "大黄",
-    NpcSprite = "",
+    NpcSprite = "大黄",
     Dialogue = "蛋气味在那边。红顶屋那一片。我先走一步。",
     Next = -1  -- 下一段对话ID
 }

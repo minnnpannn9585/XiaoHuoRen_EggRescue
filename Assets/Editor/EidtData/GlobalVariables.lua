@@ -20,6 +20,10 @@ local GlobalVariables = {
     { name = "E36_CrowTauntShown",          type = "bool", value = false },
     { name = "E25_ChickenFootprints",       type = "bool", value = false },
     { name = "E23_dabble",                  type = "bool", value = false },
+    { name = "E08_TreatingHangover",        type = "bool", value = false },
+    { name = "E09_AnimalPawPrints",         type = "bool", value = false },
+    { name = "E34_Glass",                   type = "bool", value = false },
+    { name = "E27_ColorReflective",         type = "bool", value = false },
 
 
     -- ========== 环境线索变量（E点）- 第二章 ==========

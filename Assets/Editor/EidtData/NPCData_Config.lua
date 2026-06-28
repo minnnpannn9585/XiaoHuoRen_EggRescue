@@ -66,7 +66,7 @@ local NPCData = {
             name = "淑芬",
             avatarPath = "Assets/Res/TouXiang_LiHui/母鸡/守望.png",
             currentBranchId = 1,
-            isFolded = true,
+            isFolded = false,
             storyGraphs = {
                 {
                     branchId = 1,
@@ -103,7 +103,7 @@ local NPCData = {
             name = "豆豆",
             avatarPath = "",
             currentBranchId = 1,
-            isFolded = true,
+            isFolded = false,
             storyGraphs = {
                 {
                     branchId = 1,
