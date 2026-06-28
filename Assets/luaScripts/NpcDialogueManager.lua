@@ -39,10 +39,10 @@ local selectedOptionCache = nil           -- 缓存玩家选择的选项
 local isWaitingForNextAfterOption = false -- 是否正在等待点击 Next 以完成选项跳转
 
 -- ========== 新增：外部动态加载的对话配置 ==========
-local externalDialogueConfig = nil                                       -- 动态加载的外部对话数据
-local npcConfigPath = "Assets/Editor/EidtData/NPCData_Config.lua"        -- NPC 配置文件路径
-local globalVariablesPath = "Assets/Editor/EidtData/GlobalVariables.lua" -- 全局变量文件路径
-local unlockedBranchCache = {}                                           -- 已处理过的分支缓存，防止同一节点重复解锁
+local externalDialogueConfig = nil                             -- 动态加载的外部对话数据
+local npcConfigResourcePath = "EidtData/NPCData_Config"        -- NPC 配置文件资源路径
+local globalVariablesResourcePath = "EidtData/GlobalVariables" -- 全局变量文件资源路径
+local unlockedBranchCache = {}                                 -- 已处理过的分支缓存，防止同一节点重复解锁
 
 -- ========== 新增：头像辅助功能 ==========
 local _npcConfigsCache = nil -- NPC 配置缓存，避免重复读取文件
@@ -62,51 +62,6 @@ local function ExtractSpriteNameFromPath(avatarPath)
     local spriteName = fileName:match("(.+)%..+$")
     return spriteName or fileName
 end
-
--- 确保 NPC 配置已加载（如果还没加载则读取文件）
-local function EnsureNPCConfigsLoaded()
-    -- 优先复用 DialogueTrigger 加载的全局 _NPCConfigs
-    if _G["_NPCConfigs"] and _G["_NPCConfigs"].byName then
-        _npcConfigsCache = _G["_NPCConfigs"]
-        return _npcConfigsCache
-    end
-
-    -- 如果已有缓存，直接返回
-    if _npcConfigsCache and _npcConfigsCache.byName then
-        return _npcConfigsCache
-    end
-
-    -- 否则从文件加载
-    local projectPath = GetProjectPath_DM()
-    local fullPath = CS.System.IO.Path.Combine(projectPath, npcConfigPath)
-
-    local success, result = pcall(function()
-        if not CS.System.IO.File.Exists(fullPath) then
-            return nil
-        end
-        local content = CS.System.IO.File.ReadAllText(fullPath)
-        local func = load(content)
-        local data = func()
-
-        if data and data.npcList then
-            _npcConfigsCache = { byId = {}, byName = {} }
-            for _, npc in ipairs(data.npcList) do
-                if npc.id then _npcConfigsCache.byId[npc.id] = npc end
-                if npc.name then _npcConfigsCache.byName[npc.name] = npc end
-            end
-            return _npcConfigsCache
-        end
-        return nil
-    end)
-
-    if success then
-        return result
-    end
-    return nil
-end
-
--- ========== 新增：全局变量表（用于条件分支判断） ==========
-local globalVariables = {} -- 全局变量存储，支持 bool 和 int 类型
 
 -- 获取项目根目录
 local function GetProjectPath()
@@ -132,15 +87,59 @@ local function GetProjectPath()
     return projectPath
 end
 
+-- 确保 NPC 配置已加载（如果还没加载则读取文件）
+local function EnsureNPCConfigsLoaded()
+    -- 优先复用 DialogueTrigger 加载的全局 _NPCConfigs
+    if _G["_NPCConfigs"] and _G["_NPCConfigs"].byName then
+        _npcConfigsCache = _G["_NPCConfigs"]
+        return _npcConfigsCache
+    end
+
+    -- 如果已有缓存，直接返回
+    if _npcConfigsCache and _npcConfigsCache.byName then
+        return _npcConfigsCache
+    end
+
+    -- 否则从 Editor/EidtData 加载（File.ReadAllText 方式）
+    local projectPath = GetProjectPath()
+    local success, result = pcall(function()
+        local configPath = CS.System.IO.Path.Combine(projectPath, "Assets/Editor/EidtData/NPCData_Config.lua")
+        if not CS.System.IO.File.Exists(configPath) then
+            return nil
+        end
+        local content = CS.System.IO.File.ReadAllText(configPath)
+        local func = load(content)
+        local data = func()
+
+        if data and data.npcList then
+            _npcConfigsCache = { byId = {}, byName = {} }
+            for _, npc in ipairs(data.npcList) do
+                if npc.id then _npcConfigsCache.byId[npc.id] = npc end
+                if npc.name then _npcConfigsCache.byName[npc.name] = npc end
+            end
+            return _npcConfigsCache
+        end
+        return nil
+    end)
+
+    if success then
+        return result
+    end
+    return nil
+end
+
+-- ========== 新增：全局变量表（用于条件分支判断） ==========
+local globalVariables = {} -- 全局变量存储，支持 bool 和 int 类型
+
 -- 从 GlobalVariables.lua 文件重新加载全局变量（每次条件判断前调用一次，确保是最新值）
 function ReloadGlobalVariablesFromFile()
+    local projectPath = GetProjectPath()
     local success, err = pcall(function()
-        local projectPath = GetProjectPath()
-        local fullPath = CS.System.IO.Path.Combine(projectPath, globalVariablesPath)
-        if not CS.System.IO.File.Exists(fullPath) then
+        local configPath = CS.System.IO.Path.Combine(projectPath, "Assets/Editor/EidtData/GlobalVariables.lua")
+        if not CS.System.IO.File.Exists(configPath) then
             return
         end
-        local content = CS.System.IO.File.ReadAllText(fullPath)
+        local content = CS.System.IO.File.ReadAllText(configPath)
         local func = load(content)
         if not func then return end
         local data = func()
@@ -253,32 +252,6 @@ end
 -- ========== 新增：NPC 分支解锁（将 NPC 的 currentBranchId ==========
 -- 功能：当执行到带有 UnlockBranchId 的节点时，修改 NPCData_Config.lua 中的 currentBranchId
 
--- ========== 与 DialogueTrigger 保持一致的项目路径计算 ==========
-function GetProjectPath_DM()
-    local dataPath = CS.UnityEngine.Application.dataPath
-    local projectPath = dataPath
-
-    if dataPath:find("DouyinWorldDebugger") or dataPath:find("_Data") then
-        local parts = {}
-        for part in dataPath:gmatch("[^/\\]+") do
-            table.insert(parts, part)
-        end
-        if #parts >= 2 then
-            local newParts = {}
-            for i = 1, #parts - 2 do
-                table.insert(newParts, parts[i])
-            end
-            projectPath = table.concat(newParts, "/")
-        else
-            projectPath = CS.System.IO.Path.GetFullPath(dataPath .. "/../../")
-        end
-    else
-        projectPath = CS.System.IO.Path.GetFullPath(dataPath .. "/../")
-    end
-
-    return projectPath
-end
-
 function UpdateNPCBranchConfig(npcName, newBranchId)
     if not npcName or npcName == "" then
         return false
@@ -288,42 +261,28 @@ function UpdateNPCBranchConfig(npcName, newBranchId)
         return false
     end
 
-    -- 用与 DialogueTrigger 相同的 GetProjectPath 逻辑计算项目根目录
-    local projectRoot = GetProjectPath_DM()
-    local fullPath = CS.System.IO.Path.Combine(projectRoot, npcConfigPath)
-
     print("=== NPC [" .. npcName .. "] -> " .. newBranchId)
-    print(": " .. fullPath)
 
-    -- 读取 NPC 配置
-    local configContent
+    local projectPath = GetProjectPath()
+    local configPath = CS.System.IO.Path.Combine(projectPath, "Assets/Editor/EidtData/NPCData_Config.lua")
+
+    -- 读取 NPC 配置（从 Editor/EidtData）
+    local configData
     local success, err = pcall(function()
-        if not CS.System.IO.File.Exists(fullPath) then
-            error("配置文件不存在: " .. fullPath)
+        if not CS.System.IO.File.Exists(configPath) then
+            error("配置文件不存在: " .. configPath)
         end
-        return CS.System.IO.File.ReadAllText(fullPath)
+        local content = CS.System.IO.File.ReadAllText(configPath)
+        local func = load(content)
+        return func()
     end)
 
-    if not success then
+    if not success or not err then
         print("[NPC分支解锁] 读取失败: " .. tostring(err))
         return false
     end
 
-    configContent = err
-
-    -- 执行 Lua 代码获取 Lua 表
-    local configData
-    local loadSuccess, loadErr = pcall(function()
-        local func = load(configContent)
-        return func()
-    end)
-
-    if not loadSuccess or not loadErr then
-        print("[NPC分支解锁] 解析失败: " .. tostring(loadErr))
-        return false
-    end
-
-    configData = loadErr
+    configData = err
 
     -- 在 npcList 中查找并修改
     local found = false
@@ -353,7 +312,7 @@ function UpdateNPCBranchConfig(npcName, newBranchId)
 
     -- 写回文件
     local writeSuccess, writeErr = pcall(function()
-        CS.System.IO.File.WriteAllText(fullPath, newContent)
+        CS.System.IO.File.WriteAllText(configPath, newContent)
     end)
 
     if not writeSuccess then

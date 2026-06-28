@@ -6,15 +6,13 @@
 local loadedNPCScripts = {}
 
 function Start()
-    if _G["_DialogueManager"]==nil then
+    if _G["_DialogueManager"] == nil then
         logError("场景中缺少DialogueManager预制件")
     end
-    -- 重置所有 NPC 的 currentBranchId = 1，让玩家每次进入都从第一条剧情开始
     ResetAllBranchesToStart()
     LoadNPCConfig()
 end
 
--- ========== 新增：每次开始都把所有 NPC 的 currentBranchId 重置为 1 ==========
 function ResetAllBranchesToStart()
     local projectPath = GetProjectPath()
     local configPath = CS.System.IO.Path.Combine(projectPath, "Assets/Editor/EidtData/NPCData_Config.lua")
@@ -28,19 +26,9 @@ function ResetAllBranchesToStart()
         local data = func()
 
         if data and data.npcList then
-            local changed = false
             for _, npc in ipairs(data.npcList) do
                 if npc.currentBranchId ~= 1 then
                     npc.currentBranchId = 1
-                    changed = true
-                end
-            end
-
-            if changed then
-                local newText = SerializeNPCConfigForTrigger(data.npcList)
-                if newText then
-                    CS.System.IO.File.WriteAllText(configPath, newText)
-                    print("NPC: " .. #data.npcList .. "  NPC  " .. configPath)
                 end
             end
         end
@@ -77,7 +65,8 @@ function SerializeNPCConfigForTrigger(npcList)
             for j, graph in ipairs(npc.storyGraphs) do
                 table.insert(sb, "                {")
                 table.insert(sb, "                    branchId = " .. tostring(graph.branchId or 1) .. ",")
-                table.insert(sb, '                    storyDescription = "' .. tostring(graph.storyDescription or "") .. '",')
+                table.insert(sb,
+                    '                    storyDescription = "' .. tostring(graph.storyDescription or "") .. '",')
                 table.insert(sb, '                    luaModuleName = "' .. tostring(graph.luaModuleName or "") .. '",')
                 table.insert(sb, '                    luaAssetPath = "' .. tostring(graph.luaAssetPath or "") .. '"')
                 table.insert(sb, "                }")
@@ -103,7 +92,7 @@ end
 function GetProjectPath()
     local dataPath = CS.UnityEngine.Application.dataPath
     local projectPath = dataPath
-    
+
     if dataPath:find("DouyinWorldDebugger") or dataPath:find("_Data") then
         local parts = {}
         for part in dataPath:gmatch("[^/\\]+") do
@@ -121,18 +110,18 @@ function GetProjectPath()
     else
         projectPath = CS.System.IO.Path.GetFullPath(dataPath .. "/../")
     end
-    
+
     return projectPath
 end
 
 function LoadNPCConfig()
     local projectPath = GetProjectPath()
     local configPath = CS.System.IO.Path.Combine(projectPath, "Assets/Editor/EidtData/NPCData_Config.lua")
-    
+
     print("=== NPC ===")
     print("ProjectPath: " .. projectPath)
     print("ConfigPath: " .. configPath)
-    
+
     local success, data = pcall(function()
         if not CS.System.IO.File.Exists(configPath) then
             error("file not found: " .. configPath)
@@ -141,12 +130,12 @@ function LoadNPCConfig()
         local func = load(content)
         return func()
     end)
-    
+
     if not success then
         logError("NPC: " .. tostring(data))
         return
     end
-    
+
     _NPCConfigs = { byId = {}, byName = {} }
     if data and data.npcList then
         for _, npc in ipairs(data.npcList) do
@@ -161,15 +150,15 @@ function NormalizeDialogueData(rawData)
     if rawData == nil then
         return nil
     end
-    
+
     if rawData.script and rawData.script.DialogueConfig then
         return rawData.script.DialogueConfig
     end
-    
+
     if rawData.DialogueConfig then
         return rawData.DialogueConfig
     end
-    
+
     local hasNumberKey = false
     for k, v in pairs(rawData) do
         if type(k) == "number" and type(v) == "table" and (v.Dialogue or v.NpcName or v.Type) then
@@ -180,7 +169,7 @@ function NormalizeDialogueData(rawData)
     if hasNumberKey then
         return rawData
     end
-    
+
     return nil
 end
 
@@ -188,14 +177,14 @@ function ExecuteLuaFile(content)
     local result = nil
     local loadedGlobal = nil
     local oldDialogueConfig = DialogueConfig
-    
+
     local func = load(content)
     result = func()
-    
+
     if _G["DialogueConfig"] ~= nil and _G["DialogueConfig"] ~= oldDialogueConfig then
         loadedGlobal = _G["DialogueConfig"]
     end
-    
+
     if result ~= nil then
         return result
     end
@@ -208,14 +197,13 @@ function LoadNPCScript(npcName)
         return nil
     end
 
-    -- ===== 改动：每次都重新读取 NPC 配置文件，确保拿到最新的 currentBranchId =====
     local projectPath = GetProjectPath()
-    local configPath = CS.System.IO.Path.Combine(projectPath, "Assets/Editor/EidtData/NPCData_Config.lua")
 
     local npcConfig = nil
     local cfgSuccess, cfgResult = pcall(function()
+        local configPath = CS.System.IO.Path.Combine(projectPath, "Assets/Editor/EidtData/NPCData_Config.lua")
         if not CS.System.IO.File.Exists(configPath) then
-            error("file not found: " .. configPath)
+            error("配置文件不存在: " .. configPath)
         end
         local content = CS.System.IO.File.ReadAllText(configPath)
         local func = load(content)
@@ -254,27 +242,21 @@ function LoadNPCScript(npcName)
         return nil
     end
 
-    -- 缓存 key 同时包含 NPC 名和 branchId，切换分支时自动走新缓存
-    -- ⚠️ 开发阶段：每次都重新读取文件，确保拿到最新的配置
     local cacheKey = npcName .. "_b" .. currentBranchId
-    -- if loadedNPCScripts[cacheKey] then
-    --     print("NPC: " .. npcName .. " ( " .. currentBranchId .. ")")
-    --     return loadedNPCScripts[cacheKey]
-    -- end
 
     print("=== NPC ===")
     print("NPC: " .. npcName)
     print("Branch: " .. currentBranchId)
     print("LuaPath: " .. luaAssetPath)
 
-    local fullPath = CS.System.IO.Path.Combine(projectPath, luaAssetPath)
-    print("FullPath: " .. fullPath)
+    local filePath = CS.System.IO.Path.Combine(projectPath, luaAssetPath)
+    print("FilePath: " .. filePath)
 
     local success, scriptData = pcall(function()
-        if not CS.System.IO.File.Exists(fullPath) then
-            error("file not found: " .. fullPath)
+        if not CS.System.IO.File.Exists(filePath) then
+            error("对话脚本不存在: " .. filePath)
         end
-        local content = CS.System.IO.File.ReadAllText(fullPath)
+        local content = CS.System.IO.File.ReadAllText(filePath)
         return ExecuteLuaFile(content)
     end)
 
@@ -298,7 +280,8 @@ function LoadNPCScript(npcName)
         if normalizedData[22].SetVariables then
             print("[DialogueTrigger]   SetVariables 数量: " .. #normalizedData[22].SetVariables)
             for i, sv in ipairs(normalizedData[22].SetVariables) do
-                print("[DialogueTrigger]     SetVariables[" .. i .. "] = " .. tostring(sv.VarName) .. ", " .. tostring(sv.VarType) .. ", " .. tostring(sv.Value))
+                print("[DialogueTrigger]     SetVariables[" ..
+                    i .. "] = " .. tostring(sv.VarName) .. ", " .. tostring(sv.VarType) .. ", " .. tostring(sv.Value))
             end
         end
     end

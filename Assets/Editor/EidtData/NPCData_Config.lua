@@ -6,6 +6,8 @@ local NPCData = {
             avatarPath = "",
             currentBranchId = 1,
             isFolded = true,
+            storyGraphs = {
+            }
         }
         ,
         {
@@ -28,8 +30,8 @@ local NPCData = {
             id = "NPC_005",
             name = "大黄",
             avatarPath = "Assets/Res/TouXiang_LiHui/Dog/大黄.png",
-            currentBranchId = 1,
-            isFolded = true,
+            currentBranchId = 4,
+            isFolded = false,
             storyGraphs = {
                 {
                     branchId = 1,
@@ -65,8 +67,8 @@ local NPCData = {
             id = "NPC_488",
             name = "淑芬",
             avatarPath = "Assets/Res/TouXiang_LiHui/母鸡/守望.png",
-            currentBranchId = 1,
-            isFolded = false,
+            currentBranchId = 2,
+            isFolded = true,
             storyGraphs = {
                 {
                     branchId = 1,
@@ -120,6 +122,8 @@ local NPCData = {
             avatarPath = "",
             currentBranchId = 1,
             isFolded = true,
+            storyGraphs = {
+            }
         }
         ,
         {
@@ -128,6 +132,8 @@ local NPCData = {
             avatarPath = "",
             currentBranchId = 1,
             isFolded = true,
+            storyGraphs = {
+            }
         }
         ,
         {
@@ -136,13 +142,15 @@ local NPCData = {
             avatarPath = "",
             currentBranchId = 1,
             isFolded = true,
+            storyGraphs = {
+            }
         }
         ,
         {
             id = "NPC_009",
             name = "小鸡侦探团",
             avatarPath = "",
-            currentBranchId = 1,
+            currentBranchId = 2,
             isFolded = false,
             storyGraphs = {
                 {
@@ -218,7 +226,7 @@ local NPCData = {
             id = "NPC_012",
             name = "悲伤蛙",
             avatarPath = "Assets/Res/TouXiang_LiHui/青蛙/介入.png",
-            currentBranchId = 1,
+            currentBranchId = 2,
             isFolded = false,
             storyGraphs = {
                 {

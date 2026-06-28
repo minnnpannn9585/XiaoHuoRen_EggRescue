@@ -237,3 +237,19 @@ DialogueConfig[28] = {
     Dialogue = "这里住着被照顾得很好的小动物。",
     Next = -1  -- 下一段对话ID
 }
+--门边兽毛
+DialogueConfig[29] = {
+    Type = "Normal",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "一撮深色兽毛，毛尖细软。",
+    Next = -1  -- 下一段对话ID
+}
+--紧闭大门
+DialogueConfig[30] = {
+    Type = "Normal",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "大门关得很紧，没有能钻进去的空隙。",
+    Next = -1  -- 下一段对话ID
+}
