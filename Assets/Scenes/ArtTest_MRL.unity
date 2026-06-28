@@ -365,10 +365,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550187
+  - rid: 1482841612812550188
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -376,12 +376,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550187
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
         Data: 16
-    - rid: 1482841250482356228
+    - rid: 1482841612812550188
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -993,10 +993,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550181
+  - rid: 1482841612812550182
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -1004,12 +1004,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550181
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
         Data: 8
-    - rid: 1482841250482356228
+    - rid: 1482841612812550182
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -1272,10 +1272,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550173
+  - rid: 1482841612812550174
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -1283,12 +1283,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550173
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
         Data: 3
-    - rid: 1482841250482356228
+    - rid: 1482841612812550174
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -1386,6 +1386,76 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d3ebb3956e183694c8de6447bce41be9, type: 3}
+--- !u!1 &199298507
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 199298508}
+  - component: {fileID: 199298510}
+  - component: {fileID: 199298509}
+  m_Layer: 0
+  m_Name: qingwa_02
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &199298508
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 199298507}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &199298509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 199298507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: 4340f3ac623cfa947bd2802eedc0929e, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &199298510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 199298507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 3572076432072890777
+    n2: 507943187470171666
+  RunContext: 0
 --- !u!1001 &224245453
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1880,6 +1950,76 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 323861811}
   m_CullTransparentMesh: 1
+--- !u!1 &325945314
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 325945315}
+  - component: {fileID: 325945317}
+  - component: {fileID: 325945316}
+  m_Layer: 0
+  m_Name: shufang_01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &325945315
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 325945314}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &325945316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 325945314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: 205537fdf0dd6214797c25f79c6348b4, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &325945317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 325945314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 18009086054348001979
+    n2: 8972655218388856796
+  RunContext: 0
 --- !u!1 &332287550
 GameObject:
   m_ObjectHideFlags: 0
@@ -2122,10 +2262,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550185
+  - rid: 1482841612812550186
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -2133,12 +2273,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550185
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
         Data: 14
-    - rid: 1482841250482356228
+    - rid: 1482841612812550186
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -2401,10 +2541,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550189
+  - rid: 1482841612812550190
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -2412,12 +2552,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550189
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
         Data: 17
-    - rid: 1482841250482356228
+    - rid: 1482841612812550190
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -2697,10 +2837,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550157
+  - rid: 1482841612812550158
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -2708,12 +2848,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550157
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
-        Data: 1
-    - rid: 1482841250482356228
+        Data: 0
+    - rid: 1482841612812550158
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -3238,10 +3378,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550195
+  - rid: 1482841612812550196
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -3249,12 +3389,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550195
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
         Data: 21
-    - rid: 1482841250482356228
+    - rid: 1482841612812550196
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -3340,7 +3480,7 @@ GameObject:
   - component: {fileID: 574998027}
   - component: {fileID: 574998026}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: MianController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3380,8 +3520,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetGUID:
-    n1: 8381419655613097533
-    n2: 4950167451912200535
+    n1: 15784945176886097200
+    n2: 12885416835140502881
   RunContext: 0
 --- !u!4 &574998028
 Transform:
@@ -3540,6 +3680,76 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6333691154948848778, guid: 6bfa1f268e4b01647b9a84fa9760c440, type: 3}
   m_PrefabInstance: {fileID: 582660755}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &587242566
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 587242567}
+  - component: {fileID: 587242569}
+  - component: {fileID: 587242568}
+  m_Layer: 0
+  m_Name: dahuang_03
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &587242567
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 587242566}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &587242568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 587242566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: 7a0099f2ba9e4594ebf2d3d3c4b90ab2, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &587242569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 587242566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 6486725901952671959
+    n2: 18117020514454541713
+  RunContext: 0
 --- !u!1 &590699958
 GameObject:
   m_ObjectHideFlags: 0
@@ -3903,10 +4113,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550177
+  - rid: 1482841612812550178
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -3914,12 +4124,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550177
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
         Data: 7
-    - rid: 1482841250482356228
+    - rid: 1482841612812550178
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -3939,6 +4149,76 @@ MonoBehaviour:
   NetGUID:
     n1: 18193819410272350576
     n2: 5750799752110891153
+  RunContext: 0
+--- !u!1 &635456353
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 635456354}
+  - component: {fileID: 635456356}
+  - component: {fileID: 635456355}
+  m_Layer: 0
+  m_Name: wuniu_01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &635456354
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635456353}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &635456355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635456353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: 1f34f73c298b74142a5f108e14c02d71, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &635456356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635456353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 9967101279286510080
+    n2: 13842073849539626165
   RunContext: 0
 --- !u!1 &639307633
 GameObject:
@@ -4182,10 +4462,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550179
+  - rid: 1482841612812550180
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -4193,12 +4473,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550179
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
         Data: 9
-    - rid: 1482841250482356228
+    - rid: 1482841612812550180
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -4501,10 +4781,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550205
+  - rid: 1482841612812550206
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -4512,12 +4792,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550205
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
         Data: 29
-    - rid: 1482841250482356228
+    - rid: 1482841612812550206
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -4537,6 +4817,146 @@ MonoBehaviour:
   NetGUID:
     n1: 12268474202389969776
     n2: 2459876841532842706
+  RunContext: 0
+--- !u!1 &708147610
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 708147611}
+  - component: {fileID: 708147613}
+  - component: {fileID: 708147612}
+  m_Layer: 0
+  m_Name: dahuang_02
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &708147611
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708147610}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &708147612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708147610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: 9810ebf77c88a5642af94278507d725f, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &708147613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708147610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 2611370127530601835
+    n2: 18356550140585787498
+  RunContext: 0
+--- !u!1 &720784456
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 720784457}
+  - component: {fileID: 720784459}
+  - component: {fileID: 720784458}
+  m_Layer: 0
+  m_Name: shufang_02_R2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &720784457
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 720784456}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &720784458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 720784456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: 16d24a746e179c5478401adae8be0d26, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &720784459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 720784456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 8003252060439548756
+    n2: 6788780169291508367
   RunContext: 0
 --- !u!1 &754286185
 GameObject:
@@ -4780,10 +5200,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550193
+  - rid: 1482841612812550194
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -4791,12 +5211,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550193
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
         Data: 19
-    - rid: 1482841250482356228
+    - rid: 1482841612812550194
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -5212,6 +5632,76 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!1 &839601881
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 839601882}
+  - component: {fileID: 839601884}
+  - component: {fileID: 839601883}
+  m_Layer: 0
+  m_Name: zttTouTing
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &839601882
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839601881}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 19
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &839601883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839601881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: f731310c2e481584087fa0d167eeb883, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &839601884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839601881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 12882002939121452607
+    n2: 5268021298897870526
+  RunContext: 0
 --- !u!1 &851357214
 GameObject:
   m_ObjectHideFlags: 0
@@ -5251,6 +5741,76 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &853318317
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 853318318}
+  - component: {fileID: 853318320}
+  - component: {fileID: 853318319}
+  m_Layer: 0
+  m_Name: heimao_01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &853318318
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 853318317}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &853318319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 853318317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: f21baf39e5786f64c8ebd8c825bc7bd3, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &853318320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 853318317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 6343290116885680409
+    n2: 4025246106781783724
+  RunContext: 0
 --- !u!1 &855446235
 GameObject:
   m_ObjectHideFlags: 0
@@ -5672,10 +6232,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550203
+  - rid: 1482841612812550204
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -5683,12 +6243,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550203
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
         Data: 27
-    - rid: 1482841250482356228
+    - rid: 1482841612812550204
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -5708,6 +6268,76 @@ MonoBehaviour:
   NetGUID:
     n1: 4774170552905846486
     n2: 7057549605232236005
+  RunContext: 0
+--- !u!1 &882575724
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 882575725}
+  - component: {fileID: 882575727}
+  - component: {fileID: 882575726}
+  m_Layer: 0
+  m_Name: heimao_03
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &882575725
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882575724}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &882575726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882575724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: 3dd47e341cdabce43959b68af3967c12, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &882575727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882575724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 15559101502128225648
+    n2: 7103533275261852019
   RunContext: 0
 --- !u!1 &891101805
 GameObject:
@@ -5989,10 +6619,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550183
+  - rid: 1482841612812550184
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -6000,12 +6630,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550183
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
         Data: 12
-    - rid: 1482841250482356228
+    - rid: 1482841612812550184
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -6256,6 +6886,76 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &932697441
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 932697442}
+  - component: {fileID: 932697444}
+  - component: {fileID: 932697443}
+  m_Layer: 0
+  m_Name: heimao_02
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &932697442
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 932697441}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &932697443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 932697441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: c3092a2857e84334e8c5764e52f6d00d, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &932697444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 932697441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 10863081382498478227
+    n2: 12916855373247071706
+  RunContext: 0
 --- !u!1 &952102617
 GameObject:
   m_ObjectHideFlags: 0
@@ -6607,10 +7307,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550152
+  - rid: 1482841612812550153
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -6618,12 +7318,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550152
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
-        Data: 1
-    - rid: 1482841250482356228
+        Data: 0
+    - rid: 1482841612812550153
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -6886,10 +7586,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550197
+  - rid: 1482841612812550198
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -6897,12 +7597,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550197
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
         Data: 23
-    - rid: 1482841250482356228
+    - rid: 1482841612812550198
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -7080,10 +7780,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550163
+  - rid: 1482841612812550164
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -7091,12 +7791,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550163
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
-        Data: 1
-    - rid: 1482841250482356228
+        Data: 0
+    - rid: 1482841612812550164
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -7388,7 +8088,7 @@ GameObject:
   - component: {fileID: 1052425906}
   - component: {fileID: 1052425905}
   m_Layer: 0
-  m_Name: "\u9752\u86D9"
+  m_Name: "\u60B2\u4F24\u86D9"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7532,10 +8232,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550161
+  - rid: 1482841612812550162
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -7543,12 +8243,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550161
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
-        Data: 1
-    - rid: 1482841250482356228
+        Data: 0
+    - rid: 1482841612812550162
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -7566,8 +8266,78 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetGUID:
-    n1: 6612831167579929
-    n2: 15810422532392123514
+    n1: 3504179272084150496
+    n2: 1008356854059674951
+  RunContext: 0
+--- !u!1 &1068982057
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1068982058}
+  - component: {fileID: 1068982060}
+  - component: {fileID: 1068982059}
+  m_Layer: 0
+  m_Name: qingwa_01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1068982058
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068982057}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1068982059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068982057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: 3a388a06e80cc974dab11e58cc929356, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &1068982060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068982057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 18091704407084970888
+    n2: 1501532032885473858
   RunContext: 0
 --- !u!1 &1073908295
 GameObject:
@@ -7774,6 +8544,8 @@ GameObject:
   - component: {fileID: 1104306481}
   - component: {fileID: 1104306480}
   - component: {fileID: 1104306479}
+  - component: {fileID: 1104306482}
+  - component: {fileID: 1104306483}
   m_Layer: 0
   m_Name: GlobalVariables
   m_TagString: Untagged
@@ -7795,6 +8567,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ScriptAsset: {fileID: -4320198879241519195, guid: e70e68d0a32b990498011edbef4994dc, type: 3}
   ParaLuaBindingData:
+  - rid: 1482841612812550148
+  - rid: 1482841612812550147
+  - rid: 1482841612812550151
   - rid: 1482841519690612738
   - rid: 1482841519690612739
   - rid: 1482841578848649217
@@ -7830,6 +8605,24 @@ MonoBehaviour:
         varName: searchBtn
         Data: {fileID: 1788640898}
         varType: UnityEngine.UI.Button
+    - rid: 1482841612812550147
+      type: {class: DouyinLuaDataMono, ns: , asm: com.douyin.script}
+      data:
+        varName: NPCDataConfig
+        Data: {fileID: 1104306483}
+        varType: DouyinScript
+    - rid: 1482841612812550148
+      type: {class: DouyinLuaDataMono, ns: , asm: com.douyin.script}
+      data:
+        varName: GlobalVariablesScript
+        Data: {fileID: 1104306482}
+        varType: DouyinScript
+    - rid: 1482841612812550151
+      type: {class: DouyinLuaDataMonoArr, ns: , asm: com.douyin.script}
+      data:
+        varName: DialogueData
+        Data: []
+        varType: DouyinScript[]
 --- !u!114 &1104306480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7861,6 +8654,48 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1104306482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1104306478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: 581260b908974ba439cffd42e8e2e552, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &1104306483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1104306478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: 9f8961b275fc4f94d8a06044283c1f7e, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1115661368
 GameObject:
   m_ObjectHideFlags: 0
@@ -7938,6 +8773,76 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1115661368}
   m_CullTransparentMesh: 1
+--- !u!1 &1127645296
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1127645297}
+  - component: {fileID: 1127645299}
+  - component: {fileID: 1127645298}
+  m_Layer: 0
+  m_Name: xiaojiZTT_01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1127645297
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1127645296}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 17
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1127645298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1127645296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: f3bba0cb0a3220e4bb3ebea18c9d9337, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &1127645299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1127645296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 9176891973051972459
+    n2: 18180863159411303536
+  RunContext: 0
 --- !u!1 &1159468734
 GameObject:
   m_ObjectHideFlags: 0
@@ -8243,10 +9148,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550167
+  - rid: 1482841612812550168
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -8254,12 +9159,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550167
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
-        Data: 1
-    - rid: 1482841250482356228
+        Data: 0
+    - rid: 1482841612812550168
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -8664,6 +9569,76 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -3338218132226918312, guid: bfb067309e3276442ba737a3c213e8c1, type: 3}
+--- !u!1 &1210450242
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1210450243}
+  - component: {fileID: 1210450245}
+  - component: {fileID: 1210450244}
+  m_Layer: 0
+  m_Name: xiaojiZTT_02
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1210450243
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1210450242}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 18
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1210450244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1210450242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: c0beef569a10a3b4e8e65c70050097b0, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &1210450245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1210450242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 9727777672751116504
+    n2: 5831360764648840265
+  RunContext: 0
 --- !u!1 &1220212387
 GameObject:
   m_ObjectHideFlags: 0
@@ -8978,10 +9953,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550175
+  - rid: 1482841612812550176
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -8989,12 +9964,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550175
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
         Data: 5
-    - rid: 1482841250482356228
+    - rid: 1482841612812550176
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -9139,6 +10114,76 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &1253038527
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1253038528}
+  - component: {fileID: 1253038530}
+  - component: {fileID: 1253038529}
+  m_Layer: 0
+  m_Name: shufang_02_R1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1253038528
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1253038527}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1253038529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1253038527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: 86ec5acb377e44e40920b95467ef4052, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &1253038530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1253038527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 8965743622711500750
+    n2: 69876336860446439
+  RunContext: 0
 --- !u!1 &1257572542
 GameObject:
   m_ObjectHideFlags: 0
@@ -9312,6 +10357,76 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1258288007}
   m_CullTransparentMesh: 1
+--- !u!1 &1261884799
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1261884800}
+  - component: {fileID: 1261884802}
+  - component: {fileID: 1261884801}
+  m_Layer: 0
+  m_Name: miaosu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1261884800
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1261884799}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1261884801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1261884799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: 85e3938cb5842f942b9bbb77699b880c, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &1261884802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1261884799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 17126128678986812839
+    n2: 7269102066843154872
+  RunContext: 0
 --- !u!1 &1279914273
 GameObject:
   m_ObjectHideFlags: 0
@@ -9359,6 +10474,76 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1299560848
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1299560849}
+  - component: {fileID: 1299560851}
+  - component: {fileID: 1299560850}
+  m_Layer: 0
+  m_Name: wuya_01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1299560849
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299560848}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1299560850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299560848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: 95736ac0fcb4fb74db4cba66d11bea41, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &1299560851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299560848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 4930058998771714560
+    n2: 17364378094324350995
+  RunContext: 0
 --- !u!1 &1311386577
 GameObject:
   m_ObjectHideFlags: 0
@@ -9439,6 +10624,76 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1311386577}
   m_CullTransparentMesh: 1
+--- !u!1 &1329347748
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1329347749}
+  - component: {fileID: 1329347751}
+  - component: {fileID: 1329347750}
+  m_Layer: 0
+  m_Name: dahuang_04
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1329347749
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1329347748}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1329347750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1329347748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: 4be8dee5283ab6c42b0bb47e57ea8b5c, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &1329347751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1329347748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 9323811705659917028
+    n2: 16111704764732329063
+  RunContext: 0
 --- !u!1001 &1338476599
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10024,10 +11279,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550201
+  - rid: 1482841612812550202
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -10035,12 +11290,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550201
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
         Data: 26
-    - rid: 1482841250482356228
+    - rid: 1482841612812550202
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -10303,10 +11558,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550191
+  - rid: 1482841612812550192
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -10314,12 +11569,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550191
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
-        Data: 16
-    - rid: 1482841250482356228
+        Data: 0
+    - rid: 1482841612812550192
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -10644,10 +11899,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550169
+  - rid: 1482841612812550170
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -10655,12 +11910,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550169
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
         Data: 1
-    - rid: 1482841250482356228
+    - rid: 1482841612812550170
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -10890,6 +12145,76 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 370537676993608938, guid: e2ae68e3f87f59c49a130694a9639d13, type: 3}
   m_PrefabInstance: {fileID: 1569582219}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1572102798
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1572102799}
+  - component: {fileID: 1572102801}
+  - component: {fileID: 1572102800}
+  m_Layer: 0
+  m_Name: shufang_02_R3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1572102799
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572102798}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1572102800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572102798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: 0d58091b6802075459cebf7633d7be1f, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &1572102801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572102798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 13199881787698240847
+    n2: 25041758839600114
+  RunContext: 0
 --- !u!1 &1647832761
 GameObject:
   m_ObjectHideFlags: 0
@@ -11132,10 +12457,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550207
+  - rid: 1482841612812550208
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -11143,12 +12468,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550207
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
-        Data: 27
-    - rid: 1482841250482356228
+        Data: 30
+    - rid: 1482841612812550208
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -11645,10 +12970,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550159
+  - rid: 1482841612812550160
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -11656,12 +12981,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550159
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
-        Data: 1
-    - rid: 1482841250482356228
+        Data: 0
+    - rid: 1482841612812550160
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -11881,6 +13206,76 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1840457928
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1840457929}
+  - component: {fileID: 1840457931}
+  - component: {fileID: 1840457930}
+  m_Layer: 0
+  m_Name: shufang_02
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1840457929
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840457928}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1840457930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840457928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: 55bc45fd84375f048aeb91825a70379b, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &1840457931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840457928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 18321194447897557792
+    n2: 10320375685337376902
+  RunContext: 0
 --- !u!1 &1863470580
 GameObject:
   m_ObjectHideFlags: 0
@@ -12688,10 +14083,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550155
+  - rid: 1482841612812550156
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -12699,16 +14094,16 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550155
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
-        Data: 1
-    - rid: 1482841250482356228
+        Data: 0
+    - rid: 1482841612812550156
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
-        Data: "\u5927\u6811"
+        Data: "\u9ED1\u732B"
 --- !u!114 &2029497924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12877,6 +14272,57 @@ Transform:
   m_Father: {fileID: 1956517095}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2066660458
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2066660459}
+  m_Layer: 0
+  m_Name: DialogueData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2066660459
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066660458}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2087356292}
+  - {fileID: 708147611}
+  - {fileID: 587242567}
+  - {fileID: 1329347749}
+  - {fileID: 853318318}
+  - {fileID: 932697442}
+  - {fileID: 882575725}
+  - {fileID: 1261884800}
+  - {fileID: 1068982058}
+  - {fileID: 199298508}
+  - {fileID: 325945315}
+  - {fileID: 1840457929}
+  - {fileID: 1253038528}
+  - {fileID: 720784457}
+  - {fileID: 1572102799}
+  - {fileID: 635456354}
+  - {fileID: 1299560849}
+  - {fileID: 1127645297}
+  - {fileID: 1210450243}
+  - {fileID: 839601882}
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2072334056
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12983,6 +14429,76 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4925646168151024852, guid: 3db5a859d71d4c346a2ca8ba6571ff7c, type: 3}
   m_PrefabInstance: {fileID: 2072334056}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2087356291
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2087356292}
+  - component: {fileID: 2087356294}
+  - component: {fileID: 2087356293}
+  m_Layer: 0
+  m_Name: dahuang_01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2087356292
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087356291}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066660459}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2087356293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087356291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: 6b2515232c1a79448bc7ab6791231cb6, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &2087356294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087356291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 540439951, guid: 3ead8c7f8efe8473b8d110669e8128d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetGUID:
+    n1: 3350960527657697385
+    n2: 16799952144164005637
+  RunContext: 0
 --- !u!1 &2111389672
 GameObject:
   m_ObjectHideFlags: 0
@@ -13225,10 +14741,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550199
+  - rid: 1482841612812550200
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -13236,12 +14752,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550199
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
         Data: 24
-    - rid: 1482841250482356228
+    - rid: 1482841612812550200
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -16176,10 +17692,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550171
+  - rid: 1482841612812550172
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -16187,12 +17703,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550171
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
         Data: 2
-    - rid: 1482841250482356228
+    - rid: 1482841612812550172
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
@@ -23493,7 +25009,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4065596107035817614
 RectTransform:
   m_ObjectHideFlags: 0
@@ -25772,10 +27288,10 @@ MonoBehaviour:
   m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScriptAsset: {fileID: -4320198879241519195, guid: 1b450ea5d76705341a8c1c0a0d640487, type: 3}
+  ScriptAsset: {fileID: -4320198879241519195, guid: dbdfa9057e4e5a347b4a500a3d30bd57, type: 3}
   ParaLuaBindingData:
-  - rid: 1037837089713946631
-  - rid: 1482841250482356228
+  - rid: 1482841612812550165
+  - rid: 1482841612812550166
   IsServerScript: 0
   IsManualedVar: 1
   eNetState: 0
@@ -25783,12 +27299,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1037837089713946631
+    - rid: 1482841612812550165
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
-        Data: 1
-    - rid: 1482841250482356228
+        Data: 0
+    - rid: 1482841612812550166
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname

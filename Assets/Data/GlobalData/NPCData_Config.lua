@@ -1,4 +1,4 @@
-local NPCData = {
+NPCData = {
     npcList = {
         {
             id = "Player_001",
@@ -105,7 +105,7 @@ local NPCData = {
             name = "豆豆",
             avatarPath = "",
             currentBranchId = 1,
-            isFolded = false,
+            isFolded = true,
             storyGraphs = {
                 {
                     branchId = 1,

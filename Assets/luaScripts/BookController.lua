@@ -49,7 +49,6 @@ local unlockConfig = {
 }
 
 function Start()
-    DouyinUIService.GetInteractionButton(HandType.Right, UIType.Fly).gameObject:SetActive(false)
     boolPanel:SetActive(false)
     open.onClick:AddListener(OnOpenClick)
     leftBtn.onClick:AddListener(OnLeftClick)

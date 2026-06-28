@@ -1,3 +1,7 @@
+--对话配置文件
+---@var GlobalVariablesScript :DouyinScript
+---@var NPCDataConfig :DouyinScript
+---@var DialogueData :DouyinScript[]
 ---@var infoText :UnityEngine.UI.Text
 ---@var ShowBtn :UnityEngine.UI.Button
 ---@var searchInput :UnityEngine.UI.InputField
@@ -5,70 +9,33 @@
 ---@end
 
 local globalVariables = {}
-local globalVariablesPath = "Assets/Editor/EidtData/GlobalVariables.lua"
 
-local function GetProjectPath()
-    local dataPath = CS.UnityEngine.Application.dataPath
-    local projectPath = dataPath
-    if dataPath:find("DouyinWorldDebugger") or dataPath:find("_Data") then
-        local parts = {}
-        for part in dataPath:gmatch("[^/\\]+") do
-            table.insert(parts, part)
-        end
-        if #parts >= 2 then
-            local newParts = {}
-            for i = 1, #parts - 2 do
-                table.insert(newParts, parts[i])
-            end
-            projectPath = table.concat(newParts, "/")
-        else
-            projectPath = CS.System.IO.Path.GetFullPath(dataPath .. "/../../")
-        end
-    else
-        projectPath = CS.System.IO.Path.GetFullPath(dataPath .. "/../")
-    end
-    return projectPath
-end
-
+-- 从 Inspector 引用的 DouyinScript 加载全局变量配置，初始化所有变量（bool=false, int=1）
 local function LoadGlobalVariablesFromFile()
-    local projectPath = GetProjectPath()
-    local fullPath = CS.System.IO.Path.Combine(projectPath, globalVariablesPath)
-
-    if not CS.System.IO.File.Exists(fullPath) then
-        print("[GlobalVariables] 文件不存在: " .. fullPath)
+    if not GlobalVariablesScript or not GlobalVariablesScript.script then
+        print("[GlobalVariables] GlobalVariablesScript 引用未设置")
         return
     end
 
-    local success, err = pcall(function()
-        local content = CS.System.IO.File.ReadAllText(fullPath)
-        local func = load(content)
-        if not func then
-            print("[GlobalVariables] 加载文件失败")
-            return
-        end
+    local data = GlobalVariablesScript.script.GlobalVariables
+    if data == nil then
+        print("[GlobalVariables] 数据为空")
+        return
+    end
 
-        local data = func()
-        if data == nil then
-            print("[GlobalVariables] 数据为空")
-            return
-        end
-
-        for _, item in ipairs(data) do
-            if item.name and item.type then
-                if item.type == "bool" then
-                    globalVariables[item.name] = { type = "bool", value = false }
-                else
-                    globalVariables[item.name] = { type = "int", value = 1 }
-                end
+    for _, item in ipairs(data) do
+        if item.name and item.type then
+            if item.type == "bool" then
+                globalVariables[item.name] = { type = "bool", value = false }
+            else
+                globalVariables[item.name] = { type = "int", value = 1 }
             end
         end
-    end)
-
-    if not success then
-        print("[GlobalVariables] 读取失败: " .. tostring(err))
     end
+    print("[GlobalVariables] 通过 Inspector 引用加载完成")
 end
 
+-- 获取指定全局变量的当前值
 function GetGlobalVar(varName)
     if varName == nil or globalVariables[varName] == nil then
         return nil
@@ -76,6 +43,7 @@ function GetGlobalVar(varName)
     return globalVariables[varName].value
 end
 
+-- 设置全局变量的值（不存在则自动创建，默认 bool 类型）
 function SetGlobalVar(varName, value, varType)
     if varName == nil or varName == "" then return end
     varType = varType or "bool"
@@ -97,6 +65,7 @@ function SetGlobalVar(varName, value, varType)
     print("[GlobalVariables] 设置变量: " .. varName .. " = " .. tostring(globalVariables[varName].value))
 end
 
+-- 获取指定全局变量的类型（"bool" 或 "int"）
 function GetGlobalVarType(varName)
     if varName == nil or globalVariables[varName] == nil then
         return nil
@@ -104,6 +73,7 @@ function GetGlobalVarType(varName)
     return globalVariables[varName].type
 end
 
+-- 通过名称在 Canvas 下查找 UI 组件（Inspector 未赋值时的兜底查找）
 local function FindUIComponentByName(name, componentType)
     local canvas = UnityEngine.GameObject.Find("Canvas")
     if not canvas then
@@ -126,6 +96,7 @@ local function FindUIComponentByName(name, componentType)
     return component
 end
 
+-- 显示按钮回调：在 infoText 上展示所有全局变量的实时值
 local function OnShowBtnClick()
     print("[GlobalVariables] OnShowBtnClick 被调用")
 
@@ -136,55 +107,53 @@ local function OnShowBtnClick()
 
     local result = "=== 全局变量实时值 ===\n\n"
 
-    local projectPath = GetProjectPath()
-    local fullPath = CS.System.IO.Path.Combine(projectPath, globalVariablesPath)
+    if not GlobalVariablesScript or not GlobalVariablesScript.script then
+        infoText.text = "GlobalVariablesScript 引用未设置"
+        return
+    end
 
-    if CS.System.IO.File.Exists(fullPath) then
-        local content = CS.System.IO.File.ReadAllText(fullPath)
-        local func = load(content)
-        if func then
-            local data = func()
-            if data then
-                local line = ""
-                local colCount = 0
-                local displayIndex = 0
-                for _, item in ipairs(data) do
-                    if item.name then
-                        displayIndex = displayIndex + 1
-                        colCount = colCount + 1
-                        local runtimeValue = GetGlobalVar(item.name)
-                        local displayValue = "nil"
-                        if runtimeValue ~= nil then
-                            displayValue = tostring(runtimeValue)
-                        else
-                            displayValue = "文件值: " .. tostring(item.value)
-                        end
+    local data = GlobalVariablesScript.script.GlobalVariables
 
-                        local varText = string.format("%d. %s=%s", displayIndex, item.name, displayValue)
-
-                        if line == "" then
-                            line = varText
-                        else
-                            line = line .. " | " .. varText
-                        end
-
-                        if colCount % 5 == 0 then
-                            result = result .. line .. "\n"
-                            line = ""
-                        end
-                    end
+    if data then
+        local line = ""
+        local colCount = 0
+        local displayIndex = 0
+        for _, item in ipairs(data) do
+            if item.name then
+                displayIndex = displayIndex + 1
+                colCount = colCount + 1
+                local runtimeValue = GetGlobalVar(item.name)
+                local displayValue = "nil"
+                if runtimeValue ~= nil then
+                    displayValue = tostring(runtimeValue)
+                else
+                    displayValue = "文件值: " .. tostring(item.value)
                 end
 
-                if line ~= "" then
+                local varText = string.format("%d. %s=%s", displayIndex, item.name, displayValue)
+
+                if line == "" then
+                    line = varText
+                else
+                    line = line .. " | " .. varText
+                end
+
+                if colCount % 5 == 0 then
                     result = result .. line .. "\n"
+                    line = ""
                 end
             end
+        end
+
+        if line ~= "" then
+            result = result .. line .. "\n"
         end
     end
 
     infoText.text = result
 end
 
+-- 搜索按钮回调：根据关键字模糊搜索全局变量名
 local function OnSearchBtnClick()
     print("[GlobalVariables] OnSearchBtnClick 被调用")
 
@@ -229,77 +198,25 @@ local function OnSearchBtnClick()
     print("[GlobalVariables] 搜索结果: " .. result)
 end
 
+-- 将所有 NPC 的 currentBranchId 重置为 1，用于每次启动时恢复默认分支
 function ResetAllNPCBranchesToStart()
-    local projectPath = GetProjectPath()
-    local configPath = CS.System.IO.Path.Combine(projectPath, "Assets/Editor/EidtData/NPCData_Config.lua")
+    if not NPCDataConfig or not NPCDataConfig.script then
+        print("[GlobalVariables] NPCDataConfig 引用未设置")
+        return
+    end
 
-    local success, err = pcall(function()
-        if not CS.System.IO.File.Exists(configPath) then
-            print("[GlobalVariables] NPCData_Config 文件不存在，跳过重置")
-            return
-        end
-        local content = CS.System.IO.File.ReadAllText(configPath)
-        local func = load(content)
-        local data = func()
-        if data and data.npcList then
-            local changed = false
-            for _, npc in ipairs(data.npcList) do
-                if npc.currentBranchId and npc.currentBranchId ~= 1 then
-                    npc.currentBranchId = 1
-                    changed = true
-                end
-            end
-            if changed then
-                -- 序列化并写回文件
-                local newContent = SerializeNPCConfigForReset(data.npcList)
-                if newContent then
-                    CS.System.IO.File.WriteAllText(configPath, newContent)
-                    print("[GlobalVariables] NPCData_Config 所有分支已重置为 1")
-                end
+    local data = NPCDataConfig.script.NPCData
+    if data and data.npcList then
+        for _, npc in ipairs(data.npcList) do
+            if npc.currentBranchId then
+                npc.currentBranchId = 1
             end
         end
-    end)
-
-    if not success then
-        print("[GlobalVariables] 重置 NPC 分支失败: " .. tostring(err))
+        print("[GlobalVariables] NPCData_Config 所有分支已重置为 1")
     end
 end
 
-function SerializeNPCConfigForReset(npcList)
-    if not npcList then return nil end
-    local sb = {}
-    table.insert(sb, "local NPCData = {")
-    table.insert(sb, "    npcList = {")
-    for i, npc in ipairs(npcList) do
-        table.insert(sb, "        {")
-        table.insert(sb, '            id = "' .. tostring(npc.id or "") .. '",')
-        table.insert(sb, '            name = "' .. tostring(npc.name or "") .. '",')
-        table.insert(sb, '            avatarPath = "' .. tostring(npc.avatarPath or "") .. '",')
-        table.insert(sb, "            currentBranchId = " .. tostring(npc.currentBranchId or 1) .. ",")
-        table.insert(sb, "            isFolded = " .. tostring(npc.isFolded ~= false) .. ",")
-        if npc.storyGraphs and #npc.storyGraphs > 0 then
-            table.insert(sb, "            storyGraphs = {")
-            for j, graph in ipairs(npc.storyGraphs) do
-                table.insert(sb, "                {")
-                table.insert(sb, "                    branchId = " .. tostring(graph.branchId or 1) .. ",")
-                table.insert(sb, '                    storyDescription = "' .. tostring(graph.storyDescription or "") .. '",')
-                table.insert(sb, '                    luaModuleName = "' .. tostring(graph.luaModuleName or "") .. '",')
-                table.insert(sb, '                    luaAssetPath = "' .. tostring(graph.luaAssetPath or "") .. '"')
-                table.insert(sb, "                }" .. (j < #npc.storyGraphs and "," or ""))
-            end
-            table.insert(sb, "            }")
-        else
-            table.insert(sb, "            storyGraphs = {")
-            table.insert(sb, "            }")
-        end
-        table.insert(sb, "        }" .. (i < #npcList and "," or ""))
-    end
-    table.insert(sb, "    }")
-    table.insert(sb, "}")
-    table.insert(sb, "return NPCData")
-    return table.concat(sb, "\n")
-end
-
+-- Unity 启动入口：加载全局变量、重置NPC分支、注册全局函数、绑定 UI 按钮
 function Start()
     LoadGlobalVariablesFromFile()
     ResetAllNPCBranchesToStart()
@@ -307,6 +224,9 @@ function Start()
     _G["GetGlobalVar"] = GetGlobalVar
     _G["SetGlobalVar"] = SetGlobalVar
     _G["GetGlobalVarType"] = GetGlobalVarType
+    if NPCDataConfig and NPCDataConfig.script then
+        _G["_NPCDataConfig"] = NPCDataConfig.script.NPCData
+    end
 
     local count = 0
     for _ in pairs(globalVariables) do count = count + 1 end
@@ -351,3 +271,4 @@ function Start()
         print("[GlobalVariables] 警告：searchBtn 未赋值")
     end
 end
+

@@ -39,10 +39,8 @@ local selectedOptionCache = nil           -- 缓存玩家选择的选项
 local isWaitingForNextAfterOption = false -- 是否正在等待点击 Next 以完成选项跳转
 
 -- ========== 新增：外部动态加载的对话配置 ==========
-local externalDialogueConfig = nil                             -- 动态加载的外部对话数据
-local npcConfigResourcePath = "EidtData/NPCData_Config"        -- NPC 配置文件资源路径
-local globalVariablesResourcePath = "EidtData/GlobalVariables" -- 全局变量文件资源路径
-local unlockedBranchCache = {}                                 -- 已处理过的分支缓存，防止同一节点重复解锁
+local externalDialogueConfig = nil -- 动态加载的外部对话数据
+local unlockedBranchCache = {}     -- 已处理过的分支缓存，防止同一节点重复解锁
 
 -- ========== 新增：头像辅助功能 ==========
 local _npcConfigsCache = nil -- NPC 配置缓存，避免重复读取文件
@@ -63,31 +61,7 @@ local function ExtractSpriteNameFromPath(avatarPath)
     return spriteName or fileName
 end
 
--- 获取项目根目录
-local function GetProjectPath()
-    local dataPath = CS.UnityEngine.Application.dataPath
-    local projectPath = dataPath
-    if dataPath:find("DouyinWorldDebugger") or dataPath:find("_Data") then
-        local parts = {}
-        for part in dataPath:gmatch("[^/\\]+") do
-            table.insert(parts, part)
-        end
-        if #parts >= 2 then
-            local newParts = {}
-            for i = 1, #parts - 2 do
-                table.insert(newParts, parts[i])
-            end
-            projectPath = table.concat(newParts, "/")
-        else
-            projectPath = CS.System.IO.Path.GetFullPath(dataPath .. "/../../")
-        end
-    else
-        projectPath = CS.System.IO.Path.GetFullPath(dataPath .. "/../")
-    end
-    return projectPath
-end
-
--- 确保 NPC 配置已加载（如果还没加载则读取文件）
+-- 确保 NPC 配置已加载（如果还没加载则从全局 _NPCDataConfig 读取）
 local function EnsureNPCConfigsLoaded()
     -- 优先复用 DialogueTrigger 加载的全局 _NPCConfigs
     if _G["_NPCConfigs"] and _G["_NPCConfigs"].byName then
@@ -100,102 +74,18 @@ local function EnsureNPCConfigsLoaded()
         return _npcConfigsCache
     end
 
-    -- 否则从 Editor/EidtData 加载（File.ReadAllText 方式）
-    local projectPath = GetProjectPath()
-    local success, result = pcall(function()
-        local configPath = CS.System.IO.Path.Combine(projectPath, "Assets/Editor/EidtData/NPCData_Config.lua")
-        if not CS.System.IO.File.Exists(configPath) then
-            return nil
+    -- 从 GlobalVariablesManager 注册的全局 _NPCDataConfig 读取
+    local data = _G["_NPCDataConfig"]
+    if data and data.npcList then
+        _npcConfigsCache = { byId = {}, byName = {} }
+        for _, npc in ipairs(data.npcList) do
+            if npc.id then _npcConfigsCache.byId[npc.id] = npc end
+            if npc.name then _npcConfigsCache.byName[npc.name] = npc end
         end
-        local content = CS.System.IO.File.ReadAllText(configPath)
-        local func = load(content)
-        local data = func()
-
-        if data and data.npcList then
-            _npcConfigsCache = { byId = {}, byName = {} }
-            for _, npc in ipairs(data.npcList) do
-                if npc.id then _npcConfigsCache.byId[npc.id] = npc end
-                if npc.name then _npcConfigsCache.byName[npc.name] = npc end
-            end
-            return _npcConfigsCache
-        end
-        return nil
-    end)
-
-    if success then
-        return result
+        return _npcConfigsCache
     end
+
     return nil
-end
-
--- ========== 新增：全局变量表（用于条件分支判断） ==========
-local globalVariables = {} -- 全局变量存储，支持 bool 和 int 类型
-
--- 从 GlobalVariables.lua 文件重新加载全局变量（每次条件判断前调用一次，确保是最新值）
-function ReloadGlobalVariablesFromFile()
-    local projectPath = GetProjectPath()
-    local success, err = pcall(function()
-        local configPath = CS.System.IO.Path.Combine(projectPath, "Assets/Editor/EidtData/GlobalVariables.lua")
-        if not CS.System.IO.File.Exists(configPath) then
-            return
-        end
-        local content = CS.System.IO.File.ReadAllText(configPath)
-        local func = load(content)
-        if not func then return end
-        local data = func()
-        if data == nil then return end
-
-        for _, item in ipairs(data) do
-            if item.name and item.type then
-                if globalVariables[item.name] == nil then
-                    if item.type == "bool" then
-                        globalVariables[item.name] = { type = "bool", value = (item.value == true or item.value == "true" or item.value == 1) }
-                    else
-                        globalVariables[item.name] = { type = "int", value = tonumber(item.value) or 0 }
-                    end
-                end
-            end
-        end
-    end)
-    if not success then
-        print("[ReloadGlobalVariables] 读取失败: " .. tostring(err))
-    end
-end
-
--- 设置全局变量
-function SetGlobalVariable(varName, value, varType)
-    if varName == nil or varName == "" then return end
-    varType = varType or "bool"
-    if varType == "bool" then
-        globalVariables[varName] = { type = "bool", value = (value == true or value == "true" or value == 1) }
-    else
-        globalVariables[varName] = { type = "int", value = tonumber(value) or 0 }
-    end
-end
-
--- 获取全局变量值
-function GetGlobalVariable(varName)
-    if varName == nil or globalVariables[varName] == nil then
-        return nil
-    end
-    return globalVariables[varName].value
-end
-
--- 获取全局变量类型
-function GetGlobalVariableType(varName)
-    if varName == nil or globalVariables[varName] == nil then
-        return nil
-    end
-    return globalVariables[varName].type
-end
-
--- 打印所有全局变量（调试用）
-function PrintGlobalVariables()
-    print("===== 全局变量表 =====")
-    for k, v in pairs(globalVariables) do
-        print("  [" .. k .. "] type=" .. tostring(v.type) .. ", value=" .. tostring(v.value))
-    end
-    print("=====================")
 end
 
 -- 根据条件分支计算下一个节点 ID
@@ -204,7 +94,7 @@ function GetNextNodeByCondition(data)
         return nil
     end
 
-    local getFunc = _G["GetGlobalVar"] or GetGlobalVariable
+    local getFunc = _G["GetGlobalVar"]
 
     for i, cb in ipairs(data.ConditionBranches) do
         if cb.VarName ~= nil and cb.VarName ~= "" then
@@ -249,134 +139,6 @@ function GetNextNodeByCondition(data)
     return nil -- 没有任何条件分支匹配
 end
 
--- ========== 新增：NPC 分支解锁（将 NPC 的 currentBranchId ==========
--- 功能：当执行到带有 UnlockBranchId 的节点时，修改 NPCData_Config.lua 中的 currentBranchId
-
-function UpdateNPCBranchConfig(npcName, newBranchId)
-    if not npcName or npcName == "" then
-        return false
-    end
-    newBranchId = tonumber(newBranchId) or 0
-    if newBranchId <= 0 then
-        return false
-    end
-
-    print("=== NPC [" .. npcName .. "] -> " .. newBranchId)
-
-    local projectPath = GetProjectPath()
-    local configPath = CS.System.IO.Path.Combine(projectPath, "Assets/Editor/EidtData/NPCData_Config.lua")
-
-    -- 读取 NPC 配置（从 Editor/EidtData）
-    local configData
-    local success, err = pcall(function()
-        if not CS.System.IO.File.Exists(configPath) then
-            error("配置文件不存在: " .. configPath)
-        end
-        local content = CS.System.IO.File.ReadAllText(configPath)
-        local func = load(content)
-        return func()
-    end)
-
-    if not success or not err then
-        print("[NPC分支解锁] 读取失败: " .. tostring(err))
-        return false
-    end
-
-    configData = err
-
-    -- 在 npcList 中查找并修改
-    local found = false
-    if configData and configData.npcList then
-        for _, npc in ipairs(configData.npcList) do
-            if npc.name == npcName then
-                local oldBranchId = npc.currentBranchId or 1
-                npc.currentBranchId = newBranchId
-                found = true
-                print("[NPC分支解锁] 找到 NPC [" .. npcName .. "]，currentBranchId: " .. oldBranchId .. " -> " .. newBranchId)
-                break
-            end
-        end
-    end
-
-    if not found then
-        print("[NPC分支解锁] 未找到名为 [" .. npcName .. "] 的 NPC")
-        return false
-    end
-
-    -- 将修改后的配置表重新序列化为 Lua 文本
-    local newContent = SerializeNPCConfig(configData.npcList)
-    if not newContent then
-        print("[NPC分支解锁] 序列化失败")
-        return false
-    end
-
-    -- 写回文件
-    local writeSuccess, writeErr = pcall(function()
-        CS.System.IO.File.WriteAllText(configPath, newContent)
-    end)
-
-    if not writeSuccess then
-        print("[NPC分支解锁] 写入失败: " .. tostring(writeErr))
-        return false
-    end
-
-    DouyinUtility.Toast("NPC [" .. npcName .. "] 已解锁分支 " .. newBranchId)
-    print("[NPC分支解锁] ✓ 已成功更新 NPCData_Config.lua")
-    return true
-end
-
--- ========== 新增：将 NPC 配置表序列化为 Lua 文本 ==========
-function SerializeNPCConfig(npcList)
-    if not npcList then
-        return nil
-    end
-
-    local sb = {}
-    table.insert(sb, "local NPCData = {")
-    table.insert(sb, "    npcList = {")
-
-    for i, npc in ipairs(npcList) do
-        table.insert(sb, "        {")
-        table.insert(sb, '            id = "' .. tostring(npc.id or "") .. '",')
-        table.insert(sb, '            name = "' .. tostring(npc.name or "") .. '",')
-        table.insert(sb, '            avatarPath = "' .. tostring(npc.avatarPath or "") .. '",')
-        table.insert(sb, "            currentBranchId = " .. tostring(npc.currentBranchId or 1) .. ",")
-
-        if npc.isFolded ~= nil then
-            local foldStr = npc.isFolded and "true" or "false"
-            table.insert(sb, "            isFolded = " .. foldStr .. ",")
-        end
-
-        if npc.storyGraphs and #npc.storyGraphs then
-            table.insert(sb, "            storyGraphs = {")
-            for j, graph in ipairs(npc.storyGraphs) do
-                table.insert(sb, "                {")
-                table.insert(sb, "                    branchId = " .. tostring(graph.branchId or 1) .. ",")
-                table.insert(sb,
-                    '                    storyDescription = "' .. tostring(graph.storyDescription or "") .. '",')
-                table.insert(sb, '                    luaModuleName = "' .. tostring(graph.luaModuleName or "") .. '",')
-                table.insert(sb, '                    luaAssetPath = "' .. tostring(graph.luaAssetPath or "") .. '"')
-                table.insert(sb, "                }")
-                if j < #npc.storyGraphs then
-                    table.insert(sb, "                ,")
-                end
-            end
-            table.insert(sb, "            }")
-        end
-
-        table.insert(sb, "        }")
-        if i < #npcList then
-            table.insert(sb, "        ,")
-        end
-    end
-
-    table.insert(sb, "    }")
-    table.insert(sb, "}")
-    table.insert(sb, "return NPCData")
-
-    return table.concat(sb, "\n") .. "\n"
-end
-
 ----- ========== 新增：应用 SetVariables（节点执行时设置全局变量的值）==========
 function ApplySetVariables(data)
     if not data then return end
@@ -389,7 +151,7 @@ function ApplySetVariables(data)
 
         if not varName or varName == "" then goto continue end
 
-        local setFunc = _G["SetGlobalVar"] or SetGlobalVariable
+        local setFunc = _G["SetGlobalVar"]
         if varType == "bool" then
             local boolVal = value == true or value == "true" or value == 1
             setFunc(varName, boolVal, "bool")
@@ -434,12 +196,23 @@ function CheckAndUnlockBranch(data)
         return
     end
 
-    -- 逐条执行解锁（同节点内每个NPC只处理一次）
+    -- 逐条执行解锁（同节点内每个NPC只处理一次，直接修改内存中 _NPCDataConfig）
     for _, entry in ipairs(entries) do
         local cacheKey = currentDialogueID .. "_" .. entry.npcName
         if not unlockedBranchCache[cacheKey] then
-            if UpdateNPCBranchConfig(entry.npcName, entry.branchId) then
-                unlockedBranchCache[cacheKey] = true
+            local npcConfig = _G["_NPCDataConfig"]
+            if npcConfig and npcConfig.npcList then
+                for _, npc in ipairs(npcConfig.npcList) do
+                    if npc.name == entry.npcName then
+                        local oldBranchId = npc.currentBranchId or 1
+                        npc.currentBranchId = entry.branchId
+                        unlockedBranchCache[cacheKey] = true
+                        DouyinUtility.Toast("NPC [" .. entry.npcName .. "] 已解锁分支 " .. entry.branchId)
+                        print("[NPC分支解锁] " ..
+                            entry.npcName .. " currentBranchId: " .. oldBranchId .. " -> " .. entry.branchId)
+                        break
+                    end
+                end
             end
         end
     end
@@ -448,10 +221,6 @@ end
 function Awake()
     _G["_DialogueManager"] = self.script
     dialogueManager = self.script
-
-    _G["_GlobalVariables"] = globalVariables
-    _G["GetGlobalVariable"] = GetGlobalVariable
-    _G["SetGlobalVariable"] = SetGlobalVariable
 
     if Sprites then
         for i = 1, Sprites.Length do
@@ -646,7 +415,7 @@ function UpdateDialogueUI()
         for _, sv in ipairs(data.SetVariables) do
             local varName = sv.VarName or sv.varName
             print("[Dialogue]   " ..
-                varName .. " = " .. tostring(globalVariables[varName] and globalVariables[varName].value))
+                varName .. " = " .. tostring(_G["GetGlobalVar"] and _G["GetGlobalVar"](varName)))
         end
     end
 
@@ -822,7 +591,7 @@ function CheckOptionDisplayConditions(option)
         return true
     end
 
-    local getFunc = _G["GetGlobalVar"] or GetGlobalVariable
+    local getFunc = _G["GetGlobalVar"]
 
     print(string.format("[DisplayCond] 检查选项: %s, 条件数量: %d", tostring(option.Text), #conditions))
 
@@ -1038,15 +807,12 @@ end
 
 -- 根据选项的条件分支计算下一个节点 ID（新增：支持选项内部的条件分支规则）
 function GetOptionNextNode(option)
-    -- 每次条件判断前，重新从 GlobalVariables.lua 读取最新值
-    ReloadGlobalVariablesFromFile()
-
     -- 有 ConditionBranches 时：按条件分支走
     if option ~= nil and option.ConditionBranches ~= nil and #option.ConditionBranches > 0 then
         for i, cb in ipairs(option.ConditionBranches) do
             if cb.VarName ~= nil and cb.VarName ~= "" then
                 local varType = cb.VarType or "bool"
-                local varValue = GetGlobalVariable(cb.VarName)
+                local varValue = _G["GetGlobalVar"] and _G["GetGlobalVar"](cb.VarName)
 
                 if varType == "bool" then
                     -- bool 模式：变量为真走 TrueNext，为假/不存在走 FalseNext
