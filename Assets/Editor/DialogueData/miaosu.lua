@@ -158,3 +158,82 @@ DialogueConfig[18] = {
     Dialogue = "那是什么东西的反光——乌鸦在这里摆了什么亮晶晶的东西？",
     Next = -1  -- 下一段对话ID
 }
+-- 乌鸦巢白石头（假蛋）
+DialogueConfig[19] = {
+    Type = "Normal",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "一颗天然白色圆石，表面用木炭画着歪歪的爱心，背面还有一张笔画稚嫩的鬼脸。",
+    Next = 20  -- 下一段对话ID
+}
+DialogueConfig[20] = {
+    Type = "Normal",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "这是……什么东西？？......反正不是蛋",
+    Next = -1  -- 下一段对话ID
+}
+-- 门旁空水桶
+DialogueConfig[21] = {
+    Type = "Normal",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "倒扣着一只空水桶，桶底粘着湿泥和细沙，有股池塘边的水草味。",
+    Next = 22  -- 下一段对话ID
+}
+DialogueConfig[22] = {
+    Type = "Normal",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "这桶刚装过池塘水。",
+    Next = -1  -- 下一段对话ID
+}
+-- 雨靴泥脚印
+DialogueConfig[23] = {
+    Type = "Normal",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "几枚很重的泥脚印，鞋底纹路宽大，从门口延向鸡舍方向，泥边已经干了一圈。",
+    Next = -1  -- 下一段对话ID
+}
+
+-- 精美猫门
+DialogueConfig[24] = {
+    Type = "Normal",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "一扇精致的小门，边缘磨得很亮，上面有个细小锁扣。",
+    Next = 25  -- 下一段对话ID
+}
+
+DialogueConfig[25] = {
+    Type = "Normal",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "这是给谁专用的小门？",
+    Next = -1  -- 下一段对话ID
+}
+--大橡树根抓痕
+DialogueConfig[26] = {
+    Type = "Normal",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "树皮上有几道细长抓痕。",
+    Next = -1  -- 下一段对话ID
+}
+
+--门外陶瓷碗
+DialogueConfig[27] = {
+    Type = "Normal",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "一只干净的陶瓷小碗，碗沿印着小小的爪印花纹，碗底还残留一点细碎食渣。",
+    Next = 28  -- 下一段对话ID
+}
+DialogueConfig[28] = {
+    Type = "Normal",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "这里住着被照顾得很好的小动物。",
+    Next = -1  -- 下一段对话ID
+}

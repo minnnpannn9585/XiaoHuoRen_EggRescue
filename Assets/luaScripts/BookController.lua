@@ -36,14 +36,15 @@ local unlockConfig = {
         "E34_Glass==true"
     },
     page3Conditions = {
-        "Frog_WaterMonsterQueried==true",
-        "E23_dabble==true",
-        "E25_ChickenFootprints==true",
-        "ChickStatus==3",
         "E10_ViewWhiteStone==true",
-        "ChickTraceCount>=2",
-        "E06_LadderBorrowed==true",
-        "DogStatus>=2"
+        "E23_dabble==true",
+        "E14_ViewCatDoor==true",
+        "ChickStatus==3",
+        "",
+        "E15_ViewFoodBowl==true",
+        "E28_ViewTreeScratch==true",
+        "E17_ViewEmptyBucket==true",
+        "E18_ViewBootprints==true"
     }
 }
 
