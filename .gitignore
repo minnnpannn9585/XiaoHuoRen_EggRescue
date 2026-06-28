@@ -11,6 +11,16 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 *.log
+# ===== 自定义忽略项（已整合你的所有需求） =====
+# 忽略 JetBrains IDE 配置（整个 .idea 文件夹，任意路径）
+/.idea/
+**/.idea/
+
+# 忽略整个 AddressableAssetsData 目录（任意路径，包括根目录和 Assets 下）
+**/AddressableAssetsData/
+
+# 忽略 DouyinWorldDebuggerEditor 目录（任意路径）
+**/DouyinWorldDebuggerEditor/
 
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be commited to version control.
 *.blend1

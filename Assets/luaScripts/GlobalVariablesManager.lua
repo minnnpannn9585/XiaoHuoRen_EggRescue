@@ -55,12 +55,10 @@ local function LoadGlobalVariablesFromFile()
 
         for _, item in ipairs(data) do
             if item.name and item.type then
-                if globalVariables[item.name] == nil then
-                    if item.type == "bool" then
-                        globalVariables[item.name] = { type = "bool", value = (item.value == true or item.value == "true" or item.value == 1) }
-                    else
-                        globalVariables[item.name] = { type = "int", value = tonumber(item.value) or 0 }
-                    end
+                if item.type == "bool" then
+                    globalVariables[item.name] = { type = "bool", value = false }
+                else
+                    globalVariables[item.name] = { type = "int", value = 1 }
                 end
             end
         end
@@ -231,8 +229,80 @@ local function OnSearchBtnClick()
     print("[GlobalVariables] 搜索结果: " .. result)
 end
 
+function ResetAllNPCBranchesToStart()
+    local projectPath = GetProjectPath()
+    local configPath = CS.System.IO.Path.Combine(projectPath, "Assets/Editor/EidtData/NPCData_Config.lua")
+
+    local success, err = pcall(function()
+        if not CS.System.IO.File.Exists(configPath) then
+            print("[GlobalVariables] NPCData_Config 文件不存在，跳过重置")
+            return
+        end
+        local content = CS.System.IO.File.ReadAllText(configPath)
+        local func = load(content)
+        local data = func()
+        if data and data.npcList then
+            local changed = false
+            for _, npc in ipairs(data.npcList) do
+                if npc.currentBranchId and npc.currentBranchId ~= 1 then
+                    npc.currentBranchId = 1
+                    changed = true
+                end
+            end
+            if changed then
+                -- 序列化并写回文件
+                local newContent = SerializeNPCConfigForReset(data.npcList)
+                if newContent then
+                    CS.System.IO.File.WriteAllText(configPath, newContent)
+                    print("[GlobalVariables] NPCData_Config 所有分支已重置为 1")
+                end
+            end
+        end
+    end)
+
+    if not success then
+        print("[GlobalVariables] 重置 NPC 分支失败: " .. tostring(err))
+    end
+end
+
+function SerializeNPCConfigForReset(npcList)
+    if not npcList then return nil end
+    local sb = {}
+    table.insert(sb, "local NPCData = {")
+    table.insert(sb, "    npcList = {")
+    for i, npc in ipairs(npcList) do
+        table.insert(sb, "        {")
+        table.insert(sb, '            id = "' .. tostring(npc.id or "") .. '",')
+        table.insert(sb, '            name = "' .. tostring(npc.name or "") .. '",')
+        table.insert(sb, '            avatarPath = "' .. tostring(npc.avatarPath or "") .. '",')
+        table.insert(sb, "            currentBranchId = " .. tostring(npc.currentBranchId or 1) .. ",")
+        table.insert(sb, "            isFolded = " .. tostring(npc.isFolded ~= false) .. ",")
+        if npc.storyGraphs and #npc.storyGraphs > 0 then
+            table.insert(sb, "            storyGraphs = {")
+            for j, graph in ipairs(npc.storyGraphs) do
+                table.insert(sb, "                {")
+                table.insert(sb, "                    branchId = " .. tostring(graph.branchId or 1) .. ",")
+                table.insert(sb, '                    storyDescription = "' .. tostring(graph.storyDescription or "") .. '",')
+                table.insert(sb, '                    luaModuleName = "' .. tostring(graph.luaModuleName or "") .. '",')
+                table.insert(sb, '                    luaAssetPath = "' .. tostring(graph.luaAssetPath or "") .. '"')
+                table.insert(sb, "                }" .. (j < #npc.storyGraphs and "," or ""))
+            end
+            table.insert(sb, "            }")
+        else
+            table.insert(sb, "            storyGraphs = {")
+            table.insert(sb, "            }")
+        end
+        table.insert(sb, "        }" .. (i < #npcList and "," or ""))
+    end
+    table.insert(sb, "    }")
+    table.insert(sb, "}")
+    table.insert(sb, "return NPCData")
+    return table.concat(sb, "\n")
+end
+
 function Start()
     LoadGlobalVariablesFromFile()
+    ResetAllNPCBranchesToStart()
     _G["_GlobalVariables"] = globalVariables
     _G["GetGlobalVar"] = GetGlobalVar
     _G["SetGlobalVar"] = SetGlobalVar

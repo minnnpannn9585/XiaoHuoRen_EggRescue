@@ -30,8 +30,8 @@ local NPCData = {
             id = "NPC_005",
             name = "大黄",
             avatarPath = "Assets/Res/TouXiang_LiHui/Dog/大黄.png",
-            currentBranchId = 4,
-            isFolded = false,
+            currentBranchId = 1,
+            isFolded = true,
             storyGraphs = {
                 {
                     branchId = 1,
@@ -105,7 +105,7 @@ local NPCData = {
             name = "豆豆",
             avatarPath = "",
             currentBranchId = 1,
-            isFolded = false,
+            isFolded = true,
             storyGraphs = {
                 {
                     branchId = 1,
@@ -226,7 +226,7 @@ local NPCData = {
             id = "NPC_012",
             name = "悲伤蛙",
             avatarPath = "Assets/Res/TouXiang_LiHui/青蛙/介入.png",
-            currentBranchId = 2,
+            currentBranchId = 1,
             isFolded = false,
             storyGraphs = {
                 {
