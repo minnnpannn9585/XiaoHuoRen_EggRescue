@@ -35,30 +35,9 @@ NPCData = {
             storyGraphs = {
                 {
                     branchId = 1,
-                    storyDescription = "半睡复述（仅首次）",
-                    luaModuleName = "dahuang_01",
-                    luaAssetPath = "Assets/Editor/DialogueData/dahuang_01.lua"
-                }
-                ,
-                {
-                    branchId = 2,
-                    storyDescription = "解锁梯子",
-                    luaModuleName = "dahuang_02",
-                    luaAssetPath = "Assets/Editor/DialogueData/dahuang_02.lua"
-                }
-                ,
-                {
-                    branchId = 3,
-                    storyDescription = "泡水叫醒",
-                    luaModuleName = "dahuang_03",
-                    luaAssetPath = "Assets/Editor/DialogueData/dahuang_03.lua"
-                }
-                ,
-                {
-                    branchId = 4,
-                    storyDescription = "清醒回访",
-                    luaModuleName = "dahuang_04",
-                    luaAssetPath = "Assets/Editor/DialogueData/dahuang_04.lua"
+                    storyDescription = "全量树（doc 样章，dahuang_01_FROM_DOC）",
+                    luaModuleName = "dahuang_01_FROM_DOC",
+                    luaAssetPath = "Assets/Editor/DialogueData/dahuang_01_FROM_DOC.lua"
                 }
             }
         }
@@ -101,48 +80,18 @@ NPCData = {
         }
         ,
         {
-            id = "NPC_142",
-            name = "豆豆",
+            id = "NPC_E03",
+            name = "E03_Eavesdrop",
             avatarPath = "",
             currentBranchId = 1,
-            isFolded = true,
+            isFolded = false,
             storyGraphs = {
                 {
                     branchId = 1,
-                    storyDescription = "身后偷听",
+                    storyDescription = "E03 身后偷听",
                     luaModuleName = "zttTouTing",
                     luaAssetPath = "Assets/Editor/DialogueData/zttTouTing.lua"
                 }
-            }
-        }
-        ,
-        {
-            id = "NPC_006",
-            name = "米粒",
-            avatarPath = "",
-            currentBranchId = 1,
-            isFolded = true,
-            storyGraphs = {
-            }
-        }
-        ,
-        {
-            id = "NPC_007",
-            name = "瓜子",
-            avatarPath = "",
-            currentBranchId = 1,
-            isFolded = true,
-            storyGraphs = {
-            }
-        }
-        ,
-        {
-            id = "NPC_008",
-            name = "阿满",
-            avatarPath = "",
-            currentBranchId = 1,
-            isFolded = true,
-            storyGraphs = {
             }
         }
         ,
@@ -278,4 +227,3 @@ NPCData = {
         }
     }
 }
-return NPCData

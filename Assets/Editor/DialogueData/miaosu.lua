@@ -97,9 +97,6 @@ DialogueConfig[11] = {
     NpcName = "玩家",
     NpcSprite = "",
     Dialogue = "缺个东西垫垫脚。",
-    UnlockBranches = {
-        { NpcName = "大黄", BranchId = 2 }
-    },
     Next = -1  -- 下一段对话ID
 }
 --  烧焦稻草 / 皮毛
@@ -252,4 +249,13 @@ DialogueConfig[30] = {
     NpcSprite = "",
     Dialogue = "大门关得很紧，没有能钻进去的空隙。",
     Next = -1  -- 下一段对话ID
+}
+
+-- E06 架梯完成
+DialogueConfig[31] = {
+    Type = "Normal",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "现在可以爬进去看看了。",
+    Next = -1
 }

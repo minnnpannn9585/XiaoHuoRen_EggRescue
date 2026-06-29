@@ -102,5 +102,3 @@ GlobalVariables = {
     -- ========== 周目 ==========
     { name = "NGPlus",                      type = "bool", value = false },
 }
-
-return GlobalVariables

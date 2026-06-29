@@ -101,6 +101,29 @@ function LoadNPCScript(npcName)
                 break
             end
         end
+        -- 旧 UnlockBranches 可能把 currentBranchId 切到已删除的分支，回退到可用分支
+        if (not luaAssetPath or luaAssetPath == "") and #npcConfig.storyGraphs > 0 then
+            local fallbackId = currentBranchId
+            for _, graph in ipairs(npcConfig.storyGraphs) do
+                if graph.branchId == 1 and graph.luaAssetPath and graph.luaAssetPath ~= "" then
+                    luaAssetPath = graph.luaAssetPath
+                    fallbackId = 1
+                    break
+                end
+            end
+            if not luaAssetPath or luaAssetPath == "" then
+                local g = npcConfig.storyGraphs[1]
+                luaAssetPath = g.luaAssetPath
+                fallbackId = g.branchId or 1
+            end
+            if fallbackId ~= currentBranchId then
+                print(string.format(
+                    "[DialogueLoad] NPC %s branch %d 无 Lua，回退到 branch %d",
+                    npcName, currentBranchId, fallbackId))
+                npcConfig.currentBranchId = fallbackId
+                currentBranchId = fallbackId
+            end
+        end
     end
 
     if not luaAssetPath or luaAssetPath == "" then
@@ -145,6 +168,9 @@ function LoadNPCScript(npcName)
     end
 
     loadedNPCScripts[cacheKey] = normalizedData
+    print(string.format(
+        "[DialogueLoad] npc=%s branchId=%d script=%s path=%s",
+        npcName, currentBranchId, scriptName, luaAssetPath))
     return normalizedData
 end
 
@@ -153,9 +179,11 @@ function StartDialogue()
     if npcname and npcname ~= "" then
         local npcScript = LoadNPCScript(npcname)
         if npcScript then
+            print(string.format("[DialogueLoad] start npc=%s startID=%s", npcname, tostring(ID)))
             _G["_DialogueManager"].StartDialogueWithData(npcScript, ID)
             return
         end
     end
+    print(string.format("[DialogueLoad] start directID=%s", tostring(ID)))
     _G["_DialogueManager"].StartDialogue(ID)
 end

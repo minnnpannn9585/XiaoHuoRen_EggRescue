@@ -15,10 +15,10 @@ MonoBehaviour:
   m_GroupName: Duplicate Asset Isolation
   m_Data:
     m_SerializedData: []
-  m_GUID: 53464862cb00bc84b9b54e60902c4780
+  m_GUID: 19df471a652d64bffbc3b2007a13cdba
   m_SerializeEntries:
   - m_GUID: 2d9f6f32bd0b67d49b8fb86768fe150b
-    m_Address: Assets/Decal/Texture/T_Highlight2.png
+    m_Address: Assets/Res/Decal/Texture/T_Highlight2.png
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -28,12 +28,12 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 823a688a56b12f94d8994e23758f6cd3
-    m_Address: Assets/Decal/SG_HiglightMark.shadergraph
+    m_Address: Assets/Res/Decal/SG_HiglightMark.shadergraph
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7520ffec1c026864293c3422b9e4c295
-    m_Address: Assets/Decal/Texture/T_Highlight1.png
+    m_Address: Assets/Res/Decal/Texture/T_Highlight1.png
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

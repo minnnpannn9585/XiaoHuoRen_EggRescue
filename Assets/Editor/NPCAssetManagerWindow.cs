@@ -37,7 +37,7 @@ public class NPCAssetManagerWindow : EditorWindow
     }
 
     private List<NPCCharacter> npcList = new List<NPCCharacter>();
-    private string luaSavePath = "Assets/Editor/EidtData/NPCData_Config.lua"; // 指向正确的相对路径
+    private string luaSavePath = "Assets/Editor/EditData/NPCData_Config.lua";
 
     // UI 辅助变量（已移除 ID 和 搜索变量）
     private Vector2 scrollPosition;

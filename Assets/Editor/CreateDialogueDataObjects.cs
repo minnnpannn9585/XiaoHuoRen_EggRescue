@@ -5,6 +5,12 @@ using System.IO;
 
 public class CreateDialogueDataObjects
 {
+    [MenuItem("Tools/Egg Rescue/Refresh Scene DialogueData (Legacy Path)")]
+    public static void CreateLegacy()
+    {
+        Create();
+    }
+
     [MenuItem("Tools/Create DialogueData Objects")]
     public static void Create()
     {

@@ -53,6 +53,8 @@ namespace RPGDialogueEditor
         public List<UnlockBranchData> unlockBranches = new List<UnlockBranchData>(); // 执行到该节点时，将指定 NPC 的 currentBranchId 改为对应值
         public List<ConditionBranch> conditionBranches = new List<ConditionBranch>(); // 基于全局变量的条件分支：按顺序判断，第一个满足条件的分支生效
         public List<SetVariableData> setVariables = new List<SetVariableData>(); // 执行到该节点时，设置全局变量的值
+        public List<int> rotatePool = new List<int>(); // 轮播变体入口 ID 列表（等权重随机）
+        public string docTag = ""; // doc 语义 ID（如 1-A#3），用于分区排版
 
         // 记录节点在画布中的二维坐标，确保导入时完美还原排版
         public Vector2 position;
@@ -135,10 +137,10 @@ namespace RPGDialogueEditor
 
         public GlobalNPCData NpcConfigList = new GlobalNPCData();
         
-        private string _npcConfigFilePath = "Assets/Editor/EidtData/NPCData_Config.lua";
+        private string _npcConfigFilePath = "Assets/Editor/EditData/NPCData_Config.lua";
 
         // --- 新增：全局变量管理 ---
-        private string _globalVarsFilePath = "Assets/Editor/EidtData/GlobalVariables.lua";
+        private string _globalVarsFilePath = "Assets/Editor/EditData/GlobalVariables.lua";
         public List<GlobalVariable> GlobalVariables = new List<GlobalVariable>();
         private ScrollView _globalVarScrollView;
 
@@ -840,21 +842,27 @@ namespace RPGDialogueEditor
                 () =>
                 {
                     ImportLuaFile();
+                }, new Color(0.15f, 0.18f, 0.25f));
+            sidebar.Add(btnImport);
+
+            var btnArrangeDoc = CreateActionButton("按 Doc 区块重排画布",
+                () =>
+                {
                     var nodeList = _graphView.GetAllDialogueNodes();
                     var dataList = new List<DialogueNodeData>();
                     foreach (var node in nodeList)
                     {
                         dataList.Add(node.Data);
                     }
-                    AutoArrangeNodes(dataList);
+                    AutoArrangeByDocSection(dataList);
                     foreach (var node in nodeList)
                     {
                         node.SetPosition(new Rect(node.Data.position, new Vector2(340, 250)));
                     }
                     _graphView.RebuildEdgesFromDataIds();
-                    _graphView.ShowToast("画布布局已自动整理完毕！");
-                }, new Color(0.15f, 0.18f, 0.25f));
-            sidebar.Add(btnImport);
+                    _graphView.ShowToast("已按 Doc 区块重排画布");
+                }, new Color(0.15f, 0.28f, 0.22f));
+            sidebar.Add(btnArrangeDoc);
             
             // 导出 Lua 按钮
             var btnExport = CreateActionButton("导出外部Lua配置文件", ExportLuaFile, new Color(0.24f, 0.3f, 0.6f));
@@ -1236,7 +1244,12 @@ namespace RPGDialogueEditor
 
                 if (parsedNodes != null && parsedNodes.Count > 0)
                 {
-                    if (!hasSavedPositions) AutoArrangeNodes(parsedNodes);
+                    if (!hasSavedPositions)
+                    {
+                        bool hasDocTags = parsedNodes.Any(n => !string.IsNullOrEmpty(n.docTag));
+                        if (hasDocTags) AutoArrangeByDocSection(parsedNodes);
+                        else AutoArrangeNodes(parsedNodes);
+                    }
                     
                     bool npcAdded = false;
                     foreach (var data in parsedNodes)
@@ -1289,7 +1302,9 @@ namespace RPGDialogueEditor
                     // 如果文件里不包含 Position，或者我们想自动排列他们
                     if (!hasSavedPositions)
                     {
-                        AutoArrangeNodes(parsedNodes);
+                        bool hasDocTags = parsedNodes.Any(n => !string.IsNullOrEmpty(n.docTag));
+                        if (hasDocTags) AutoArrangeByDocSection(parsedNodes);
+                        else AutoArrangeNodes(parsedNodes);
                     }
                     
                     // 0. 自动将导入的未知 NPC 加入到全局配置列表中
@@ -1363,6 +1378,7 @@ namespace RPGDialogueEditor
         {
             public int id;
             public string content;
+            public string preamble;
         }
 
         /// <summary>
@@ -1370,35 +1386,69 @@ namespace RPGDialogueEditor
         /// </summary>
         private void AutoArrangeNodes(List<DialogueNodeData> nodes)
         {
-            if (nodes == null || nodes.Count == 0) return;
+            AutoArrangeSectionCluster(nodes, Vector2.zero, 350f, 300f);
+        }
 
+        private Vector2 AutoArrangeSectionCluster(
+            List<DialogueNodeData> sectionNodes,
+            Vector2 localOrigin,
+            float xSpacing = 350f,
+            float ySpacing = 280f)
+        {
+            if (sectionNodes == null || sectionNodes.Count == 0) return Vector2.zero;
+
+            var sectionIds = new HashSet<int>(sectionNodes.Select(n => n.id));
             var adj = new Dictionary<int, List<int>>();
             var inDegree = new Dictionary<int, int>();
             var nodeMap = new Dictionary<int, DialogueNodeData>();
 
-            foreach (var node in nodes)
+            foreach (var node in sectionNodes)
             {
                 adj[node.id] = new List<int>();
                 inDegree[node.id] = 0;
                 nodeMap[node.id] = node;
             }
 
-            // 建立逻辑有向边关系
-            foreach (var node in nodes)
+            void AddEdge(int fromId, int toId)
+            {
+                if (toId <= 0 || !sectionIds.Contains(toId) || fromId <= 0 || !adj.ContainsKey(fromId))
+                    return;
+                if (!adj[fromId].Contains(toId))
+                {
+                    adj[fromId].Add(toId);
+                    inDegree[toId]++;
+                }
+            }
+
+            foreach (var node in sectionNodes)
             {
                 if (node.type == "Normal")
                 {
-                    if (node.next > 0 && nodeMap.ContainsKey(node.next))
+                    AddEdge(node.id, node.next);
+                    if (node.conditionBranches != null)
                     {
-                        adj[node.id].Add(node.next);
-                        inDegree[node.next]++;
+                        foreach (var cb in node.conditionBranches)
+                        {
+                            string varType = "bool";
+                            var gv = GlobalVariables?.FirstOrDefault(v => v.name == cb.varName);
+                            if (gv != null) varType = gv.type;
+
+                            if (varType == "bool")
+                            {
+                                AddEdge(node.id, cb.trueNextNodeId);
+                                AddEdge(node.id, cb.falseNextNodeId);
+                            }
+                            else
+                            {
+                                AddEdge(node.id, cb.intNextNodeId);
+                            }
+                        }
                     }
                 }
                 else if (node.type == "Question" && node.options != null)
                 {
                     foreach (var opt in node.options)
                     {
-                        // 选项内部的条件分支优先
                         if (opt.conditionBranches != null && opt.conditionBranches.Count > 0)
                         {
                             foreach (var cb in opt.conditionBranches)
@@ -1409,87 +1459,27 @@ namespace RPGDialogueEditor
 
                                 if (varType2 == "bool")
                                 {
-                                    if (cb.trueNextNodeId > 0 && nodeMap.ContainsKey(cb.trueNextNodeId))
-                                    {
-                                        adj[node.id].Add(cb.trueNextNodeId);
-                                        inDegree[cb.trueNextNodeId]++;
-                                    }
-                                    if (cb.falseNextNodeId > 0 && nodeMap.ContainsKey(cb.falseNextNodeId))
-                                    {
-                                        adj[node.id].Add(cb.falseNextNodeId);
-                                        inDegree[cb.falseNextNodeId]++;
-                                    }
+                                    AddEdge(node.id, cb.trueNextNodeId);
+                                    AddEdge(node.id, cb.falseNextNodeId);
                                 }
                                 else
                                 {
-                                    if (cb.intNextNodeId > 0 && nodeMap.ContainsKey(cb.intNextNodeId))
-                                    {
-                                        adj[node.id].Add(cb.intNextNodeId);
-                                        inDegree[cb.intNextNodeId]++;
-                                    }
+                                    AddEdge(node.id, cb.intNextNodeId);
                                 }
                             }
                         }
                         else
                         {
-                            if (opt.next > 0 && nodeMap.ContainsKey(opt.next))
-                            {
-                                adj[node.id].Add(opt.next);
-                                inDegree[opt.next]++;
-                            }
-                        }
-                    }
-                }
-
-                // 条件分支边：仅 Normal 节点有节点级别的条件分支
-                if (node.type == "Normal" && node.conditionBranches != null && node.conditionBranches.Count > 0)
-                {
-                    foreach (var cb in node.conditionBranches)
-                    {
-                        string varType = "bool";
-                        var gv = GlobalVariables?.FirstOrDefault(v => v.name == cb.varName);
-                        if (gv != null) varType = gv.type;
-
-                        if (varType == "bool")
-                        {
-                            if (cb.trueNextNodeId > 0 && nodeMap.ContainsKey(cb.trueNextNodeId))
-                            {
-                                adj[node.id].Add(cb.trueNextNodeId);
-                                inDegree[cb.trueNextNodeId]++;
-                            }
-                            if (cb.falseNextNodeId > 0 && nodeMap.ContainsKey(cb.falseNextNodeId))
-                            {
-                                adj[node.id].Add(cb.falseNextNodeId);
-                                inDegree[cb.falseNextNodeId]++;
-                            }
-                        }
-                        else
-                        {
-                            if (cb.intNextNodeId > 0 && nodeMap.ContainsKey(cb.intNextNodeId))
-                            {
-                                adj[node.id].Add(cb.intNextNodeId);
-                                inDegree[cb.intNextNodeId]++;
-                            }
+                            AddEdge(node.id, opt.next);
                         }
                     }
                 }
             }
 
-            // 寻找入度为 0 的节点（也就是流程的最开始起点）
-            var roots = new List<int>();
-            foreach (var node in nodes)
-            {
-                if (inDegree[node.id] == 0)
-                {
-                    roots.Add(node.id);
-                }
-            }
-
-            // 兜底机制：无根节点则使用 ID=1，或列表中的首个节点
+            var roots = sectionNodes.Where(n => inDegree[n.id] == 0).Select(n => n.id).ToList();
             if (roots.Count == 0 && nodeMap.ContainsKey(1)) roots.Add(1);
-            if (roots.Count == 0 && nodes.Count > 0) roots.Add(nodes[0].id);
+            if (roots.Count == 0) roots.Add(sectionNodes[0].id);
 
-            // 层次计算 (用 BFS 分层级列)
             var depths = new Dictionary<int, int>();
             var queue = new Queue<int>();
             var visited = new HashSet<int>();
@@ -1508,15 +1498,10 @@ namespace RPGDialogueEditor
 
                 foreach (var neighbor in adj[curr])
                 {
-                    // 始终取最长的逻辑链路作为深度，防止反向或循环连线把后续节点拉到前面重叠
                     if (!depths.ContainsKey(neighbor))
-                    {
                         depths[neighbor] = currDepth + 1;
-                    }
                     else
-                    {
                         depths[neighbor] = Math.Max(depths[neighbor], currDepth + 1);
-                    }
 
                     if (!visited.Contains(neighbor))
                     {
@@ -1526,58 +1511,185 @@ namespace RPGDialogueEditor
                 }
             }
 
-            // 处理独立断开的废弃节点，让它们堆叠在最后一列
-            int maxDepth = 0;
-            foreach (var d in depths.Values)
-            {
-                if (d > maxDepth) maxDepth = d;
-            }
-
-            nodes.Sort((a, b) => a.id.CompareTo(b.id));
-
-            foreach (var node in nodes)
+            int maxDepth = depths.Count > 0 ? depths.Values.Max() : 0;
+            foreach (var node in sectionNodes)
             {
                 if (!depths.ContainsKey(node.id))
-                {
                     depths[node.id] = maxDepth + 1;
-                }
             }
 
-            // 将节点按计算好的 Depth 分列分组
             var depthLevels = new Dictionary<int, List<DialogueNodeData>>();
-            foreach (var node in nodes)
+            foreach (var node in sectionNodes)
             {
                 int d = depths[node.id];
                 if (!depthLevels.ContainsKey(d))
-                {
                     depthLevels[d] = new List<DialogueNodeData>();
-                }
                 depthLevels[d].Add(node);
             }
 
-            // 树形垂直对称排版渲染
-            float startX = 50f;
-            float startY = 150f;
-            float xSpacing = 350f;
-            float ySpacing = 300f; // 保证卡片加端口有充足的垂直间距
+            const float startX = 50f;
+            const float startY = 150f;
+            const float clusterMargin = 50f;
+            float maxX = startX;
+            float maxY = startY;
 
             foreach (var pair in depthLevels)
             {
                 int depth = pair.Key;
                 var levelNodes = pair.Value;
 
-                // 重点：计算当前列的总高度，并相对于基准 Y 点进行对称对齐
                 float totalHeight = (levelNodes.Count - 1) * ySpacing;
                 float columnStartY = startY - (totalHeight / 2f);
-                if (columnStartY < 50f) columnStartY = 50f; // 下限保护
+                if (columnStartY < 50f) columnStartY = 50f;
 
                 for (int i = 0; i < levelNodes.Count; i++)
                 {
                     var n = levelNodes[i];
-                    float x = startX + depth * xSpacing;
-                    float y = columnStartY + i * ySpacing;
+                    float x = localOrigin.x + startX + depth * xSpacing;
+                    float y = localOrigin.y + columnStartY + i * ySpacing;
                     n.position = new Vector2(x, y);
+                    maxX = Math.Max(maxX, x);
+                    maxY = Math.Max(maxY, y);
                 }
+            }
+
+            return new Vector2(maxX - localOrigin.x + clusterMargin, maxY - localOrigin.y + clusterMargin);
+        }
+
+        private Vector2 PlaceClusterGrid(
+            List<List<DialogueNodeData>> clusters,
+            float originX,
+            float originY,
+            int gridCols,
+            float gap)
+        {
+            float cursorX = originX;
+            float cursorY = originY;
+            int col = 0;
+            float maxRowHeight = 0f;
+            float regionRight = originX;
+            float regionBottom = originY;
+
+            foreach (var group in clusters)
+            {
+                var clusterSize = AutoArrangeSectionCluster(group, new Vector2(cursorX, cursorY));
+                regionRight = Math.Max(regionRight, cursorX + clusterSize.x);
+                regionBottom = Math.Max(regionBottom, cursorY + clusterSize.y);
+                maxRowHeight = Math.Max(maxRowHeight, clusterSize.y);
+                col++;
+                if (col >= gridCols)
+                {
+                    col = 0;
+                    cursorX = originX;
+                    cursorY += maxRowHeight + gap;
+                    maxRowHeight = 0f;
+                }
+                else
+                {
+                    cursorX += clusterSize.x + gap;
+                }
+            }
+
+            return new Vector2(regionRight, regionBottom);
+        }
+
+        /// <summary>
+        /// 按 doc 区块（谷仓 / 红顶 / NGPlus / 入口）分区排版，块内紧凑、块间拉开。
+        /// </summary>
+        private void AutoArrangeByDocSection(List<DialogueNodeData> nodes)
+        {
+            if (nodes == null || nodes.Count == 0) return;
+
+            var barnOrder = new[] { "1-A", "1-A'", "1-B", "1-C", "1-D", "1-E", "1-F", "1-G" };
+            var redOrder = new[] { "2-A", "2-hub", "2-A'", "2-B", "2-C", "2-E" };
+            var bucketOrder = new Dictionary<string, int> { { "entry", 0 }, { "barn", 1 }, { "red", 2 }, { "ngplus", 3 } };
+            const float sectionMacroGap = 350f;
+            const float regionGap = 1200f;
+            const int barnGridCols = 3;
+            const int redGridCols = 3;
+
+            string Bucket(string docTag)
+            {
+                if (string.IsNullOrEmpty(docTag)) return "barn";
+                if (docTag.StartsWith("entry")) return "entry";
+                if (docTag.StartsWith("NGPlus")) return "ngplus";
+                if (docTag.StartsWith("2-") || docTag.StartsWith("2-hub")) return "red";
+                return "barn";
+            }
+
+            string Section(string docTag)
+            {
+                if (string.IsNullOrEmpty(docTag)) return "unknown";
+                if (docTag.StartsWith("entry")) return docTag.Split('#')[0];
+                if (docTag.StartsWith("NGPlus")) return "NGPlus";
+                var m = Regex.Match(docTag, @"((?:1|2)-[^@#]+|2-hub[^@#]*)");
+                if (m.Success)
+                {
+                    var name = m.Groups[1].Value;
+                    return name.StartsWith("2-hub") ? "2-hub" : name;
+                }
+                return docTag.Split('@')[0].Split('#')[0];
+            }
+
+            int SectionRank(string bucket, string sec)
+            {
+                if (bucket == "barn")
+                {
+                    int idx = Array.IndexOf(barnOrder, sec);
+                    return idx >= 0 ? idx : 100;
+                }
+                if (bucket == "red")
+                {
+                    int idx = Array.IndexOf(redOrder, sec);
+                    return idx >= 0 ? idx : 100;
+                }
+                return 0;
+            }
+
+            var groups = nodes
+                .GroupBy(n => (Bucket(n.docTag), Section(n.docTag)))
+                .OrderBy(g => bucketOrder.GetValueOrDefault(g.Key.Item1, 9))
+                .ThenBy(g => SectionRank(g.Key.Item1, g.Key.Item2))
+                .ThenBy(g => g.Key.Item2)
+                .ToList();
+
+            var entryClusters = new List<List<DialogueNodeData>>();
+            var barnClusters = new List<List<DialogueNodeData>>();
+            var redClusters = new List<List<DialogueNodeData>>();
+            var ngplusClusters = new List<List<DialogueNodeData>>();
+
+            foreach (var group in groups)
+            {
+                var cluster = group.ToList();
+                switch (group.Key.Item1)
+                {
+                    case "entry": entryClusters.Add(cluster); break;
+                    case "barn": barnClusters.Add(cluster); break;
+                    case "red": redClusters.Add(cluster); break;
+                    case "ngplus": ngplusClusters.Add(cluster); break;
+                }
+            }
+
+            float entryRight = 0f;
+            float entryBottom = 0f;
+            if (entryClusters.Count > 0)
+            {
+                var entryNodes = entryClusters.SelectMany(c => c).ToList();
+                var entrySize = AutoArrangeSectionCluster(entryNodes, Vector2.zero);
+                entryRight = entrySize.x;
+                entryBottom = entrySize.y;
+            }
+
+            float barnOriginY = entryClusters.Count > 0 ? entryBottom + regionGap : 0f;
+            var barnRegion = PlaceClusterGrid(barnClusters, 0f, barnOriginY, barnGridCols, sectionMacroGap);
+
+            float redOriginX = Math.Max(barnRegion.x, entryRight) + regionGap;
+            var redRegion = PlaceClusterGrid(redClusters, redOriginX, 0f, redGridCols, sectionMacroGap);
+
+            if (ngplusClusters.Count > 0)
+            {
+                var ngplusNodes = ngplusClusters.SelectMany(c => c).ToList();
+                AutoArrangeSectionCluster(ngplusNodes, new Vector2(redOriginX, redRegion.y + regionGap));
             }
         }
 
@@ -1609,12 +1721,27 @@ namespace RPGDialogueEditor
 
                 if (braceCount == 0)
                 {
-                    // 完美提取出当前 ID 的配置块
                     string blockContent = luaText.Substring(openBraceIndex + 1, scan - openBraceIndex - 2);
-                    blocks.Add(new RawLuaBlock { id = id, content = blockContent });
+                    string preamble = ExtractBlockPreamble(luaText, match.Index);
+                    blocks.Add(new RawLuaBlock { id = id, content = blockContent, preamble = preamble });
                 }
             }
             return blocks;
+        }
+
+        private static string ExtractBlockPreamble(string luaText, int blockStartIndex)
+        {
+            int cursor = blockStartIndex;
+            while (cursor > 0)
+            {
+                int lineStart = luaText.LastIndexOf('\n', cursor - 1);
+                if (lineStart < 0) lineStart = -1;
+                int contentStart = lineStart + 1;
+                string line = luaText.Substring(contentStart, cursor - contentStart).Trim();
+                if (!line.StartsWith("--")) break;
+                cursor = contentStart;
+            }
+            return cursor < blockStartIndex ? luaText.Substring(cursor, blockStartIndex - cursor) : "";
         }
 
         private string ExtractStringField(string body, string key)
@@ -1634,6 +1761,24 @@ namespace RPGDialogueEditor
             return match.Success ? int.Parse(match.Groups[1].Value) : defaultValue;
         }
 
+        private bool ExtractBoolLiteralField(string body, string key, bool defaultValue = false)
+        {
+            string quoted = ExtractStringField(body, key);
+            if (!string.IsNullOrEmpty(quoted))
+            {
+                return quoted.Equals("true", System.StringComparison.OrdinalIgnoreCase) ||
+                       quoted == "1";
+            }
+
+            var match = Regex.Match(body, @"\b" + key + @"\s*=\s*(true|false)", RegexOptions.IgnoreCase);
+            if (match.Success)
+            {
+                return match.Groups[1].Value.Equals("true", System.StringComparison.OrdinalIgnoreCase);
+            }
+
+            return defaultValue;
+        }
+
         private List<DialogueNodeData> ParseLuaConfig(string luaText)
         {
             var nodes = new List<DialogueNodeData>();
@@ -1644,12 +1789,15 @@ namespace RPGDialogueEditor
             {
                 int id = block.id;
                 string body = block.content;
+                string meta = (block.preamble ?? "") + "\n" + body;
 
-                // 1. 独立解析排版坐标 (因为坐标在注释里，必须在过滤注释之前完成匹配)
-                var posM = Regex.Match(body, @"Position\s*:\s*\{\s*([\d\.-]+)\s*,\s*([\d\.-]+)\s*\}", RegexOptions.IgnoreCase);
+                var posM = Regex.Match(meta, @"Position\s*:\s*\{\s*([\d\.-]+)\s*,\s*([\d\.-]+)\s*\}", RegexOptions.IgnoreCase);
                 Vector2 pos = posM.Success 
                     ? new Vector2(float.Parse(posM.Groups[1].Value), float.Parse(posM.Groups[2].Value)) 
                     : new Vector2(50 + (index % 3) * 350, 60 + (index / 3) * 350);
+
+                var docM = Regex.Match(block.preamble ?? "", @"--\s*doc:([^\s]+)", RegexOptions.IgnoreCase);
+                string docTag = docM.Success ? docM.Groups[1].Value : "";
 
                 // 2. 清理当前数据块的所有 Lua 注释，防止干扰字段值提取
                 string cleanBody = Regex.Replace(body, @"--.*", "");
@@ -1662,6 +1810,10 @@ namespace RPGDialogueEditor
                 string npcSprite = ExtractStringField(cleanBody, "NpcSprite");
                 string dialogue = ExtractStringField(cleanBody, "Dialogue");
                 int next = ExtractIntField(cleanBody, "Next", -1);
+                if (string.IsNullOrEmpty(docTag))
+                {
+                    docTag = ExtractStringField(cleanBody, "DocTag");
+                }
 
                 // 3.5 解析 UnlockBranches 数组（新格式）
                 var unlockList = new List<UnlockBranchData>();
@@ -1737,8 +1889,7 @@ namespace RPGDialogueEditor
                                 var svData = new SetVariableData { varName = svVarName, varType = svVarType };
                                 if (svVarType == "bool")
                                 {
-                                    string boolValue = ExtractStringField(svBody, "Value");
-                                    svData.boolValue = boolValue.ToLower() == "true";
+                                    svData.boolValue = ExtractBoolLiteralField(svBody, "Value");
                                 }
                                 else
                                 {
@@ -1808,6 +1959,30 @@ namespace RPGDialogueEditor
                     }
                 }
 
+                var rotatePool = new List<int>();
+                int rpIndex = cleanBody.IndexOf("RotatePool", StringComparison.OrdinalIgnoreCase);
+                if (rpIndex != -1)
+                {
+                    int rpBrace = cleanBody.IndexOf('{', rpIndex);
+                    if (rpBrace != -1)
+                    {
+                        int rpDepth = 1;
+                        int rpScan = rpBrace + 1;
+                        while (rpScan < cleanBody.Length && rpDepth > 0)
+                        {
+                            if (cleanBody[rpScan] == '{') rpDepth++;
+                            else if (cleanBody[rpScan] == '}') rpDepth--;
+                            rpScan++;
+                        }
+                        string rpText = cleanBody.Substring(rpBrace + 1, rpScan - rpBrace - 2);
+                        var rpMatches = Regex.Matches(rpText, @"\b(\d+)\b");
+                        foreach (Match rpm in rpMatches)
+                        {
+                            rotatePool.Add(int.Parse(rpm.Groups[1].Value));
+                        }
+                    }
+                }
+
                 var nodeData = new DialogueNodeData
                 {
                     id = id,
@@ -1819,6 +1994,8 @@ namespace RPGDialogueEditor
                     unlockBranches = unlockList,
                     setVariables = setVarList,
                     conditionBranches = condList,
+                    rotatePool = rotatePool,
+                    docTag = docTag,
                     position = pos,
                     options = new List<OptionData>()
                 };
@@ -1924,8 +2101,7 @@ namespace RPGDialogueEditor
                                                 }
                                                 else
                                                 {
-                                                    string boolValue = ExtractStringField(dcBody, "Value");
-                                                    dcData.intCompareValue = (boolValue.ToLower() == "true") ? 1 : 0;
+                                                    dcData.intCompareValue = ExtractBoolLiteralField(dcBody, "Value") ? 1 : 0;
                                                 }
                                                 option.displayConditions.Add(dcData);
                                             }
@@ -2007,9 +2183,17 @@ namespace RPGDialogueEditor
             {
                 bool isNormal = node.type == "Normal";
                 sb.AppendLine(isNormal ? "-- 普通对话类型" : "-- 提问类型（玩家需要选择回答）");
+                if (!string.IsNullOrEmpty(node.docTag))
+                {
+                    sb.AppendLine($"-- doc:{node.docTag}");
+                }
+                sb.AppendLine($"-- Position: {{ {node.position.x:F0}, {node.position.y:F0} }}");
                 sb.AppendLine($"DialogueConfig[{node.id}] = {{");
-                // sb.AppendLine($"    -- Position: {{{node.position.x:F0}, {node.position.y:F0}}}");
                 sb.AppendLine($"    Type = \"{node.type}\",");
+                if (!string.IsNullOrEmpty(node.docTag))
+                {
+                    sb.AppendLine($"    DocTag = \"{node.docTag}\",");
+                }
                 sb.AppendLine($"    NpcName = \"{node.npcName}\",");
                 sb.AppendLine($"    NpcSprite = \"{node.npcSprite}\",");
                 
@@ -2088,6 +2272,12 @@ namespace RPGDialogueEditor
                         }
                         sb.AppendLine("    },");
                     }
+                }
+
+                if (isNormal && node.rotatePool != null && node.rotatePool.Count > 0)
+                {
+                    string poolIds = string.Join(", ", node.rotatePool);
+                    sb.AppendLine($"    RotatePool = {{ {poolIds} }},");
                 }
 
                 if (isNormal)

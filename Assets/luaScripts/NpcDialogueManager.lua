@@ -34,16 +34,27 @@ local optionAnimationTimer = 0
 local currentAnimatingOptionIndex = 0
 local optionAnimationSpeed = 0.2
 
--- ========== 新增：选项点击后暂存与等待 Next 状态 ==========
-local selectedOptionCache = nil           -- 缓存玩家选择的选项
-local isWaitingForNextAfterOption = false -- 是否正在等待点击 Next 以完成选项跳转
-
--- ========== 新增：外部动态加载的对话配置 ==========
+-- ========== 选项：下一段若玩家先说话则不播选项；否则先播选项再 Next 跳转 ==========
+local selectedOptionCache = nil
+local isWaitingForNextAfterOption = false
 local externalDialogueConfig = nil -- 动态加载的外部对话数据
 local unlockedBranchCache = {}     -- 已处理过的分支缓存，防止同一节点重复解锁
 
 -- ========== 新增：头像辅助功能 ==========
 local _npcConfigsCache = nil -- NPC 配置缓存，避免重复读取文件
+
+-- World Debugger 对话调试（过滤关键字 [Dialogue]）
+local DIALOGUE_DEBUG = true
+
+local function Dbg(msg)
+    if DIALOGUE_DEBUG then
+        print("[Dialogue] " .. msg)
+    end
+end
+
+local function DbgError(msg)
+    logError("[Dialogue] " .. msg)
+end
 
 -- 从 avatarPath 中提取 sprite 名称（去掉路径和扩展名）
 -- 例如: "Assets/Res/TouXiang_LiHui/Dog/Dog01.png" -> "Dog01"
@@ -88,10 +99,15 @@ local function EnsureNPCConfigsLoaded()
     return nil
 end
 
--- 根据条件分支计算下一个节点 ID
+-- 根据条件分支计算下一个节点 ID（reason 供 World Debugger 日志）
 function GetNextNodeByCondition(data)
+    local nextID, _ = GetNextNodeByConditionDetailed(data)
+    return nextID
+end
+
+function GetNextNodeByConditionDetailed(data)
     if data == nil or data.ConditionBranches == nil or #data.ConditionBranches == 0 then
-        return nil
+        return nil, nil
     end
 
     local getFunc = _G["GetGlobalVar"]
@@ -99,20 +115,17 @@ function GetNextNodeByCondition(data)
     for i, cb in ipairs(data.ConditionBranches) do
         if cb.VarName ~= nil and cb.VarName ~= "" then
             local varType = cb.VarType or "bool"
-            local varValue = getFunc(cb.VarName)
+            local varValue = getFunc and getFunc(cb.VarName)
 
             if varType == "bool" then
-                -- bool 模式：true/false 各走一个分支；未设置的变量视为 false
-                --   true  → TrueNext
-                --   false/nil → FalseNext
-                -- -1 表示"结束对话"，因此需要允许 -1 被返回
                 if varValue == true and cb.TrueNext ~= nil then
-                    return cb.TrueNext
+                    return cb.TrueNext,
+                        "cond " .. cb.VarName .. "=true → TrueNext=" .. tostring(cb.TrueNext)
                 elseif (varValue == false or varValue == nil) and cb.FalseNext ~= nil then
-                    return cb.FalseNext
+                    return cb.FalseNext,
+                        "cond " .. cb.VarName .. "=false → FalseNext=" .. tostring(cb.FalseNext)
                 end
             else
-                -- int 模式：用操作符比较；未设置的变量视为 0
                 local op = cb.Op or "=="
                 local cmpValue = tonumber(cb.Value) or 0
                 local intVal = tonumber(varValue) or 0
@@ -131,12 +144,13 @@ function GetNextNodeByCondition(data)
                     match = (intVal <= cmpValue)
                 end
                 if match and cb.Next ~= nil then
-                    return cb.Next
+                    return cb.Next,
+                        "cond " .. cb.VarName .. op .. tostring(cmpValue) .. " → Next=" .. tostring(cb.Next)
                 end
             end
         end
     end
-    return nil -- 没有任何条件分支匹配
+    return nil, "no cond match"
 end
 
 ----- ========== 新增：应用 SetVariables（节点执行时设置全局变量的值）==========
@@ -151,13 +165,17 @@ function ApplySetVariables(data)
 
         if not varName or varName == "" then goto continue end
 
+        local getFunc = _G["GetGlobalVar"]
+        local was = getFunc and getFunc(varName)
         local setFunc = _G["SetGlobalVar"]
         if varType == "bool" then
             local boolVal = value == true or value == "true" or value == 1
             setFunc(varName, boolVal, "bool")
+            Dbg("SetVar " .. varName .. "=" .. tostring(boolVal) .. " (was " .. tostring(was) .. ")")
         else
             local intVal = tonumber(value) or 0
             setFunc(varName, intVal, "int")
+            Dbg("SetVar " .. varName .. "=" .. tostring(intVal) .. " (was " .. tostring(was) .. ")")
         end
 
         ::continue::
@@ -333,17 +351,11 @@ function OnNextClick()
         return
     end
 
-    -- 处理选项完成后的 Next 点击
     if isWaitingForNextAfterOption and selectedOptionCache then
-        if next then
-            next.gameObject:SetActive(false)
-        end
-        -- 切换回 NPC 名字面板
-        SetPlayerNamePanel(false) -- 显示NPC名字，隐藏玩家名字
-        -- 执行选项跳转
-        PerformOptionJump(selectedOptionCache)
+        local opt = selectedOptionCache
         selectedOptionCache = nil
         isWaitingForNextAfterOption = false
+        PerformOptionJump(opt, false)
         return
     end
 
@@ -355,69 +367,107 @@ function OnNextClick()
         return
     end
 
-    -- 优先检查条件分支（基于全局变量），如果没有匹配则使用默认 Next
-    local nextID = GetNextNodeByCondition(currentData)
+    local fromID = currentDialogueID
+    local fromTag = currentData.DocTag or "?"
+    local nextID, condReason = GetNextNodeByConditionDetailed(currentData)
+    local via = condReason
     if nextID == nil then
         nextID = currentData.Next
+        via = "fallback Next=" .. tostring(nextID)
     end
 
     if nextID == -1 then
-        EndDialogue()
+        Dbg("Leave node=" .. fromID .. " DocTag=" .. fromTag .. " via " .. via .. " → END")
+        EndDialogue(via)
     elseif GetDialogueData(nextID) ~= nil then
+        Dbg("Leave node=" .. fromID .. " DocTag=" .. fromTag .. " via " .. via .. " → " .. nextID)
         currentDialogueID = nextID
         UpdateDialogueUI()
     else
+        DbgError("Leave node=" .. fromID .. " target " .. tostring(nextID) .. " missing")
         DouyinUtility.Toast("对话配置错误，下一段对话不存在～")
-        EndDialogue()
+        EndDialogue("missing next " .. tostring(nextID))
     end
 end
 
 function UpdateDialogueUI()
-    print("[Dialogue] === UpdateDialogueUI 开始 ===")
-    print("[Dialogue] currentDialogueID: " .. tostring(currentDialogueID))
-
     local data = GetDialogueData(currentDialogueID)
     if data == nil then
-        print("[Dialogue] 对话数据为空，返回")
+        DbgError("Enter node=" .. tostring(currentDialogueID) .. " — data missing")
         DouyinUtility.Toast("对话数据加载失败～")
-        EndDialogue()
+        EndDialogue("data missing")
+        return
+    end
+
+    -- 自动跳过空台词路由节点（entry#0 / entry#barn* 等）与 RotatePool 分发
+    local skipGuard = 0
+    while skipGuard < 48 do
+        skipGuard = skipGuard + 1
+        data = GetDialogueData(currentDialogueID)
+        if data == nil then
+            DbgError("Enter node=" .. tostring(currentDialogueID) .. " — data missing during skip")
+            EndDialogue("data missing")
+            return
+        end
+
+        if data.RotatePool ~= nil and #data.RotatePool > 0 then
+            local pick = math.random(1, #data.RotatePool)
+            local poolStart = data.RotatePool[pick]
+            if GetDialogueData(poolStart) ~= nil then
+                Dbg("RotatePool dispatcher " .. currentDialogueID .. " → " .. poolStart .. " (pick " .. pick .. "/" .. #data.RotatePool .. ")")
+                CheckAndUnlockBranch(data)
+                ApplySetVariables(data)
+                currentDialogueID = poolStart
+            else
+                break
+            end
+        elseif data.Dialogue == nil or data.Dialogue == "" then
+            CheckAndUnlockBranch(data)
+            ApplySetVariables(data)
+
+            local nextID, condReason = GetNextNodeByConditionDetailed(data)
+            local via = condReason
+            if nextID == nil then
+                nextID = data.Next
+                via = "fallback Next=" .. tostring(nextID)
+            end
+
+            if nextID == -1 then
+                Dbg("Leave empty dispatcher node=" .. currentDialogueID .. " DocTag=" .. (data.DocTag or "?") .. " via " .. tostring(via) .. " → END")
+                EndDialogue(via)
+                return
+            end
+            if nextID == nil or GetDialogueData(nextID) == nil then
+                DbgError("empty dispatcher " .. currentDialogueID .. " → missing " .. tostring(nextID))
+                DouyinUtility.Toast("对话配置错误，下一段对话不存在～")
+                EndDialogue("missing next " .. tostring(nextID))
+                return
+            end
+
+            Dbg("Skip empty dispatcher node=" .. currentDialogueID .. " DocTag=" .. (data.DocTag or "?") .. " via " .. tostring(via) .. " → " .. nextID)
+            currentDialogueID = nextID
+        else
+            break
+        end
+    end
+
+    data = GetDialogueData(currentDialogueID)
+    if data == nil then
+        DbgError("Enter node=" .. tostring(currentDialogueID) .. " — data missing after skip")
+        EndDialogue("data missing")
         return
     end
 
     currentDataCache = data
 
-    print("[Dialogue] 对话数据类型: " .. tostring(data.Type))
-    print("[Dialogue] 对话数据 NpcName: " .. tostring(data.NpcName))
-    print("[Dialogue] 对话数据 Next: " .. tostring(data.Next))
+    local docTag = data.DocTag or "?"
+    Dbg("Enter node=" .. currentDialogueID .. " DocTag=" .. docTag ..
+        " type=" .. tostring(data.Type) .. " npc=" .. tostring(data.NpcName) .. " Next=" .. tostring(data.Next))
 
     -- 检查是否需要解锁分支
     CheckAndUnlockBranch(data)
 
-    -- 应用变量设置
-    print("[Dialogue] data.SetVariables 是否存在: " .. tostring(data.SetVariables ~= nil))
-    if data.SetVariables then
-        print("[Dialogue] data.SetVariables 数量: " .. #data.SetVariables)
-        for i, sv in ipairs(data.SetVariables) do
-            print("[Dialogue]   SetVariables[" ..
-                i ..
-                "] = " ..
-                tostring(sv.VarName or sv.varName) .. ", " .. tostring(sv.VarType) .. ", " .. tostring(sv.Value))
-        end
-    else
-        print("[Dialogue] data.SetVariables 不存在！")
-    end
-
     ApplySetVariables(data)
-
-    -- 设置后检查变量值
-    if data.SetVariables and #data.SetVariables > 0 then
-        print("[Dialogue] === 设置后的变量值 ===")
-        for _, sv in ipairs(data.SetVariables) do
-            local varName = sv.VarName or sv.varName
-            print("[Dialogue]   " ..
-                varName .. " = " .. tostring(_G["GetGlobalVar"] and _G["GetGlobalVar"](varName)))
-        end
-    end
 
     if next then
         next.gameObject:SetActive(false)
@@ -499,13 +549,18 @@ function CompleteTypingEffect()
     npcDialogueText.text = fullDialogueText
 
     if isWaitingForNextAfterOption then
-        -- 选项文本播放完成：切换到玩家名字面板，显示 Next 按钮
-        SetPlayerNamePanel(true) -- 显示玩家名字，隐藏NPC名字
+        SetPlayerNamePanel(true)
+        if npcName then
+            npcName.text = "玩家"
+        end
         if next then
             next.gameObject:SetActive(true)
             next.interactable = true
         end
-    elseif currentDataCache then
+        return
+    end
+
+    if currentDataCache then
         if currentDataCache.Type == "Question" then
             ShowQuestionUI(currentDataCache)
         else
@@ -669,6 +724,20 @@ function CheckOptionDisplayConditions(option)
     return true
 end
 
+-- hub 菜单最多显示 4 项：超过时保留前 3 项 + 最后一项（告辞/结束对话，策划约定排在菜单末尾）
+local function ApplyHubMenuCap(options)
+    local count = #options
+    if count <= 4 then
+        return options
+    end
+    return {
+        options[1],
+        options[2],
+        options[3],
+        options[count],
+    }
+end
+
 function ShowQuestionUI(data)
     isWaitingForChoice = true
 
@@ -698,6 +767,7 @@ function ShowQuestionUI(data)
         end
     end
     currentOptions = filteredOptions
+    currentOptions = ApplyHubMenuCap(currentOptions)
 
     if #currentOptions == 0 then
         DouyinUtility.Toast("提问模式缺少满足条件的选项～")
@@ -774,28 +844,6 @@ function GenerateOptionButtons()
     currentAnimatingOptionIndex = 0
 end
 
--- ========== 修改：选项点击后先显示选项文字，再等待 Next ==========
-function OnOptionSelected(option)
-    if not isWaitingForChoice then
-        return
-    end
-
-    -- 清除等待选项状态，隐藏选项按钮面板（但保留当前名字面板状态，不立即切换）
-    isWaitingForChoice = false
-    if playerPanel then
-        playerPanel:SetActive(false) -- 隐藏选项按钮容器
-    end
-    ClearOptionButtons()
-
-    -- 缓存选中的选项，标记为等待 Next 状态
-    selectedOptionCache = option
-    isWaitingForNextAfterOption = true
-
-    -- 将选项文本作为对话内容，开始打字机效果
-    fullDialogueText = option.Text
-    StartTypingEffect()
-end
-
 function SetPlayerNamePanel(active)
     if playerNamePanel then
         playerNamePanel:SetActive(active)
@@ -855,17 +903,87 @@ function GetOptionNextNode(option)
     return nil
 end
 
--- ========== 修改：执行选项的实际分支跳转逻辑（支持条件分支）==========
-function PerformOptionJump(option)
-    if option.BranchFlag then
-        SaveBranchFlag(option.BranchFlag)
-    end
-
-    -- 优先检查选项的条件分支（有条件分支 → 按条件走；没条件分支 → 走默认的 option.Next）
+local function GetOptionRawNextID(option)
     local nextID = GetOptionNextNode(option)
     if nextID == nil then
         nextID = option.Next
     end
+    return nextID
+end
+
+-- 跳过空路由节点，找到 option.Next 后第一个有台词的节点
+local function GetFirstContentNodeAfterID(startID)
+    local nextID = startID
+    local guard = 0
+    while guard < 48 and nextID ~= nil and nextID ~= -1 do
+        guard = guard + 1
+        local nodeData = GetDialogueData(nextID)
+        if nodeData == nil then
+            return nil
+        end
+
+        if nodeData.RotatePool ~= nil and #nodeData.RotatePool > 0 then
+            nextID = nodeData.RotatePool[1]
+        elseif nodeData.Dialogue == nil or nodeData.Dialogue == "" then
+            local routed = GetNextNodeByCondition(nodeData)
+            if routed == nil then
+                routed = nodeData.Next
+            end
+            nextID = routed
+        else
+            return nodeData
+        end
+    end
+    return nil
+end
+
+function IsPlayerFirstAfterOption(option)
+    local firstNode = GetFirstContentNodeAfterID(GetOptionRawNextID(option))
+    return firstNode ~= nil and firstNode.NpcName == "玩家"
+end
+
+-- 若 option.Next 首节点玩家台词与选项文字完全相同，视为已表达，再跳一段（缩略/全文相同时只播一次）
+local function ShouldSkipRedundantPlayerLine(option, nodeData)
+    if not option or not option.Text or option.Text == "" then
+        return false
+    end
+    if not nodeData or nodeData.NpcName ~= "玩家" then
+        return false
+    end
+    return nodeData.Dialogue == option.Text
+end
+
+local function ResolveOptionNextID(option, skipRedundantPlayerLine)
+    if skipRedundantPlayerLine == nil then
+        skipRedundantPlayerLine = true
+    end
+
+    local nextID = GetOptionRawNextID(option)
+
+    if not skipRedundantPlayerLine then
+        return nextID
+    end
+
+    local guard = 0
+    while guard < 8 and nextID ~= nil and nextID ~= -1 do
+        guard = guard + 1
+        local nodeData = GetDialogueData(nextID)
+        if nodeData and ShouldSkipRedundantPlayerLine(option, nodeData) then
+            nextID = nodeData.Next
+        else
+            break
+        end
+    end
+    return nextID
+end
+
+-- ========== 修改：执行选项的实际分支跳转逻辑（支持条件分支）==========
+function PerformOptionJump(option, skipRedundantPlayerLine)
+    if option.BranchFlag then
+        SaveBranchFlag(option.BranchFlag)
+    end
+
+    local nextID = ResolveOptionNextID(option, skipRedundantPlayerLine)
 
     if nextID == -1 then
         EndDialogue()
@@ -876,6 +994,36 @@ function PerformOptionJump(option)
         DouyinUtility.Toast("选项配置错误，下一段对话不存在～")
         EndDialogue()
     end
+end
+
+-- 选项是菜单缩略语；若下一段首句为玩家台词则不播选项，否则先播选项再等 Next
+function OnOptionSelected(option)
+    if not isWaitingForChoice then
+        return
+    end
+
+    isWaitingForChoice = false
+    if playerPanel then
+        playerPanel:SetActive(false)
+    end
+    ClearOptionButtons()
+    if next then
+        next.gameObject:SetActive(false)
+    end
+
+    if IsPlayerFirstAfterOption(option) then
+        PerformOptionJump(option, true)
+        return
+    end
+
+    selectedOptionCache = option
+    isWaitingForNextAfterOption = true
+    SetPlayerNamePanel(true)
+    if npcName then
+        npcName.text = "玩家"
+    end
+    fullDialogueText = option.Text
+    StartTypingEffect()
 end
 
 function SaveBranchFlag(flag)
@@ -897,13 +1045,16 @@ function CheckBranchFlag(flag)
 end
 
 -- ========== 修改：结束对话时重置新增的状态变量 ==========
-function EndDialogue()
+function EndDialogue(reason)
+    if reason then
+        Dbg("End dialogue reason=" .. tostring(reason))
+    end
     currentDialogueID = -1
     isWaitingForChoice = false
-    isTyping = false
-    isAnimatingOptions = false
     isWaitingForNextAfterOption = false
     selectedOptionCache = nil
+    isTyping = false
+    isAnimatingOptions = false
     externalDialogueConfig = nil
     unlockedBranchCache = {}
 

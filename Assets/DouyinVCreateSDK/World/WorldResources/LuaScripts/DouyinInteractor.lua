@@ -26,7 +26,13 @@ function Awake()
         if InteractionArea == nil then
             InteractionArea = self.gameObject:AddComponent(typeof(CS.UnityEngine.SphereCollider))
             InteractionArea.center = CS.UnityEngine.Vector3.zero
-            InteractionArea.radius = InteractionRange
+            local scale = self.gameObject.transform.localScale
+            local maxScale = math.max(scale.x, scale.y, scale.z)
+            if maxScale > 0 then
+                InteractionArea.radius = InteractionRange / maxScale
+            else
+                InteractionArea.radius = InteractionRange
+            end
         end
     end
     if InteractionArea ~= nil then
