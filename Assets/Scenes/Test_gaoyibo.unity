@@ -103292,6 +103292,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AlternateStaffs
       objectReference: {fileID: 0}
+    - target: {fileID: 8908965583109537789, guid: 7a06e4de0d0fd064bbf44f75f01bff29, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a06e4de0d0fd064bbf44f75f01bff29, type: 3}
 --- !u!4 &5865805409839062298 stripped
@@ -103372,6 +103376,26 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 955738828}
+    - target: {fileID: 6253040857849522352, guid: 4e9825d7808338240a5b3d7aab50ec83, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5567583
+      objectReference: {fileID: 0}
+    - target: {fileID: 6253040857849522352, guid: 4e9825d7808338240a5b3d7aab50ec83, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 4.9370265
+      objectReference: {fileID: 0}
+    - target: {fileID: 6253040857849522352, guid: 4e9825d7808338240a5b3d7aab50ec83, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -24.971
+      objectReference: {fileID: 0}
+    - target: {fileID: 6253040857849522352, guid: 4e9825d7808338240a5b3d7aab50ec83, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.2109
+      objectReference: {fileID: 0}
+    - target: {fileID: 6253040857849522352, guid: 4e9825d7808338240a5b3d7aab50ec83, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.0797
+      objectReference: {fileID: 0}
     - target: {fileID: 6253040858799644518, guid: 4e9825d7808338240a5b3d7aab50ec83, type: 3}
       propertyPath: m_Name
       value: Garner
