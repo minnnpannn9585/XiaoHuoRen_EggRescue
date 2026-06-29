@@ -1555,6 +1555,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 8d7e53dd32c1d42409c8e479375df823, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 6fd2b9157a1d6c840b7c6f8c46e2b8fa, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -8343132879954498899, guid: ca31bae2def83f24f9dc7afd09b86080, type: 3}
     - target: {fileID: 919132149155446097, guid: 6fd2b9157a1d6c840b7c6f8c46e2b8fa, type: 3}
       propertyPath: m_Name
       value: HenRoof
