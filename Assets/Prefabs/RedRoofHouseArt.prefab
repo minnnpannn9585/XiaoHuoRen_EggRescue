@@ -5581,15 +5581,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 30dc6b7a0d23ccd4bb360c06e78ac517, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.208
+      value: -2.272
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 30dc6b7a0d23ccd4bb360c06e78ac517, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.821
+      value: 2.525
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 30dc6b7a0d23ccd4bb360c06e78ac517, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.185
+      value: 1.227
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 30dc6b7a0d23ccd4bb360c06e78ac517, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5631,6 +5631,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[2]
       value: 
       objectReference: {fileID: 2100000, guid: fb5b304fcd80e2d418c850ff46e03478, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 30dc6b7a0d23ccd4bb360c06e78ac517, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 1482046602979303303, guid: 678239fed80d15c458fee9224696d9e9, type: 3}
     - target: {fileID: 919132149155446097, guid: 30dc6b7a0d23ccd4bb360c06e78ac517, type: 3}
       propertyPath: m_Name
       value: RedFrontWindowsTop (1)
