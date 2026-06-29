@@ -28,32 +28,113 @@ function LoadNPCConfig()
     print("NPC " .. #data.npcList .. " ")
 end
 
--- 标准化对话数据格式：支持 DouyinScript.script.DialogueConfig、直接 DialogueConfig、数字 key 表三种格式
+-- 判断表是否像 DialogueConfig 节点表（数字键 + 对白字段）
+local function LooksLikeDialogueConfigTable(data)
+    if type(data) ~= "table" then
+        return false
+    end
+    for k, v in pairs(data) do
+        if type(k) == "number" and type(v) == "table" and (v.Dialogue or v.NpcName or v.Type) then
+            return true
+        end
+    end
+    return false
+end
+
+-- 从 DouyinScript 环境表中提取 DialogueConfig（支持嵌套 .script unwrap）
+local function ExtractDialogueConfigFromEnv(env, depth)
+    if env == nil or depth > 3 then
+        return nil
+    end
+
+    if type(env) ~= "table" then
+        if env.script ~= nil then
+            return ExtractDialogueConfigFromEnv(env.script, depth + 1)
+        end
+        return nil
+    end
+
+    if env.DialogueConfig then
+        return env.DialogueConfig
+    end
+
+    if LooksLikeDialogueConfigTable(env) then
+        return env
+    end
+
+    if env.script ~= nil then
+        return ExtractDialogueConfigFromEnv(env.script, depth + 1)
+    end
+
+    return nil
+end
+
+-- 收集表顶层键名，供加载失败日志使用
+local function CollectTableKeys(data, limit)
+    local keys = {}
+    if type(data) ~= "table" then
+        return keys
+    end
+    for k, _ in pairs(data) do
+        table.insert(keys, tostring(k))
+        if limit and #keys >= limit then
+            break
+        end
+    end
+    table.sort(keys)
+    return keys
+end
+
+-- 标准化对话数据格式：支持 DouyinScript 组件、script.DialogueConfig、直接 DialogueConfig 表
 function NormalizeDialogueData(rawData)
     if rawData == nil then
         return nil
     end
+    return ExtractDialogueConfigFromEnv(rawData, 0)
+end
 
-    if rawData.script and rawData.script.DialogueConfig then
-        return rawData.script.DialogueConfig
+local function MergeDialogueConfigs(into, from)
+    if into == nil or from == nil then
+        return into
+    end
+    for id, node in pairs(from) do
+        into[id] = node
+    end
+    return into
+end
+
+-- 从 DialogueData/{moduleName} 上的 DouyinScript 读取 DialogueConfig
+local function LoadDialogueModuleFromScene(moduleName, dialogueDataGo, npcName)
+    local childTransform = dialogueDataGo.transform:Find(moduleName)
+    if not childTransform then
+        logError("NPC [" .. npcName .. "]: DialogueData 下未找到子物体: " .. moduleName)
+        return nil
     end
 
-    if rawData.DialogueConfig then
-        return rawData.DialogueConfig
+    local douyinScript = childTransform.gameObject:GetComponent(typeof(DouyinScript))
+    if not douyinScript then
+        logError("NPC [" .. npcName .. "]: " .. moduleName .. " 上未找到 DouyinScript 组件")
+        return nil
+    end
+    if not douyinScript.script then
+        logError("NPC [" .. npcName .. "]: " .. moduleName
+            .. " DouyinScript.script 未加载（检查 Data/DialogueData 是否 Publish / Reimport）")
+        return nil
     end
 
-    local hasNumberKey = false
-    for k, v in pairs(rawData) do
-        if type(k) == "number" and type(v) == "table" and (v.Dialogue or v.NpcName or v.Type) then
-            hasNumberKey = true
-            break
+    local normalizedData = NormalizeDialogueData(douyinScript)
+    if normalizedData == nil then
+        local outer = douyinScript.script
+        local outerKeys = CollectTableKeys(outer)
+        local detail = "script keys: " .. table.concat(outerKeys, ", ")
+        if type(outer) == "table" and type(outer.script) == "table" then
+            detail = detail .. "; inner keys: " .. table.concat(CollectTableKeys(outer.script), ", ")
         end
+        logError("NPC " .. npcName .. " 对话数据为空（" .. moduleName
+            .. " 无 DialogueConfig；" .. detail
+            .. "；请执行 Publish + Refresh Scene DialogueData）")
     end
-    if hasNumberKey then
-        return rawData
-    end
-
-    return nil
+    return normalizedData
 end
 
 -- 根据 NPC 名称加载对应分支的对话脚本，从场景中 DialogueData 物体下查找 DouyinScript 读取数据
@@ -93,11 +174,13 @@ function LoadNPCScript(npcName)
 
     local currentBranchId = npcConfig.currentBranchId or 1
     local luaAssetPath = nil
+    local currentGraph = nil
 
     if npcConfig.storyGraphs then
         for _, graph in ipairs(npcConfig.storyGraphs) do
             if graph.branchId == currentBranchId then
                 luaAssetPath = graph.luaAssetPath
+                currentGraph = graph
                 break
             end
         end
@@ -131,12 +214,20 @@ function LoadNPCScript(npcName)
         return nil
     end
 
-    local cacheKey = npcName .. "_b" .. currentBranchId
-
     -- 从 luaAssetPath 提取文件名（不含扩展名），如 "Assets/Editor/DialogueData/miaosu.lua" → "miaosu"
     local scriptName = luaAssetPath:match("([^/\\]+)%.lua$")
     if not scriptName then
         scriptName = luaAssetPath:match("([^/\\]+)$")
+    end
+
+    local cacheKey = npcName .. "_b" .. currentBranchId .. "_" .. scriptName
+    if currentGraph and currentGraph.mergeLuaModules then
+        for _, modName in ipairs(currentGraph.mergeLuaModules) do
+            cacheKey = cacheKey .. "+" .. modName
+        end
+    end
+    if loadedNPCScripts[cacheKey] then
+        return loadedNPCScripts[cacheKey]
     end
 
     -- 在场景中查找 DialogueData 父物体
@@ -146,43 +237,60 @@ function LoadNPCScript(npcName)
         return nil
     end
 
-    -- 查找对应名称的子物体
-    local childTransform = dialogueDataGo.transform:Find(scriptName)
-    if not childTransform then
-        logError("NPC [" .. npcName .. "]: DialogueData 下未找到子物体: " .. scriptName)
-        return nil
-    end
-
-    -- 获取子物体上的 DouyinScript 组件
-    local douyinScript = childTransform:GetComponent("DouyinScript")
-    if not douyinScript then
-        logError("NPC [" .. npcName .. "]: " .. scriptName .. " 上未找到 DouyinScript 组件")
-        return nil
-    end
-
-    -- 通过 DouyinScript 组件标准化数据
-    local normalizedData = NormalizeDialogueData(douyinScript)
+    local normalizedData = LoadDialogueModuleFromScene(scriptName, dialogueDataGo, npcName)
     if normalizedData == nil then
-        logError("NPC " .. npcName .. " 对话数据为空")
         return nil
+    end
+
+    if currentGraph and currentGraph.mergeLuaModules then
+        for _, modName in ipairs(currentGraph.mergeLuaModules) do
+            local extraData = LoadDialogueModuleFromScene(modName, dialogueDataGo, npcName)
+            if extraData == nil then
+                return nil
+            end
+            MergeDialogueConfigs(normalizedData, extraData)
+        end
     end
 
     loadedNPCScripts[cacheKey] = normalizedData
+    local mergeInfo = ""
+    if currentGraph and currentGraph.mergeLuaModules and #currentGraph.mergeLuaModules > 0 then
+        mergeInfo = " merge=" .. table.concat(currentGraph.mergeLuaModules, "+")
+    end
     print(string.format(
-        "[DialogueLoad] npc=%s branchId=%d script=%s path=%s",
-        npcName, currentBranchId, scriptName, luaAssetPath))
+        "[DialogueLoad] npc=%s branchId=%d script=%s path=%s%s",
+        npcName, currentBranchId, scriptName, luaAssetPath, mergeInfo))
     return normalizedData
 end
 
--- 开始对话：如果有 npcname 则加载 NPC 脚本并传入，否则直接用 ID 触发
+-- 共享入口：强制 trigger / 同链转接 / DialogueTrigger 点击均走此函数
+function StartNpcDialogue(targetNpcName, startId)
+    if not targetNpcName or targetNpcName == "" then
+        logError("[DialogueLoad] StartNpcDialogue: npcName 为空")
+        return false
+    end
+    local mgr = _G["_DialogueManager"]
+    if not mgr or not mgr.StartDialogueWithData then
+        logError("[DialogueLoad] DialogueManager 未就绪")
+        return false
+    end
+    local npcScript = LoadNPCScript(targetNpcName)
+    if not npcScript then
+        return false
+    end
+    local sid = startId or 0
+    print(string.format("[DialogueLoad] start npc=%s startID=%s", targetNpcName, tostring(sid)))
+    mgr.StartDialogueWithData(npcScript, sid)
+    return true
+end
+
+_G.StartNpcDialogue = StartNpcDialogue
+_G.LoadNPCScript = LoadNPCScript
+
 function StartDialogue()
     if npcname and npcname ~= "" then
-        local npcScript = LoadNPCScript(npcname)
-        if npcScript then
-            print(string.format("[DialogueLoad] start npc=%s startID=%s", npcname, tostring(ID)))
-            _G["_DialogueManager"].StartDialogueWithData(npcScript, ID)
-            return
-        end
+        StartNpcDialogue(npcname, ID)
+        return
     end
     print(string.format("[DialogueLoad] start directID=%s", tostring(ID)))
     _G["_DialogueManager"].StartDialogue(ID)

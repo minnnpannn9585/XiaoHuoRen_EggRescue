@@ -2,6 +2,6 @@
   "黑猫|2-A": {
     "NpcName": "黑猫",
     "BranchId": 1,
-    "comment": "doc node 2-A -> heimao_01 branch 1; verify NPCData_Config.lua"
+    "comment": "doc node 2-A -> heimao_03_FROM_DOC branch 1; verify NPCData_Config.lua"
   }
 }

@@ -5,30 +5,53 @@
 
 ---
 
-## 1. 端到端流程
+## 1. 端到端流程（混合式：工具 + Agent）
+
+目标不是「一键生成完美 lua」，而是 **最快得到可点测 lua**。台词可脚本批量出；**路由由 Agent 读 md §路由规则后直接改 lua**（参考 [`dahuang_01_FROM_DOC.lua`](../Assets/Data/DialogueData/dahuang_01_FROM_DOC.lua) 的 `entry#*` 模板）。
 
 ```mermaid
-flowchart TD
-  A["策划：{角色}-对话脚本-树状.md"] --> B["doc_to_lua.py --all"]
-  B --> C["Editor/DialogueData/{npc}_{branch}_FROM_DOC.lua"]
-  C --> D["DialogueGraphEditor 导入 / 微调 / 导出"]
-  D --> E["Publish Editor to Data"]
-  E --> F["Data/DialogueData/*.lua"]
-  F --> G["Refresh Scene DialogueData"]
-  G --> H["Scene：DialogueTrigger + 专属 Lua 控制器"]
-  H --> I["ArtTest_MRL 点测 + compare_doc_lua 验收"]
+flowchart LR
+  MD["树状 md"] --> Tool["doc_to_lua\n可选·批量台词"]
+  MD --> Agent["Agent\n读路由规则"]
+  Tool --> Draft["*_FROM_DOC.lua\n内容草稿"]
+  Agent --> Draft
+  Draft --> Verify["compare_doc_lua\n+ 路由 checklist"]
+  Verify --> Ship["Publish / Data / 点测"]
 ```
 
-| 阶段 | 产出 | 负责人 |
-|------|------|--------|
-| 策划 | 树状 md + `17` 变量登记 | 策划 |
-| 生成 | `_FROM_DOC.lua` + 文件头 doc 映射注释 | `doc_to_lua.py` |
-| 微调 | 图形编辑器核对连边、Position | 程序 / 策划 |
-| 发布 | `Data/` + Scene DouyinScript | Publish 菜单 |
-| 接线 | NPCData、DialogueTrigger.startID=0、交互点 | Unity Inspector |
-| 运行时 | 模型显隐、交互开关、环境联动 | 专属 Lua（按需） |
+| 阶段 | 产出 | 谁做 |
+|------|------|------|
+| 策划 | 树状 md + `17` 变量 + **§路由规则** | 策划 |
+| **内容** | 对白 / hub 菜单文案 / SetVariables / RotatePool | `doc_to_lua.py --no-entry`（**可选**） |
+| **路由** | `DialogueConfig[0]`、Next、hub 多回访 gate | **Agent 直接改 lua** |
+| 发布 | `Data/` + Scene | Publish 菜单 |
+| 接线 | NPCData、`DialogueTrigger.startID` | Inspector |
 
-**铁律**：运行时读 `Assets/Data/DialogueData/`，不是 Editor 副本；改 md 后必须重新生成 → 导出 → Publish。
+**铁律**
+
+- `doc_to_lua.py` **不写** per-NPC entry 链（大黄 `--with-entry` 为历史债，新 NPC 不复制）。
+- **禁止**为单个 NPC 扩展生成器路由逻辑（无 `--npc profile`、无新 `build_entry_node`）。
+- [`apply_routing.py`](../MissingEggDoc-main/scripts/apply_routing.py) **已 deprecated**，不再维护；勿重跑覆盖手改 lua。
+- 改 py 前先问：**「比直接改 20 行 lua 更省事吗？」** — 若否，改 lua。
+
+### 1.1 何时不用 doc_to_lua（Agent 手写更快）
+
+| 情况 | 做法 |
+|------|------|
+| 节点少、整文件 &lt;30 句 | Agent 从 md 直接写 lua |
+| 无 `###` 标题的 inline 节（如 3-A、NGPlus 回访） | 生成器常漏 → Agent 补节点 |
+| 多回访 hub（小鸡 Status 1/2/3 + 子项返回） | 内容层出一个 hub 即可；**多个 Question + gate 手改 lua** |
+| parser 对同一 md 已两次失手 | 停止扩 py，改 lua |
+
+### 1.2 路由 SOP（Agent，不先改 py）
+
+1. 读 md：流程总览、入口判定、自检表、**§路由规则**（模板见 [`淑芬-对话脚本-树状.md`](../MissingEggDoc-main/docs/characters/淑芬-对话脚本-树状.md)）。
+2. 内容草稿：`doc_to_lua --no-entry` 或手写。
+3. 路由：抄大黄 `entry#0` / gate 链；改 intro→hub、子项 bypass intro；复杂 hub **复制完整 Options 块**到各回访 Question。
+4. 验收：`compare_doc_lua` 台词 missing=0（分文件）；路由 checklist；Unity 无语法错误。
+5. 登记：doc 17 新变量、NPCData → `*_FROM_DOC`。
+
+**运行时读** `Assets/Data/DialogueData/`；改 md 后：生成/手改 → Publish → Refresh Scene。
 
 ---
 
@@ -38,7 +61,7 @@ flowchart TD
 
 | 类型 | 命名 | 示例 |
 |------|------|------|
-| 生成稿（不覆盖旧生产） | `{npc}_{branchId}_FROM_DOC.lua` | `dahuang_01_FROM_DOC.lua` |
+| 生成稿（不覆盖旧生产） | `FROM_DOC/{npc}_{branchId}_FROM_DOC.lua` | `FROM_DOC/dahuang_01_FROM_DOC.lua` |
 | 定稿合并后（可选） | `{npc}_{branchId}.lua` | `heimao_01.lua` |
 
 - `branchId` 与 `NPCData_Config.lua` 的 `storyGraphs[].branchId` 一一对应。
@@ -54,7 +77,7 @@ flowchart TD
         {
             branchId = 1,
             luaModuleName = "dahuang_01_FROM_DOC",
-            luaAssetPath = "Assets/Editor/DialogueData/dahuang_01_FROM_DOC.lua"
+            luaAssetPath = "Assets/Editor/DialogueData/FROM_DOC/dahuang_01_FROM_DOC.lua"
         }
     }
 }
@@ -142,7 +165,11 @@ Scene 中 `DialogueData` 子物体名 = `luaModuleName`（无扩展名）。
 
 ## 4. 入口判定（DialogueConfig[0]）
 
-大黄完成方式：**所有「点 NPC 先进哪段」的逻辑放在 lua 内**，不在 C# / DialogueTrigger 里写 if。
+**淑芬 / 小鸡 / 新 NPC**：Agent 读 md **§路由规则**，**直接在 lua 里**插入 `DialogueConfig[0]` 与 gate 链；`DialogueTrigger.ID=0`（E03 偷听等独立模块可 `startID=1`，无 entry）。
+
+**大黄**（历史）：`doc_to_lua.py --with-entry` 内建 `build_entry_node()`；新 NPC **不复制**。
+
+> `apply_routing.py` 已 deprecated；曾用于试验自动接路由，易出错（如 hub Options 截断），**以手改 lua 为准**。
 
 ### 4.1 结构
 
@@ -292,10 +319,11 @@ lua：
 
 ```lua
 UnlockBranches = { { NpcName = "黑猫", BranchId = 1 } },
+ChainDialogue = { NpcName = "黑猫", StartId = 1 },  -- 同链转接 2-A，EndDialogue 后自动 StartNpcDialogue
 Next = -1
 ```
 
-`cross_npc_map.json` 登记 doc 节点 → 目标 NPC branch；**禁止** Unlock 到未在 NPCData 配置的 branch。
+`cross_npc_map.json` 登记 doc 节点 → 目标 NPC branch；**禁止** Unlock 到未在 NPCData 配置的 branch。强制播（不按键）用 `DialogueAreaTrigger.lua`；同链转接用 `ChainDialogue`。
 
 ### 6.5 专属场景脚本（何时需要）
 
@@ -319,7 +347,7 @@ Next = -1
 ```bash
 python3 MissingEggDoc-main/scripts/doc_to_lua.py \
   --input MissingEggDoc-main/docs/characters/{角色}-对话脚本-树状.md \
-  --output Assets/Editor/DialogueData/{npc}_{branch}_FROM_DOC.lua \
+  --output Assets/Editor/DialogueData/FROM_DOC/{npc}_{branch}_FROM_DOC.lua \
   --all
 ```
 
@@ -335,7 +363,7 @@ python3 MissingEggDoc-main/scripts/doc_to_lua.py \
 ```bash
 python3 MissingEggDoc-main/scripts/compare_doc_lua.py \
   --input MissingEggDoc-main/docs/characters/{角色}-对话脚本-树状.md \
-  --lua Assets/Editor/DialogueData/{npc}_{branch}_FROM_DOC.lua
+  --lua Assets/Editor/DialogueData/FROM_DOC/{npc}_{branch}_FROM_DOC.lua
 ```
 
 目标：**missing = 0**。
@@ -366,10 +394,12 @@ python3 MissingEggDoc-main/scripts/validate_lua_vars.py
 | 项 | 说明 |
 |----|------|
 | Scene 接线 | DialogueTrigger、DouyinInteractor 按钮文案、碰撞体范围 |
+| **强制播 Trigger** | `DialogueAreaTrigger.lua` + 大 `BoxCollider(isTrigger)`；大树见 `InteractionPoint/TreeDialogue/TreeForceZone` |
+| **大树点击阶段** | `TreeClickZone`：`DialogueTrigger ID=0` + `TreeInteractionController` 在 `TreeHardShown&&!Summoned` 时启用 |
 | NPCData | branch 指向 `_FROM_DOC` 或定稿文件名 |
-| 双交互点 / 模型 | 写 `{Npc}Controller.lua`，按 Status 切换 |
+| 双交互点 / 模型 | 写 `{Npc}Controller.lua`，按 Status 切换（如 `DaHuang.lua`、`BlackCatInteractionController.lua`） |
 | 环境 E 点 | miaosu 描述段 + 专用 Controller |
-| 跨脚本触发 | 2-D 类节点在对方 NPC 脚本触发 |
+| 跨脚本触发 / 同链 | `ChainDialogue = { NpcName, StartId }` 或 `StartNpcDialogue`；2-D 类节点在对方 NPC 脚本触发 |
 | 图形微调 | 连边错误、Position 重叠时在 DialogueEditor 改后导出 |
 
 ---

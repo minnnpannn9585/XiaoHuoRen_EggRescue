@@ -36,7 +36,7 @@ public class CreateDialogueDataObjects
             return;
         }
 
-        string[] luaFiles = Directory.GetFiles(dialogueDataPath, "*.lua");
+        string[] luaFiles = Directory.GetFiles(dialogueDataPath, "*.lua", SearchOption.AllDirectories);
         if (luaFiles.Length == 0)
         {
             Debug.LogWarning("[CreateDialogueData] DialogueData 目录下没有 .lua 文件");

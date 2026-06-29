@@ -17,6 +17,7 @@ local KEEP_NPC_BRANCH_FOR_TEST = true
 
 local COLOR_OFF = UnityEngine.Color(0.22, 0.24, 0.28, 0.92)
 local COLOR_ON = UnityEngine.Color(0.18, 0.62, 0.32, 1.0)
+local COLOR_ACTION = UnityEngine.Color(0.22, 0.38, 0.58, 0.95)
 
 local function ParseItemValue(item)
     if item.type == "bool" then
@@ -157,6 +158,60 @@ local function AddToggleBoolButton(contentRt, varName)
     end)
 end
 
+local function AddActionButton(parentRt, label, onClick)
+    local btnGo = UnityEngine.GameObject("ActionBtn_" .. label)
+    btnGo.transform:SetParent(parentRt, false)
+    local btnRt = btnGo:AddComponent(typeof(UnityEngine.RectTransform))
+    btnRt.anchorMin = UnityEngine.Vector2(0, 0)
+    btnRt.anchorMax = UnityEngine.Vector2(1, 1)
+    btnRt.offsetMin = UnityEngine.Vector2(0, 0)
+    btnRt.offsetMax = UnityEngine.Vector2(0, 0)
+
+    local img = btnGo:AddComponent(typeof(UnityEngine.UI.Image))
+    img.color = COLOR_ACTION
+
+    local btn = btnGo:AddComponent(typeof(UnityEngine.UI.Button))
+    btn.targetGraphic = img
+    btn.onClick:AddListener(onClick)
+
+    local textGo = UnityEngine.GameObject("Label")
+    textGo.transform:SetParent(btnRt, false)
+    local textRt = textGo:AddComponent(typeof(UnityEngine.RectTransform))
+    textRt.anchorMin = UnityEngine.Vector2(0, 0)
+    textRt.anchorMax = UnityEngine.Vector2(1, 1)
+    textRt.offsetMin = UnityEngine.Vector2(8, 2)
+    textRt.offsetMax = UnityEngine.Vector2(-8, -2)
+    local text = textGo:AddComponent(typeof(UnityEngine.UI.Text))
+    text.text = label
+    text.font = UnityEngine.Resources.GetBuiltinResource(typeof(UnityEngine.Font), "Arial.ttf")
+    text.fontSize = 13
+    text.alignment = UnityEngine.TextAnchor.MiddleCenter
+    text.color = UnityEngine.Color(0.95, 0.95, 0.95, 1)
+end
+
+local function TeleportLocalActorNear(npcGoName, offset)
+    local npcGo = UnityEngine.GameObject.Find(npcGoName)
+    if not npcGo then
+        print("[GlobalVarDebug] 未找到 NPC: " .. npcGoName)
+        return
+    end
+
+    local actor = DouyinActorService.GetLocalActor()
+    if not actor then
+        print("[GlobalVarDebug] 未找到本地玩家 Actor")
+        return
+    end
+
+    local targetPos = npcGo.transform.position + (offset or UnityEngine.Vector3(0, 0, 1.8))
+    actor:Teleport(targetPos)
+    print(string.format("[GlobalVarDebug] 已传送到 %s 附近 (%.2f, %.2f, %.2f)",
+        npcGoName, targetPos.x, targetPos.y, targetPos.z))
+end
+
+local function TeleportToCrow()
+    TeleportLocalActorNear("乌鸦", UnityEngine.Vector3(0, 0, 1.8))
+end
+
 local function BuildVarDebugScrollPanel()
     if not VAR_DEBUG_UI_ENABLED then return end
 
@@ -197,11 +252,21 @@ local function BuildVarDebugScrollPanel()
         UnityEngine.Vector2(-8, -8)
     )
     local titleText = titleGo:AddComponent(typeof(UnityEngine.UI.Text))
-    titleText.text = "Bool 变量调试（点击切换 true/false）"
+    titleText.text = "调试面板"
     titleText.font = UnityEngine.Resources.GetBuiltinResource(typeof(UnityEngine.Font), "Arial.ttf")
     titleText.fontSize = 14
     titleText.alignment = UnityEngine.TextAnchor.MiddleLeft
     titleText.color = UnityEngine.Color(1, 1, 1, 0.9)
+
+    local actionsGo, actionsRt = CreateRectChild(
+        "Actions",
+        panelRt,
+        UnityEngine.Vector2(0, 1),
+        UnityEngine.Vector2(1, 1),
+        UnityEngine.Vector2(8, -78),
+        UnityEngine.Vector2(-8, -42)
+    )
+    AddActionButton(actionsRt, "到乌鸦身边", TeleportToCrow)
 
     local scrollGo, scrollRt = CreateRectChild(
         "ScrollView",
@@ -209,7 +274,7 @@ local function BuildVarDebugScrollPanel()
         UnityEngine.Vector2(0, 0),
         UnityEngine.Vector2(1, 1),
         UnityEngine.Vector2(8, 8),
-        UnityEngine.Vector2(-8, -44)
+        UnityEngine.Vector2(-8, -84)
     )
     local scrollRect = scrollGo:AddComponent(typeof(UnityEngine.UI.ScrollRect))
     scrollRect.horizontal = false

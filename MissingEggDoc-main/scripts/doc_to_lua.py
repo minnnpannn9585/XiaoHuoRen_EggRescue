@@ -5,7 +5,7 @@
 Usage:
   python MissingEggDoc-main/scripts/doc_to_lua.py \\
     --input MissingEggDoc-main/docs/characters/大黄-对话脚本-树状样章.md \\
-    --output Assets/Editor/DialogueData/dahuang_01_FROM_DOC.lua \\
+    --output Assets/Editor/DialogueData/FROM_DOC/dahuang_01_FROM_DOC.lua \\
     --all
 """
 from __future__ import annotations
@@ -388,24 +388,8 @@ class NodeBuilder:
         hub = self.create(doc_id, "Question", speaker, revisit_text or "……")
         self.doc_to_lua[doc_id] = hub.node_id
         for menu_line in menu_lines:
-            match = MENU_LINE.match(menu_line)
-            if not match:
-                continue
-            target_doc = target_to_doc_id(match.group("target"))
-            option: dict = {
-                "Text": match.group("text"),
-                "Next": -1,
-                "BranchFlag": "",
-                "DisplayConditions": parse_condition_expr(match.group("cond") or ""),
-            }
-            if target_doc == "__END__":
-                option["Next"] = -1
-            elif target_doc.startswith("__CROSS_NPC__"):
-                option["_cross_npc"] = target_doc
-                option["Next"] = -1
-            else:
-                option["_target_doc"] = target_doc
-            hub.options.append(option)
+            for option in _menu_line_to_options(menu_line):
+                hub.options.append(option)
         return hub
 
     def apply_variables(self, node: LuaNode, variables: list[tuple[str, str]]) -> None:
@@ -455,6 +439,30 @@ class NodeBuilder:
         self.doc_to_lua[doc_id] = node_id
 
 
+def _menu_line_to_options(menu_line: str) -> list[dict]:
+    match = MENU_LINE.match(menu_line)
+    if not match:
+        return []
+    target_doc = target_to_doc_id(match.group("target"))
+    options: list[dict] = []
+    for cond_expr in expand_or_conditions(match.group("cond") or ""):
+        option: dict = {
+            "Text": match.group("text"),
+            "Next": -1,
+            "BranchFlag": "",
+            "DisplayConditions": parse_condition_expr(cond_expr),
+        }
+        if target_doc == "__END__":
+            option["Next"] = -1
+        elif target_doc.startswith("__CROSS_NPC__"):
+            option["_cross_npc"] = target_doc
+            option["Next"] = -1
+        else:
+            option["_target_doc"] = target_doc
+        options.append(option)
+    return options
+
+
 def normalize_doc_id(doc_id: str) -> str:
     return doc_id.replace("′", "'").strip()
 
@@ -485,6 +493,47 @@ def parse_exit_line(content: str) -> ExitSpec:
     return ExitSpec(target=content, condition=condition)
 
 
+def _parse_int_compare(token: str, op: str) -> dict | None:
+    if op not in token:
+        return None
+    name, value = [x.strip() for x in token.split(op, 1)]
+    if not value.isdigit():
+        return None
+    return {
+        "VarName": name,
+        "VarType": "int",
+        "Op": op,
+        "Value": int(value),
+    }
+
+
+def lua_emit_int_op_value(op: str, value: int) -> tuple[str, int]:
+    """DouyinScript ScriptedImporter 不接受 Op '<' 或 'lt'；ChickStatus<3 改写为 <=2。"""
+    if op in ("<", "lt"):
+        return "<=", max(0, int(value) - 1)
+    return op, int(value)
+
+
+def lua_emit_op(op: str) -> str:
+    """Deprecated helper; prefer lua_emit_int_op_value for int compares."""
+    emitted, _ = lua_emit_int_op_value(op, 0)
+    return emitted
+
+
+def expand_or_conditions(expr: str) -> list[str]:
+    expr = expr.strip()
+    if not expr or "||" not in expr:
+        return [expr] if expr else [""]
+    match = re.match(r"^\(([^)]+)\)(.*)$", expr)
+    if match and "||" in match.group(1):
+        rest = match.group(2).strip()
+        if rest.startswith("&&"):
+            rest = rest[3:].strip()
+        parts = [p.strip() for p in re.split(r"\s*\|\|\s*", match.group(1))]
+        return [f"{part} && {rest}" if rest else part for part in parts]
+    return [expr]
+
+
 def parse_condition_expr(expr: str) -> list[dict]:
     expr = expr.strip()
     if not expr:
@@ -497,26 +546,18 @@ def parse_condition_expr(expr: str) -> list[dict]:
             continue
         negate = part.startswith("!")
         token = part[1:] if negate else part
-        if "==" in token:
-            name, value = [x.strip() for x in token.split("==", 1)]
-            if value.isdigit():
-                conditions.append({
-                    "VarName": name,
-                    "VarType": "int",
-                    "Op": "==",
-                    "Value": int(value),
-                })
-            else:
-                conditions.append({
-                    "VarName": name,
-                    "VarType": "bool",
-                    "Value": not negate,
-                })
+        parsed: dict | None = None
+        for op in (">=", "<=", "==", "<", ">"):
+            parsed = _parse_int_compare(token, op)
+            if parsed:
+                break
+        if parsed:
+            conditions.append(parsed)
         elif token.endswith("Count") or token.endswith("Status"):
             conditions.append({
                 "VarName": token,
                 "VarType": "int",
-                "Op": ">=" if not negate else "<",
+                "Op": lua_emit_op(">=" if not negate else "<"),
                 "Value": 1,
             })
         else:
@@ -625,12 +666,10 @@ def parse_carousel_variants(raw_lines: list[str]) -> list[list[str]]:
 
 def parse_section_tree(section: TreeSection) -> ParsedSection:
     result = ParsedSection(doc_id=section.doc_id)
-    if section.doc_id == "2-D":
-        result.skip = True
-        return result
+    section_text = "\n".join(section.lines)
 
     normalized = [normalize_tree_line(l) for l in section.lines]
-    if any("【轮播】" in n for n in normalized):
+    if any(n == "【轮播】" for n in normalized):
         result.is_carousel_only = True
         result.carousel_variants = parse_carousel_variants(section.lines)
         mode = "dialogue"
@@ -646,7 +685,7 @@ def parse_section_tree(section: TreeSection) -> ParsedSection:
                     result.variables.append((match.group("name"), match.group("value").strip()))
         return result
 
-    if section.doc_id == "2-hub":
+    if section.doc_id == "2-hub" and "E13_ViewDoorBlocked" in section_text:
         result.is_conditional_hub = True
 
     mode = "dialogue"
@@ -721,18 +760,45 @@ def parse_section_tree(section: TreeSection) -> ParsedSection:
     return result
 
 
+def first_meaningful_tree_line(lines: list[str]) -> str:
+    for raw in lines:
+        content = normalize_tree_line(raw)
+        if not content or is_tree_noise(content):
+            continue
+        if content.startswith("→") or content.startswith("【"):
+            continue
+        return content
+    return ""
+
+
+def infer_section_doc_id(first: str, *, ngplus_chapter: bool) -> str | None:
+    if not first:
+        return None
+    id_match = re.match(r"^(\d+-[A-Za-z0-9'-]+)$", first)
+    if id_match:
+        return normalize_doc_id(id_match.group(1))
+    if first.startswith("NGPlus"):
+        return "NGPlus-revisit" if "回访" in first else "NGPlus"
+    if ngplus_chapter and first.startswith("NGPlus"):
+        return "NGPlus-revisit" if "回访" in first else "NGPlus"
+    return None
+
+
 def parse_sections(markdown: str, wanted: set[str] | None) -> list[TreeSection]:
     sections: list[TreeSection] = []
     current: TreeSection | None = None
     in_text = False
     text_buffer: list[str] = []
     ngplus_chapter = False
+    pending_inline_section = False
 
     for raw_line in markdown.splitlines():
         stripped = raw_line.strip()
         if CHAPTER_HEADER.match(stripped) and "二周目" in stripped:
             ngplus_chapter = True
             continue
+        if CHAPTER_HEADER.match(stripped):
+            ngplus_chapter = False
 
         header = SECTION_HEADER.match(stripped)
         if header:
@@ -743,31 +809,50 @@ def parse_sections(markdown: str, wanted: set[str] | None) -> list[TreeSection]:
             current = TreeSection(doc_id=doc_id)
             text_buffer = []
             in_text = False
-            ngplus_chapter = False
+            pending_inline_section = False
             if wanted and doc_id not in wanted:
                 current = None
-            continue
-
-        if current is None and not ngplus_chapter:
             continue
 
         if stripped.startswith("```text"):
             in_text = True
             text_buffer = []
-            if ngplus_chapter and current is None:
-                current = TreeSection(doc_id="NGPlus")
-                if wanted and "NGPlus" not in wanted:
-                    current = None
+            pending_inline_section = current is None and not ngplus_chapter
             continue
+
+        if current is None and not ngplus_chapter and not in_text:
+            continue
+
         if in_text and stripped.startswith("```"):
             in_text = False
-            if current:
-                current.lines = text_buffer
-                sections.append(current)
-                current = None
-            ngplus_chapter = False
+            if text_buffer:
+                if current is None and (ngplus_chapter or pending_inline_section):
+                    first = first_meaningful_tree_line(text_buffer)
+                    doc_id = infer_section_doc_id(first, ngplus_chapter=ngplus_chapter)
+                    if doc_id:
+                        current = TreeSection(doc_id=doc_id)
+                        if wanted and doc_id not in wanted and "NGPlus" not in wanted:
+                            current = None
+                if current:
+                    current.lines = text_buffer
+                    sections.append(current)
+                    current = None
+            pending_inline_section = False
             continue
         if in_text:
+            if pending_inline_section and current is None:
+                first = normalize_tree_line(raw_line.rstrip())
+                id_match = re.match(r"^(\d+-[A-Za-z0-9'-]+)$", first)
+                if id_match:
+                    doc_id = normalize_doc_id(id_match.group(1))
+                    current = TreeSection(doc_id=doc_id)
+                    if wanted and doc_id not in wanted:
+                        current = None
+                elif first.startswith("NGPlus"):
+                    doc_id = "NGPlus-revisit" if "回访" in first else "NGPlus"
+                    current = TreeSection(doc_id=doc_id)
+                    if wanted and doc_id not in wanted and "NGPlus" not in wanted:
+                        current = None
             text_buffer.append(raw_line.rstrip())
 
     if current and text_buffer:
@@ -775,7 +860,10 @@ def parse_sections(markdown: str, wanted: set[str] | None) -> list[TreeSection]:
         sections.append(current)
 
     if wanted:
-        sections = [s for s in sections if s.doc_id in wanted]
+        expanded = set(wanted)
+        if "NGPlus" in wanted:
+            expanded.add("NGPlus-revisit")
+        sections = [s for s in sections if s.doc_id in expanded]
     return sections
 
 
@@ -804,6 +892,8 @@ def build_section(parsed: ParsedSection, builder: NodeBuilder, cross_map: dict[s
         for vi, variant in enumerate(parsed.carousel_variants):
             chain = builder.add_dialogue_chain(variant, f"{parsed.doc_id}@v{vi + 1}")
             if chain:
+                if parsed.variables:
+                    builder.apply_variables(chain[-1], parsed.variables)
                 chain[-1].next_id = -1
                 variant_starts.append(chain[0].node_id)
         entry = builder.create(
@@ -1095,12 +1185,18 @@ def resolve_links(builder: NodeBuilder, cross_map: dict[str, dict]) -> None:
             apply_cross_npc(node, getattr(node, "_cross_npc"), cross_map)
 
 
-def build_nodes(sections: list[TreeSection], cross_map: dict[str, dict]) -> tuple[list[LuaNode], dict[str, int]]:
+def build_nodes(
+    sections: list[TreeSection],
+    cross_map: dict[str, dict],
+    *,
+    with_entry: bool = False,
+) -> tuple[list[LuaNode], dict[str, int]]:
     builder = NodeBuilder(start_id=1)
     parsed_sections = [parse_section_tree(s) for s in sections]
     for parsed in parsed_sections:
         build_section(parsed, builder, cross_map)
-    build_entry_node(builder)
+    if with_entry:
+        build_entry_node(builder)
     resolve_links(builder, cross_map)
     assign_layout_positions(builder.nodes)
     builder.nodes.sort(key=lambda n: n.node_id)
@@ -1166,9 +1262,10 @@ def render_lua(nodes: list[LuaNode], doc_to_lua: dict[str, int]) -> str:
             for idx, cb in enumerate(node.condition_branches):
                 comma = "" if idx == len(node.condition_branches) - 1 else ","
                 if cb.get("VarType") == "int":
+                    cb_op, cb_val = lua_emit_int_op_value(cb["Op"], cb["Value"])
                     lines.append(
-                        f'        {{ VarName = "{cb["VarName"]}", VarType = "int", Op = "{cb["Op"]}", '
-                        f'Value = {cb["Value"]}, Next = {cb.get("Next", -1)} }}{comma}'
+                        f'        {{ VarName = "{cb["VarName"]}", VarType = "int", Op = "{cb_op}", '
+                        f'Value = {cb_val}, Next = {cb.get("Next", -1)} }}{comma}'
                     )
                 else:
                     lines.append(
@@ -1199,8 +1296,9 @@ def render_lua(nodes: list[LuaNode], doc_to_lua: dict[str, int]) -> str:
                                 f'                {{ VarName = "{dc["VarName"]}", VarType = "bool", Value = {val} }}{dc_comma}'
                             )
                         else:
+                            dc_op, dc_val = lua_emit_int_op_value(dc["Op"], dc["Value"])
                             lines.append(
-                                f'                {{ VarName = "{dc["VarName"]}", VarType = "int", Op = "{dc["Op"]}", Value = {dc["Value"]} }}{dc_comma}'
+                                f'                {{ VarName = "{dc["VarName"]}", VarType = "int", Op = "{dc_op}", Value = {dc_val} }}{dc_comma}'
                             )
                     lines.append("            },")
                 lines.append(f"        }}{opt_comma}")
@@ -1211,7 +1309,6 @@ def render_lua(nodes: list[LuaNode], doc_to_lua: dict[str, int]) -> str:
         lines.append("}")
         lines.append("")
 
-    lines.append("-- doc:2-D skipped (cross-script trigger via 黑猫 2-E)")
     return "\n".join(lines)
 
 
@@ -1221,6 +1318,16 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--sections", type=str, default="", help="Comma-separated doc node ids")
     parser.add_argument("--all", action="store_true", help="Include all default sections for 大黄样章")
+    parser.add_argument(
+        "--with-entry",
+        action="store_true",
+        help="Insert DialogueConfig[0] entry dispatcher (大黄 only; default off)",
+    )
+    parser.add_argument(
+        "--no-entry",
+        action="store_true",
+        help="Explicitly skip entry dispatcher (default)",
+    )
     args = parser.parse_args()
 
     if args.all or not args.sections:
@@ -1228,10 +1335,12 @@ def main() -> int:
     else:
         wanted = {normalize_doc_id(x.strip()) for x in args.sections.split(",") if x.strip()}
 
+    with_entry = args.with_entry and not args.no_entry
+
     markdown = args.input.read_text(encoding="utf-8")
     sections = parse_sections(markdown, wanted)
     cross_map = load_cross_npc_map()
-    nodes, mapping = build_nodes(sections, cross_map)
+    nodes, mapping = build_nodes(sections, cross_map, with_entry=with_entry)
     if not nodes:
         print("ERROR: no nodes generated", file=sys.stderr)
         return 1

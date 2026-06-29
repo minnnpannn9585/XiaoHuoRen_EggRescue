@@ -37,7 +37,7 @@ local NPCData = {
                     branchId = 1,
                     storyDescription = "全量树（doc 样章，dahuang_01_FROM_DOC）",
                     luaModuleName = "dahuang_01_FROM_DOC",
-                    luaAssetPath = "Assets/Editor/DialogueData/dahuang_01_FROM_DOC.lua"
+                    luaAssetPath = "Assets/Editor/DialogueData/FROM_DOC/dahuang_01_FROM_DOC.lua"
                 }
             }
         }
@@ -46,35 +46,14 @@ local NPCData = {
             id = "NPC_488",
             name = "淑芬",
             avatarPath = "Assets/Res/TouXiang_LiHui/母鸡/守望.png",
-            currentBranchId = 2,
+            currentBranchId = 1,
             isFolded = true,
             storyGraphs = {
                 {
                     branchId = 1,
-                    storyDescription = "初次相遇与委托",
-                    luaModuleName = "shufang_01",
-                    luaAssetPath = "Assets/Editor/DialogueData/shufang_01.lua"
-                }
-                ,
-                {
-                    branchId = 2,
-                    storyDescription = "默认回访R1",
-                    luaModuleName = "shufang_02_R1",
-                    luaAssetPath = "Assets/Editor/DialogueData/shufang_02_R1.lua"
-                }
-                ,
-                {
-                    branchId = 3,
-                    storyDescription = "默认回访R2",
-                    luaModuleName = "shufang_02_R2",
-                    luaAssetPath = "Assets/Editor/DialogueData/shufang_02_R2.lua"
-                }
-                ,
-                {
-                    branchId = 4,
-                    storyDescription = "默认回访R3",
-                    luaModuleName = "shufang_02_R3",
-                    luaAssetPath = "Assets/Editor/DialogueData/shufang_02_R3.lua"
+                    storyDescription = "树状 FROM_DOC（委托+hub）",
+                    luaModuleName = "shufang_01_FROM_DOC",
+                    luaAssetPath = "Assets/Editor/DialogueData/FROM_DOC/shufang_01_FROM_DOC.lua"
                 }
             }
         }
@@ -89,8 +68,8 @@ local NPCData = {
                 {
                     branchId = 1,
                     storyDescription = "E03 身后偷听",
-                    luaModuleName = "zttTouTing",
-                    luaAssetPath = "Assets/Editor/DialogueData/zttTouTing.lua"
+                    luaModuleName = "xiaojiZTT_e03_FROM_DOC",
+                    luaAssetPath = "Assets/Editor/DialogueData/FROM_DOC/xiaojiZTT_e03_FROM_DOC.lua"
                 }
             }
         }
@@ -99,21 +78,14 @@ local NPCData = {
             id = "NPC_009",
             name = "小鸡侦探团",
             avatarPath = "",
-            currentBranchId = 2,
+            currentBranchId = 1,
             isFolded = false,
             storyGraphs = {
                 {
                     branchId = 1,
-                    storyDescription = "首次接触",
-                    luaModuleName = "xiaojiZTT_01",
-                    luaAssetPath = "Assets/Editor/DialogueData/xiaojiZTT_01.lua"
-                }
-                ,
-                {
-                    branchId = 2,
-                    storyDescription = "主菜单 hub",
-                    luaModuleName = "xiaojiZTT_02",
-                    luaAssetPath = "Assets/Editor/DialogueData/xiaojiZTT_02.lua"
+                    storyDescription = "树状 FROM_DOC（主交互+hub）",
+                    luaModuleName = "xiaojiZTT_01_FROM_DOC",
+                    luaAssetPath = "Assets/Editor/DialogueData/FROM_DOC/xiaojiZTT_01_FROM_DOC.lua"
                 }
             }
         }
@@ -127,23 +99,9 @@ local NPCData = {
             storyGraphs = {
                 {
                     branchId = 1,
-                    storyDescription = "首次靠近",
-                    luaModuleName = "heimao_01",
-                    luaAssetPath = "Assets/Editor/DialogueData/heimao_01.lua"
-                }
-                ,
-                {
-                    branchId = 2,
-                    storyDescription = "2-B · 案情汇报线",
-                    luaModuleName = "heimao_02",
-                    luaAssetPath = "Assets/Editor/DialogueData/heimao_02.lua"
-                }
-                ,
-                {
-                    branchId = 3,
-                    storyDescription = "2-B-hub · 回访菜单",
-                    luaModuleName = "heimao_03",
-                    luaAssetPath = "Assets/Editor/DialogueData/heimao_03.lua"
+                    storyDescription = "橡树下+揭穿+NGPlus（树状准稿）",
+                    luaModuleName = "heimao_03_FROM_DOC",
+                    luaAssetPath = "Assets/Editor/DialogueData/FROM_DOC/heimao_03_FROM_DOC.lua"
                 }
             }
         }
@@ -157,16 +115,9 @@ local NPCData = {
             storyGraphs = {
                 {
                     branchId = 1,
-                    storyDescription = "首次靠近",
-                    luaModuleName = "heimao_01",
-                    luaAssetPath = "Assets/Editor/DialogueData/heimao_01.lua"
-                }
-                ,
-                {
-                    branchId = 2,
-                    storyDescription = "大树（轮播）",
-                    luaModuleName = "heimao_02",
-                    luaAssetPath = "Assets/Editor/DialogueData/heimao_02.lua"
+                    storyDescription = "大橡树 ch1（树状准稿）",
+                    luaModuleName = "heimao_tree_01_FROM_DOC",
+                    luaAssetPath = "Assets/Editor/DialogueData/FROM_DOC/heimao_tree_01_FROM_DOC.lua"
                 }
             }
         }
@@ -180,16 +131,9 @@ local NPCData = {
             storyGraphs = {
                 {
                     branchId = 1,
-                    storyDescription = "首次对话",
-                    luaModuleName = "qingwa_01",
-                    luaAssetPath = "Assets/Editor/DialogueData/qingwa_01.lua"
-                }
-                ,
-                {
-                    branchId = 2,
-                    storyDescription = "轮播",
-                    luaModuleName = "qingwa_02",
-                    luaAssetPath = "Assets/Editor/DialogueData/qingwa_02.lua"
+                    storyDescription = "池塘+薄荷鱼（树状准稿）",
+                    luaModuleName = "qingwa_01_FROM_DOC",
+                    luaAssetPath = "Assets/Editor/DialogueData/FROM_DOC/qingwa_01_FROM_DOC.lua"
                 }
             }
         }
@@ -219,9 +163,9 @@ local NPCData = {
             storyGraphs = {
                 {
                     branchId = 1,
-                    storyDescription = "谷仓底部仰望",
-                    luaModuleName = "wuya_01",
-                    luaAssetPath = "Assets/Editor/DialogueData/wuya_01.lua"
+                    storyDescription = "乌鸦全章（树状准稿）",
+                    luaModuleName = "wuya_01_FROM_DOC",
+                    luaAssetPath = "Assets/Editor/DialogueData/FROM_DOC/wuya_01_FROM_DOC.lua"
                 }
             }
         }

@@ -15,7 +15,7 @@ flowchart LR
   Graph["DialogueGraphEditorWindow\n导入 / 微调 / 导出"]
   Publish["Tools/Egg Rescue\nPublish Editor to Data"]
   DataLua["Data/DialogueData/*.lua"]
-  Scene["ArtTest_MRL\nDialogueData 子物体"]
+  Scene["Mechanics_Code\nDialogueData 子物体"]
 
   DocMd --> Gen
   Gen --> EdLua
@@ -30,8 +30,9 @@ flowchart LR
 
 | 目录 | 角色 |
 |------|------|
-| `Assets/Editor/DialogueData/` | 对话图编辑源；图形插件导入/导出 |
-| `Assets/Data/DialogueData/` | 运行时 DouyinScript 读取 |
+| `Assets/Editor/DialogueData/` | 定稿 / 手工编辑源 |
+| `Assets/Editor/DialogueData/FROM_DOC/` | 树状生成稿（`*_FROM_DOC.lua`） |
+| `Assets/Data/DialogueData/` | 运行时 DouyinScript（含 `FROM_DOC/` 子目录） |
 | `Assets/Editor/EditData/` | NPCData / GlobalVariables 编辑源 |
 | `Assets/Data/GlobalData/` | 运行时 NPC / 变量配置 |
 
@@ -44,7 +45,7 @@ flowchart LR
 3. **导出** 覆盖 Editor 副本
 4. 菜单 **`Tools/Egg Rescue/Publish Editor to Data`**
 5. （可选）**`Tools/Egg Rescue/Refresh Scene DialogueData`** 刷新 Scene 子物体 DouyinScript
-6. 运行 `ArtTest_MRL` 验证
+6. 运行 **Mechanics_Code** 验证
 
 > **不要**只改 Editor 而不 Publish — Scene 读的是 `Assets/Data/`。
 
@@ -57,7 +58,7 @@ flowchart LR
 ```bash
 python3 MissingEggDoc-main/scripts/doc_to_lua.py \
   --input MissingEggDoc-main/docs/characters/大黄-对话脚本-树状样章.md \
-  --output Assets/Editor/DialogueData/dahuang_01_FROM_DOC.lua \
+  --output Assets/Editor/DialogueData/FROM_DOC/dahuang_01_FROM_DOC.lua \
   --all
 ```
 
@@ -71,7 +72,7 @@ python3 MissingEggDoc-main/scripts/doc_to_lua.py \
 ```bash
 python3 MissingEggDoc-main/scripts/compare_doc_lua.py \
   --input MissingEggDoc-main/docs/characters/大黄-对话脚本-树状样章.md \
-  --lua Assets/Editor/DialogueData/dahuang_01_FROM_DOC.lua
+  --lua Assets/Editor/DialogueData/FROM_DOC/dahuang_01_FROM_DOC.lua
 ```
 
 5. 满意后 **导出** → 决定是否合并进生产文件名（默认保持 `_FROM_DOC` 后缀）
@@ -121,7 +122,7 @@ python3 MissingEggDoc-main/scripts/validate_lua_vars.py
 - [ ] 执行 **`Tools/Egg Rescue/Publish Editor to Data`**
 - [ ] `validate_lua_vars.py` 通过
 - [ ] （大改时）Refresh Scene DialogueData
-- [ ] ArtTest_MRL 点测相关 NPC / E 点
+- [ ] **Mechanics_Code** 点测相关 NPC / E 点
 
 ### 6.1 对话调试日志（World Debugger，非 Unity Console）
 

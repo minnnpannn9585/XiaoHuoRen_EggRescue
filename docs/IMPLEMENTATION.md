@@ -25,7 +25,7 @@ C# 业务脚本极少，主要是工具：`MeshCombiner`、`MergeModelToFbxExpor
 ## 2. Scene 根节点结构
 
 ```
-ArtTest_MRL
+Mechanics_Code
 ├── Directional Light
 ├── Main Camera
 ├── Counter                 ← EditorMeshCountChecker（网格统计）
@@ -59,7 +59,18 @@ ArtTest_MRL
 
 1. **`ClueTrigger.lua`** — 点击写入全局变量（E 点 bool / int）
 2. **`DialogueTrigger.lua`** — 触发描述或 NPC 对话（`npcname` + 起始 `ID`）
-3. 抖音网络组件（`NetGUID`）
+3. **`DialogueAreaTrigger.lua`** — 进入 Trigger 区域**强制播**对话（不需按交互键；大树 1-A、老鼠 E39、乌鸦屋顶等复用）
+4. 抖音网络组件（`NetGUID`）
+
+**大树双阶段**（`InteractionPoint/TreeDialogue`）：
+
+```
+TreeDialogue          ← TreeInteractionController.lua（按变量切换 Force/Click）
+├── TreeForceZone     ← DialogueAreaTrigger.lua + 大 BoxCollider(isTrigger)；1-A 强制播 startID=1
+└── TreeClickZone     ← DouyinInteractor + DialogueTrigger(npcname=大树, ID=0)；1-B 点击轮播
+```
+
+`BlackCatInteractionController.lua` 挂 `characters/黑猫`：`!Dog_BlackCatSummoned` 时隐藏模型并禁用交互；摇树后启用。大黄 **2-B** 末节点 `ChainDialogue` 同链接力黑猫 **2-A**。
 
 Scene 中已配置的 E 点变量示例：
 
@@ -87,7 +98,10 @@ zttTouTing, miaosu
 |------|---------|------|
 | `GlobalVariablesManager.lua` | `GlobalVariables` | 启动加载变量、注册 `_G` API、重置 NPC 分支、调试 UI |
 | `NpcDialogueManager.lua` | `DialogueManager` | 对话 UI、打字机、选项、条件分支、变量写入、分支解锁 |
-| `DialogueTrigger.lua` | NPC / E 点 / 描述 | 按 `npcname` 加载对应分支对话并交给 Manager |
+| `DialogueTrigger.lua` | NPC / E 点 / 描述 | 按 `npcname` 加载对应分支对话并交给 Manager；暴露 `_G.StartNpcDialogue` |
+| `DialogueAreaTrigger.lua` | 强制播 Trigger 区 | 进入 collider 自动 `StartNpcDialogue`（带变量 guard） |
+| `TreeInteractionController.lua` | `TreeDialogue` | 大树 Force/Click 两阶段切换 |
+| `BlackCatInteractionController.lua` | 黑猫 | 摇树前不可点，摇树后可点 |
 | `ClueTrigger.lua` | E 点 | 点击写入 1~2 个全局变量 |
 | `BookController.lua` | Canvas 笔记本 | 按条件渐显 page1~3 线索条目 |
 | `DaHuang.lua` | 大黄 | 监听 `E06_LadderBorrowed` 切换醉狗/醒狗与梯子 |
@@ -204,7 +218,7 @@ Unity 菜单 **`Tools/Egg Rescue/Publish Editor to Data`**（`EggRescuePublishMe
 | 3 | 执行 **Publish Editor to Data** |
 | 4 | `python3 MissingEggDoc-main/scripts/validate_lua_vars.py` |
 | 5 | （大改）Refresh Scene DialogueData |
-| 6 | ArtTest_MRL 点测 |
+| 6 | **Mechanics_Code** 点测 |
 | **7** | **`NpcDialogueManager.lua`：`DIALOGUE_DEBUG = false`**（打包 / Addressables 发布前） |
 
 完整流程见 [`DIALOGUE_PIPELINE.md`](./DIALOGUE_PIPELINE.md)。
@@ -287,7 +301,7 @@ E03 偷听：`npcname=E03_Eavesdrop`，`zttTouTing.lua` 内容不变。
 | 用途 | 路径 |
 |------|------|
 | **Lua 文件 ↔ 角色对照（含拼音解码）** | [`docs/DIALOGUE_INDEX.md`](./DIALOGUE_INDEX.md) |
-| 可运行 Scene | `Assets/Scenes/ArtTest_MRL.unity` |
+| 可运行 Scene | `Assets/Scenes/Mechanics_Code.unity` |
 | 运行时 Lua 逻辑 | `Assets/luaScripts/*.lua` |
 | 全局变量定义 | `Assets/Data/GlobalData/GlobalVariables.lua` |
 | NPC 配置 | `Assets/Data/GlobalData/NPCData_Config.lua` |
@@ -315,4 +329,4 @@ E03 偷听：`npcname=E03_Eavesdrop`，`zttTouTing.lua` 内容不变。
 
 ---
 
-*最后更新：2026-06-29 · 基于 ArtTest_MRL 唯一可运行 Scene 梳理*
+*最后更新：2026-06-29 · 主开发 Scene：Mechanics_Code*

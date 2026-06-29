@@ -53,10 +53,16 @@ public static class EggRescuePublishMenu
         Directory.CreateDirectory(destFull);
 
         int count = 0;
-        foreach (string sourceFile in Directory.GetFiles(sourceFull, "*.lua"))
+        foreach (string sourceFile in Directory.GetFiles(sourceFull, "*.lua", SearchOption.AllDirectories))
         {
-            string fileName = Path.GetFileName(sourceFile);
-            string destFile = Path.Combine(destFull, fileName);
+            string relativePath = Path.GetRelativePath(sourceFull, sourceFile);
+            string destFile = Path.Combine(destFull, relativePath);
+            string? destDirName = Path.GetDirectoryName(destFile);
+            if (!string.IsNullOrEmpty(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
             if (transformLua)
             {
                 string content = File.ReadAllText(sourceFile, Encoding.UTF8);

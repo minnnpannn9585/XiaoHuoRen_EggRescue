@@ -183,7 +183,7 @@ local function LoadMiaosuDialogue()
     if not childTransform then
         return nil
     end
-    local douyinScript = childTransform:GetComponent("DouyinScript")
+    local douyinScript = childTransform.gameObject:GetComponent(typeof(DouyinScript))
     if not douyinScript or not douyinScript.script then
         return nil
     end

@@ -136,7 +136,7 @@ function GetNextNodeByConditionDetailed(data)
                     match = (intVal ~= cmpValue)
                 elseif op == ">" then
                     match = (intVal > cmpValue)
-                elseif op == "<" then
+                elseif op == "<" or op == "lt" then
                     match = (intVal < cmpValue)
                 elseif op == ">=" then
                     match = (intVal >= cmpValue)
@@ -704,7 +704,7 @@ function CheckOptionDisplayConditions(option)
                 match = (intVal ~= cmpValue)
             elseif op == ">" then
                 match = (intVal > cmpValue)
-            elseif op == "<" then
+            elseif op == "<" or op == "lt" then
                 match = (intVal < cmpValue)
             elseif op == ">=" then
                 match = (intVal >= cmpValue)
@@ -882,8 +882,8 @@ function GetOptionNextNode(option)
                         match = (intVal ~= cmpValue)
                     elseif op == ">" then
                         match = (intVal > cmpValue)
-                    elseif op == "<" then
-                        match = (intVal < cmpValue)
+                elseif op == "<" or op == "lt" then
+                    match = (intVal < cmpValue)
                     elseif op == ">=" then
                         match = (intVal >= cmpValue)
                     elseif op == "<=" then
@@ -1045,10 +1045,41 @@ function CheckBranchFlag(flag)
 end
 
 -- ========== 修改：结束对话时重置新增的状态变量 ==========
+function IsDialogueActive()
+    if currentDialogueID < 0 then
+        return false
+    end
+    if dialoguePanel and dialoguePanel.activeSelf then
+        return true
+    end
+    return currentDialogueID >= 0
+end
+
+local function TryChainDialogueFromNode(data)
+    if not data or not data.ChainDialogue then
+        return
+    end
+    local chain = data.ChainDialogue
+    local targetNpc = chain.NpcName or chain.npcName
+    local startId = chain.StartId or chain.startId or 0
+    if not targetNpc or targetNpc == "" then
+        return
+    end
+    local startFn = _G.StartNpcDialogue
+    if not startFn then
+        DbgError("ChainDialogue: StartNpcDialogue 未注册")
+        return
+    end
+    Dbg("ChainDialogue → " .. targetNpc .. " startID=" .. tostring(startId))
+    startFn(targetNpc, startId)
+end
+
 function EndDialogue(reason)
     if reason then
         Dbg("End dialogue reason=" .. tostring(reason))
     end
+
+    local chainSource = currentDataCache
     currentDialogueID = -1
     isWaitingForChoice = false
     isWaitingForNextAfterOption = false
@@ -1070,6 +1101,12 @@ function EndDialogue(reason)
 
     ClearOptionButtons()
     DouyinUIService.SetUIVisible(true)
+
+    TryChainDialogueFromNode(chainSource)
+end
+
+function dialogueManager.IsDialogueActive()
+    return IsDialogueActive()
 end
 
 function dialogueManager.StartDialogue(dialogueID)
