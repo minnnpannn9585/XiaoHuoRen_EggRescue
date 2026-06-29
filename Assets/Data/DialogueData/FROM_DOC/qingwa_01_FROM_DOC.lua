@@ -127,7 +127,7 @@ DialogueConfig[6] = {
     SetVariables = {
         { VarName = "Frog_FirstMeetShown", VarType = "bool", Value = true }
     },
-    Next = 100
+    Next = 200  -- 2-hub（首访不经 intro，同淑芬 1-A→1-hub）
 }
 
 -- ==================== 2-hub-intro · 条件轮播 ====================
@@ -367,14 +367,16 @@ DialogueConfig[200] = {
             Text = "这里有没有见过……一颗蛋？",
             Next = 16,
             DisplayConditions = {
-                { VarName = "Shufen_CommissionDone", VarType = "bool", Value = true }
+                { VarName = "Shufen_CommissionDone", VarType = "bool", Value = true },
+                { VarName = "Frog_EggAsked", VarType = "bool", Value = false }
             },
         },
         {
             Text = "谷仓那边……你去过吗？",
             Next = 21,
             DisplayConditions = {
-                { VarName = "E07_ViewNapSpot", VarType = "bool", Value = true }
+                { VarName = "E07_ViewNapSpot", VarType = "bool", Value = true },
+                { VarName = "Frog_NapSpotAsked", VarType = "bool", Value = false }
             },
         },
         {
@@ -403,14 +405,16 @@ DialogueConfig[205] = {
             Text = "这里有没有见过……一颗蛋？",
             Next = 16,
             DisplayConditions = {
-                { VarName = "Shufen_CommissionDone", VarType = "bool", Value = true }
+                { VarName = "Shufen_CommissionDone", VarType = "bool", Value = true },
+                { VarName = "Frog_EggAsked", VarType = "bool", Value = false }
             },
         },
         {
             Text = "谷仓那边……你去过吗？",
             Next = 21,
             DisplayConditions = {
-                { VarName = "E07_ViewNapSpot", VarType = "bool", Value = true }
+                { VarName = "E07_ViewNapSpot", VarType = "bool", Value = true },
+                { VarName = "Frog_NapSpotAsked", VarType = "bool", Value = false }
             },
         },
         {
@@ -464,6 +468,9 @@ DialogueConfig[20] = {
     NpcName = "悲伤蛙",
     NpcSprite = "介入",
     Dialogue = "问错了地方。",
+    SetVariables = {
+        { VarName = "Frog_EggAsked", VarType = "bool", Value = true }
+    },
     Next = 205
 }
 
@@ -493,6 +500,9 @@ DialogueConfig[23] = {
     NpcName = "悲伤蛙",
     NpcSprite = "介入",
     Dialogue = "……连虚无都是干的。",
+    SetVariables = {
+        { VarName = "Frog_NapSpotAsked", VarType = "bool", Value = true }
+    },
     Next = 205
 }
 

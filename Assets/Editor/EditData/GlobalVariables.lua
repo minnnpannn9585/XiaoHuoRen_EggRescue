@@ -71,6 +71,8 @@ local GlobalVariables = {
     { name = "Crow_GlassBeadRemedial",      type = "bool", value = false },
     { name = "Crow_NGPlusShown",            type = "bool", value = false },
     { name = "Frog_FirstMeetShown",         type = "bool", value = false },
+    { name = "Frog_EggAsked",               type = "bool", value = false },
+    { name = "Frog_NapSpotAsked",           type = "bool", value = false },
     { name = "Frog_WaterMonsterQueried",    type = "bool", value = false },
     { name = "Frog_PadRefused",             type = "bool", value = false },
     { name = "Mouse_FirstGreetShown",       type = "bool", value = false },

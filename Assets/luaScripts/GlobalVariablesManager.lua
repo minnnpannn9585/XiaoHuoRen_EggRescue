@@ -7,9 +7,19 @@ GlobalVariableList = {}
 
 local globalVariables = {}
 local debugButtonImages = {}
+local debugIntLabels = {}
+local debugIntInitialValues = {}
 
--- 开发测 bool 变量 UI（Canvas 滚动列表，按下=true 抬起=false）；发布前改 false
+-- 开发测 bool/int 变量 UI（Canvas 滚动列表）；发布前改 false
 local VAR_DEBUG_UI_ENABLED = true
+
+-- int 调试按钮循环上限（doc 17）；到顶后回到 GlobalVariables 初始 value
+local DEBUG_INT_MAX = {
+    ChickTraceCount = 3,
+    TreeClueCount = 4,
+    DogStatus = 4,
+    ChickStatus = 3,
+}
 
 -- 开发测对话分支时设为 true：保留 NPCData_Config 里 Publish 的 currentBranchId（如大黄 branch 5 → FROM_DOC）
 -- 正式打包/发布前改回 false
@@ -17,6 +27,7 @@ local KEEP_NPC_BRANCH_FOR_TEST = true
 
 local COLOR_OFF = UnityEngine.Color(0.22, 0.24, 0.28, 0.92)
 local COLOR_ON = UnityEngine.Color(0.18, 0.62, 0.32, 1.0)
+local COLOR_INT = UnityEngine.Color(0.48, 0.36, 0.14, 0.95)
 local COLOR_ACTION = UnityEngine.Color(0.22, 0.38, 0.58, 0.95)
 
 local function ParseItemValue(item)
@@ -46,6 +57,9 @@ local function LoadGlobalVariablesFromList(list)
         if item.name and item.type then
             local value = ParseItemValue(item)
             globalVariables[item.name] = { type = item.type, value = value }
+            if item.type == "int" then
+                debugIntInitialValues[item.name] = value
+            end
         end
     end
     print("[GlobalVariables] 从 GlobalVariableList 加载完成")
@@ -93,6 +107,11 @@ function SetGlobalVar(varName, value, varType)
     local btnImage = debugButtonImages[varName]
     if btnImage and varType == "bool" then
         btnImage.color = (runtimeValue == true) and COLOR_ON or COLOR_OFF
+    end
+
+    local intLabel = debugIntLabels[varName]
+    if intLabel and varType == "int" then
+        intLabel.text = varName .. " = " .. tostring(runtimeValue)
     end
 
     print("[GlobalVariables] 设置变量: " .. varName .. " = " .. tostring(runtimeValue))
@@ -155,6 +174,55 @@ local function AddToggleBoolButton(contentRt, varName)
     btn.onClick:AddListener(function()
         local current = GetGlobalVar(captured) == true
         SetGlobalVar(captured, not current, "bool")
+    end)
+end
+
+local function AddIncrementIntButton(contentRt, varName, initialValue, maxValue)
+    local btnGo = UnityEngine.GameObject("VarBtn_" .. varName)
+    btnGo.transform:SetParent(contentRt, false)
+    local btnRt = btnGo:AddComponent(typeof(UnityEngine.RectTransform))
+    btnRt.anchorMin = UnityEngine.Vector2(0, 1)
+    btnRt.anchorMax = UnityEngine.Vector2(1, 1)
+    btnRt.pivot = UnityEngine.Vector2(0.5, 1)
+    btnRt.sizeDelta = UnityEngine.Vector2(0, 34)
+
+    local layoutEl = btnGo:AddComponent(typeof(UnityEngine.UI.LayoutElement))
+    layoutEl.preferredHeight = 34
+    layoutEl.minHeight = 34
+
+    local img = btnGo:AddComponent(typeof(UnityEngine.UI.Image))
+    img.color = COLOR_INT
+    debugButtonImages[varName] = img
+
+    local btn = btnGo:AddComponent(typeof(UnityEngine.UI.Button))
+    btn.targetGraphic = img
+
+    local textGo = UnityEngine.GameObject("Label")
+    textGo.transform:SetParent(btnRt, false)
+    local textRt = textGo:AddComponent(typeof(UnityEngine.RectTransform))
+    textRt.anchorMin = UnityEngine.Vector2(0, 0)
+    textRt.anchorMax = UnityEngine.Vector2(1, 1)
+    textRt.offsetMin = UnityEngine.Vector2(8, 2)
+    textRt.offsetMax = UnityEngine.Vector2(-8, -2)
+    local label = textGo:AddComponent(typeof(UnityEngine.UI.Text))
+    local current = tonumber(GetGlobalVar(varName)) or initialValue
+    label.text = varName .. " = " .. tostring(current)
+    label.font = UnityEngine.Resources.GetBuiltinResource(typeof(UnityEngine.Font), "Arial.ttf")
+    label.fontSize = 13
+    label.alignment = UnityEngine.TextAnchor.MiddleLeft
+    label.color = UnityEngine.Color(0.95, 0.95, 0.95, 1)
+    debugIntLabels[varName] = label
+
+    local captured = varName
+    local capturedInitial = initialValue
+    local capturedMax = maxValue
+    btn.onClick:AddListener(function()
+        local cur = tonumber(GetGlobalVar(captured)) or capturedInitial
+        local next = cur + 1
+        if capturedMax and next > capturedMax then
+            next = capturedInitial
+        end
+        SetGlobalVar(captured, next, "int")
     end)
 end
 
@@ -321,16 +389,24 @@ local function BuildVarDebugScrollPanel()
     scrollRect.content = contentRt
 
     local boolCount = 0
+    local intCount = 0
     if GlobalVariableList then
         for _, item in ipairs(GlobalVariableList) do
             if item.name and item.type == "bool" then
                 AddToggleBoolButton(contentRt, item.name)
                 boolCount = boolCount + 1
+            elseif item.name and item.type == "int" then
+                local initial = debugIntInitialValues[item.name]
+                if initial == nil then
+                    initial = ParseItemValue(item)
+                end
+                AddIncrementIntButton(contentRt, item.name, initial, DEBUG_INT_MAX[item.name])
+                intCount = intCount + 1
             end
         end
     end
 
-    print("[GlobalVarDebug] VarDebugPanel 已创建，bool 按钮 x" .. boolCount)
+    print("[GlobalVarDebug] VarDebugPanel 已创建，bool 按钮 x" .. boolCount .. "，int 按钮 x" .. intCount)
 end
 
 function ResetAllNPCBranchesToStart()

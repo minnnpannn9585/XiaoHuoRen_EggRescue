@@ -480,18 +480,31 @@ function UpdateDialogueUI()
     UpdateNPCInfo(data)
 end
 
-function UpdateNPCInfo(data)
-    -- 根据对话者身份切换名字面板：玩家 -> 显示 playerNamePanel；其他 -> 显示 npcNamePanel
-    local isPlayer = data.NpcName and data.NpcName == "玩家"
-    SetPlayerNamePanel(isPlayer)
-
-    if npcName then
-        npcName.text = data.NpcName or ""
+local function ApplyNamePanelForSpeaker(speakerName)
+    if speakerName == nil or speakerName == "" or speakerName == "描述" then
+        if playerNamePanel then
+            playerNamePanel:SetActive(false)
+        end
+        if npcNamePanel then
+            npcNamePanel:SetActive(false)
+        end
+        return
     end
 
+    local isPlayer = speakerName == "玩家"
+    SetPlayerNamePanel(isPlayer)
+    if npcName and not isPlayer then
+        npcName.text = speakerName
+    end
+end
+
+function UpdateNPCInfo(data)
+    local speaker = data.NpcName or ""
+    ApplyNamePanelForSpeaker(speaker)
+
     if npcSprite then
-        -- 玩家对话时不显示头像图片，直接隐藏
-        if isPlayer then
+        -- 玩家 / 描述对话时不显示头像
+        if speaker == "玩家" or speaker == "描述" then
             npcSprite.gameObject:SetActive(false)
         else
             local spriteKey = nil
@@ -624,9 +637,7 @@ function ShowNPCConversationUI(data)
     end
     ClearOptionButtons()
 
-    -- 根据对话者身份切换名字面板（UpdateNPCInfo 中已设置，这里确保一致性）
-    local isPlayer = data.NpcName and data.NpcName == "玩家"
-    SetPlayerNamePanel(isPlayer)
+    ApplyNamePanelForSpeaker(data and data.NpcName)
 
     if next then
         next.gameObject:SetActive(true)
@@ -749,13 +760,7 @@ function ShowQuestionUI(data)
         playerPanel:SetActive(true)
     end
 
-    if playerNamePanel then
-        playerNamePanel:SetActive(true)
-    end
-
-    if npcNamePanel then
-        npcNamePanel:SetActive(false)
-    end
+    ApplyNamePanelForSpeaker(data and data.NpcName)
 
     currentOptions = data.Options or {}
 

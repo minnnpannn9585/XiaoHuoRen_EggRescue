@@ -794,7 +794,8 @@ DialogueConfig[61] = {
             Text = "红屋顶里还住着别的动物？",
             Next = 65,
             DisplayConditions = {
-                { VarName = "TreeClueCount >= 2", VarType = "bool", Value = true }
+                { VarName = "TreeClueCount >= 2", VarType = "bool", Value = true },
+                { VarName = "Dog_BlackCatSummoned", VarType = "bool", Value = false }
             },
         },
         {
