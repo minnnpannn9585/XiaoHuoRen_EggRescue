@@ -12539,8 +12539,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: DouyinWorldRoot
       objectReference: {fileID: 0}
+    - target: {fileID: 8593204080850641795, guid: d6f145feda9074cd49a7a826ed81dcd4, type: 3}
+      propertyPath: GuestSpawn
+      value: 
+      objectReference: {fileID: 906622983}
+    - target: {fileID: 8593204080850641795, guid: d6f145feda9074cd49a7a826ed81dcd4, type: 3}
+      propertyPath: uiOrentationSupport
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6f145feda9074cd49a7a826ed81dcd4, type: 3}
+--- !u!4 &906622983 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3885426773814411347, guid: d6f145feda9074cd49a7a826ed81dcd4, type: 3}
+  m_PrefabInstance: {fileID: 906622982}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -21307,6 +21320,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2294542047800930401, guid: 2a16bbf0584964b3fb6aa2a10c5de0a8, type: 3}
+      propertyPath: ParaLuaBindingData.Array.data[50]
+      value: 3883133810448531468
+      objectReference: {fileID: 0}
+    - target: {fileID: 2294542047800930401, guid: 2a16bbf0584964b3fb6aa2a10c5de0a8, type: 3}
+      propertyPath: managedReferences[3883133810448531468]
+      value: com.douyin.script DouyinLuaDataGameObjectArr
+      objectReference: {fileID: 0}
+    - target: {fileID: 2294542047800930401, guid: 2a16bbf0584964b3fb6aa2a10c5de0a8, type: 3}
+      propertyPath: managedReferences[3883133810448531468].varName
+      value: link_D06_D07
+      objectReference: {fileID: 0}
+    - target: {fileID: 2294542047800930401, guid: 2a16bbf0584964b3fb6aa2a10c5de0a8, type: 3}
+      propertyPath: managedReferences[3883133810448531468].varType
+      value: UnityEngine.GameObject[]
+      objectReference: {fileID: 0}
+    - target: {fileID: 2294542047800930401, guid: 2a16bbf0584964b3fb6aa2a10c5de0a8, type: 3}
+      propertyPath: managedReferences[3883133810448531468].Data.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2863233608023615489, guid: 2a16bbf0584964b3fb6aa2a10c5de0a8, type: 3}
       propertyPath: m_Name
       value: Notebook
