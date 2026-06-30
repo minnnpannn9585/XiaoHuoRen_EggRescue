@@ -416,6 +416,7 @@ function StartDialogue(dialogueID)
 
     DouyinUIService.SetUIVisible(false)
 
+    _G["PlayAudio"]("audio_interactObject")
     UpdateDialogueUI()
 end
 
@@ -470,6 +471,7 @@ function StartDialogueWithData(dialogueData, startID)
         dialoguePanel:SetActive(true)
     end
     DouyinUIService.SetUIVisible(false)
+    _G["PlayAudio"]("audio_interactObject")
     UpdateDialogueUI()
 end
 
@@ -520,6 +522,7 @@ function OnNextClick()
     elseif GetDialogueData(nextID) ~= nil then
         Dbg("Leave node=" .. fromID .. " DocTag=" .. fromTag .. " via " .. via .. " → " .. nextID)
         currentDialogueID = nextID
+        _G["PlayAudio"]("audio_nextSentence")
         UpdateDialogueUI()
     else
         DbgError("Leave node=" .. fromID .. " target " .. tostring(nextID) .. " missing")
@@ -552,7 +555,8 @@ function UpdateDialogueUI()
             local pick = math.random(1, #data.RotatePool)
             local poolStart = data.RotatePool[pick]
             if GetDialogueData(poolStart) ~= nil then
-                Dbg("RotatePool dispatcher " .. currentDialogueID .. " → " .. poolStart .. " (pick " .. pick .. "/" .. #data.RotatePool .. ")")
+                Dbg("RotatePool dispatcher " ..
+                    currentDialogueID .. " → " .. poolStart .. " (pick " .. pick .. "/" .. #data.RotatePool .. ")")
                 CheckAndUnlockBranch(data)
                 ApplySetVariables(data)
                 currentDialogueID = poolStart
@@ -571,7 +575,8 @@ function UpdateDialogueUI()
             end
 
             if nextID == -1 then
-                Dbg("Leave empty dispatcher node=" .. currentDialogueID .. " DocTag=" .. (data.DocTag or "?") .. " via " .. tostring(via) .. " → END")
+                Dbg("Leave empty dispatcher node=" ..
+                    currentDialogueID .. " DocTag=" .. (data.DocTag or "?") .. " via " .. tostring(via) .. " → END")
                 EndDialogue(via)
                 return
             end
@@ -582,7 +587,8 @@ function UpdateDialogueUI()
                 return
             end
 
-            Dbg("Skip empty dispatcher node=" .. currentDialogueID .. " DocTag=" .. (data.DocTag or "?") .. " via " .. tostring(via) .. " → " .. nextID)
+            Dbg("Skip empty dispatcher node=" ..
+                currentDialogueID .. " DocTag=" .. (data.DocTag or "?") .. " via " .. tostring(via) .. " → " .. nextID)
             currentDialogueID = nextID
         else
             break
@@ -1043,8 +1049,8 @@ function GetOptionNextNode(option)
                         match = (intVal ~= cmpValue)
                     elseif op == ">" then
                         match = (intVal > cmpValue)
-                elseif op == "<" or op == "lt" then
-                    match = (intVal < cmpValue)
+                    elseif op == "<" or op == "lt" then
+                        match = (intVal < cmpValue)
                     elseif op == ">=" then
                         match = (intVal >= cmpValue)
                     elseif op == "<=" then
@@ -1273,4 +1279,3 @@ function EndDialogue(reason)
 
     TryChainDialogueFromNode(chainSource)
 end
-

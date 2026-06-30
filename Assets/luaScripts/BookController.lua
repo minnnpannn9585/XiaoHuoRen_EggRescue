@@ -173,38 +173,38 @@ local function BuildCatalog()
     }
 
     LINK_DEFS = {
-        { go = link_D03_D04, ends = { "D03", "D04" } },
-        { go = link_D03_D05, ends = { "D03", "D05" } },
-        { go = link_D03_D06, ends = { "D03", "D06" } },
-        { go = link_D05_E23, ends = { "D05", "E23" } },
+        { go = link_D03_D04,  ends = { "D03", "D04" } },
+        { go = link_D03_D05,  ends = { "D03", "D05" } },
+        { go = link_D03_D06,  ends = { "D03", "D06" } },
+        { go = link_D05_E23,  ends = { "D05", "E23" } },
         { gos = link_E17_D05, ends = { "E17", "D05" } },
         { gos = link_E17_E23, ends = { "E17", "E23" } },
         { gos = link_D06_D07, ends = { "D06", "D07" } },
-        { go = link_E04_E06, ends = { "E04", "E06" } },
-        { go = link_E07_E08, ends = { "E07", "E08" } },
-        { go = link_E08_E27, ends = { "E08", "E27" } },
-        { go = link_E27_E34, ends = { "E27", "E34" } },
-        { go = link_E08_E34, ends = { "E08", "E34" } },
-        { go = link_D13_E12, ends = { "D13", "E12" } },
-        { go = link_D13_D12, ends = { "D13", "D12" } },
-        { go = link_D14_D12, ends = { "D14", "D12" } },
+        { go = link_E04_E06,  ends = { "E04", "E06" } },
+        { go = link_E07_E08,  ends = { "E07", "E08" } },
+        { go = link_E08_E27,  ends = { "E08", "E27" } },
+        { go = link_E27_E34,  ends = { "E27", "E34" } },
+        { go = link_E08_E34,  ends = { "E08", "E34" } },
+        { go = link_D13_E12,  ends = { "D13", "E12" } },
+        { go = link_D13_D12,  ends = { "D13", "D12" } },
+        { go = link_D14_D12,  ends = { "D14", "D12" } },
     }
 
     -- entryUnlock：指定条目入册后显示；cond：全局变量条件（晚入册时入册当次一并 reconcile）
     MOD_DEFS = {
-        { go = mod_D03_strike, entryUnlock = "D09" },
-        { go = mod_D03_note, entryUnlock = "D09" },
-        { go = mod_D07_strike, entryUnlock = "E10" },
-        { go = mod_D07_note, entryUnlock = "E10" },
-        { go = mod_E04_borrowed, cond = "E06_LadderBorrowed==true" },
+        { go = mod_D03_strike,    entryUnlock = "D09" },
+        { go = mod_D03_note,      entryUnlock = "D09" },
+        { go = mod_D07_strike,    entryUnlock = "E10" },
+        { go = mod_D07_note,      entryUnlock = "E10" },
+        { go = mod_E04_borrowed,  cond = "E06_LadderBorrowed==true" },
         { go = mod_E04_ladderPic, cond = "E06_LadderBorrowed==true" },
-        { go = mod_E06_done, cond = "E06_LadderPlaced==true" },
-        { go = mod_D08_got, cond = "E05_GrainSoakGet==true" },
+        { go = mod_E06_done,      cond = "E06_LadderPlaced==true" },
+        { go = mod_D08_got,       cond = "E05_GrainSoakGet==true" },
         { go = mod_E08_glassNote, cond = "Crow_GlassBeadAsked==true" },
-        { go = mod_D12_got, cond = "MintFish_Obtained==true" },
-        { go = mod_D12_fishPic, cond = "MintFish_Obtained==true" },
-        { go = mod_E13_strike, cond = "BlackCat_Entered==true" },
-        { go = mod_E13_note, cond = "BlackCat_Entered==true" },
+        { go = mod_D12_got,       cond = "MintFish_Obtained==true" },
+        { go = mod_D12_fishPic,   cond = "MintFish_Obtained==true" },
+        { go = mod_E13_strike,    cond = "BlackCat_Entered==true" },
+        { go = mod_E13_note,      cond = "BlackCat_Entered==true" },
     }
 end
 
@@ -342,12 +342,18 @@ function CheckSingleCondition(subCond, globalVars)
     local numVal = tonumber(val)
     if not numVal then return false end
 
-    if op == ">=" then return var.value >= numVal
-    elseif op == "<=" then return var.value <= numVal
-    elseif op == ">" then return var.value > numVal
-    elseif op == "<" then return var.value < numVal
-    elseif op == "==" then return var.value == numVal
-    elseif op == "!=" then return var.value ~= numVal
+    if op == ">=" then
+        return var.value >= numVal
+    elseif op == "<=" then
+        return var.value <= numVal
+    elseif op == ">" then
+        return var.value > numVal
+    elseif op == "<" then
+        return var.value < numVal
+    elseif op == "==" then
+        return var.value == numVal
+    elseif op == "!=" then
+        return var.value ~= numVal
     end
     return false
 end
@@ -420,6 +426,8 @@ local function UpdateRedDot()
 end
 
 local function UnlockEntry(entryId)
+    _G["PlayAudio"]("audio_showClue")
+
     local def = ENTRY_DEFS and ENTRY_DEFS[entryId]
     if not def or not def.go or unlockedEntries[entryId] then
         return false
@@ -615,6 +623,13 @@ function Update()
 end
 
 function OnOpenClick()
+    if not boolPanel.activeSelf then
+        _G["PlayAudio"]("audio_openNote")
+    else
+        _G["PlayAudio"]("audio_closeNote")
+    end
+
+
     boolPanel:SetActive(not boolPanel.activeSelf)
     if boolPanel.activeSelf then
         hasUnread = false
@@ -626,6 +641,7 @@ function OnOpenClick()
 end
 
 function OnLeftClick()
+    _G["PlayAudio"]("audio_switchPage")
     if not pageContents or pageContents.Length == 0 then return end
     currentIndex = currentIndex - 1
     if currentIndex < 1 then
@@ -636,6 +652,7 @@ function OnLeftClick()
 end
 
 function OnRightClick()
+    _G["PlayAudio"]("audio_switchPage")
     if not pageContents or pageContents.Length == 0 then return end
     currentIndex = currentIndex + 1
     if currentIndex > pageContents.Length then

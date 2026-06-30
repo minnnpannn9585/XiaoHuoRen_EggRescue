@@ -167,6 +167,7 @@ function OnPlayerTriggerEnter(douyinPlayer)
     if douyinPlayer == nil then
         return
     end
+    _G["PlayAudio"]("audio_cheese")
     local actor = douyinPlayer:GetActor()
     if actor == nil or actor.isLocal ~= true then
         return
