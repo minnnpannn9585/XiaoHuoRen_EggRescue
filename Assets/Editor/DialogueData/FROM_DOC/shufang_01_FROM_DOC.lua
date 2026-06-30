@@ -288,7 +288,7 @@ DialogueConfig[24] = {
     Dialogue = "……还有什么我能做的吗？",
     Options = {
         {
-            Text = "发现和蛋有关的东西了，你看一下……",
+            Text = "发现和蛋有关的，你看……",
             Next = 56,
             DisplayConditions = {
                 { VarName = "E10_ViewWhiteStone", VarType = "bool", Value = true },
@@ -304,14 +304,14 @@ DialogueConfig[24] = {
             },
         },
         {
-            Text = "主人那边……你说他最近老在你窝边转悠？",
+            Text = "主人最近老在你窝边转？",
             Next = 25,
             DisplayConditions = {
                 { VarName = "Shufen_MasterAsked", VarType = "bool", Value = false }
             },
         },
         {
-            Text = "大黄好像喝多了，有什么办法叫醒他吗？",
+            Text = "大黄喝多了，怎么叫醒？",
             Next = 48,
             DisplayConditions = {
                 { VarName = "DogStatus", VarType = "int", Op = ">=", Value = 2 },
@@ -336,7 +336,7 @@ DialogueConfig[24] = {
             },
         },
         {
-            Text = "红顶屋那俩老鼠，你知道它们的事吗？",
+            Text = "红顶屋老鼠，你知道事吗？",
             Next = 40,
             DisplayConditions = {
                 { VarName = "Mouse_FirstGreetShown", VarType = "bool", Value = true },
@@ -344,7 +344,7 @@ DialogueConfig[24] = {
             },
         },
         {
-            Text = "谷仓那边有个午睡的草窝——那是你的吗？",
+            Text = "谷仓午睡草窝——是你的吗？",
             Next = 45,
             DisplayConditions = {
                 { VarName = "E07_ViewNapSpot", VarType = "bool", Value = true },
