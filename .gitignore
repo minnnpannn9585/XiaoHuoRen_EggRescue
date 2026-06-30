@@ -11,6 +11,8 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 *.log
+# 忽略整个文件夹（无论它在哪个层级）
+/Assets/AddressableAssetsData/
 # ===== 自定义忽略项（已整合你的所有需求） =====
 # 忽略 JetBrains IDE 配置（整个 .idea 文件夹，任意路径）
 /.idea/
