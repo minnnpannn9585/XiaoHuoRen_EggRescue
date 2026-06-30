@@ -107,7 +107,7 @@ DialogueConfig[2] = {
     Type = "Normal",
     DocTag = "1-A#2",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "本王的垃圾王国——今日也光辉灿烂！",
     Next = 3  -- 下一段对话ID
 }
@@ -140,7 +140,7 @@ DialogueConfig[5] = {
     Type = "Normal",
     DocTag = "1-B#1",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "叫嚣",
     Dialogue = "谁？！谁在本王阵法边缘乱踩！",
     Next = 6  -- 下一段对话ID
 }
@@ -151,7 +151,7 @@ DialogueConfig[6] = {
     Type = "Normal",
     DocTag = "1-B#2",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "叫嚣",
     Dialogue = "滚远点！凡人免进！",
     SetVariables = {
         { VarName = "E35_CrowTauntShown", VarType = "bool", Value = true }
@@ -165,7 +165,7 @@ DialogueConfig[7] = {
     Type = "Normal",
     DocTag = "1-C#1",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "叫嚣",
     Dialogue = "往上爬啊！往上爬！",
     Next = 8  -- 下一段对话ID
 }
@@ -176,7 +176,7 @@ DialogueConfig[8] = {
     Type = "Normal",
     DocTag = "1-C#2",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "叫嚣",
     Dialogue = "本王倒要看看你怎么上来！",
     Next = 9  -- 下一段对话ID
 }
@@ -201,7 +201,7 @@ DialogueConfig[10] = {
     Type = "Normal",
     DocTag = "2-A#1",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "站住。",
     Next = 11  -- 下一段对话ID
 }
@@ -212,7 +212,7 @@ DialogueConfig[11] = {
     Type = "Normal",
     DocTag = "2-A#2",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "踏入垃圾王国领地的凡人——报上名来。",
     Next = 12  -- 下一段对话ID
 }
@@ -234,7 +234,7 @@ DialogueConfig[13] = {
     Type = "Normal",
     DocTag = "2-A#4",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "蛋？",
     Next = 14  -- 下一段对话ID
 }
@@ -256,7 +256,7 @@ DialogueConfig[15] = {
     Type = "Normal",
     DocTag = "2-A#6",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "本王这儿只有神灵宝石。",
     Next = 16  -- 下一段对话ID
 }
@@ -267,7 +267,7 @@ DialogueConfig[16] = {
     Type = "Normal",
     DocTag = "2-A#7",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "部落图腾，绝版手办。你找错门了。",
     Next = 17  -- 下一段对话ID
 }
@@ -289,7 +289,7 @@ DialogueConfig[18] = {
     Type = "Normal",
     DocTag = "2-A#9",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "那条跳跃能力为零的地毯？",
     Next = 19  -- 下一段对话ID
 }
@@ -300,7 +300,7 @@ DialogueConfig[19] = {
     Type = "Normal",
     DocTag = "2-A#10",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "它隔那么远乱吠，懂什么。",
     Next = 20  -- 下一段对话ID
 }
@@ -311,7 +311,7 @@ DialogueConfig[20] = {
     Type = "Normal",
     DocTag = "2-A#11",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "本王捡的是白白亮亮的大宝贝。",
     Next = 21  -- 下一段对话ID
 }
@@ -322,7 +322,7 @@ DialogueConfig[21] = {
     Type = "Normal",
     DocTag = "2-A#12",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "就连那位也爬上来，瞪了本王的神灵宝石一眼——",
     Next = 22  -- 下一段对话ID
 }
@@ -344,7 +344,7 @@ DialogueConfig[23] = {
     Type = "Normal",
     DocTag = "2-A#14",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "然后他就怂了，一声不吭下去了。嫉妒，肯定是嫉妒。",
     Next = 24  -- 下一段对话ID
 }
@@ -366,7 +366,7 @@ DialogueConfig[25] = {
     Type = "Normal",
     DocTag = "2-A#16",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "看可以。",
     Next = 26  -- 下一段对话ID
 }
@@ -388,7 +388,7 @@ DialogueConfig[27] = {
     Type = "Normal",
     DocTag = "2-A#18",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "拿？想都别想。",
     Next = 28  -- 下一段对话ID
 }
@@ -410,7 +410,7 @@ DialogueConfig[29] = {
     Type = "Normal",
     DocTag = "2-A#20",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "凡人，你最好只是看看。",
     SetVariables = {
         { VarName = "Crow_RoofIntroShown", VarType = "bool", Value = true }
@@ -446,7 +446,7 @@ DialogueConfig[32] = {
     Type = "Normal",
     DocTag = "2-B#3",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "吝啬",
     Dialogue = "放肆！",
     Next = 33  -- 下一段对话ID
 }
@@ -457,7 +457,7 @@ DialogueConfig[33] = {
     Type = "Normal",
     DocTag = "2-B#4",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "吝啬",
     Dialogue = "你懂什么图腾学？！",
     Next = 34  -- 下一段对话ID
 }
@@ -468,7 +468,7 @@ DialogueConfig[34] = {
     Type = "Normal",
     DocTag = "2-B#5",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "吝啬",
     Dialogue = "爱心是远古封印！",
     Next = 35  -- 下一段对话ID
 }
@@ -479,7 +479,7 @@ DialogueConfig[35] = {
     Type = "Normal",
     DocTag = "2-B#6",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "吝啬",
     Dialogue = "鬼脸是驱邪结界！",
     Next = 36  -- 下一段对话ID
 }
@@ -501,7 +501,7 @@ DialogueConfig[37] = {
     Type = "Normal",
     DocTag = "2-B#8",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "吝啬",
     Dialogue = "充满神秘力量。",
     Next = 38  -- 下一段对话ID
 }
@@ -512,7 +512,7 @@ DialogueConfig[38] = {
     Type = "Question",
     DocTag = "2-hub",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "凡人，记清楚本王的辉煌。",
     Options = {
         {
@@ -547,7 +547,7 @@ DialogueConfig[40] = {
     Type = "Normal",
     DocTag = "2-C#2",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "吝啬",
     Dialogue = "本王的玻璃法阵。",
     Next = 41  -- 下一段对话ID
 }
@@ -558,7 +558,7 @@ DialogueConfig[41] = {
     Type = "Normal",
     DocTag = "2-C#3",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "吝啬",
     Dialogue = "防贼防盗防黑毛。",
     Next = 42  -- 下一段对话ID
 }
@@ -580,7 +580,7 @@ DialogueConfig[43] = {
     Type = "Normal",
     DocTag = "2-C#5",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "吝啬",
     Dialogue = "那是阵法的余波。",
     Next = 44  -- 下一段对话ID
 }
@@ -591,7 +591,7 @@ DialogueConfig[44] = {
     Type = "Normal",
     DocTag = "2-C#6",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "吝啬",
     Dialogue = "说明本王威力过猛。",
     SetVariables = {
         { VarName = "Crow_GlassBeadAsked", VarType = "bool", Value = true }
@@ -628,7 +628,7 @@ DialogueConfig[46] = {
     Type = "Normal",
     DocTag = "2-D#2",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "下去吧。",
     Next = 47  -- 下一段对话ID
 }
@@ -639,7 +639,7 @@ DialogueConfig[47] = {
     Type = "Normal",
     DocTag = "2-D#3",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "别踩本王的宝贝。",
     Next = 48  -- 下一段对话ID
 }
@@ -661,7 +661,7 @@ DialogueConfig[49] = {
     Type = "Normal",
     DocTag = "2-E@v1#1",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "又来了？",
     Next = 50  -- 下一段对话ID
 }
@@ -683,7 +683,7 @@ DialogueConfig[51] = {
     Type = "Normal",
     DocTag = "2-E@v1#3",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "参观收费。",
     Next = -1
 }
@@ -694,7 +694,7 @@ DialogueConfig[52] = {
     Type = "Normal",
     DocTag = "2-E@v2#1",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "宝石还在。",
     Next = 53  -- 下一段对话ID
 }
@@ -705,7 +705,7 @@ DialogueConfig[53] = {
     Type = "Normal",
     DocTag = "2-E@v2#2",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "不用问。",
     Next = 54  -- 下一段对话ID
 }
@@ -738,7 +738,7 @@ DialogueConfig[56] = {
     Type = "Normal",
     DocTag = "2-E@v3#2",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "和本王有什么关系。",
     Next = 57  -- 下一段对话ID
 }
@@ -749,7 +749,7 @@ DialogueConfig[57] = {
     Type = "Normal",
     DocTag = "2-E@v3#3",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "本王的王国一切正常。",
     Next = -1
 }
@@ -781,7 +781,7 @@ DialogueConfig[211] = {
     Type = "Normal",
     DocTag = "NGPlus#2",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "……你来了。",
     Next = 212
 }
@@ -799,7 +799,7 @@ DialogueConfig[213] = {
     Type = "Normal",
     DocTag = "NGPlus#4",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "本王知道。那就是块石头。",
     Next = 214
 }
@@ -817,7 +817,7 @@ DialogueConfig[215] = {
     Type = "Normal",
     DocTag = "NGPlus#6",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "本王从来都知道！爱心封印、鬼脸结界——都是本王亲自设计的考题！",
     Next = 216
 }
@@ -835,7 +835,7 @@ DialogueConfig[217] = {
     Type = "Normal",
     DocTag = "NGPlus#8",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "……考题的一部分。",
     Next = 218
 }
@@ -862,7 +862,7 @@ DialogueConfig[220] = {
     Type = "Normal",
     DocTag = "NGPlus#11",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "那只黑毛？！昨天凌晨四点又来本王阵法边缘晃。",
     Next = 221
 }
@@ -871,7 +871,7 @@ DialogueConfig[221] = {
     Type = "Normal",
     DocTag = "NGPlus#12",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "本王用碎玻璃反光晃了他一眼——他就龇了一声「别照本喵」，甩着尾巴下去了。",
     Next = 222
 }
@@ -889,7 +889,7 @@ DialogueConfig[223] = {
     Type = "Normal",
     DocTag = "NGPlus#14",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "本王不需要和好。全农场最高的王，不需要。",
     Next = 224
 }
@@ -898,7 +898,7 @@ DialogueConfig[224] = {
     Type = "Normal",
     DocTag = "NGPlus#15",
     NpcName = "乌鸦",
-    NpcSprite = "",
+    NpcSprite = "得意",
     Dialogue = "下去吧，戴帽子的。",
     Next = 225
 }

@@ -44,6 +44,10 @@ local function SetClickInteractionEnabled(enabled)
         if not clickZone.activeSelf then
             clickZone:SetActive(true)
         end
+        local interactor = GetClickInteractorScript()
+        if interactor and interactor.EnableInteraction then
+            interactor.EnableInteraction()
+        end
         return
     end
 
@@ -67,10 +71,12 @@ end
 
 function RefreshTreeInteraction(force)
     local summoned = GetGlobalBool("Dog_BlackCatSummoned")
+    local treeShakeStarted = GetGlobalBool("BlackCat_TreeShakeStarted")
     local treeHardShown = GetGlobalBool("BlackCat_TreeHardShown")
+    local treeClosed = summoned or treeShakeStarted
 
-    local forceEnabled = (not summoned) and (not treeHardShown)
-    local clickEnabled = (not summoned) and treeHardShown
+    local forceEnabled = (not treeClosed) and (not treeHardShown)
+    local clickEnabled = (not treeClosed) and treeHardShown
 
     if not force and lastForceEnabled == forceEnabled and lastClickEnabled == clickEnabled then
         return
@@ -83,9 +89,9 @@ function RefreshTreeInteraction(force)
     SetForceZoneEnabled(forceEnabled)
 
     print(string.format(
-        "[TreeInteraction] force=%s click=%s (TreeHardShown=%s Summoned=%s)",
+        "[TreeInteraction] force=%s click=%s (TreeHardShown=%s Summoned=%s Shake=%s)",
         tostring(forceEnabled), tostring(clickEnabled),
-        tostring(treeHardShown), tostring(summoned)))
+        tostring(treeHardShown), tostring(summoned), tostring(treeShakeStarted)))
 end
 
 function Awake()

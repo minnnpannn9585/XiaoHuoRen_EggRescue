@@ -26,6 +26,8 @@ public static class EggRescuePublishMenu
 
         AssetDatabase.Refresh();
 
+        TouXiangLiHuiSpriteCollector.BatchWirePortraitSprites();
+
         Debug.Log($"[EggRescue] Publish complete. Dialogue files: {dialogueCount}, NPCData: {npcOk}, GlobalVariables: {varsOk}");
         EditorUtility.DisplayDialog(
             "Publish Editor to Data",

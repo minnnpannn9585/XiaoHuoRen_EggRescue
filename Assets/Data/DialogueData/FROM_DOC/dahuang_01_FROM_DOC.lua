@@ -53,7 +53,7 @@ DialogueConfig[2] = {
     Type = "Normal",
     DocTag = "1-A#2",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "醉倒",
     Dialogue = "嗝——",
     Next = 3  -- 下一段对话ID
 }
@@ -64,7 +64,7 @@ DialogueConfig[3] = {
     Type = "Normal",
     DocTag = "1-A#3",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "醉倒",
     Dialogue = "谁……",
     Next = 4  -- 下一段对话ID
 }
@@ -97,7 +97,7 @@ DialogueConfig[6] = {
     Type = "Normal",
     DocTag = "1-A#6",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "醉倒",
     Dialogue = "蛋……乌鸦……叼走了。",
     Next = 7  -- 下一段对话ID
 }
@@ -119,7 +119,7 @@ DialogueConfig[8] = {
     Type = "Normal",
     DocTag = "1-A#8",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "醉倒",
     Dialogue = "嗯……飞到谷仓屋顶去了。我追了……跳不上去，只咬到空气。",
     Next = 9  -- 下一段对话ID
 }
@@ -141,7 +141,7 @@ DialogueConfig[10] = {
     Type = "Normal",
     DocTag = "1-A#10",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "醉倒",
     Dialogue = "我失职了……没有保护好淑芬的蛋。",
     SetVariables = {
         { VarName = "DogStatus", VarType = "int", Value = 2 }
@@ -191,7 +191,7 @@ DialogueConfig[14] = {
     Type = "Question",
     DocTag = "1-A'",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "醉倒",
     Dialogue = "嗝……",
     Options = {
         {
@@ -254,7 +254,7 @@ DialogueConfig[18] = {
     Type = "Normal",
     DocTag = "1-B#4",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "呕——",
     Next = 19  -- 下一段对话ID
 }
@@ -265,7 +265,7 @@ DialogueConfig[19] = {
     Type = "Normal",
     DocTag = "1-B#5",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "嗝——",
     Next = 20  -- 下一段对话ID
 }
@@ -298,7 +298,7 @@ DialogueConfig[22] = {
     Type = "Normal",
     DocTag = "1-B#8",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "……头脑清楚多了。",
     SetVariables = {
         { VarName = "DogStatus", VarType = "int", Value = 3 }
@@ -334,7 +334,7 @@ DialogueConfig[25] = {
     Type = "Normal",
     DocTag = "1-C#3",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "醉倒",
     Dialogue = "嗝……别吵……",
     ConditionBranches = {
         { VarName = "E06_ViewNeedLadder", VarType = "bool", TrueNext = 28, FalseNext = 27 }
@@ -381,7 +381,7 @@ DialogueConfig[29] = {
     Type = "Question",
     DocTag = "1-D",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "醉倒",
     Dialogue = "你还有什么事吗？",
     Options = {
         {
@@ -431,7 +431,7 @@ DialogueConfig[31] = {
     Type = "Normal",
     DocTag = "1-E#2",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "梯子？",
     Next = 32  -- 下一段对话ID
 }
@@ -453,7 +453,7 @@ DialogueConfig[33] = {
     Type = "Normal",
     DocTag = "1-E#4",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "哦。对哦。拿去吧。",
     Next = 34  -- 下一段对话ID
 }
@@ -475,7 +475,7 @@ DialogueConfig[35] = {
     Type = "Normal",
     DocTag = "1-E#6",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "架稳了再翻。别摔着。",
     SetVariables = {
         { VarName = "E06_LadderBorrowed", VarType = "bool", Value = true }
@@ -503,7 +503,7 @@ DialogueConfig[37] = {
     Type = "Normal",
     DocTag = "1-F#2",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "谷仓角落……",
     Next = 38  -- 下一段对话ID
 }
@@ -525,7 +525,7 @@ DialogueConfig[39] = {
     Type = "Normal",
     DocTag = "1-F#4",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "前两天好像看见两个灰乎乎的小东西，太快了，没看清。",
     Next = 40  -- 下一段对话ID
 }
@@ -536,7 +536,7 @@ DialogueConfig[40] = {
     Type = "Normal",
     DocTag = "1-F#5",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "也可能是我那两天喝糊涂了。",
     SetVariables = {
         { VarName = "E07_NapSpotAsked", VarType = "bool", Value = true }
@@ -576,7 +576,7 @@ DialogueConfig[43] = {
     Type = "Normal",
     DocTag = "1-G#3",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "振奋",
     Dialogue = "这是……什么？",
     Next = 44  -- 下一段对话ID
 }
@@ -598,7 +598,7 @@ DialogueConfig[45] = {
     Type = "Normal",
     DocTag = "1-G#5",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "振奋",
     Dialogue = "一块石头？",
     Next = 46  -- 下一段对话ID
 }
@@ -620,7 +620,7 @@ DialogueConfig[47] = {
     Type = "Normal",
     DocTag = "1-G#7",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "振奋",
     Dialogue = "……这跟乌鸦叼走的……形状差不多。",
     Next = 48  -- 下一段对话ID
 }
@@ -653,7 +653,7 @@ DialogueConfig[50] = {
     Type = "Normal",
     DocTag = "1-G#10",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "振奋",
     Dialogue = "所以乌鸦叼走的……不是淑芬的蛋？",
     Next = 51  -- 下一段对话ID
 }
@@ -664,7 +664,7 @@ DialogueConfig[51] = {
     Type = "Normal",
     DocTag = "1-G#11",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "振奋",
     Dialogue = "……我",
     Next = 52  -- 下一段对话ID
 }
@@ -675,7 +675,7 @@ DialogueConfig[52] = {
     Type = "Normal",
     DocTag = "1-G#12",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "振奋",
     Dialogue = "那我不是废柴保安！！",
     Next = 53  -- 下一段对话ID
 }
@@ -697,7 +697,7 @@ DialogueConfig[54] = {
     Type = "Normal",
     DocTag = "1-G#14",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "振奋",
     Dialogue = "蛋一定还在！！",
     Next = 55  -- 下一段对话ID
 }
@@ -730,7 +730,7 @@ DialogueConfig[57] = {
     Type = "Normal",
     DocTag = "1-G#17",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "振奋",
     Dialogue = "蛋气味在那边。红顶屋那一片。我先走一步。",
     SetVariables = {
         { VarName = "DogStatus", VarType = "int", Value = 4 }
@@ -755,7 +755,7 @@ DialogueConfig[59] = {
     Type = "Normal",
     DocTag = "2-A#2",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "就是这儿。",
     SetVariables = {
         { VarName = "RedRoof_IntroShown", VarType = "bool", Value = true }
@@ -769,7 +769,7 @@ DialogueConfig[60] = {
     Type = "Normal",
     DocTag = "2-hub!E13#1",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "醉倒",
     Dialogue = "你先去看看那扇门。",
     Next = -1  -- 下一段对话ID
 }
@@ -780,7 +780,7 @@ DialogueConfig[61] = {
     Type = "Question",
     DocTag = "2-hub#menu",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "醉倒",
     Dialogue = "查到什么了吗？",
     Options = {
         {
@@ -844,7 +844,7 @@ DialogueConfig[64] = {
     Type = "Normal",
     DocTag = "2-A'#2",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "……那怎么办啊。侦探你再去看看，我一会儿也试试。",
     SetVariables = {
         { VarName = "RedRoof_DoorHintShown", VarType = "bool", Value = true }
@@ -860,6 +860,9 @@ DialogueConfig[65] = {
     NpcName = "玩家",
     NpcSprite = "",
     Dialogue = "这里有一扇精美的小门，还有一撮动物的毛，红屋顶里还住着别的动物？",
+    SetVariables = {
+        { VarName = "BlackCat_TreeShakeStarted", VarType = "bool", Value = true }
+    },
     Next = 66  -- 下一段对话ID
 }
 
@@ -880,7 +883,7 @@ DialogueConfig[67] = {
     Type = "Normal",
     DocTag = "2-B#3",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "振奋",
     Dialogue = "哎哟！我这脑子，还是酒喝大了！",
     Next = 68  -- 下一段对话ID
 }
@@ -902,7 +905,7 @@ DialogueConfig[69] = {
     Type = "Normal",
     DocTag = "2-B#5",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "振奋",
     Dialogue = "有一只猫！那只傲慢的黑猫！他有专属猫门，钥匙就挂在脖子上！",
     Next = 70  -- 下一段对话ID
 }
@@ -924,7 +927,7 @@ DialogueConfig[71] = {
     Type = "Normal",
     DocTag = "2-B#7",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "振奋",
     Dialogue = "大橡树上！",
     Next = 72  -- 下一段对话ID
 }
@@ -946,11 +949,8 @@ DialogueConfig[73] = {
     Type = "Normal",
     DocTag = "2-B#9",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "振奋",
     Dialogue = "猫大爷！下来！这事得你出马！",
-    SetVariables = {
-        { VarName = "Dog_BlackCatSummoned", VarType = "bool", Value = true }
-    },
     UnlockBranches = {
         { NpcName = "黑猫", BranchId = 1 }
     },
@@ -975,7 +975,7 @@ DialogueConfig[75] = {
     Type = "Normal",
     DocTag = "2-C@v1#2",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "挺久的。他刚来的时候……比我一只爪子还小。",
     Next = 76  -- 下一段对话ID
 }
@@ -997,7 +997,7 @@ DialogueConfig[77] = {
     Type = "Normal",
     DocTag = "2-C@v1#4",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "那会儿什么都不懂，连怎么爬树都不会。我教过他一次。",
     Next = 78  -- 下一段对话ID
 }
@@ -1019,7 +1019,7 @@ DialogueConfig[79] = {
     Type = "Normal",
     DocTag = "2-C@v1#6",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "学会了。后来他就不理我了。",
     Next = -1  -- 下一段对话ID
 }
@@ -1041,7 +1041,7 @@ DialogueConfig[81] = {
     Type = "Normal",
     DocTag = "2-C@v2#2",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "怕下雨。每次打雷，他就跑来我狗窝旁边蹲着。我说进来吧，他说本喵只是路过，然后在门口站了整整一夜。",
     Next = 82  -- 下一段对话ID
 }
@@ -1063,7 +1063,7 @@ DialogueConfig[83] = {
     Type = "Normal",
     DocTag = "2-C@v2#4",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "我后来提过一次，他说从来没进过我狗窝、那种地方。就是这样的。",
     Next = -1  -- 下一段对话ID
 }
@@ -1085,7 +1085,7 @@ DialogueConfig[85] = {
     Type = "Normal",
     DocTag = "2-C@v3#2",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "他不走。",
     Next = 86  -- 下一段对话ID
 }
@@ -1107,7 +1107,7 @@ DialogueConfig[87] = {
     Type = "Normal",
     DocTag = "2-C@v3#4",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "我说，他没走。换成别的猫，被人从树上晃下来，早就走了。",
     Next = 88  -- 下一段对话ID
 }
@@ -1129,7 +1129,7 @@ DialogueConfig[89] = {
     Type = "Normal",
     DocTag = "2-C@v3#6",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "他在听的。就是不想让人看出来他在听。",
     Next = -1  -- 下一段对话ID
 }
@@ -1151,7 +1151,7 @@ DialogueConfig[91] = {
     Type = "Normal",
     DocTag = "2-C@v4#2",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "我守着。",
     Next = -1  -- 下一段对话ID
 }
@@ -1185,7 +1185,7 @@ DialogueConfig[94] = {
     Type = "Normal",
     DocTag = "2-E#2",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "加油。我等着真相。",
     SetVariables = {
         { VarName = "RedRoof_RoofWaitShown", VarType = "bool", Value = true }
@@ -1199,7 +1199,7 @@ DialogueConfig[95] = {
     Type = "Normal",
     DocTag = "NGPlus@v1#1",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "醉倒",
     Dialogue = "巡逻中。一切正常。",
     Next = -1  -- 下一段对话ID
 }
@@ -1221,7 +1221,7 @@ DialogueConfig[97] = {
     Type = "Normal",
     DocTag = "NGPlus@v2#2",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "醉倒",
     Dialogue = "还在乌鸦那儿呢。我问过它，它说那是图腾宝石，意义非凡。",
     Next = 98  -- 下一段对话ID
 }
@@ -1243,7 +1243,7 @@ DialogueConfig[99] = {
     Type = "Normal",
     DocTag = "NGPlus@v2#4",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "醉倒",
     Dialogue = "……随它去吧。",
     Next = -1  -- 下一段对话ID
 }
@@ -1254,7 +1254,7 @@ DialogueConfig[100] = {
     Type = "Normal",
     DocTag = "NGPlus@v3#1",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "醉倒",
     Dialogue = "我想……下次再见到苹果渣，就不喝了。",
     Next = 101  -- 下一段对话ID
 }
@@ -1276,7 +1276,7 @@ DialogueConfig[102] = {
     Type = "Normal",
     DocTag = "NGPlus@v3#3",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "醉倒",
     Dialogue = "我是保安。不是酒鬼。",
     Next = -1  -- 下一段对话ID
 }
@@ -1298,7 +1298,7 @@ DialogueConfig[104] = {
     Type = "Normal",
     DocTag = "NGPlus@v4#2",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "醉倒",
     Dialogue = "不会了。",
     Next = 105  -- 下一段对话ID
 }
@@ -1320,7 +1320,7 @@ DialogueConfig[106] = {
     Type = "Normal",
     DocTag = "NGPlus@v4#4",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "醉倒",
     Dialogue = "我的鼻子好用着呢。",
     Next = -1  -- 下一段对话ID
 }

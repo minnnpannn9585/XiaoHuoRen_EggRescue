@@ -35,6 +35,13 @@ GlobalVariables = {
     -- ========== 聚合计数 ==========
     { name = "ChickTraceCount",             type = "int",  value = 0 },
     { name = "TreeClueCount",               type = "int",  value = 0 },
+    { name = "CheeseCount",                 type = "int",  value = 0 },
+
+    -- ========== 老鼠兄弟 · 派生 hub 条件（MouseBrotherController 刷新）==========
+    { name = "Mouse_CheapPoolAvailable",    type = "bool", value = false },
+    { name = "Mouse_PremiumPoolAvailable",  type = "bool", value = false },
+    { name = "Mouse_PremiumBudgetOK",       type = "bool", value = false },
+    { name = "Mouse_PreMintPoolSoldOut",    type = "bool", value = false },
 
     -- ========== NPC状态变量 ==========
     { name = "DogStatus",                   type = "int",  value = 1 },
@@ -47,6 +54,7 @@ GlobalVariables = {
     { name = "BlackCat_MintFishPending",    type = "bool", value = false },
     { name = "BlackCat_Entered",            type = "bool", value = false },
     { name = "BlackCat_TreeHardShown",      type = "bool", value = false },
+    { name = "BlackCat_TreeShakeStarted",   type = "bool", value = false },
     { name = "BlackCat_StoneRevealShown",   type = "bool", value = false },
     { name = "MintFish_Obtained",           type = "bool", value = false },
     { name = "Comic_Revealed",              type = "bool", value = false },

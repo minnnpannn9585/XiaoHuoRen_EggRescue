@@ -56,7 +56,7 @@ DialogueConfig[3] = {
     Type = "Normal",
     DocTag = "2-A#3",
     NpcName = "米粒",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "（小声）有人来了……",
     Next = 4  -- 下一段对话ID
 }
@@ -67,7 +67,7 @@ DialogueConfig[4] = {
     Type = "Normal",
     DocTag = "2-A#4",
     NpcName = "豆豆",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "别、别看他……",
     Next = 5  -- 下一段对话ID
 }
@@ -89,7 +89,7 @@ DialogueConfig[6] = {
     Type = "Normal",
     DocTag = "2-A#6",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "……",
     Next = 7  -- 下一段对话ID
 }
@@ -122,7 +122,7 @@ DialogueConfig[9] = {
     Type = "Normal",
     DocTag = "2-A#9",
     NpcName = "瓜子",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "（极小声）弟弟……",
     Next = 10  -- 下一段对话ID
 }
@@ -133,7 +133,7 @@ DialogueConfig[10] = {
     Type = "Normal",
     DocTag = "2-A#10",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "（急）别乱叫！",
     Next = 11  -- 下一段对话ID
 }
@@ -155,7 +155,7 @@ DialogueConfig[12] = {
     Type = "Normal",
     DocTag = "2-A#12",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "我们……暗影侦探团……也在查。",
     Next = 13  -- 下一段对话ID
 }
@@ -166,7 +166,7 @@ DialogueConfig[13] = {
     Type = "Normal",
     DocTag = "2-A#13",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "这事很大。你最好别乱插手。",
     Next = 14  -- 下一段对话ID
 }
@@ -199,7 +199,7 @@ DialogueConfig[16] = {
     Type = "Normal",
     DocTag = "2-A#16",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "……",
     Next = 17  -- 下一段对话ID
 }
@@ -210,7 +210,7 @@ DialogueConfig[17] = {
     Type = "Normal",
     DocTag = "2-A#17",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "内部情报。不能说。",
     Next = 18  -- 下一段对话ID
 }
@@ -243,7 +243,7 @@ DialogueConfig[20] = {
     Type = "Normal",
     DocTag = "2-A#20",
     NpcName = "米粒",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "……我们是侦探。",
     Next = 21  -- 下一段对话ID
 }
@@ -254,7 +254,7 @@ DialogueConfig[21] = {
     Type = "Normal",
     DocTag = "2-A#21",
     NpcName = "豆豆",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "对。很忙的。",
     Next = 22  -- 下一段对话ID
 }
@@ -279,7 +279,7 @@ DialogueConfig[23] = {
     Type = "Question",
     DocTag = "2-hub",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "……还说？",
     Options = {
         {
@@ -367,7 +367,7 @@ DialogueConfig[26] = {
     Type = "Normal",
     DocTag = "2-B#3",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "心虚",
     Dialogue = "……那是……",
     Next = 27  -- 下一段对话ID
 }
@@ -378,7 +378,7 @@ DialogueConfig[27] = {
     Type = "Normal",
     DocTag = "2-B#4",
     NpcName = "米粒",
-    NpcSprite = "",
+    NpcSprite = "心虚",
     Dialogue = "工具……",
     Next = 28  -- 下一段对话ID
 }
@@ -422,7 +422,7 @@ DialogueConfig[31] = {
     Type = "Normal",
     DocTag = "2-B#8",
     NpcName = "瓜子",
-    NpcSprite = "",
+    NpcSprite = "心虚",
     Dialogue = "（哭腔）水怪……水怪把弟弟……",
     Next = 32  -- 下一段对话ID
 }
@@ -433,7 +433,7 @@ DialogueConfig[32] = {
     Type = "Normal",
     DocTag = "2-B#9",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "心虚",
     Dialogue = "对！！就是水怪！！",
     Next = 33  -- 下一段对话ID
 }
@@ -455,7 +455,7 @@ DialogueConfig[34] = {
     Type = "Normal",
     DocTag = "2-B#11",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "心虚",
     Dialogue = "三个脑袋！浑身绿色！",
     Next = 35  -- 下一段对话ID
 }
@@ -466,7 +466,7 @@ DialogueConfig[35] = {
     Type = "Normal",
     DocTag = "2-B#12",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "心虚",
     Dialogue = "从池塘来！把蛋拖进水里了！！",
     Next = 36  -- 下一段对话ID
 }
@@ -488,7 +488,7 @@ DialogueConfig[37] = {
     Type = "Normal",
     DocTag = "2-B#14",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "心虚",
     Dialogue = "没、没看见……但肯定是！！",
     Next = 38  -- 下一段对话ID
 }
@@ -499,7 +499,7 @@ DialogueConfig[38] = {
     Type = "Normal",
     DocTag = "2-B#15",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "心虚",
     Dialogue = "昨晚外面那声音……青蛙也说了……",
     Next = 39  -- 下一段对话ID
 }
@@ -510,7 +510,7 @@ DialogueConfig[39] = {
     Type = "Normal",
     DocTag = "2-B#16",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "心虚",
     Dialogue = "（发颤）不然弟弟怎么不见了……",
     Next = 40  -- 下一段对话ID
 }
@@ -521,7 +521,7 @@ DialogueConfig[40] = {
     Type = "Normal",
     DocTag = "2-B#17",
     NpcName = "豆豆",
-    NpcSprite = "",
+    NpcSprite = "心虚",
     Dialogue = "池塘那只青蛙肯定见过！！",
     Next = 41  -- 下一段对话ID
 }
@@ -532,7 +532,7 @@ DialogueConfig[41] = {
     Type = "Normal",
     DocTag = "2-B#18",
     NpcName = "米粒",
-    NpcSprite = "",
+    NpcSprite = "心虚",
     Dialogue = "快去问他！！求你快去！！",
     Next = 42  -- 下一段对话ID
 }
@@ -554,7 +554,7 @@ DialogueConfig[43] = {
     Type = "Normal",
     DocTag = "2-B#20",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "心虚",
     Dialogue = "你去池塘……快去……",
     Next = 44  -- 下一段对话ID
 }
@@ -565,7 +565,7 @@ DialogueConfig[44] = {
     Type = "Normal",
     DocTag = "2-B#21",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "心虚",
     Dialogue = "（小声）找弟弟……",
     SetVariables = {
         { VarName = "ChickStatus", VarType = "int", Value = 2 },
@@ -591,7 +591,7 @@ DialogueConfig[46] = {
     Type = "Normal",
     DocTag = "2-C#2",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "谷仓角落？",
     Next = 47  -- 下一段对话ID
 }
@@ -613,7 +613,7 @@ DialogueConfig[48] = {
     Type = "Normal",
     DocTag = "2-C#4",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "我们没去过那边。",
     Next = 49  -- 下一段对话ID
 }
@@ -624,7 +624,7 @@ DialogueConfig[49] = {
     Type = "Normal",
     DocTag = "2-C#5",
     NpcName = "米粒",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "不是我们的地盘。",
     Next = 50  -- 下一段对话ID
 }
@@ -635,7 +635,7 @@ DialogueConfig[50] = {
     Type = "Normal",
     DocTag = "2-C#6",
     NpcName = "豆豆",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "对。",
     SetVariables = {
         { VarName = "Chick_NapSpotAsked", VarType = "bool", Value = true },
@@ -672,7 +672,7 @@ DialogueConfig[53] = {
     Type = "Normal",
     DocTag = "2-D#3",
     NpcName = "豆豆",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "大黄叔叔？！他还没醒？！",
     Next = 54  -- 下一段对话ID
 }
@@ -694,7 +694,7 @@ DialogueConfig[55] = {
     Type = "Normal",
     DocTag = "2-D#5",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "……嗯。",
     Next = 56  -- 下一段对话ID
 }
@@ -716,7 +716,7 @@ DialogueConfig[57] = {
     Type = "Normal",
     DocTag = "2-D#7",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "鸡舍水槽边有老谷物泡水。",
     Next = 58  -- 下一段对话ID
 }
@@ -727,7 +727,7 @@ DialogueConfig[58] = {
     Type = "Normal",
     DocTag = "2-D#8",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "他爱喝。灌下去就能醒。",
     Next = 59  -- 下一段对话ID
 }
@@ -738,7 +738,7 @@ DialogueConfig[59] = {
     Type = "Normal",
     DocTag = "2-D#9",
     NpcName = "瓜子",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "（小声）……这次能帮上忙吗？",
     SetVariables = {
         { VarName = "Chick_WakeDogHintShown", VarType = "bool", Value = true },
@@ -764,7 +764,7 @@ DialogueConfig[61] = {
     Type = "Normal",
     DocTag = "2-F#2",
     NpcName = "豆豆",
-    NpcSprite = "",
+    NpcSprite = "心虚",
     Dialogue = "啊？谷仓有什么？",
     Next = 62  -- 下一段对话ID
 }
@@ -797,7 +797,7 @@ DialogueConfig[64] = {
     Type = "Normal",
     DocTag = "2-F#5",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "心虚",
     Dialogue = "……草丛？",
     Next = 65  -- 下一段对话ID
 }
@@ -808,7 +808,7 @@ DialogueConfig[65] = {
     Type = "Normal",
     DocTag = "2-F#6",
     NpcName = "米粒",
-    NpcSprite = "",
+    NpcSprite = "心虚",
     Dialogue = "（小声）白色的……",
     Next = 66  -- 下一段对话ID
 }
@@ -852,7 +852,7 @@ DialogueConfig[69] = {
     Type = "Normal",
     DocTag = "2-F#10",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "心虚",
     Dialogue = "……",
     Next = 70  -- 下一段对话ID
 }
@@ -863,7 +863,7 @@ DialogueConfig[70] = {
     Type = "Normal",
     DocTag = "2-F#11",
     NpcName = "瓜子",
-    NpcSprite = "",
+    NpcSprite = "心虚",
     Dialogue = "（极小声）那个……是不是……",
     Next = 71  -- 下一段对话ID
 }
@@ -874,7 +874,7 @@ DialogueConfig[71] = {
     Type = "Normal",
     DocTag = "2-F#12",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "心虚",
     Dialogue = "（急）瓜子——！",
     Next = 72  -- 下一段对话ID
 }
@@ -933,7 +933,7 @@ DialogueConfig[76] = {
     Type = "Normal",
     DocTag = "2-E#3",
     NpcName = "米粒",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "……蛋？",
     Next = 77  -- 下一段对话ID
 }
@@ -966,7 +966,7 @@ DialogueConfig[79] = {
     Type = "Normal",
     DocTag = "2-E#6",
     NpcName = "瓜子",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "……是我们画的。",
     Next = 80  -- 下一段对话ID
 }
@@ -988,7 +988,7 @@ DialogueConfig[81] = {
     Type = "Normal",
     DocTag = "2-E#8",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "那不是老妈的蛋……乌鸦叼走的是假的……",
     Next = 82  -- 下一段对话ID
 }
@@ -999,7 +999,7 @@ DialogueConfig[82] = {
     Type = "Normal",
     DocTag = "2-E#9",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "（哭）那弟弟呢——弟弟到底在哪——",
     Next = 83  -- 下一段对话ID
 }
@@ -1021,7 +1021,7 @@ DialogueConfig[84] = {
     Type = "Normal",
     DocTag = "2-E#11",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "呜呜呜——我招了！！",
     Next = 85  -- 下一段对话ID
 }
@@ -1043,7 +1043,7 @@ DialogueConfig[86] = {
     Type = "Normal",
     DocTag = "2-E#13",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "大前天下午，我们捡了块白石头，画成蛋，把弟弟偷出来——",
     Next = 87  -- 下一段对话ID
 }
@@ -1054,7 +1054,7 @@ DialogueConfig[87] = {
     Type = "Normal",
     DocTag = "2-E#14",
     NpcName = "米粒",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "（小声）踢球。",
     Next = 88  -- 下一段对话ID
 }
@@ -1098,7 +1098,7 @@ DialogueConfig[91] = {
     Type = "Normal",
     DocTag = "2-E#18",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "推着弟弟路过谷仓的时候，老鼠叔叔蹿出来，说有沼泽水怪，晚上爬出来，专门吃沾了泥土的蛋！",
     Next = 92  -- 下一段对话ID
 }
@@ -1109,7 +1109,7 @@ DialogueConfig[92] = {
     Type = "Normal",
     DocTag = "2-E#19",
     NpcName = "豆豆",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "（气鼓鼓）现在想起来他们全程在憋笑！！",
     Next = 93  -- 下一段对话ID
 }
@@ -1120,7 +1120,7 @@ DialogueConfig[93] = {
     Type = "Normal",
     DocTag = "2-E#20",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "我们跑去池塘边把弟弟洗干净，青蛙在说我们听不懂的很吓人很吓人的话",
     Next = 94  -- 下一段对话ID
 }
@@ -1131,7 +1131,7 @@ DialogueConfig[94] = {
     Type = "Normal",
     DocTag = "2-E#21",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "吓得我们马上把真蛋推回窝里了！！",
     Next = 95  -- 下一段对话ID
 }
@@ -1153,7 +1153,7 @@ DialogueConfig[96] = {
     Type = "Normal",
     DocTag = "2-E#23",
     NpcName = "米粒",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "大前天下午扔草丛里了……",
     Next = 97  -- 下一段对话ID
 }
@@ -1164,7 +1164,7 @@ DialogueConfig[97] = {
     Type = "Normal",
     DocTag = "2-E#24",
     NpcName = "瓜子",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "（小声）看来是被乌鸦叼走了……",
     Next = 98  -- 下一段对话ID
 }
@@ -1197,7 +1197,7 @@ DialogueConfig[100] = {
     Type = "Normal",
     DocTag = "2-E#27",
     NpcName = "瓜子",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "昨天……？",
     Next = 101  -- 下一段对话ID
 }
@@ -1208,7 +1208,7 @@ DialogueConfig[101] = {
     Type = "Normal",
     DocTag = "2-E#28",
     NpcName = "米粒",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "大黄叔叔都喝了两天了，他昨天还醉着呢，哪能看见什么乌鸦呀。",
     Next = 102  -- 下一段对话ID
 }
@@ -1219,7 +1219,7 @@ DialogueConfig[102] = {
     Type = "Normal",
     DocTag = "2-E#29",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "（哭）那根本不是同一件事——！！",
     Next = 103  -- 下一段对话ID
 }
@@ -1230,7 +1230,7 @@ DialogueConfig[103] = {
     Type = "Normal",
     DocTag = "2-E#30",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "弟弟昨晚才不见的！",
     Next = 104  -- 下一段对话ID
 }
@@ -1252,7 +1252,7 @@ DialogueConfig[105] = {
     Type = "Normal",
     DocTag = "2-E#32",
     NpcName = "豆豆",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "睡前还在……半夜发现窝空了……",
     Next = 106  -- 下一段对话ID
 }
@@ -1263,7 +1263,7 @@ DialogueConfig[106] = {
     Type = "Normal",
     DocTag = "2-E#33",
     NpcName = "米粒",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "有好响好响的声音……我们以为是水怪来了……",
     Next = 107  -- 下一段对话ID
 }
@@ -1274,7 +1274,7 @@ DialogueConfig[107] = {
     Type = "Normal",
     DocTag = "2-E#34",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "（哭）没有水怪……那是什么声音……到底是谁带走了弟弟？",
     Next = 108  -- 下一段对话ID
 }
@@ -1296,7 +1296,7 @@ DialogueConfig[109] = {
     Type = "Normal",
     DocTag = "2-E#36",
     NpcName = "瓜子",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "……以后再也不偷弟弟出去踢球了。",
     Next = 110  -- 下一段对话ID
 }
@@ -1322,7 +1322,7 @@ DialogueConfig[111] = {
     Type = "Normal",
     DocTag = "3-A@v1#1",
     NpcName = "豆豆",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "（极小声）大侦探……",
     Next = 112  -- 下一段对话ID
 }
@@ -1333,7 +1333,7 @@ DialogueConfig[112] = {
     Type = "Normal",
     DocTag = "3-A@v1#2",
     NpcName = "瓜子",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "（更小声）别看我……",
     Next = 113  -- 下一段对话ID
 }
@@ -1344,7 +1344,7 @@ DialogueConfig[113] = {
     Type = "Normal",
     DocTag = "3-A@v1#3",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "（压声）站好。",
     Next = 114  -- 下一段对话ID
 }
@@ -1366,7 +1366,7 @@ DialogueConfig[115] = {
     Type = "Normal",
     DocTag = "3-A@v1#5",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "……我们知道。",
     Next = 116  -- 下一段对话ID
 }
@@ -1377,7 +1377,7 @@ DialogueConfig[116] = {
     Type = "Normal",
     DocTag = "3-A@v1#6",
     NpcName = "瓜子",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "（哭腔）是我们害的…",
     SetVariables = {
         { VarName = "Chick_Chapter2GuiltShown", VarType = "bool", Value = true }
@@ -1391,7 +1391,7 @@ DialogueConfig[117] = {
     Type = "Normal",
     DocTag = "3-A@v2#1",
     NpcName = "米粒",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "大侦探。",
     Next = 118  -- 下一段对话ID
 }
@@ -1413,7 +1413,7 @@ DialogueConfig[119] = {
     Type = "Normal",
     DocTag = "3-A@v2#3",
     NpcName = "米粒",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "要是……要是弟弟真在红顶屋……",
     Next = 120  -- 下一段对话ID
 }
@@ -1424,7 +1424,7 @@ DialogueConfig[120] = {
     Type = "Normal",
     DocTag = "3-A@v2#4",
     NpcName = "米粒",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "我们就去认错。",
     Next = 121  -- 下一段对话ID
 }
@@ -1435,7 +1435,7 @@ DialogueConfig[121] = {
     Type = "Normal",
     DocTag = "3-A@v2#5",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "（小声）……嗯。",
     Next = 122  -- 下一段对话ID
 }
@@ -1493,7 +1493,7 @@ DialogueConfig[126] = {
     Type = "Normal",
     DocTag = "3-A@v3#3",
     NpcName = "瓜子",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "……后悔。",
     Next = 127  -- 下一段对话ID
 }
@@ -1504,7 +1504,7 @@ DialogueConfig[127] = {
     Type = "Normal",
     DocTag = "3-A@v3#4",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "（哑）暗影侦探团……搞砸了。",
     Next = 128  -- 下一段对话ID
 }
@@ -1515,7 +1515,7 @@ DialogueConfig[128] = {
     Type = "Normal",
     DocTag = "3-A@v3#5",
     NpcName = "豆豆",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "水怪是假的。乌鸦那边也是石头。",
     Next = 129  -- 下一段对话ID
 }
@@ -1526,7 +1526,7 @@ DialogueConfig[129] = {
     Type = "Normal",
     DocTag = "3-A@v3#6",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "别再提了。",
     SetVariables = {
         { VarName = "Chick_Chapter2GuiltShown", VarType = "bool", Value = true }
@@ -1562,8 +1562,8 @@ DialogueConfig[131] = {
 DialogueConfig[132] = {
     Type = "Normal",
     DocTag = "NGPlus#3",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "豆豆",
+    NpcSprite = "愧疚",
     Dialogue = "（阿满墨镜搁在脚边）",
     Next = 133  -- 下一段对话ID
 }
@@ -1573,8 +1573,8 @@ DialogueConfig[132] = {
 DialogueConfig[133] = {
     Type = "Normal",
     DocTag = "NGPlus#4",
-    NpcName = "豆豆",
-    NpcSprite = "",
+    NpcName = "阿满",
+    NpcSprite = "愧疚",
     Dialogue = "……",
     Next = 134  -- 下一段对话ID
 }
@@ -1584,7 +1584,7 @@ DialogueConfig[133] = {
 DialogueConfig[134] = {
     Type = "Normal",
     DocTag = "NGPlus#5",
-    NpcName = "阿满",
+    NpcName = "玩家",
     NpcSprite = "",
     Dialogue = "来了。",
     Next = 135  -- 下一段对话ID
@@ -1595,7 +1595,7 @@ DialogueConfig[134] = {
 DialogueConfig[135] = {
     Type = "Normal",
     DocTag = "NGPlus#6",
-    NpcName = "玩家",
+    NpcName = "描述",
     NpcSprite = "",
     Dialogue = "弟弟出壳了。",
     Next = 136  -- 下一段对话ID
@@ -1606,8 +1606,8 @@ DialogueConfig[135] = {
 DialogueConfig[136] = {
     Type = "Normal",
     DocTag = "NGPlus#7",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "瓜子",
+    NpcSprite = "愧疚",
     Dialogue = "（四只小鸡抬头）",
     Next = 137  -- 下一段对话ID
 }
@@ -1617,7 +1617,7 @@ DialogueConfig[136] = {
 DialogueConfig[137] = {
     Type = "Normal",
     DocTag = "NGPlus#8",
-    NpcName = "瓜子",
+    NpcName = "玩家",
     NpcSprite = "",
     Dialogue = "……出来了？",
     Next = 138  -- 下一段对话ID
@@ -1628,8 +1628,8 @@ DialogueConfig[137] = {
 DialogueConfig[138] = {
     Type = "Normal",
     DocTag = "NGPlus#9",
-    NpcName = "玩家",
-    NpcSprite = "",
+    NpcName = "豆豆",
+    NpcSprite = "愧疚",
     Dialogue = "出来了。",
     Next = 139  -- 下一段对话ID
 }
@@ -1639,7 +1639,7 @@ DialogueConfig[138] = {
 DialogueConfig[139] = {
     Type = "Normal",
     DocTag = "NGPlus#10",
-    NpcName = "豆豆",
+    NpcName = "描述",
     NpcSprite = "",
     Dialogue = "……",
     Next = 140  -- 下一段对话ID
@@ -1650,8 +1650,8 @@ DialogueConfig[139] = {
 DialogueConfig[140] = {
     Type = "Normal",
     DocTag = "NGPlus#11",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "豆豆",
+    NpcSprite = "愧疚",
     Dialogue = "（豆豆扭头，翅膀蹭眼睛）",
     Next = 141  -- 下一段对话ID
 }
@@ -1661,8 +1661,8 @@ DialogueConfig[140] = {
 DialogueConfig[141] = {
     Type = "Normal",
     DocTag = "NGPlus#12",
-    NpcName = "豆豆",
-    NpcSprite = "",
+    NpcName = "阿满",
+    NpcSprite = "愧疚",
     Dialogue = "我没哭。",
     Next = 142  -- 下一段对话ID
 }
@@ -1672,7 +1672,7 @@ DialogueConfig[141] = {
 DialogueConfig[142] = {
     Type = "Normal",
     DocTag = "NGPlus#13",
-    NpcName = "阿满",
+    NpcName = "玩家",
     NpcSprite = "",
     Dialogue = "……我们一直知道他会没事。",
     Next = 143  -- 下一段对话ID
@@ -1683,8 +1683,8 @@ DialogueConfig[142] = {
 DialogueConfig[143] = {
     Type = "Normal",
     DocTag = "NGPlus#14",
-    NpcName = "玩家",
-    NpcSprite = "",
+    NpcName = "阿满",
+    NpcSprite = "愧疚",
     Dialogue = "是吗。",
     Next = 144  -- 下一段对话ID
 }
@@ -1695,7 +1695,7 @@ DialogueConfig[144] = {
     Type = "Normal",
     DocTag = "NGPlus#15",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "嗯。",
     Next = 145  -- 下一段对话ID
 }
@@ -1705,7 +1705,7 @@ DialogueConfig[144] = {
 DialogueConfig[145] = {
     Type = "Normal",
     DocTag = "NGPlus#16",
-    NpcName = "阿满",
+    NpcName = "玩家",
     NpcSprite = "",
     Dialogue = "（低声）只是……当时太怕。",
     Next = 146  -- 下一段对话ID
@@ -1716,7 +1716,7 @@ DialogueConfig[145] = {
 DialogueConfig[146] = {
     Type = "Normal",
     DocTag = "NGPlus#17",
-    NpcName = "玩家",
+    NpcName = "描述",
     NpcSprite = "",
     Dialogue = "老鼠的水怪谎话呢？",
     Next = 147  -- 下一段对话ID
@@ -1727,8 +1727,8 @@ DialogueConfig[146] = {
 DialogueConfig[147] = {
     Type = "Normal",
     DocTag = "NGPlus#18",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "豆豆",
+    NpcSprite = "愧疚",
     Dialogue = "（豆豆翅膀举起）",
     Next = 148  -- 下一段对话ID
 }
@@ -1738,8 +1738,8 @@ DialogueConfig[147] = {
 DialogueConfig[148] = {
     Type = "Normal",
     DocTag = "NGPlus#19",
-    NpcName = "豆豆",
-    NpcSprite = "",
+    NpcName = "阿满",
+    NpcSprite = "愧疚",
     Dialogue = "要算！！",
     Next = 149  -- 下一段对话ID
 }
@@ -1749,7 +1749,7 @@ DialogueConfig[148] = {
 DialogueConfig[149] = {
     Type = "Normal",
     DocTag = "NGPlus#20",
-    NpcName = "阿满",
+    NpcName = "描述",
     NpcSprite = "",
     Dialogue = "（打断）……",
     Next = 150  -- 下一段对话ID
@@ -1760,8 +1760,8 @@ DialogueConfig[149] = {
 DialogueConfig[150] = {
     Type = "Normal",
     DocTag = "NGPlus#21",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "阿满",
+    NpcSprite = "愧疚",
     Dialogue = "（阿满重新戴上墨镜）",
     Next = 151  -- 下一段对话ID
 }
@@ -1772,7 +1772,7 @@ DialogueConfig[151] = {
     Type = "Normal",
     DocTag = "NGPlus#22",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "暗影侦探团自有安排。",
     Next = 152  -- 下一段对话ID
 }
@@ -1782,8 +1782,8 @@ DialogueConfig[151] = {
 DialogueConfig[152] = {
     Type = "Normal",
     DocTag = "NGPlus#23",
-    NpcName = "阿满",
-    NpcSprite = "",
+    NpcName = "豆豆",
+    NpcSprite = "愧疚",
     Dialogue = "水怪是假的。这农场也没有沼泽。",
     Next = 153  -- 下一段对话ID
 }
@@ -1793,8 +1793,8 @@ DialogueConfig[152] = {
 DialogueConfig[153] = {
     Type = "Normal",
     DocTag = "NGPlus#24",
-    NpcName = "豆豆",
-    NpcSprite = "",
+    NpcName = "阿满",
+    NpcSprite = "愧疚",
     Dialogue = "（小声）老鼠叔叔编过头了……",
     Next = 154  -- 下一段对话ID
 }
@@ -1804,7 +1804,7 @@ DialogueConfig[153] = {
 DialogueConfig[154] = {
     Type = "Normal",
     DocTag = "NGPlus#25",
-    NpcName = "阿满",
+    NpcName = "描述",
     NpcSprite = "",
     Dialogue = "（压声）豆豆。",
     Next = 155  -- 下一段对话ID
@@ -1841,7 +1841,7 @@ DialogueConfig[157] = {
     Type = "Normal",
     DocTag = "NGPlus-revisit@v1#2",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "同行。",
     Next = 158  -- 下一段对话ID
 }
@@ -1863,7 +1863,7 @@ DialogueConfig[159] = {
     Type = "Normal",
     DocTag = "NGPlus-revisit@v1#4",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "散步。",
     Next = 160  -- 下一段对话ID
 }
@@ -1874,7 +1874,7 @@ DialogueConfig[160] = {
     Type = "Normal",
     DocTag = "NGPlus-revisit@v1#5",
     NpcName = "豆豆",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "（压声）顺便看老鼠在不在。",
     Next = 161  -- 下一段对话ID
 }
@@ -1885,7 +1885,7 @@ DialogueConfig[161] = {
     Type = "Normal",
     DocTag = "NGPlus-revisit@v1#6",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "（压声）豆豆！！",
     Next = -1  -- 下一段对话ID
 }
@@ -1907,7 +1907,7 @@ DialogueConfig[163] = {
     Type = "Normal",
     DocTag = "NGPlus-revisit@v2#2",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "没有。",
     Next = 164  -- 下一段对话ID
 }
@@ -1918,7 +1918,7 @@ DialogueConfig[164] = {
     Type = "Normal",
     DocTag = "NGPlus-revisit@v2#3",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "弟弟刚出壳。别出去疯。",
     Next = 165  -- 下一段对话ID
 }
@@ -1929,7 +1929,7 @@ DialogueConfig[165] = {
     Type = "Normal",
     DocTag = "NGPlus-revisit@v2#4",
     NpcName = "瓜子",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "嗯。",
     Next = -1  -- 下一段对话ID
 }
@@ -1962,7 +1962,7 @@ DialogueConfig[168] = {
     Type = "Normal",
     DocTag = "NGPlus-revisit@v3#3",
     NpcName = "瓜子",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "看弟弟。",
     Next = 169  -- 下一段对话ID
 }
@@ -1984,7 +1984,7 @@ DialogueConfig[170] = {
     Type = "Normal",
     DocTag = "NGPlus-revisit@v3#5",
     NpcName = "瓜子",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "（小声）他刚才往这边看了。",
     Next = 171  -- 下一段对话ID
 }
@@ -1995,7 +1995,7 @@ DialogueConfig[171] = {
     Type = "Normal",
     DocTag = "NGPlus-revisit@v3#6",
     NpcName = "瓜子",
-    NpcSprite = "",
+    NpcSprite = "愧疚",
     Dialogue = "嗯。",
     Next = -1  -- 下一段对话ID
 }
@@ -2018,7 +2018,7 @@ DialogueConfig[173] = {
     Type = "Question",
     DocTag = "2-hub#s1#menu",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "……在查。别碰我们的现场。",
     Options = {
         {
@@ -2084,7 +2084,7 @@ DialogueConfig[174] = {
     Type = "Question",
     DocTag = "2-hub#s2#menu",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "池塘那边……去了吗？",
     Options = {
         {
@@ -2150,7 +2150,7 @@ DialogueConfig[175] = {
     Type = "Question",
     DocTag = "2-hub#s3#menu",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "……外勤停了。有事快说。",
     Options = {
         {
@@ -2230,7 +2230,7 @@ DialogueConfig[177] = {
     Type = "Question",
     DocTag = "2-hub#return#menu",
     NpcName = "阿满",
-    NpcSprite = "",
+    NpcSprite = "装酷",
     Dialogue = "……还说？",
     Options = {
         {

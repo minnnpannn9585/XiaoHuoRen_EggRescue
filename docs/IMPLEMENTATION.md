@@ -85,7 +85,7 @@ dahuang_01 ~ dahuang_04
 shufang_01, shufang_02, shufang_02_R1 ~ R3
 heimao_01 ~ heimao_03
 qingwa_01 ~ qingwa_02
-wuniu_01, wuya_01
+wuniu_01_FROM_DOC, wuya_01_FROM_DOC
 xiaojiZTT_01 ~ xiaojiZTT_02
 zttTouTing, miaosu
 ```
@@ -103,7 +103,7 @@ zttTouTing, miaosu
 | `TreeInteractionController.lua` | `TreeDialogue` | 大树 Force/Click 两阶段切换 |
 | `BlackCatInteractionController.lua` | 黑猫 | 摇树前不可点，摇树后可点 |
 | `ClueTrigger.lua` | E 点 | 点击写入 1~2 个全局变量 |
-| `BookController.lua` | Canvas 笔记本 | 按条件渐显 page1~3 线索条目 |
+| `BookController.lua` | Canvas 笔记本 | 9.2.1 条目入册 + 9.2.2 连线/修饰；SetGlobalVar 实时刷新 |
 | `DaHuang.lua` | 大黄 | 监听 `E06_LadderBorrowed` 切换醉狗/醒狗与梯子 |
 | `MainController.lua` | `MianController` | 每帧隐藏 SDK 飞行按钮与聊天面板 |
 
@@ -133,8 +133,8 @@ zttTouTing, miaosu
   ├─ Normal：打字机 → Next → GetNextNodeByCondition() 或 Next
   └─ Question：DisplayConditions 过滤选项 → 玩家选 → PerformOptionJump()
 
-打开笔记本
-  └─ BookController 扫描 _GlobalVariables，满足 unlockConfig 条件则渐显对应条目
+SetGlobalVar / 打开笔记本
+  └─ BookController_OnVarChanged → ENTRY_DEFS 条件检查 → 渐显 entry_* → link_* / mod_*
 ```
 
 ### 4.1 全局变量 API
@@ -253,13 +253,47 @@ E03 偷听：`npcname=E03_Eavesdrop`，`zttTouTing.lua` 内容不变。
 
 ## 6. 侦探笔记本（BookController）
 
-- UI：`open` 按钮 → `boolPanel` 三页翻页（`pageContents` + `leftBtn` / `rightBtn`）
-- 每页多条子物体（`page1[]` / `page2[]` / `page3[]`），初始隐藏
-- 打开时按 `unlockConfig.pageNConditions[i]` 检查 `_GlobalVariables`
-- 条件语法：`VarName==true`、`VarName==false`、`VarName>=2` 等；`&` 表 AND
-- 满足则 1 秒 `CanvasGroup.alpha` 渐显
+挂载：`Canvas/Notebook` · [`BookController.lua`](../Assets/luaScripts/BookController.lua)
 
-条目文案与插图对应关系见 [`09-侦探笔记本`](../MissingEggDoc-main/docs/09-侦探笔记本.md)。
+### 壳层 UI（7）
+
+| 字段 | 用途 |
+|------|------|
+| `open` | 入口按钮 |
+| `openRedDot` | 有新条目入册且面板关闭时显示 |
+| `boolPanel` | 笔记本面板根 |
+| `leftBtn` / `rightBtn` | 翻页 |
+| `pageContents` | 翻页底板（含第 4 页老鼠情报） |
+
+### 9.2.1 主线条目（33 个 `entry_*`）
+
+触发条件在 `BuildCatalog()` 的 `ENTRY_DEFS`，与 [`09` §9.2.1](../MissingEggDoc-main/docs/09-侦探笔记本.md) 一致。
+
+### 老鼠情报（第 4 页 · 动态 prefab）
+
+- `intelCheapPrefab` / `intelPremiumPrefab`：购入时实例化
+- `intelLayoutLeft` / `intelLayoutRight`：先左后右堆叠（`intelLeftColumnMax` 默认 9）
+- 变量 `Mouse_CheapSold_##` / `Mouse_PremiumSold_##` → §9.5 内文
+
+### 9.2.2 关联符
+
+- **连线** `link_D03_D04` 等 15 个：双端条目均已入册时 `SetActive(true)`
+- **修饰** `mod_D03_strike` 等 13 个：按 §9.2.2 变量条件或「某条目入册」（如 D09→D03 划掉）点亮；晚入册时 `ReconcileLinksAndMods` 补全
+
+### 数据流
+
+```
+SetGlobalVar（对话 / ClueTrigger / 老鼠商店）
+  → BookController_OnVarChanged
+  → CheckAllEntries（条件满足则渐显 entry_*）
+  → ReconcileLinksAndMods（link_* / mod_*）
+```
+
+- 条件语法：`&` AND、`|` OR；`VarName==true`、`VarName>=2` 等
+- 入册演出：1s `CanvasGroup.alpha` 渐显
+- `E10` 入册：自动 `currentIndex = 2`（翻到第二页）
+
+完整 Inspector 字段名对照表见 [`09` §9.8](../MissingEggDoc-main/docs/09-侦探笔记本.md#98-inspector-接线对照bookcontroller)（与 `BookController.lua` `---@var` 一一对应）。
 
 ---
 
@@ -270,7 +304,7 @@ E03 偷听：`npcname=E03_Eavesdrop`，`zttTouTing.lua` 内容不变。
 | 对话框架（分支/质询锁/变量） | 16、17、18 | ✅ 已实现 |
 | 主要 NPC 对话树 | characters/* | ✅ 大黄/淑芬/黑猫/蛙/乌鸦/小鸡等 |
 | 环境 E 点 | 13 | ✅ Scene 已挂 ClueTrigger |
-| 侦探笔记本 | 09 | ✅ 三页条件解锁（条件在 BookController 硬编码） |
+| 侦探笔记本 | 09 | ✅ 33 主线条目 + 老鼠 prefab 动态生成 + 15 连线 + 13 修饰 |
 | 全局变量表 | 17 | ✅ GlobalVariables.lua 基本对齐 |
 | 存档持久化 | — | ❌ 仅内存，重启丢失 |
 | 奶酪碎经济 `CheeseCount` | 13 §13.5 | ❌ 未实现 |
@@ -289,7 +323,7 @@ E03 偷听：`npcname=E03_Eavesdrop`，`zttTouTing.lua` 内容不变。
 4. 点 **大黄** → `dahuang_01` → `DogStatus=2`
 5. **E06** 发现缺梯 → `E06_ViewNeedLadder=true`
 6. 大黄分支 2/3 → 借梯/醒酒 → `E06_LadderBorrowed=true` → `DaHuang.lua` 切换模型
-7. 谷仓顶 **E10** 等 → 笔记本 page2 条目渐显
+7. 谷仓顶 **E10** 等 → 对应 `entry_*` 渐显；E10 自动翻到第二页
 8. 进入第二章 → 红顶屋外 E13~E18 → 黑猫线 → 薄荷鱼线 → （漫画收束待实现）
 
 详细步骤见 [`07-关卡与内容结构`](../MissingEggDoc-main/docs/07-关卡与内容结构.md)。

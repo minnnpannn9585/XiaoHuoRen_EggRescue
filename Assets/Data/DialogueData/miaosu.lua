@@ -7,6 +7,7 @@
 --   E34玻璃珠=38  E34瓶盖=39  E34发卡=40  E34奶糖=41
 --   E30鸡羽=42  E30狗毛=43  E30鼠毛=44  E30黑毛=45
 --   E24=47  E26=48  E31=49  E32=51  E33=52  E19=54  E21=55  E29=58
+--   E22 gate=320 (DogStatus>=2→34 else→32)
 
 DialogueConfig = {}
 
@@ -352,6 +353,19 @@ DialogueConfig[31] = {
     Next = -1
 }
 
+-- E22 · 狗窝空窝（入口 gate：按 DogStatus 分支）
+DialogueConfig[320] = {
+    Type = "Normal",
+    DocTag = "E22#gate",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "",
+    ConditionBranches = {
+        { VarName = "DogStatus", VarType = "int", Op = ">=", Value = 2, Next = 34 }
+    },
+    Next = 32
+}
+
 -- E22 · 狗窝空窝（未找到大黄）
 DialogueConfig[32] = {
     Type = "Normal",
@@ -627,5 +641,15 @@ DialogueConfig[59] = {
     NpcName = "玩家",
     NpcSprite = "",
     Dialogue = "不像客厅大灯，更像谁把一盏小灯一直留着。",
+    Next = -1
+}
+
+-- E20 · 漫画收束占位（ComicGateTrigger 默认 startID）
+DialogueConfig[600] = {
+    Type = "Normal",
+    DocTag = "E20#placeholder",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "（漫画收束演出占位——真相即将揭晓。）",
     Next = -1
 }

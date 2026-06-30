@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 SPEAKER_LINE = re.compile(
-    r"^(?P<speaker>玩家|描述|大黄|淑芬|黑猫|悲伤蛙|乌鸦|阿满|米粒|瓜子|豆豆|大树|闪电蜗牛|小鸡侦探团)[:：](?P<text>.+)$"
+    r"^(?P<speaker>玩家|描述|Flash|大黄|淑芬|黑猫|悲伤蛙|乌鸦|阿满|米粒|瓜子|豆豆|大树|闪电蜗牛|小鸡侦探团)[:：](?P<text>.+)$"
 )
 DIALOGUE_FIELD = re.compile(r'Dialogue\s*=\s*"(?P<text>(?:\\.|[^"\\])*)"')
 VAR_LINE = re.compile(r"^·\s*(?P<name>[A-Za-z0-9_]+)\s*=\s*(?P<value>.+)$")

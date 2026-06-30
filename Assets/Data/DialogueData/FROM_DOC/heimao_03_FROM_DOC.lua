@@ -119,6 +119,9 @@ DialogueConfig[1] = {
     NpcName = "描述",
     NpcSprite = "",
     Dialogue = "（树冠剧烈颤动，一只黑猫从树上落地，毛发炸乱，白眼一翻）",
+    SetVariables = {
+        { VarName = "Dog_BlackCatSummoned", VarType = "bool", Value = true }
+    },
     Next = 2  -- 下一段对话ID
 }
 
@@ -128,7 +131,7 @@ DialogueConfig[2] = {
     Type = "Normal",
     DocTag = "2-A#2",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "滚——开！",
     Next = 3  -- 下一段对话ID
 }
@@ -139,7 +142,7 @@ DialogueConfig[3] = {
     Type = "Normal",
     DocTag = "2-A#3",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "没看到本喵正因感情欺骗疗伤吗？！",
     Next = 4  -- 下一段对话ID
 }
@@ -172,7 +175,7 @@ DialogueConfig[6] = {
     Type = "Normal",
     DocTag = "2-A#6",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "……是猫。",
     Next = 7  -- 下一段对话ID
 }
@@ -194,7 +197,7 @@ DialogueConfig[8] = {
     Type = "Normal",
     DocTag = "2-A#8",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "你跟大树说话了？",
     Next = 9  -- 下一段对话ID
 }
@@ -227,7 +230,7 @@ DialogueConfig[11] = {
     Type = "Normal",
     DocTag = "2-A#11",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "那个该死的两脚兽！",
     Next = 12  -- 下一段对话ID
 }
@@ -238,7 +241,7 @@ DialogueConfig[12] = {
     Type = "Normal",
     DocTag = "2-A#12",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "昨晚用温柔手法骗本喵——",
     Next = 13  -- 下一段对话ID
 }
@@ -249,7 +252,7 @@ DialogueConfig[13] = {
     Type = "Normal",
     DocTag = "2-A#13",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "他把本喵捧起来，本喵以为是要按摩——",
     Next = 14  -- 下一段对话ID
 }
@@ -260,7 +263,7 @@ DialogueConfig[14] = {
     Type = "Normal",
     DocTag = "2-A#14",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "结果把本喵放在冰冷地板上！",
     Next = 15  -- 下一段对话ID
 }
@@ -271,7 +274,7 @@ DialogueConfig[15] = {
     Type = "Normal",
     DocTag = "2-A#15",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "抢走本喵的御用软垫！",
     Next = 16  -- 下一段对话ID
 }
@@ -293,7 +296,7 @@ DialogueConfig[17] = {
     Type = "Normal",
     DocTag = "2-A#17",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "还有你！",
     Next = 18  -- 下一段对话ID
 }
@@ -315,7 +318,7 @@ DialogueConfig[19] = {
     Type = "Normal",
     DocTag = "2-A#19",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "……地毯。",
     Next = 20  -- 下一段对话ID
 }
@@ -326,7 +329,7 @@ DialogueConfig[20] = {
     Type = "Normal",
     DocTag = "2-A#20",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "什么？！",
     Next = 21  -- 下一段对话ID
 }
@@ -337,7 +340,7 @@ DialogueConfig[21] = {
     Type = "Normal",
     DocTag = "2-A#21",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "那只鸟叫你的。",
     Next = 22  -- 下一段对话ID
 }
@@ -359,7 +362,7 @@ DialogueConfig[23] = {
     Type = "Normal",
     DocTag = "2-A#23",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "把树晃成那样？！这是什么不文明的手段？！",
     Next = 24  -- 下一段对话ID
 }
@@ -370,7 +373,7 @@ DialogueConfig[24] = {
     Type = "Normal",
     DocTag = "2-A#24",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "不摇你不下来嘛。",
     Next = 25  -- 下一段对话ID
 }
@@ -392,7 +395,7 @@ DialogueConfig[26] = {
     Type = "Normal",
     DocTag = "2-A#26",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "……你又是谁？",
     Next = 27  -- 下一段对话ID
 }
@@ -414,7 +417,7 @@ DialogueConfig[28] = {
     Type = "Normal",
     DocTag = "2-A#28",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "鸡的事，和本喵有什么关系。",
     Next = 29  -- 下一段对话ID
 }
@@ -436,7 +439,7 @@ DialogueConfig[30] = {
     Type = "Question",
     DocTag = "2-hub",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "……",
     Options = {
         {
@@ -449,7 +452,7 @@ DialogueConfig[30] = {
         },
         {
             Text = "我还有新的线索要汇报。",
-            Next = 50,
+            Next = 904,
             DisplayConditions = {
                 { VarName = "BlackCat_CaseLineDone", VarType = "bool", Value = false },
                 { VarName = "BlackCat_CaseLineStarted", VarType = "bool", Value = true }
@@ -516,7 +519,7 @@ DialogueConfig[32] = {
     Type = "Normal",
     DocTag = "2-B#2",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "……说来听听。",
     Next = 33  -- 下一段对话ID
 }
@@ -527,7 +530,7 @@ DialogueConfig[33] = {
     Type = "Normal",
     DocTag = "2-B#3",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "本喵不承诺有反应。",
     Next = 34  -- 下一段对话ID
 }
@@ -549,7 +552,7 @@ DialogueConfig[35] = {
     Type = "Normal",
     DocTag = "2-B#5",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "……然后呢。",
     Next = 36  -- 下一段对话ID
 }
@@ -571,7 +574,7 @@ DialogueConfig[37] = {
     Type = "Normal",
     DocTag = "2-B#7",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "没有闯入迹象。",
     Next = 38  -- 下一段对话ID
 }
@@ -582,7 +585,7 @@ DialogueConfig[38] = {
     Type = "Normal",
     DocTag = "2-B#8",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "自己跑走的？",
     Next = 39  -- 下一段对话ID
 }
@@ -604,7 +607,7 @@ DialogueConfig[40] = {
     Type = "Normal",
     DocTag = "2-B#10",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "那只蠢狗的鼻子，在这件事上倒是有用。",
     Next = 41  -- 下一段对话ID
 }
@@ -637,7 +640,7 @@ DialogueConfig[43] = {
     Type = "Normal",
     DocTag = "2-B#13",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "……那只蛤蟆的措辞一向如诗如画。",
     Next = 44  -- 下一段对话ID
 }
@@ -659,7 +662,7 @@ DialogueConfig[45] = {
     Type = "Normal",
     DocTag = "2-B#15",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "但「冰冷的容器」和「生命之源」……",
     Next = 46  -- 下一段对话ID
 }
@@ -670,7 +673,7 @@ DialogueConfig[46] = {
     Type = "Normal",
     DocTag = "2-B#16",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "继续。",
     SetVariables = {
         { VarName = "BlackCat_CaseLineStarted", VarType = "bool", Value = true }
@@ -717,7 +720,7 @@ DialogueConfig[47] = {
     Type = "Normal",
     DocTag = "2-B@cond#1",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "你说主人昨晚出去过——有什么能证明？",
     Next = 48  -- 下一段对话ID
 }
@@ -739,9 +742,19 @@ DialogueConfig[49] = {
     Type = "Normal",
     DocTag = "2-B@cond#3",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "去吧。",
     Next = -1  -- 下一段对话ID
+}
+
+-- 普通对话类型  -- doc:2-hub#to-2-B-hub
+DialogueConfig[904] = {
+    Type = "Normal",
+    DocTag = "2-hub#to-2-B-hub",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "我还有新的线索要汇报。",
+    Next = 50
 }
 
 -- 提问类型（玩家需要选择回答）  -- doc:2-B-hub
@@ -750,7 +763,7 @@ DialogueConfig[50] = {
     Type = "Question",
     DocTag = "2-B-hub",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "……",
     Options = {
         {
@@ -804,7 +817,7 @@ DialogueConfig[53] = {
     Type = "Normal",
     DocTag = "2-B-A#3",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "冰冷的容器。就是这个。",
     Next = 54  -- 下一段对话ID
 }
@@ -874,7 +887,7 @@ DialogueConfig[58] = {
     Type = "Normal",
     DocTag = "2-B-B#3",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "鸡窝。夜里。",
     SetVariables = {
         { VarName = "BlackCat_CaseLineBootSaid", VarType = "bool", Value = true }
@@ -911,7 +924,7 @@ DialogueConfig[60] = {
     Type = "Normal",
     DocTag = "2-B-D#2",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "还不够。",
     Next = 61  -- 下一段对话ID
 }
@@ -933,7 +946,7 @@ DialogueConfig[62] = {
     Type = "Normal",
     DocTag = "2-B-D#4",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "去吧。",
     Next = -1  -- 下一段对话ID
 }
@@ -944,7 +957,7 @@ DialogueConfig[63] = {
     Type = "Normal",
     DocTag = "2-B-C#1",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "昨晚，有人去池塘取了水。",
     Next = 64  -- 下一段对话ID
 }
@@ -955,7 +968,7 @@ DialogueConfig[64] = {
     Type = "Normal",
     DocTag = "2-B-C#2",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "然后，夜里去了鸡窝。",
     Next = 65  -- 下一段对话ID
 }
@@ -966,7 +979,7 @@ DialogueConfig[65] = {
     Type = "Normal",
     DocTag = "2-B-C#3",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "现在，蛋的气味从红顶屋里飘出来。",
     Next = 66  -- 下一段对话ID
 }
@@ -988,7 +1001,7 @@ DialogueConfig[67] = {
     Type = "Normal",
     DocTag = "2-B-C#5",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "那家伙昨晚进鸡窝拿走了蛋。",
     Next = 68  -- 下一段对话ID
 }
@@ -999,7 +1012,7 @@ DialogueConfig[68] = {
     Type = "Normal",
     DocTag = "2-B-C#6",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "带进了红顶屋。",
     Next = 69  -- 下一段对话ID
 }
@@ -1021,7 +1034,7 @@ DialogueConfig[70] = {
     Type = "Normal",
     DocTag = "2-B-C#8",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "……",
     Next = 71  -- 下一段对话ID
 }
@@ -1032,7 +1045,7 @@ DialogueConfig[71] = {
     Type = "Normal",
     DocTag = "2-B-C#9",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "本喵也想知道。",
     Next = 72  -- 下一段对话ID
 }
@@ -1054,7 +1067,7 @@ DialogueConfig[73] = {
     Type = "Normal",
     DocTag = "2-B-C#11",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "审视",
     Dialogue = "他在用那颗蛋做什么。",
     SetVariables = {
         { VarName = "BlackCat_CaseLineDone", VarType = "bool", Value = true }
@@ -1113,7 +1126,7 @@ DialogueConfig[77] = {
     Type = "Normal",
     DocTag = "2-C#4",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "……你怎么知道那个。",
     Next = 78  -- 下一段对话ID
 }
@@ -1135,7 +1148,7 @@ DialogueConfig[79] = {
     Type = "Normal",
     DocTag = "2-C#6",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "还不是那只死鸟——",
     Next = 80  -- 下一段对话ID
 }
@@ -1157,7 +1170,7 @@ DialogueConfig[81] = {
     Type = "Normal",
     DocTag = "2-C#8",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "……但那件事跟你无关。",
     Next = 82  -- 下一段对话ID
 }
@@ -1190,7 +1203,7 @@ DialogueConfig[84] = {
     Type = "Normal",
     DocTag = "2-C#11",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "……你在乱猜什么。",
     Next = 85  -- 下一段对话ID
 }
@@ -1223,7 +1236,7 @@ DialogueConfig[87] = {
     Type = "Normal",
     DocTag = "2-C#14",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "……",
     Next = 88  -- 下一段对话ID
 }
@@ -1234,7 +1247,7 @@ DialogueConfig[88] = {
     Type = "Normal",
     DocTag = "2-C#15",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "去找老鼠。",
     Next = 89  -- 下一段对话ID
 }
@@ -1245,7 +1258,7 @@ DialogueConfig[89] = {
     Type = "Normal",
     DocTag = "2-C#16",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "找回来再说。",
     SetVariables = {
         { VarName = "BlackCat_MintFishPending", VarType = "bool", Value = true }
@@ -1281,7 +1294,7 @@ DialogueConfig[92] = {
     Type = "Normal",
     DocTag = "2-C-D#3",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "……说。",
     Next = 93  -- 下一段对话ID
 }
@@ -1314,7 +1327,7 @@ DialogueConfig[95] = {
     Type = "Normal",
     DocTag = "2-C-D#6",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "在哪。",
     Next = 96  -- 下一段对话ID
 }
@@ -1358,7 +1371,7 @@ DialogueConfig[99] = {
     Type = "Normal",
     DocTag = "2-C-D#10",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "……然后呢。",
     Next = 100  -- 下一段对话ID
 }
@@ -1402,7 +1415,7 @@ DialogueConfig[103] = {
     Type = "Normal",
     DocTag = "2-C-D#14",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "为什么在蛤蟆那儿——本喵不知道。",
     Next = 104  -- 下一段对话ID
 }
@@ -1413,7 +1426,7 @@ DialogueConfig[104] = {
     Type = "Normal",
     DocTag = "2-C-D#15",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "拿不回来，就去找老鼠。",
     Next = 105  -- 下一段对话ID
 }
@@ -1424,7 +1437,7 @@ DialogueConfig[105] = {
     Type = "Normal",
     DocTag = "2-C-D#16",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "他们肯定有办法。",
     Next = 30  -- 下一段对话ID
 }
@@ -1468,7 +1481,7 @@ DialogueConfig[109] = {
     Type = "Normal",
     DocTag = "2-D#4",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "……哼。",
     Next = 110  -- 下一段对话ID
 }
@@ -1490,7 +1503,7 @@ DialogueConfig[111] = {
     Type = "Normal",
     DocTag = "2-D#6",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "喵……就是这个——不对！",
     Next = 112  -- 下一段对话ID
 }
@@ -1512,7 +1525,7 @@ DialogueConfig[113] = {
     Type = "Normal",
     DocTag = "2-D#8",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "一条臭鱼，买不走本喵！",
     Next = 114  -- 下一段对话ID
 }
@@ -1523,7 +1536,7 @@ DialogueConfig[114] = {
     Type = "Normal",
     DocTag = "2-D#9",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "醉倒",
     Dialogue = "（小声）你刚才呼噜了……",
     Next = 115  -- 下一段对话ID
 }
@@ -1534,7 +1547,7 @@ DialogueConfig[115] = {
     Type = "Normal",
     DocTag = "2-D#10",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "你耳朵出问题了。",
     SetVariables = {
         { VarName = "BlackCat_MintFishLineDone", VarType = "bool", Value = true }
@@ -1560,7 +1573,7 @@ DialogueConfig[116] = {
     Type = "Normal",
     DocTag = "2-E#1",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "猫大爷，昨晚的事你清楚吗？",
     Next = 117  -- 下一段对话ID
 }
@@ -1582,7 +1595,7 @@ DialogueConfig[118] = {
     Type = "Normal",
     DocTag = "2-E#3",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "你可是被那个两脚兽当面骗了一手啊！",
     Next = 119  -- 下一段对话ID
 }
@@ -1593,7 +1606,7 @@ DialogueConfig[119] = {
     Type = "Normal",
     DocTag = "2-E#4",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "整个农场都看着你睡得呼呼的、还以为是要给你按摩——",
     Next = 120  -- 下一段对话ID
 }
@@ -1604,7 +1617,7 @@ DialogueConfig[120] = {
     Type = "Normal",
     DocTag = "2-E#5",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "……",
     Next = 121  -- 下一段对话ID
 }
@@ -1615,7 +1628,7 @@ DialogueConfig[121] = {
     Type = "Normal",
     DocTag = "2-E#6",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "——结果一觉醒来，软垫没了，自尊扫地！",
     Next = 122  -- 下一段对话ID
 }
@@ -1626,7 +1639,7 @@ DialogueConfig[122] = {
     Type = "Normal",
     DocTag = "2-E#7",
     NpcName = "大黄",
-    NpcSprite = "大黄",
+    NpcSprite = "执勤",
     Dialogue = "这要是传出去，今年冬天你睡稻草堆里，我可不让你蹭我狗窝。",
     Next = 123  -- 下一段对话ID
 }
@@ -1659,7 +1672,7 @@ DialogueConfig[125] = {
     Type = "Normal",
     DocTag = "2-E#10",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "本喵不是因为那只发疯母鸡。",
     Next = 126  -- 下一段对话ID
 }
@@ -1670,7 +1683,7 @@ DialogueConfig[126] = {
     Type = "Normal",
     DocTag = "2-E#11",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "也不是因为这条蠢狗指使。",
     Next = 127  -- 下一段对话ID
 }
@@ -1692,7 +1705,7 @@ DialogueConfig[128] = {
     Type = "Normal",
     DocTag = "2-E#13",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "就要亲眼进屋看清楚。",
     Next = 129  -- 下一段对话ID
 }
@@ -1703,7 +1716,7 @@ DialogueConfig[129] = {
     Type = "Normal",
     DocTag = "2-E#14",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "那家伙昨晚到底拿本喵的软垫做了什么。",
     Next = 130  -- 下一段对话ID
 }
@@ -1714,7 +1727,7 @@ DialogueConfig[130] = {
     Type = "Normal",
     DocTag = "2-E#15",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "垫子去了哪里。",
     Next = 131  -- 下一段对话ID
 }
@@ -1725,7 +1738,7 @@ DialogueConfig[131] = {
     Type = "Normal",
     DocTag = "2-E#16",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "至于你说的那颗破蛋——既然它现在多半就在屋里，顺便看一眼也不亏。",
     Next = 132  -- 下一段对话ID
 }
@@ -1736,7 +1749,7 @@ DialogueConfig[132] = {
     Type = "Normal",
     DocTag = "2-E#17",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "炸毛",
     Dialogue = "本喵有专属钥匙。你要进去——爬二层窗。本喵从里面推开。你不许走本喵的猫门。",
     Next = 133  -- 下一段对话ID
 }
@@ -1771,7 +1784,7 @@ DialogueConfig[134] = {
 DialogueConfig[135] = {
     Type = "Normal",
     DocTag = "3-A#2",
-    NpcName = "玩家",
+    NpcName = "描述",
     NpcSprite = "",
     Dialogue = "你上谷仓屋顶那次——是不是已经知道那是块石头？",
     Next = 136  -- 下一段对话ID
@@ -1782,8 +1795,8 @@ DialogueConfig[135] = {
 DialogueConfig[136] = {
     Type = "Normal",
     DocTag = "3-A#3",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "黑猫",
+    NpcSprite = "高傲",
     Dialogue = "（黑猫停顿，舔了一下爪子）",
     Next = 137  -- 下一段对话ID
 }
@@ -1793,7 +1806,7 @@ DialogueConfig[136] = {
 DialogueConfig[137] = {
     Type = "Normal",
     DocTag = "3-A#4",
-    NpcName = "黑猫",
+    NpcName = "描述",
     NpcSprite = "",
     Dialogue = "嗯。早上窗台就看见了——乌鸦俯冲，白石头在晨光里闪着。",
     Next = 138  -- 下一段对话ID
@@ -1804,8 +1817,8 @@ DialogueConfig[137] = {
 DialogueConfig[138] = {
     Type = "Normal",
     DocTag = "3-A#5",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "黑猫",
+    NpcSprite = "高傲",
     Dialogue = "（黑猫瞥了大黄一眼）",
     Next = 139  -- 下一段对话ID
 }
@@ -1815,7 +1828,7 @@ DialogueConfig[138] = {
 DialogueConfig[139] = {
     Type = "Normal",
     DocTag = "3-A#6",
-    NpcName = "黑猫",
+    NpcName = "玩家",
     NpcSprite = "",
     Dialogue = "任何不瞎的都看得出来不是蛋。",
     Next = 140  -- 下一段对话ID
@@ -1826,8 +1839,8 @@ DialogueConfig[139] = {
 DialogueConfig[140] = {
     Type = "Normal",
     DocTag = "3-A#7",
-    NpcName = "玩家",
-    NpcSprite = "",
+    NpcName = "黑猫",
+    NpcSprite = "高傲",
     Dialogue = "你为什么不说！！",
     Next = 141  -- 下一段对话ID
 }
@@ -1838,7 +1851,7 @@ DialogueConfig[141] = {
     Type = "Normal",
     DocTag = "3-A#8",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "那只乌鸦，每天早上四点开始嘎嘎嘎。",
     Next = 142  -- 下一段对话ID
 }
@@ -1849,7 +1862,7 @@ DialogueConfig[142] = {
     Type = "Normal",
     DocTag = "3-A#9",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "已经三年了。",
     Next = 143  -- 下一段对话ID
 }
@@ -1859,7 +1872,7 @@ DialogueConfig[142] = {
 DialogueConfig[143] = {
     Type = "Normal",
     DocTag = "3-A#10",
-    NpcName = "黑猫",
+    NpcName = "描述",
     NpcSprite = "",
     Dialogue = "让侦探多转几圈……本喵觉得相当公平。",
     Next = 144  -- 下一段对话ID
@@ -1870,8 +1883,8 @@ DialogueConfig[143] = {
 DialogueConfig[144] = {
     Type = "Normal",
     DocTag = "3-A#11",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "黑猫",
+    NpcSprite = "高傲",
     Dialogue = "（黑猫偏头，眼神有一丝难以察觉的满意）",
     Next = 145  -- 下一段对话ID
 }
@@ -1882,7 +1895,7 @@ DialogueConfig[145] = {
     Type = "Normal",
     DocTag = "3-A#12",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "本喵在树上不是说过吗？",
     Next = 146  -- 下一段对话ID
 }
@@ -1892,7 +1905,7 @@ DialogueConfig[145] = {
 DialogueConfig[146] = {
     Type = "Normal",
     DocTag = "3-A#13",
-    NpcName = "黑猫",
+    NpcName = "玩家",
     NpcSprite = "",
     Dialogue = "「傻子在炫耀，瞎子在到处问。」",
     Next = 147  -- 下一段对话ID
@@ -1914,8 +1927,8 @@ DialogueConfig[147] = {
 DialogueConfig[148] = {
     Type = "Normal",
     DocTag = "3-A#15",
-    NpcName = "玩家",
-    NpcSprite = "",
+    NpcName = "黑猫",
+    NpcSprite = "高傲",
     Dialogue = "那句话是在说乌鸦和我？！",
     Next = 149  -- 下一段对话ID
 }
@@ -1926,7 +1939,7 @@ DialogueConfig[149] = {
     Type = "Normal",
     DocTag = "3-A#16",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "你以为本喵是在骂大树吗。",
     SetVariables = {
         { VarName = "BlackCat_StoneRevealShown", VarType = "bool", Value = true }
@@ -1939,7 +1952,7 @@ DialogueConfig[149] = {
 DialogueConfig[150] = {
     Type = "Normal",
     DocTag = "3-B#2",
-    NpcName = "玩家",
+    NpcName = "描述",
     NpcSprite = "",
     Dialogue = "你之前上谷仓屋顶——那时候就知道是块石头，对不对？",
     Next = 151  -- 下一段对话ID
@@ -1950,8 +1963,8 @@ DialogueConfig[150] = {
 DialogueConfig[151] = {
     Type = "Normal",
     DocTag = "3-B#3",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "黑猫",
+    NpcSprite = "高傲",
     Dialogue = "（黑猫睨过来一眼）",
     Next = 152  -- 下一段对话ID
 }
@@ -1962,7 +1975,7 @@ DialogueConfig[152] = {
     Type = "Normal",
     DocTag = "3-B#4",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "……这才反应过来？",
     Next = 153  -- 下一段对话ID
 }
@@ -1972,7 +1985,7 @@ DialogueConfig[152] = {
 DialogueConfig[153] = {
     Type = "Normal",
     DocTag = "3-B#5",
-    NpcName = "黑猫",
+    NpcName = "玩家",
     NpcSprite = "",
     Dialogue = "早上窗台就看见了。白石头，晨光一照，闪得很——任何不瞎的都看得出来不是蛋。",
     Next = 154  -- 下一段对话ID
@@ -1983,8 +1996,8 @@ DialogueConfig[153] = {
 DialogueConfig[154] = {
     Type = "Normal",
     DocTag = "3-B#6",
-    NpcName = "玩家",
-    NpcSprite = "",
+    NpcName = "黑猫",
+    NpcSprite = "高傲",
     Dialogue = "你为什么不说？！",
     Next = 155  -- 下一段对话ID
 }
@@ -1995,7 +2008,7 @@ DialogueConfig[155] = {
     Type = "Normal",
     DocTag = "3-B#7",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "那只乌鸦，每天早上四点开始嘎嘎嘎。",
     Next = 156  -- 下一段对话ID
 }
@@ -2006,7 +2019,7 @@ DialogueConfig[156] = {
     Type = "Normal",
     DocTag = "3-B#8",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "已经三年了。",
     Next = 157  -- 下一段对话ID
 }
@@ -2017,7 +2030,7 @@ DialogueConfig[157] = {
     Type = "Normal",
     DocTag = "3-B#9",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "让侦探多转几圈……本喵觉得相当公平。",
     Next = 158  -- 下一段对话ID
 }
@@ -2028,7 +2041,7 @@ DialogueConfig[158] = {
     Type = "Normal",
     DocTag = "3-B#10",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "你们最后找到了，不是吗。",
     SetVariables = {
         { VarName = "BlackCat_StoneRevealShown", VarType = "bool", Value = true }
@@ -2042,7 +2055,7 @@ DialogueConfig[170] = {
     Type = "Normal",
     DocTag = "2-F#E37#1",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "别刮花屋檐。",
     Next = 171
 }
@@ -2051,7 +2064,7 @@ DialogueConfig[171] = {
     Type = "Normal",
     DocTag = "2-F#E37#2",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "那是本喵晒太阳的位置。",
     Next = 172
 }
@@ -2069,7 +2082,7 @@ DialogueConfig[173] = {
     Type = "Normal",
     DocTag = "2-F#E37#4",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "你摔下去，本喵不会下去捡。",
     Next = -1
 }
@@ -2078,7 +2091,7 @@ DialogueConfig[180] = {
     Type = "Normal",
     DocTag = "2-F#E38#1",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "二层窗开着。",
     Next = 181
 }
@@ -2087,7 +2100,7 @@ DialogueConfig[181] = {
     Type = "Normal",
     DocTag = "2-F#E38#2",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "侦探还在屋檐上犹豫。",
     Next = 182
 }
@@ -2096,7 +2109,7 @@ DialogueConfig[182] = {
     Type = "Normal",
     DocTag = "2-F#E38#3",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "本喵开始怀疑你和那只狗是同一种跳跃水平。",
     Next = -1
 }
@@ -2117,7 +2130,7 @@ DialogueConfig[211] = {
     Type = "Normal",
     DocTag = "NGPlus@v1#1",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "软垫回来了。",
     Next = 212
 }
@@ -2126,7 +2139,7 @@ DialogueConfig[212] = {
     Type = "Normal",
     DocTag = "NGPlus@v1#2",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "本喵勉强同意把那间屋子继续租给那家伙住。",
     Next = 213
 }
@@ -2144,7 +2157,7 @@ DialogueConfig[214] = {
     Type = "Normal",
     DocTag = "NGPlus@v1#4",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "那颗破蛋……",
     Next = 215
 }
@@ -2153,7 +2166,7 @@ DialogueConfig[215] = {
     Type = "Normal",
     DocTag = "NGPlus@v1#5",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "本喵暂时替它看着。",
     Next = 216
 }
@@ -2162,7 +2175,7 @@ DialogueConfig[216] = {
     Type = "Normal",
     DocTag = "NGPlus@v1#6",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "就这样。",
     Next = -1
 }
@@ -2180,7 +2193,7 @@ DialogueConfig[221] = {
     Type = "Normal",
     DocTag = "NGPlus@v2#2",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "本喵在树上休息，不是在说话。",
     Next = 222
 }
@@ -2189,7 +2202,7 @@ DialogueConfig[222] = {
     Type = "Normal",
     DocTag = "NGPlus@v2#3",
     NpcName = "黑猫",
-    NpcSprite = "",
+    NpcSprite = "高傲",
     Dialogue = "下次别跟大树搭腔了。",
     Next = 223
 }

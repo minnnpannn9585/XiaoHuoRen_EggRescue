@@ -216,7 +216,7 @@ DialogueConfig[n] = {
     Type = "Normal" | "Question",
     DocTag = "1-A#3",              -- 语义 ID，调试日志用
     NpcName = "大黄" | "玩家" | "描述",
-    NpcSprite = "大黄" | "",         -- 空则走 NPCData avatarPath
+    NpcSprite = "守望" | "",         -- TouXiang_LiHui PNG 文件名（无扩展名）；玩家/描述/大树留 ""
     Dialogue = "...",
     Next = <int | -1>,
 
@@ -244,6 +244,22 @@ DialogueConfig[n] = {
 | `2-C@v2#1` | 2-C 轮播变体 2 第 1 句 |
 | `entry#barn2` | 入口 dispatcher |
 | `NGPlus` | 轮播池入口 |
+
+### 5.1.1 NpcSprite 立绘 key（`TouXiang_LiHui` 文件名）
+
+| 角色 | 中立 | 特殊 |
+|------|------|------|
+| 淑芬 | `守望` | `护雏` |
+| 大黄 | `醉倒` | `执勤`、`振奋` |
+| 悲伤蛙 | `丧` | `介入` |
+| 鼠哥/鼠弟 | `兜售` | `八卦`、`发怵` |
+| 小鸡（阿满等） | `装酷` | `心虚`、`愧疚` |
+| 乌鸦 | `得意` | `吝啬`、`叫嚣` |
+| 黑猫 | `高傲` | `审视`、`炸毛` |
+| 大树 | `""` | — |
+| 闪电蜗牛 | `待机` | `闪电蜗牛` |
+
+树状 md 写 `角色·立绘名：台词`；`doc_to_lua` 导出为 `NpcSprite`。空则回退 `NPCData.avatarPath`。
 
 文件头注释保留 **语义 ID → 整数 ID** 映射，便于对照 md。
 

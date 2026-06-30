@@ -29,7 +29,7 @@ local NPCData = {
         {
             id = "NPC_005",
             name = "大黄",
-            avatarPath = "Assets/Res/TouXiang_LiHui/Dog/大黄.png",
+            avatarPath = "Assets/Res/Model/TouXiang_LiHui/Dog/醉倒.png",
             currentBranchId = 1,
             isFolded = true,
             storyGraphs = {
@@ -45,7 +45,7 @@ local NPCData = {
         {
             id = "NPC_488",
             name = "淑芬",
-            avatarPath = "Assets/Res/TouXiang_LiHui/母鸡/守望.png",
+            avatarPath = "Assets/Res/Model/TouXiang_LiHui/Hen/守望.png",
             currentBranchId = 1,
             isFolded = true,
             storyGraphs = {
@@ -77,7 +77,7 @@ local NPCData = {
         {
             id = "NPC_009",
             name = "小鸡侦探团",
-            avatarPath = "",
+            avatarPath = "Assets/Res/Model/TouXiang_LiHui/Chicken/装酷.png",
             currentBranchId = 1,
             isFolded = false,
             storyGraphs = {
@@ -93,7 +93,7 @@ local NPCData = {
         {
             id = "NPC_010",
             name = "黑猫",
-            avatarPath = "Assets/Res/TouXiang_LiHui/猫/高傲.png",
+            avatarPath = "Assets/Res/Model/TouXiang_LiHui/Cat/高傲.png",
             currentBranchId = 1,
             isFolded = true,
             storyGraphs = {
@@ -125,7 +125,7 @@ local NPCData = {
         {
             id = "NPC_012",
             name = "悲伤蛙",
-            avatarPath = "Assets/Res/TouXiang_LiHui/青蛙/介入.png",
+            avatarPath = "Assets/Res/Model/TouXiang_LiHui/Frog/丧.png",
             currentBranchId = 1,
             isFolded = false,
             storyGraphs = {
@@ -141,15 +141,15 @@ local NPCData = {
         {
             id = "NPC_013",
             name = "闪电蜗牛",
-            avatarPath = "Assets/Res/TouXiang_LiHui/蜗牛/闪电蜗牛.png",
+            avatarPath = "Assets/Res/Model/TouXiang_LiHui/Snail/待机.png",
             currentBranchId = 1,
             isFolded = false,
             storyGraphs = {
                 {
                     branchId = 1,
                     storyDescription = "首次对话",
-                    luaModuleName = "wuniu_01",
-                    luaAssetPath = "Assets/Editor/DialogueData/wuniu_01.lua"
+                    luaModuleName = "wuniu_01_FROM_DOC",
+                    luaAssetPath = "Assets/Editor/DialogueData/FROM_DOC/wuniu_01_FROM_DOC.lua"
                 }
             }
         }
@@ -157,7 +157,7 @@ local NPCData = {
         {
             id = "NPC_014",
             name = "乌鸦",
-            avatarPath = "Assets/Res/TouXiang_LiHui/乌鸦/得意.png",
+            avatarPath = "Assets/Res/Model/TouXiang_LiHui/WuYa/得意.png",
             currentBranchId = 1,
             isFolded = false,
             storyGraphs = {
@@ -166,6 +166,22 @@ local NPCData = {
                     storyDescription = "乌鸦全章（树状准稿）",
                     luaModuleName = "wuya_01_FROM_DOC",
                     luaAssetPath = "Assets/Editor/DialogueData/FROM_DOC/wuya_01_FROM_DOC.lua"
+                }
+            }
+        }
+        ,
+        {
+            id = "NPC_015",
+            name = "老鼠兄弟",
+            avatarPath = "Assets/Res/Model/TouXiang_LiHui/Mouse/兜售.png",
+            currentBranchId = 1,
+            isFolded = false,
+            storyGraphs = {
+                {
+                    branchId = 1,
+                    storyDescription = "墙缝黑市（树状准稿）",
+                    luaModuleName = "laoshu_01_FROM_DOC",
+                    luaAssetPath = "Assets/Editor/DialogueData/FROM_DOC/laoshu_01_FROM_DOC.lua"
                 }
             }
         }

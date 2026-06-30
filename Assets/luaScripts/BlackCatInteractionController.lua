@@ -1,4 +1,4 @@
--- 黑猫显隐与可点：摇树前不可交互，摇树后可点（entry#0）
+-- 黑猫显隐与可点：摇树前不可交互，2-A 落地后可点；进屋后关闭（3-B / NGPlus 例外）
 ---@var catModel :UnityEngine.GameObject
 ---@end
 
@@ -14,6 +14,23 @@ local function GetGlobalBool(name)
         return vars[name].value == true
     end
     return false
+end
+
+local function ShouldEnableBlackCatInteraction()
+    if GetGlobalBool("NGPlus") then
+        return GetGlobalBool("Dog_BlackCatSummoned")
+    end
+
+    if not GetGlobalBool("Dog_BlackCatSummoned") then
+        return false
+    end
+
+    if not GetGlobalBool("BlackCat_Entered") then
+        return true
+    end
+
+    -- 漫画收束后仍可点进 3-B 揭穿
+    return GetGlobalBool("Comic_Revealed") and not GetGlobalBool("BlackCat_StoneRevealShown")
 end
 
 local function GetDouyinInteractorScript()
@@ -62,8 +79,7 @@ local function SetInteractionEnabled(enabled)
 end
 
 function RefreshBlackCatInteraction(force)
-    local summoned = GetGlobalBool("Dog_BlackCatSummoned")
-    local interactionEnabled = summoned
+    local interactionEnabled = ShouldEnableBlackCatInteraction()
 
     if not force and lastInteractionEnabled == interactionEnabled then
         return
@@ -71,7 +87,11 @@ function RefreshBlackCatInteraction(force)
     lastInteractionEnabled = interactionEnabled
 
     SetInteractionEnabled(interactionEnabled)
-    print(string.format("[BlackCatInteraction] enabled=%s (Summoned=%s)", tostring(interactionEnabled), tostring(summoned)))
+    print(string.format(
+        "[BlackCatInteraction] enabled=%s (Summoned=%s Entered=%s)",
+        tostring(interactionEnabled),
+        tostring(GetGlobalBool("Dog_BlackCatSummoned")),
+        tostring(GetGlobalBool("BlackCat_Entered"))))
 end
 
 function Start()

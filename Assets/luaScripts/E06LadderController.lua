@@ -9,7 +9,7 @@
 -- 挂在「发现缺少梯子」物体上：E06 交互 + 架梯模型
 -- 屏幕交互 UI 文字：同物体 DouyinInteractor → ButtonConfigs[1].Text（Inspector 填默认文案；本脚本按状态动态刷新）
 
-local E06_POINT_NAME = "发现缺少梯子"
+local E06_POINT_NAME = "E06 · 发现缺少梯子"
 local PLACED_LADDER_CHILD = "E06_placed_ladder"
 
 local lastBarnVisible = nil

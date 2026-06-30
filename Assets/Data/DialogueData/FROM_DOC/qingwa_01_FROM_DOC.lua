@@ -86,7 +86,7 @@ DialogueConfig[2] = {
     Type = "Normal",
     DocTag = "2-A#2",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "……你来了。",
     Next = 3
 }
@@ -95,7 +95,7 @@ DialogueConfig[3] = {
     Type = "Normal",
     DocTag = "2-A#3",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "或者……你只是路过这片死水。",
     Next = 4
 }
@@ -113,7 +113,7 @@ DialogueConfig[5] = {
     Type = "Normal",
     DocTag = "2-A#5",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "这里是虚无的地方。",
     Next = 6
 }
@@ -122,7 +122,7 @@ DialogueConfig[6] = {
     Type = "Normal",
     DocTag = "2-A#6",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "坐了很久了。",
     SetVariables = {
         { VarName = "Frog_FirstMeetShown", VarType = "bool", Value = true }
@@ -439,7 +439,7 @@ DialogueConfig[17] = {
     Type = "Normal",
     DocTag = "2-B#2",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "蛋。",
     Next = 18
 }
@@ -448,7 +448,7 @@ DialogueConfig[18] = {
     Type = "Normal",
     DocTag = "2-B#3",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "这片水里，早就没有新生了。",
     Next = 19
 }
@@ -466,7 +466,7 @@ DialogueConfig[20] = {
     Type = "Normal",
     DocTag = "2-B#5",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "问错了地方。",
     SetVariables = {
         { VarName = "Frog_EggAsked", VarType = "bool", Value = true }
@@ -489,7 +489,7 @@ DialogueConfig[22] = {
     Type = "Normal",
     DocTag = "2-C#2",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "离水远的地方。",
     Next = 23
 }
@@ -498,7 +498,7 @@ DialogueConfig[23] = {
     Type = "Normal",
     DocTag = "2-C#3",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "……连虚无都是干的。",
     SetVariables = {
         { VarName = "Frog_NapSpotAsked", VarType = "bool", Value = true }
@@ -661,7 +661,7 @@ DialogueConfig[40] = {
     Type = "Normal",
     DocTag = "3-hub-intro#1",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "……又有东西来了。",
     Next = 41
 }
@@ -670,7 +670,7 @@ DialogueConfig[41] = {
     Type = "Normal",
     DocTag = "3-hub-intro#2",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "或者……又有东西要走了。",
     Next = 600
 }
@@ -688,18 +688,12 @@ DialogueConfig[600] = {
             Text = "你身下那块绿垫子……能给我吗？",
             Next = 421,
             DisplayConditions = {
-                { VarName = "E12_ViewGreenPad", VarType = "bool", Value = true },
                 { VarName = "Frog_PadRefused", VarType = "bool", Value = false },
                 { VarName = "MintFish_Obtained", VarType = "bool", Value = false }
             },
-        },
-        {
-            Text = "你身下那块绿垫子……能给我吗？",
-            Next = 421,
-            DisplayConditions = {
-                { VarName = "Mouse_MintFishPaid", VarType = "bool", Value = true },
-                { VarName = "Frog_PadRefused", VarType = "bool", Value = false },
-                { VarName = "MintFish_Obtained", VarType = "bool", Value = false }
+            DisplayAnyConditions = {
+                { VarName = "E12_ViewGreenPad", VarType = "bool", Value = true },
+                { VarName = "Mouse_MintFishPaid", VarType = "bool", Value = true }
             },
         },
         {
@@ -728,18 +722,12 @@ DialogueConfig[605] = {
             Text = "你身下那块绿垫子……能给我吗？",
             Next = 421,
             DisplayConditions = {
-                { VarName = "E12_ViewGreenPad", VarType = "bool", Value = true },
                 { VarName = "Frog_PadRefused", VarType = "bool", Value = false },
                 { VarName = "MintFish_Obtained", VarType = "bool", Value = false }
             },
-        },
-        {
-            Text = "你身下那块绿垫子……能给我吗？",
-            Next = 421,
-            DisplayConditions = {
-                { VarName = "Mouse_MintFishPaid", VarType = "bool", Value = true },
-                { VarName = "Frog_PadRefused", VarType = "bool", Value = false },
-                { VarName = "MintFish_Obtained", VarType = "bool", Value = false }
+            DisplayAnyConditions = {
+                { VarName = "E12_ViewGreenPad", VarType = "bool", Value = true },
+                { VarName = "Mouse_MintFishPaid", VarType = "bool", Value = true }
             },
         },
         {
@@ -829,17 +817,17 @@ DialogueConfig[430] = {
     NpcSprite = "介入",
     Dialogue = "……你来这里，是因为什么？",
     Options = {
-        { Text = "我来拿你身下那块绿垫子。", Next = 50 },
-        { Text = "因为我在找丢失的蛋。", Next = 50 },
-        { Text = "……不知道。感觉到了，就来了。", Next = 46 },
+        { Text = "我来拿你身下那块绿垫子。", Next = 606 },
+        { Text = "因为我在找丢失的蛋。", Next = 607 },
+        { Text = "……不知道。感觉到了，就来了。", Next = 608 },
     }
 }
 
 DialogueConfig[46] = {
     Type = "Normal",
     DocTag = "3-A#4",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "悲伤蛙",
+    NpcSprite = "丧",
     Dialogue = "（蛙没有立刻回应，视线在水面上停了一会儿）",
     Next = 472
 }
@@ -851,9 +839,9 @@ DialogueConfig[472] = {
     NpcSprite = "介入",
     Dialogue = "你懂什么叫失去吗？",
     Options = {
-        { Text = "懂。丢了还能找回来。", Next = 50 },
-        { Text = "懂。我丢过重要的东西。", Next = 50 },
-        { Text = "……不懂。或者说，懂了又怎样。", Next = 48 },
+        { Text = "懂。丢了还能找回来。", Next = 609 },
+        { Text = "懂。我丢过重要的东西。", Next = 610 },
+        { Text = "……不懂。或者说，懂了又怎样。", Next = 611 },
     }
 }
 
@@ -873,10 +861,92 @@ DialogueConfig[492] = {
     NpcSprite = "介入",
     Dialogue = "它一直陪着我……直到现在。",
     Options = {
-        { Text = "那你留着吧。我不拿了。", Next = 50 },
-        { Text = "但它现在该让人带走了。", Next = 50 },
-        { Text = "……陪着，也是一种消耗。", Next = 52 },
+        { Text = "那你留着吧。我不拿了。", Next = 612 },
+        { Text = "但它现在该让人带走了。", Next = 613 },
+        { Text = "……陪着，也是一种消耗。", Next = 614 },
     }
+}
+
+-- 3-A 选项 → 玩家首句 stub
+DialogueConfig[606] = {
+    Type = "Normal",
+    DocTag = "3-A#r1#pick-A",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "我来拿你身下那块绿垫子。",
+    Next = 50
+}
+
+DialogueConfig[607] = {
+    Type = "Normal",
+    DocTag = "3-A#r1#pick-B",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "因为我在找丢失的蛋。",
+    Next = 50
+}
+
+DialogueConfig[608] = {
+    Type = "Normal",
+    DocTag = "3-A#r1#pick-C",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "……不知道。感觉到了，就来了。",
+    Next = 46
+}
+
+DialogueConfig[609] = {
+    Type = "Normal",
+    DocTag = "3-A#r2#pick-A",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "懂。丢了还能找回来。",
+    Next = 50
+}
+
+DialogueConfig[610] = {
+    Type = "Normal",
+    DocTag = "3-A#r2#pick-B",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "懂。我丢过重要的东西。",
+    Next = 50
+}
+
+DialogueConfig[611] = {
+    Type = "Normal",
+    DocTag = "3-A#r2#pick-C",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "……不懂。或者说，懂了又怎样。",
+    Next = 48
+}
+
+DialogueConfig[612] = {
+    Type = "Normal",
+    DocTag = "3-A#r3#pick-A",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "那你留着吧。我不拿了。",
+    Next = 50
+}
+
+DialogueConfig[613] = {
+    Type = "Normal",
+    DocTag = "3-A#r3#pick-B",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "但它现在该让人带走了。",
+    Next = 50
+}
+
+DialogueConfig[614] = {
+    Type = "Normal",
+    DocTag = "3-A#r3#pick-C",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "……陪着，也是一种消耗。",
+    Next = 52
 }
 
 -- ==================== 3-B · 对暗号失败 ====================
@@ -894,7 +964,7 @@ DialogueConfig[51] = {
     Type = "Normal",
     DocTag = "3-B#2",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "……你不懂。",
     SetVariables = {
         { VarName = "Frog_PadRefused", VarType = "bool", Value = true }

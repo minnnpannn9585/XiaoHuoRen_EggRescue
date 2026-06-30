@@ -21,6 +21,7 @@
 | `FROM_DOC/heimao_03_FROM_DOC.lua` | 黑猫 | 橡树下+揭穿+NGPlus（替代旧 `heimao_03`） |
 | `FROM_DOC/heimao_tree_01_FROM_DOC.lua` | 大树 | ch1 轮播（替代旧 `heimao_01/02`） |
 | `FROM_DOC/qingwa_01_FROM_DOC.lua` | 悲伤蛙 | 池塘+薄荷鱼（替代旧 `qingwa_01`） |
+| `FROM_DOC/wuniu_01_FROM_DOC.lua` | 闪电蜗牛 | F-1～F-6 阶段锁（替代旧 `wuniu_01`） |
 
 Scene 子物体名仍为 `luaModuleName`（无路径）；Publish 会同步 `Editor/…/FROM_DOC/` → `Data/…/FROM_DOC/`。
 
@@ -112,19 +113,29 @@ Scene 子物体名仍为 `luaModuleName`（无路径）；Publish 会同步 `Edi
 
 文件名 `qingwa` = 青蛙；游戏内 NPC 名 **悲伤蛙**。
 
-### 闪电蜗牛 `wuniu_01.lua`
+### 闪电蜗牛 `wuniu_01_FROM_DOC.lua`
 
 | 文件 | NPCData 分支 | 剧情说明 | Scene 触发 |
 |------|-------------|---------|-----------|
-| `wuniu_01.lua` | 分支 1 | 慢语速 meta 对白 | 点 **闪电蜗牛** |
+| `FROM_DOC/wuniu_01_FROM_DOC.lua` | 分支 1 | F-1～F-6 慢语速递进目击 + 二周目 meta | 点 **闪电蜗牛**（characters · startID=0）；**E32** 宽叶氛围 |
+
+> 旧 `wuniu_01.lua` 已删除，由 FROM_DOC 单文件替代。
 
 文件名 `wuniu` ≈ 蜗牛（口语）；角色名 **闪电蜗牛**。
 
-### 乌鸦 `wuya_01.lua`
+### 老鼠兄弟 `laoshu_01_FROM_DOC.lua`
 
 | 文件 | NPCData 分支 | 剧情说明 | Scene 触发 |
 |------|-------------|---------|-----------|
-| `wuya_01.lua` | 分支 1 | 谷仓底仰望 / 屋顶对峙 | 点 **乌鸦** |
+| `FROM_DOC/laoshu_01_FROM_DOC.lua` | 分支 1 | 墙缝 hub、盲盒情报、薄荷鱼/蛙兜底、NGPlus | 点 **老鼠兄弟 · 墙缝**（startID=0）；**E39** 强制 **0-A** |
+
+经济侧：`CheeseCount` + `CheesePickup.lua`；商店路由 `MouseBrotherController.lua`。
+
+### 乌鸦 `wuya_01_FROM_DOC.lua`
+
+| 文件 | NPCData 分支 | 剧情说明 | Scene 触发 |
+|------|-------------|---------|-----------|
+| `FROM_DOC/wuya_01_FROM_DOC.lua` | 分支 1 | entry#0 分发；谷仓底/攀爬喊话；屋顶对峙与 2-hub | 点 **乌鸦**（startID=0）；E06/E35/E36/E08/E10 等 |
 
 ### 描述（旁白）`miaosu.lua`
 
@@ -141,8 +152,6 @@ Scene 子物体名仍为 `luaModuleName`（无路径）；Publish 会同步 `Edi
 | 米粒 / 瓜子 / 阿满 | 台词在 `xiaojiZTT_*` 内；已从 NPCData 删除空占位 |
 | 玩家 | 无独立脚本；`NpcName=玩家` 散布各文件 |
 
-**老鼠兄弟**（策划有完整树状脚本）在 NPCData 中**尚未注册**，无 lua 文件。
-
 ---
 
 ## 4. 全文件速查表
@@ -156,8 +165,8 @@ Scene 子物体名仍为 `luaModuleName`（无路径）；Publish 会同步 `Edi
 | `FROM_DOC/heimao_03_FROM_DOC.lua` | 黑猫 | 黑猫 | 1 |
 | `FROM_DOC/heimao_tree_01_FROM_DOC.lua` | 大树 | 大树 | 1 |
 | `FROM_DOC/qingwa_01_FROM_DOC.lua` | 悲伤蛙 | 悲伤蛙 | 1 |
-| `wuniu_01.lua` | 闪电蜗牛 | 闪电蜗牛 | 1 |
-| `wuya_01.lua` | 乌鸦 | 乌鸦 | 1 |
+| `FROM_DOC/wuniu_01_FROM_DOC.lua` | 闪电蜗牛 | 闪电蜗牛 | 1 |
+| `FROM_DOC/wuya_01_FROM_DOC.lua` | 乌鸦 | 乌鸦 | 1 |
 | `miaosu.lua` | 描述 | 描述 | 1 |
 
 ---
@@ -175,8 +184,8 @@ Scene 子物体名仍为 `luaModuleName`（无路径）；Publish 会同步 `Edi
 | 黑猫 | 黑猫 | `heimao_03_FROM_DOC` |
 | 大树 | 大树 | `heimao_tree_01_FROM_DOC` |
 | 悲伤蛙 | 悲伤蛙 | `qingwa_01_FROM_DOC` |
-| 闪电蜗牛 | 闪电蜗牛 | `wuniu_01` |
-| 乌鸦 | 乌鸦 | `wuya_01` |
+| 闪电蜗牛 | 闪电蜗牛 | `wuniu_01_FROM_DOC` |
+| 乌鸦 | 乌鸦 | `wuya_01_FROM_DOC` |
 | 描述 | 描述 | `miaosu`（或指定 ID 的其他描述段） |
 
 环境 E 点多数设 `npcname=描述`，再配合起始节点 `ID` 跳转到对应对话段。

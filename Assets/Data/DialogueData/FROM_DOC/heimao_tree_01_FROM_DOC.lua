@@ -17,7 +17,19 @@ DialogueConfig[0] = {
     NpcSprite = "",
     Dialogue = "",
     ConditionBranches = {
-        { VarName = "Dog_BlackCatSummoned", VarType = "bool", TrueNext = -1, FalseNext = 80 }
+        { VarName = "Dog_BlackCatSummoned", VarType = "bool", TrueNext = -1, FalseNext = 79 }
+    },
+    Next = 79
+}
+
+DialogueConfig[79] = {
+    Type = "Normal",
+    DocTag = "entry#shake",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "",
+    ConditionBranches = {
+        { VarName = "BlackCat_TreeShakeStarted", VarType = "bool", TrueNext = -1, FalseNext = 80 }
     },
     Next = 80
 }

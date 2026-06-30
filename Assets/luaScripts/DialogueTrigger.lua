@@ -5,9 +5,29 @@
 
 local loadedNPCScripts = {}
 
+local function ResolveDialogueManager()
+    local mgr = _G["_DialogueManager"]
+    if mgr then
+        return mgr
+    end
+
+    local managerGo = CS.UnityEngine.GameObject.Find("DialogueManager")
+    if not managerGo then
+        return nil
+    end
+
+    local douyinScript = managerGo:GetComponent(typeof(DouyinScript))
+    if not douyinScript or not douyinScript.script then
+        return nil
+    end
+
+    _G["_DialogueManager"] = douyinScript.script
+    return douyinScript.script
+end
+
 -- Unity 启动入口：检查 DialogueManager 是否存在
 function Start()
-    if _G["_DialogueManager"] == nil then
+    if ResolveDialogueManager() == nil then
         logError("场景中缺少DialogueManager预制件")
     end
 end
@@ -269,9 +289,13 @@ function StartNpcDialogue(targetNpcName, startId)
         logError("[DialogueLoad] StartNpcDialogue: npcName 为空")
         return false
     end
-    local mgr = _G["_DialogueManager"]
-    if not mgr or not mgr.StartDialogueWithData then
-        logError("[DialogueLoad] DialogueManager 未就绪")
+    local mgr = ResolveDialogueManager()
+    if not mgr then
+        logError("[DialogueLoad] DialogueManager 未就绪：场景中缺少 DialogueManager 或 NpcDialogueManager.Awake 未执行")
+        return false
+    end
+    if not mgr.StartDialogueWithData then
+        logError("[DialogueLoad] DialogueManager 未就绪：缺少 StartDialogueWithData（检查 NpcDialogueManager.lua 是否已 Publish）")
         return false
     end
     local npcScript = LoadNPCScript(targetNpcName)
@@ -293,5 +317,10 @@ function StartDialogue()
         return
     end
     print(string.format("[DialogueLoad] start directID=%s", tostring(ID)))
-    _G["_DialogueManager"].StartDialogue(ID)
+    local mgr = ResolveDialogueManager()
+    if not mgr or not mgr.StartDialogue then
+        logError("[DialogueLoad] DialogueManager 未就绪：缺少 StartDialogue")
+        return
+    end
+    mgr.StartDialogue(ID)
 end

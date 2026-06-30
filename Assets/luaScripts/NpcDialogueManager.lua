@@ -8,7 +8,28 @@
 ---@var next :UnityEngine.UI.Button
 ---@var playerPanel :UnityEngine.GameObject
 ---@var playerPanelBtn :UnityEngine.UI.Button
----@var Sprites :UnityEngine.Sprite[]
+-- 立绘引用（拖切好的 Sprite；NpcSprite key 见括号）
+---@var 立绘_淑芬_守望 :UnityEngine.Sprite
+---@var 立绘_淑芬_护雏 :UnityEngine.Sprite
+---@var 立绘_大黄_醉倒 :UnityEngine.Sprite
+---@var 立绘_大黄_执勤 :UnityEngine.Sprite
+---@var 立绘_大黄_振奋 :UnityEngine.Sprite
+---@var 立绘_悲伤蛙_丧 :UnityEngine.Sprite
+---@var 立绘_悲伤蛙_介入 :UnityEngine.Sprite
+---@var 立绘_老鼠_兜售 :UnityEngine.Sprite
+---@var 立绘_老鼠_八卦 :UnityEngine.Sprite
+---@var 立绘_老鼠_发怵 :UnityEngine.Sprite
+---@var 立绘_小鸡_装酷 :UnityEngine.Sprite
+---@var 立绘_小鸡_心虚 :UnityEngine.Sprite
+---@var 立绘_小鸡_愧疚 :UnityEngine.Sprite
+---@var 立绘_乌鸦_得意 :UnityEngine.Sprite
+---@var 立绘_乌鸦_吝啬 :UnityEngine.Sprite
+---@var 立绘_乌鸦_叫嚣 :UnityEngine.Sprite
+---@var 立绘_黑猫_高傲 :UnityEngine.Sprite
+---@var 立绘_黑猫_审视 :UnityEngine.Sprite
+---@var 立绘_黑猫_炸毛 :UnityEngine.Sprite
+---@var 立绘_闪电蜗牛_待机 :UnityEngine.Sprite
+---@var 立绘_闪电蜗牛_闪电蜗牛 :UnityEngine.Sprite
 ---@end
 
 local dialogueManager = {}
@@ -39,9 +60,7 @@ local selectedOptionCache = nil
 local isWaitingForNextAfterOption = false
 local externalDialogueConfig = nil -- 动态加载的外部对话数据
 local unlockedBranchCache = {}     -- 已处理过的分支缓存，防止同一节点重复解锁
-
--- ========== 新增：头像辅助功能 ==========
-local _npcConfigsCache = nil -- NPC 配置缓存，避免重复读取文件
+local lastPortraitSpriteKey = nil  -- 描述行沿用上一句 NPC 立绘
 
 -- World Debugger 对话调试（过滤关键字 [Dialogue]）
 local DIALOGUE_DEBUG = true
@@ -55,6 +74,47 @@ end
 local function DbgError(msg)
     logError("[Dialogue] " .. msg)
 end
+
+-- ========== 立绘：Inspector 按 NPC·立绘名 拖入，注册到 allSprites[NpcSprite key] ==========
+local function RegPortrait(key, sprite)
+    if key and sprite then
+        allSprites[key] = sprite
+    end
+end
+
+local function GetLuaBinding(varName)
+    if _ENV and _ENV[varName] ~= nil then
+        return _ENV[varName]
+    end
+    return _G[varName]
+end
+
+local function InitPortraitRefs()
+    RegPortrait("守望", GetLuaBinding("立绘_淑芬_守望"))
+    RegPortrait("护雏", GetLuaBinding("立绘_淑芬_护雏"))
+    RegPortrait("醉倒", GetLuaBinding("立绘_大黄_醉倒"))
+    RegPortrait("执勤", GetLuaBinding("立绘_大黄_执勤"))
+    RegPortrait("振奋", GetLuaBinding("立绘_大黄_振奋"))
+    RegPortrait("丧", GetLuaBinding("立绘_悲伤蛙_丧"))
+    RegPortrait("介入", GetLuaBinding("立绘_悲伤蛙_介入"))
+    RegPortrait("兜售", GetLuaBinding("立绘_老鼠_兜售"))
+    RegPortrait("八卦", GetLuaBinding("立绘_老鼠_八卦"))
+    RegPortrait("发怵", GetLuaBinding("立绘_老鼠_发怵"))
+    RegPortrait("装酷", GetLuaBinding("立绘_小鸡_装酷"))
+    RegPortrait("心虚", GetLuaBinding("立绘_小鸡_心虚"))
+    RegPortrait("愧疚", GetLuaBinding("立绘_小鸡_愧疚"))
+    RegPortrait("得意", GetLuaBinding("立绘_乌鸦_得意"))
+    RegPortrait("吝啬", GetLuaBinding("立绘_乌鸦_吝啬"))
+    RegPortrait("叫嚣", GetLuaBinding("立绘_乌鸦_叫嚣"))
+    RegPortrait("高傲", GetLuaBinding("立绘_黑猫_高傲"))
+    RegPortrait("审视", GetLuaBinding("立绘_黑猫_审视"))
+    RegPortrait("炸毛", GetLuaBinding("立绘_黑猫_炸毛"))
+    RegPortrait("待机", GetLuaBinding("立绘_闪电蜗牛_待机"))
+    RegPortrait("闪电蜗牛", GetLuaBinding("立绘_闪电蜗牛_闪电蜗牛"))
+end
+
+-- ========== 新增：头像辅助功能 ==========
+local _npcConfigsCache = nil -- NPC 配置缓存，避免重复读取文件
 
 -- 从 avatarPath 中提取 sprite 名称（去掉路径和扩展名）
 -- 例如: "Assets/Res/TouXiang_LiHui/Dog/Dog01.png" -> "Dog01"
@@ -97,6 +157,43 @@ local function EnsureNPCConfigsLoaded()
     end
 
     return nil
+end
+
+local function ResolvePortraitSpriteKey(data)
+    if not data then
+        return nil
+    end
+    if data.NpcSprite and data.NpcSprite ~= "" then
+        return data.NpcSprite
+    end
+    local speaker = data.NpcName or ""
+    if speaker == "" or speaker == "描述" or speaker == "玩家" then
+        return nil
+    end
+    local npcConfigs = EnsureNPCConfigsLoaded()
+    if npcConfigs and npcConfigs.byName and npcConfigs.byName[speaker] then
+        local npcConfig = npcConfigs.byName[speaker]
+        if npcConfig.avatarPath and npcConfig.avatarPath ~= "" then
+            return ExtractSpriteNameFromPath(npcConfig.avatarPath)
+        end
+    end
+    return nil
+end
+
+local function ApplyPortraitSprite(spriteKey, speaker)
+    if not npcSprite or not spriteKey or spriteKey == "" then
+        return false
+    end
+    local sprite = allSprites[spriteKey]
+    if not sprite then
+        return false
+    end
+    npcSprite.sprite = sprite
+    npcSprite.gameObject:SetActive(true)
+    if speaker ~= "描述" then
+        lastPortraitSpriteKey = spriteKey
+    end
+    return true
 end
 
 -- 根据条件分支计算下一个节点 ID（reason 供 World Debugger 日志）
@@ -172,6 +269,11 @@ function ApplySetVariables(data)
             local boolVal = value == true or value == "true" or value == 1
             setFunc(varName, boolVal, "bool")
             Dbg("SetVar " .. varName .. "=" .. tostring(boolVal) .. " (was " .. tostring(was) .. ")")
+            if string.match(varName or "", "^Mouse_CheapSold_") or string.match(varName or "", "^Mouse_PremiumSold_") then
+                if _G["BookController_UnlockMouseIntel"] then
+                    _G["BookController_UnlockMouseIntel"](varName)
+                end
+            end
         else
             local intVal = tonumber(value) or 0
             setFunc(varName, intVal, "int")
@@ -236,17 +338,22 @@ function CheckAndUnlockBranch(data)
     end
 end
 
+local function RegisterDialogueManagerApi(target)
+    target.StartDialogue = StartDialogue
+    target.StartDialogueWithData = StartDialogueWithData
+    target.EndDialogue = EndDialogue
+    target.IsDialogueActive = IsDialogueActive
+    target.CheckBranch = CheckBranchFlag
+    target.JumpToDialogueNode = JumpToDialogueNode
+end
+
 function Awake()
+    RegisterDialogueManagerApi(self.script)
     _G["_DialogueManager"] = self.script
     dialogueManager = self.script
+    print("[Dialogue] DialogueManager 已注册 (_DialogueManager.StartDialogueWithData OK)")
 
-    if Sprites then
-        for i = 1, Sprites.Length do
-            if Sprites[i - 1] then
-                allSprites[Sprites[i - 1].name] = Sprites[i - 1]
-            end
-        end
-    end
+    InitPortraitRefs()
 
     if dialoguePanel then
         dialoguePanel:SetActive(false)
@@ -296,6 +403,7 @@ function StartDialogue(dialogueID)
     -- 重置 NPC 配置缓存，确保每次对话都读取最新的配置文件
     _npcConfigsCache = nil
     if _G["_NPCConfigs"] then _G["_NPCConfigs"] = nil end
+    lastPortraitSpriteKey = nil
 
     SetPlayerNamePanel(false)
     currentDialogueID = dialogueID
@@ -308,12 +416,36 @@ function StartDialogue(dialogueID)
     UpdateDialogueUI()
 end
 
+-- 对话进行中的节点跳转（如老鼠商店抽选情报）；须写 local currentDialogueID，不能 mgr.currentDialogueID=
+function JumpToDialogueNode(nodeId)
+    if GetDialogueData(nodeId) == nil then
+        DbgError("JumpToDialogueNode: missing node " .. tostring(nodeId))
+        return false
+    end
+
+    isWaitingForChoice = false
+    isWaitingForNextAfterOption = false
+    selectedOptionCache = nil
+    isTyping = false
+    isAnimatingOptions = false
+
+    SetPlayerNamePanel(false)
+    currentDialogueID = nodeId
+    if dialoguePanel then
+        dialoguePanel:SetActive(true)
+    end
+    DouyinUIService.SetUIVisible(false)
+    UpdateDialogueUI()
+    return true
+end
+
 function StartDialogueWithData(dialogueData, startID)
     externalDialogueConfig = dialogueData
 
     -- 重置 NPC 配置缓存，确保每次对话都读取最新的配置文件
     _npcConfigsCache = nil
     if _G["_NPCConfigs"] then _G["_NPCConfigs"] = nil end
+    lastPortraitSpriteKey = nil
 
     local actualID = startID or 1
     if GetDialogueData(actualID) == nil then
@@ -421,7 +553,7 @@ function UpdateDialogueUI()
             else
                 break
             end
-        elseif data.Dialogue == nil or data.Dialogue == "" then
+        elseif (data.Dialogue == nil or data.Dialogue == "") and data.Type ~= "Question" then
             CheckAndUnlockBranch(data)
             ApplySetVariables(data)
 
@@ -503,36 +635,16 @@ function UpdateNPCInfo(data)
     ApplyNamePanelForSpeaker(speaker)
 
     if npcSprite then
-        -- 玩家 / 描述对话时不显示头像
-        if speaker == "玩家" or speaker == "描述" then
-            npcSprite.gameObject:SetActive(false)
-        else
-            local spriteKey = nil
+        local spriteKey = ResolvePortraitSpriteKey(data)
+        if speaker == "玩家" then
+            -- 玩家无立绘：沿用上一句 NPC 立绘，避免头像区空白
+            spriteKey = lastPortraitSpriteKey
+        elseif (not spriteKey or spriteKey == "") and speaker == "描述" then
+            spriteKey = lastPortraitSpriteKey
+        end
 
-            -- 1. 优先使用节点中配置的 NpcSprite
-            if data.NpcSprite and data.NpcSprite ~= "" then
-                spriteKey = data.NpcSprite
-            end
-
-            -- 2. 如果 NpcSprite 为空，则尝试从 NPC 配置中获取 avatarPath
-            if (not spriteKey or spriteKey == "") and data.NpcName and data.NpcName ~= "" then
-                local npcConfigs = EnsureNPCConfigsLoaded()
-                if npcConfigs and npcConfigs.byName and npcConfigs.byName[data.NpcName] then
-                    local npcConfig = npcConfigs.byName[data.NpcName]
-                    if npcConfig.avatarPath and npcConfig.avatarPath ~= "" then
-                        spriteKey = ExtractSpriteNameFromPath(npcConfig.avatarPath)
-                        print("[头像加载] NPC[" ..
-                            data.NpcName ..
-                            "] avatarPath: " .. npcConfig.avatarPath .. " -> spriteName: " .. tostring(spriteKey))
-                    end
-                end
-            end
-
-            -- 3. 在 allSprites 中查找并显示
-            if spriteKey and spriteKey ~= "" and allSprites[spriteKey] then
-                npcSprite.sprite = allSprites[spriteKey]
-                npcSprite.gameObject:SetActive(true)
-            else
+        if not ApplyPortraitSprite(spriteKey, speaker) then
+            if speaker ~= "描述" and speaker ~= "玩家" then
                 local availableKeys = {}
                 for k, v in pairs(allSprites) do
                     table.insert(availableKeys, k)
@@ -546,7 +658,18 @@ function UpdateNPCInfo(data)
 
     if npcDialogueText then
         fullDialogueText = data.Dialogue or ""
-        StartTypingEffect()
+        if data.Type == "Question" and fullDialogueText == "" then
+            -- 空台词 Question hub（老鼠 1-hub 等）：保留上一句 NPC 气泡，直接出菜单
+            local preserved = npcDialogueText.text
+            if preserved and preserved ~= "" then
+                fullDialogueText = preserved
+            end
+            isTyping = false
+            npcDialogueText.text = fullDialogueText
+            ShowQuestionUI(data)
+        else
+            StartTypingEffect()
+        end
     end
 end
 
@@ -646,88 +769,102 @@ function ShowNPCConversationUI(data)
 end
 
 -- 根据显示条件检查选项是否应该显示
--- 多个条件之间是 AND 关系（所有条件都满足才显示）
+-- DisplayConditions：AND（全部满足）
+-- DisplayAnyConditions：OR（至少一条满足）；可与 DisplayConditions 组合
+local function EvaluateDisplayCondition(cond, getFunc)
+    if not cond then
+        return true
+    end
+
+    local varName = cond.VarName
+    local varType = cond.VarType or "bool"
+    local varValue = getFunc(varName)
+    local op = cond.Op or "=="
+    local condValue = cond.Value
+
+    if varType == "bool" then
+        local expectedValue = condValue
+        if expectedValue == nil then
+            expectedValue = true
+        end
+        if type(expectedValue) == "string" then
+            expectedValue = (expectedValue == "true" or expectedValue == "1")
+        end
+
+        local varBool = varValue
+        if varValue == nil then
+            varBool = false
+        elseif type(varValue) == "number" then
+            varBool = (varValue ~= 0)
+        elseif type(varValue) == "string" then
+            varBool = (varValue == "true" or varValue == "1")
+        end
+
+        if op == "==" then
+            return varBool == expectedValue
+        elseif op == "!=" then
+            return varBool ~= expectedValue
+        end
+        return false
+    end
+
+    local cmpValue = tonumber(condValue) or 0
+    local intVal = tonumber(varValue) or 0
+    if op == "==" then
+        return intVal == cmpValue
+    elseif op == "!=" then
+        return intVal ~= cmpValue
+    elseif op == ">" then
+        return intVal > cmpValue
+    elseif op == "<" or op == "lt" then
+        return intVal < cmpValue
+    elseif op == ">=" then
+        return intVal >= cmpValue
+    elseif op == "<=" then
+        return intVal <= cmpValue
+    end
+    return false
+end
+
 function CheckOptionDisplayConditions(option)
-    if not option or not option.DisplayConditions then
+    if not option then
         return true
     end
 
     local conditions = option.DisplayConditions
-    if #conditions == 0 then
+    local anyConditions = option.DisplayAnyConditions
+    local hasAnd = conditions and #conditions > 0
+    local hasOr = anyConditions and #anyConditions > 0
+
+    if not hasAnd and not hasOr then
         return true
     end
 
     local getFunc = _G["GetGlobalVar"]
 
-    print(string.format("[DisplayCond] 检查选项: %s, 条件数量: %d", tostring(option.Text), #conditions))
+    print(string.format("[DisplayCond] 检查选项: %s, AND=%d OR=%d",
+        tostring(option.Text), hasAnd and #conditions or 0, hasOr and #anyConditions or 0))
 
-    for i, cond in ipairs(conditions) do
-        local varName = cond.VarName
-        local varType = cond.VarType or "bool"
-        local varValue = getFunc(varName)
-        local op = cond.Op or "=="
-        local condValue = cond.Value
-
-        print(string.format("[DisplayCond] [%d] varName=%s, varType=%s, op=%s, condValue=%s(type=%s)",
-            i, tostring(varName), tostring(varType), tostring(op), tostring(condValue), type(condValue)))
-        print(string.format("[DisplayCond] [%d] varValue=%s(type=%s)",
-            i, tostring(varValue), type(varValue)))
-
-        if varType == "bool" then
-            local expectedValue = condValue
-            if expectedValue == nil then
-                expectedValue = true
-            end
-            if type(expectedValue) == "string" then
-                expectedValue = (expectedValue == "true" or expectedValue == "1")
-            end
-
-            local varBool = varValue
-            if varValue == nil then
-                varBool = false
-            elseif type(varValue) == "number" then
-                varBool = (varValue ~= 0)
-            elseif type(varValue) == "string" then
-                varBool = (varValue == "true" or varValue == "1")
-            end
-
-            print(string.format("[DisplayCond] [%d] 比较: varBool=%s, expectedValue=%s, 结果=%s",
-                i, tostring(varBool), tostring(expectedValue), tostring(varBool == expectedValue)))
-
-            if op == "==" then
-                if varBool ~= expectedValue then
-                    print(string.format("[DisplayCond] [%d] 条件不满足，返回 false", i))
-                    return false
-                end
-            elseif op == "!=" then
-                if varBool == expectedValue then
-                    print(string.format("[DisplayCond] [%d] 条件不满足，返回 false", i))
-                    return false
-                end
-            end
-        else
-            local cmpValue = tonumber(condValue) or 0
-            local intVal = tonumber(varValue) or 0
-            local match = false
-            if op == "==" then
-                match = (intVal == cmpValue)
-            elseif op == "!=" then
-                match = (intVal ~= cmpValue)
-            elseif op == ">" then
-                match = (intVal > cmpValue)
-            elseif op == "<" or op == "lt" then
-                match = (intVal < cmpValue)
-            elseif op == ">=" then
-                match = (intVal >= cmpValue)
-            elseif op == "<=" then
-                match = (intVal <= cmpValue)
-            end
-            print(string.format("[DisplayCond] [%d] 比较: intVal=%d %s cmpValue=%d, 结果=%s",
-                i, intVal, op, cmpValue, tostring(match)))
-            if not match then
-                print(string.format("[DisplayCond] [%d] 条件不满足，返回 false", i))
+    if hasAnd then
+        for i, cond in ipairs(conditions) do
+            if not EvaluateDisplayCondition(cond, getFunc) then
+                print(string.format("[DisplayCond] AND[%d] 不满足，返回 false", i))
                 return false
             end
+        end
+    end
+
+    if hasOr then
+        local anyMatch = false
+        for i, cond in ipairs(anyConditions) do
+            if EvaluateDisplayCondition(cond, getFunc) then
+                anyMatch = true
+                break
+            end
+        end
+        if not anyMatch then
+            print("[DisplayCond] OR 组无匹配，返回 false")
+            return false
         end
     end
 
@@ -736,9 +873,17 @@ function CheckOptionDisplayConditions(option)
 end
 
 -- hub 菜单最多显示 4 项：超过时保留前 3 项 + 最后一项（告辞/结束对话，策划约定排在菜单末尾）
-local function ApplyHubMenuCap(options)
+-- Question.MenuCap = 0 表示不限制（老鼠 1-hub）
+local function ApplyHubMenuCap(options, hubData)
     local count = #options
-    if count <= 4 then
+    local cap = 4
+    if hubData and hubData.MenuCap ~= nil then
+        if hubData.MenuCap == 0 then
+            return options
+        end
+        cap = hubData.MenuCap
+    end
+    if count <= cap then
         return options
     end
     return {
@@ -772,7 +917,7 @@ function ShowQuestionUI(data)
         end
     end
     currentOptions = filteredOptions
-    currentOptions = ApplyHubMenuCap(currentOptions)
+    currentOptions = ApplyHubMenuCap(currentOptions, data)
 
     if #currentOptions == 0 then
         DouyinUtility.Toast("提问模式缺少满足条件的选项～")
@@ -929,7 +1074,7 @@ local function GetFirstContentNodeAfterID(startID)
 
         if nodeData.RotatePool ~= nil and #nodeData.RotatePool > 0 then
             nextID = nodeData.RotatePool[1]
-        elseif nodeData.Dialogue == nil or nodeData.Dialogue == "" then
+        elseif (nodeData.Dialogue == nil or nodeData.Dialogue == "") and nodeData.Type ~= "Question" then
             local routed = GetNextNodeByCondition(nodeData)
             if routed == nil then
                 routed = nodeData.Next
@@ -984,6 +1129,13 @@ end
 
 -- ========== 修改：执行选项的实际分支跳转逻辑（支持条件分支）==========
 function PerformOptionJump(option, skipRedundantPlayerLine)
+    if option ~= nil and option.ShopAction ~= nil and option.ShopAction ~= "" then
+        local shopFn = _G["MouseShop_HandleAction"]
+        if shopFn and shopFn(option.ShopAction, option) then
+            return
+        end
+    end
+
     if option.BranchFlag then
         SaveBranchFlag(option.BranchFlag)
     end
@@ -1093,6 +1245,7 @@ function EndDialogue(reason)
     isAnimatingOptions = false
     externalDialogueConfig = nil
     unlockedBranchCache = {}
+    lastPortraitSpriteKey = nil
 
     if dialoguePanel then
         dialoguePanel:SetActive(false)
@@ -1110,22 +1263,3 @@ function EndDialogue(reason)
     TryChainDialogueFromNode(chainSource)
 end
 
-function dialogueManager.IsDialogueActive()
-    return IsDialogueActive()
-end
-
-function dialogueManager.StartDialogue(dialogueID)
-    StartDialogue(dialogueID)
-end
-
-function dialogueManager.StartDialogueWithData(dialogueData, startID)
-    StartDialogueWithData(dialogueData, startID)
-end
-
-function dialogueManager.EndDialogue()
-    EndDialogue()
-end
-
-function dialogueManager.CheckBranch(flag)
-    return CheckBranchFlag(flag)
-end

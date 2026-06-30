@@ -25,8 +25,12 @@ DEFAULT_ALL_SECTIONS = (
     "2-A,2-hub,2-A',2-B,2-C,2-E,NGPlus"
 )
 
+SPEAKER_NAMES = (
+    r"玩家|描述|大黄|淑芬|黑猫|悲伤蛙|乌鸦|阿满|米粒|瓜子|豆豆|大树|闪电蜗牛|小鸡侦探团|"
+    r"鼠哥|鼠弟|Flash"
+)
 SPEAKER_LINE = re.compile(
-    r"^(?P<speaker>玩家|描述|大黄|淑芬|黑猫|悲伤蛙|乌鸦|阿满|米粒|瓜子|豆豆|大树|闪电蜗牛|小鸡侦探团)[:：](?P<text>.+)$"
+    rf"^(?P<speaker>{SPEAKER_NAMES})(?:·(?P<sprite>[^：:]+))?[:：](?P<text>.+)$"
 )
 MENU_LINE = re.compile(
     r"^「(?P<text>[^」]+)」(?:（(?P<cond>[^）]*)）)?→\s*(?P<target>.+)$"
@@ -65,6 +69,7 @@ class ParsedSection:
     dialogue_lines: list[str] = field(default_factory=list)
     conditional_blocks: list[ConditionalBlock] = field(default_factory=list)
     revisit_speaker: str = "大黄"
+    revisit_sprite: str = ""
     revisit_text: str = ""
     revisit_condition: str = ""
     menu_lines: list[str] = field(default_factory=list)
@@ -360,16 +365,16 @@ class NodeBuilder:
     ) -> list[LuaNode]:
         created: list[LuaNode] = []
         for index, line in enumerate(lines):
-            match = SPEAKER_LINE.match(line)
-            if not match:
+            parsed = parse_speaker_line(line)
+            if not parsed:
                 continue
-            speaker = match.group("speaker")
-            text = match.group("text").strip()
+            speaker, sprite, text = parsed
             node = self.create(
                 f"{doc_prefix}#{index + 1}",
                 "Normal",
                 speaker,
                 text,
+                npc_sprite=sprite,
             )
             created.append(node)
         if link:
@@ -384,8 +389,15 @@ class NodeBuilder:
         menu_lines: list[str],
         *,
         speaker: str = "大黄",
+        revisit_sprite: str | None = None,
     ) -> LuaNode:
-        hub = self.create(doc_id, "Question", speaker, revisit_text or "……")
+        hub = self.create(
+            doc_id,
+            "Question",
+            speaker,
+            revisit_text or "……",
+            npc_sprite=revisit_sprite if revisit_sprite is not None else infer_sprite(speaker),
+        )
         self.doc_to_lua[doc_id] = hub.node_id
         for menu_line in menu_lines:
             for option in _menu_line_to_options(menu_line):
@@ -625,12 +637,42 @@ def target_to_doc_id(target: str) -> str:
     return normalize_doc_id(first.replace("**", ""))
 
 
+def parse_speaker_line(line: str) -> tuple[str, str, str] | None:
+    """Return (speaker, sprite_key, text) or None."""
+    match = SPEAKER_LINE.match(line)
+    if not match:
+        return None
+    speaker = match.group("speaker")
+    if speaker == "Flash":
+        speaker = "闪电蜗牛"
+    sprite = match.group("sprite") or ""
+    if not sprite:
+        sprite = infer_sprite(speaker)
+    text = match.group("text").strip()
+    return speaker, sprite, text
+
+
 def infer_sprite(name: str) -> str:
-    if name == "大黄":
-        return "大黄"
-    if name == "淑芬":
-        return "守望"
-    return ""
+    if name in ("玩家", "描述", "大树"):
+        return ""
+    if name == "Flash":
+        name = "闪电蜗牛"
+    defaults = {
+        "大黄": "醉倒",
+        "淑芬": "守望",
+        "黑猫": "高傲",
+        "悲伤蛙": "丧",
+        "乌鸦": "得意",
+        "闪电蜗牛": "待机",
+        "鼠哥": "兜售",
+        "鼠弟": "兜售",
+        "小鸡侦探团": "装酷",
+        "阿满": "装酷",
+        "米粒": "装酷",
+        "瓜子": "装酷",
+        "豆豆": "装酷",
+    }
+    return defaults.get(name, "")
 
 
 def parse_carousel_variants(raw_lines: list[str]) -> list[list[str]]:
@@ -738,10 +780,9 @@ def parse_section_tree(section: TreeSection) -> ParsedSection:
             result.menu_lines.append(content)
             continue
         if mode == "revisit":
-            match = SPEAKER_LINE.match(content)
-            if match:
-                result.revisit_speaker = match.group("speaker")
-                result.revisit_text = match.group("text").strip()
+            parsed_line = parse_speaker_line(content)
+            if parsed_line:
+                result.revisit_speaker, result.revisit_sprite, result.revisit_text = parsed_line
             continue
         if mode == "revisit_in_cond" and current_cond:
             match = SPEAKER_LINE.match(content)
@@ -914,14 +955,21 @@ def build_section(parsed: ParsedSection, builder: NodeBuilder, cross_map: dict[s
             short_chain[-1].next_id = -1
         else:
             for line in early.revisit_lines or early.lines:
-                match = SPEAKER_LINE.match(line)
-                if match:
-                    n = builder.create("2-hub!E13#1", "Normal", match.group("speaker"), match.group("text").strip())
+                parsed_line = parse_speaker_line(line)
+                if parsed_line:
+                    sp, spr, txt = parsed_line
+                    n = builder.create("2-hub!E13#1", "Normal", sp, txt, npc_sprite=spr)
                     n.next_id = -1
                     short_chain = [n]
                     break
 
-        hub = builder.add_hub("2-hub#menu", parsed.revisit_text, parsed.menu_lines, speaker=parsed.revisit_speaker)
+        hub = builder.add_hub(
+            "2-hub#menu",
+            parsed.revisit_text,
+            parsed.menu_lines,
+            speaker=parsed.revisit_speaker,
+            revisit_sprite=parsed.revisit_sprite or None,
+        )
         builder.register_doc_entry("2-hub#menu", hub.node_id)
         if short_chain:
             gate = add_bool_gate(
@@ -932,7 +980,13 @@ def build_section(parsed: ParsedSection, builder: NodeBuilder, cross_map: dict[s
         return
 
     if parsed.menu_lines and not parsed.dialogue_lines:
-        builder.add_hub(parsed.doc_id, parsed.revisit_text, parsed.menu_lines, speaker=parsed.revisit_speaker)
+        builder.add_hub(
+            parsed.doc_id,
+            parsed.revisit_text,
+            parsed.menu_lines,
+            speaker=parsed.revisit_speaker,
+            revisit_sprite=parsed.revisit_sprite or None,
+        )
         return
 
     chain = builder.add_dialogue_chain(parsed.dialogue_lines, parsed.doc_id)

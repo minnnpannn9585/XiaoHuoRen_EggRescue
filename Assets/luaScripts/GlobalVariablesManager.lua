@@ -19,6 +19,7 @@ local DEBUG_INT_MAX = {
     TreeClueCount = 4,
     DogStatus = 4,
     ChickStatus = 3,
+    CheeseCount = 99,
 }
 
 -- 开发测对话分支时设为 true：保留 NPCData_Config 里 Publish 的 currentBranchId（如大黄 branch 5 → FROM_DOC）
@@ -115,6 +116,19 @@ function SetGlobalVar(varName, value, varType)
     end
 
     print("[GlobalVariables] 设置变量: " .. varName .. " = " .. tostring(runtimeValue))
+
+    if varName == "CheeseCount" and varType == "int" and _G["OnCheeseCountChanged"] then
+        _G["OnCheeseCountChanged"]()
+    end
+    if string.sub(varName or "", 1, 6) == "Mouse_" and _G["MouseBrother_RefreshDerivedFlags"] then
+        _G["MouseBrother_RefreshDerivedFlags"]()
+    end
+    if varName == "NGPlus" and varType == "bool" and runtimeValue == true and _G["CheeseRefresh_OnNGPlus"] then
+        _G["CheeseRefresh_OnNGPlus"]()
+    end
+    if _G["BookController_OnVarChanged"] then
+        _G["BookController_OnVarChanged"](varName)
+    end
 end
 
 function GetGlobalVarType(varName)
@@ -230,10 +244,14 @@ local function AddActionButton(parentRt, label, onClick)
     local btnGo = UnityEngine.GameObject("ActionBtn_" .. label)
     btnGo.transform:SetParent(parentRt, false)
     local btnRt = btnGo:AddComponent(typeof(UnityEngine.RectTransform))
-    btnRt.anchorMin = UnityEngine.Vector2(0, 0)
+    btnRt.anchorMin = UnityEngine.Vector2(0, 1)
     btnRt.anchorMax = UnityEngine.Vector2(1, 1)
-    btnRt.offsetMin = UnityEngine.Vector2(0, 0)
-    btnRt.offsetMax = UnityEngine.Vector2(0, 0)
+    btnRt.pivot = UnityEngine.Vector2(0.5, 1)
+    btnRt.sizeDelta = UnityEngine.Vector2(0, 34)
+
+    local layoutEl = btnGo:AddComponent(typeof(UnityEngine.UI.LayoutElement))
+    layoutEl.preferredHeight = 34
+    layoutEl.minHeight = 34
 
     local img = btnGo:AddComponent(typeof(UnityEngine.UI.Image))
     img.color = COLOR_ACTION
@@ -278,6 +296,16 @@ end
 
 local function TeleportToCrow()
     TeleportLocalActorNear("乌鸦", UnityEngine.Vector3(0, 0, 1.8))
+end
+
+local function AddCheeseFive()
+    local cur = tonumber(GetGlobalVar("CheeseCount")) or 0
+    local maxVal = DEBUG_INT_MAX.CheeseCount or 99
+    local nextVal = cur + 5
+    if nextVal > maxVal then
+        nextVal = maxVal
+    end
+    SetGlobalVar("CheeseCount", nextVal, "int")
 end
 
 local function BuildVarDebugScrollPanel()
@@ -331,10 +359,18 @@ local function BuildVarDebugScrollPanel()
         panelRt,
         UnityEngine.Vector2(0, 1),
         UnityEngine.Vector2(1, 1),
-        UnityEngine.Vector2(8, -78),
+        UnityEngine.Vector2(8, -118),
         UnityEngine.Vector2(-8, -42)
     )
+    local actionsLayout = actionsGo:AddComponent(typeof(UnityEngine.UI.VerticalLayoutGroup))
+    actionsLayout.childAlignment = UnityEngine.TextAnchor.UpperCenter
+    actionsLayout.childControlWidth = true
+    actionsLayout.childControlHeight = true
+    actionsLayout.childForceExpandWidth = true
+    actionsLayout.childForceExpandHeight = false
+    actionsLayout.spacing = 4
     AddActionButton(actionsRt, "到乌鸦身边", TeleportToCrow)
+    AddActionButton(actionsRt, "奶酪碎 +5", AddCheeseFive)
 
     local scrollGo, scrollRt = CreateRectChild(
         "ScrollView",
@@ -342,7 +378,7 @@ local function BuildVarDebugScrollPanel()
         UnityEngine.Vector2(0, 0),
         UnityEngine.Vector2(1, 1),
         UnityEngine.Vector2(8, 8),
-        UnityEngine.Vector2(-8, -84)
+        UnityEngine.Vector2(-8, -124)
     )
     local scrollRect = scrollGo:AddComponent(typeof(UnityEngine.UI.ScrollRect))
     scrollRect.horizontal = false
