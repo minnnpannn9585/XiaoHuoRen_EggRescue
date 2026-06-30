@@ -2,7 +2,7 @@
 -- Inspector 接线：每条目 / 每条连线 / 每个修饰各拖一个 GameObject（字段名 = 下表名）
 --
 -- 壳层：open, openRedDot, boolPanel, leftBtn, rightBtn, pageContents（含第 4 页老鼠情报）
--- 条目 entry_*（33）| 老鼠 prefab + LayoutLeft/Right | 连线 link_*（15，E17 两条为 GameObject[] 断线段）| 修饰 mod_*（13）
+-- 条目 entry_*（33）| 老鼠 prefab + LayoutLeft/Right | 连线 link_*（15，断线段用 GameObject[]：E17×2、D06↔D07）| 修饰 mod_*（13）
 -- 详见 MissingEggDoc-main/docs/09-侦探笔记本.md §9.8 与 docs/IMPLEMENTATION.md §6
 
 ---@var open :UnityEngine.UI.Button
@@ -58,7 +58,7 @@
 ---@var link_D05_E23 :UnityEngine.GameObject
 ---@var link_E17_D05 :UnityEngine.GameObject[]
 ---@var link_E17_E23 :UnityEngine.GameObject[]
----@var link_D06_D07 :UnityEngine.GameObject
+---@var link_D06_D07 :UnityEngine.GameObject[]
 ---@var link_E04_E06 :UnityEngine.GameObject
 ---@var link_E07_E08 :UnityEngine.GameObject
 ---@var link_E08_E27 :UnityEngine.GameObject
@@ -179,7 +179,7 @@ local function BuildCatalog()
         { go = link_D05_E23, ends = { "D05", "E23" } },
         { gos = link_E17_D05, ends = { "E17", "D05" } },
         { gos = link_E17_E23, ends = { "E17", "E23" } },
-        { go = link_D06_D07, ends = { "D06", "D07" } },
+        { gos = link_D06_D07, ends = { "D06", "D07" } },
         { go = link_E04_E06, ends = { "E04", "E06" } },
         { go = link_E07_E08, ends = { "E07", "E08" } },
         { go = link_E08_E27, ends = { "E08", "E27" } },
