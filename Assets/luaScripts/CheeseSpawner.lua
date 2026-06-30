@@ -2,13 +2,11 @@
 ---@var cheesePrefab :UnityEngine.GameObject
 ---@end
 
-local function ClearMarkerPickups(marker)
-    for i = marker.childCount - 1, 0, -1 do
-        local child = marker:GetChild(i)
-        if child then
-            UnityEngine.Object.Destroy(child.gameObject)
-        end
-    end
+local PICKUP_CHILD_NAME = "Pickup"
+
+local function FindMarkerPickup(marker)
+    local t = marker:Find(PICKUP_CHILD_NAME)
+    return t and t.gameObject or nil
 end
 
 local function IsMarkerAvailable(markerName)
@@ -21,6 +19,30 @@ end
 function Start()
     local markerRoot = self.transform
 
+    local function EnsureMarkerPickup(marker)
+        if cheesePrefab == nil then
+            return
+        end
+
+        local existing = FindMarkerPickup(marker)
+        if existing then
+            if _G["CheesePickup_Refresh"] then
+                _G["CheesePickup_Refresh"](existing)
+            end
+            return
+        end
+
+        if not IsMarkerAvailable(marker.name) then
+            return
+        end
+
+        local go = UnityEngine.GameObject.Instantiate(cheesePrefab, marker)
+        go.name = PICKUP_CHILD_NAME
+        go.transform.localPosition = CS.UnityEngine.Vector3.zero
+        go.transform.localRotation = CS.UnityEngine.Quaternion.identity
+        go.transform.localScale = CS.UnityEngine.Vector3.one
+    end
+
     local function SpawnAll()
         if cheesePrefab == nil then
             print("[CheeseSpawner] cheesePrefab 未绑定")
@@ -29,18 +51,7 @@ function Start()
 
         for i = 0, markerRoot.childCount - 1 do
             local marker = markerRoot:GetChild(i)
-            ClearMarkerPickups(marker)
-            if not IsMarkerAvailable(marker.name) then
-                goto continue
-            end
-
-            local go = UnityEngine.GameObject.Instantiate(cheesePrefab, marker)
-            go.name = "Pickup"
-            go.transform.localPosition = CS.UnityEngine.Vector3.zero
-            go.transform.localRotation = CS.UnityEngine.Quaternion.identity
-            go.transform.localScale = CS.UnityEngine.Vector3.one
-
-            ::continue::
+            EnsureMarkerPickup(marker)
         end
     end
 

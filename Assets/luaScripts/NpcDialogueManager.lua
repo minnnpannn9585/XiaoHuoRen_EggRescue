@@ -404,6 +404,9 @@ function StartDialogue(dialogueID)
     _npcConfigsCache = nil
     if _G["_NPCConfigs"] then _G["_NPCConfigs"] = nil end
     lastPortraitSpriteKey = nil
+    if npcSprite then
+        npcSprite.gameObject:SetActive(false)
+    end
 
     SetPlayerNamePanel(false)
     currentDialogueID = dialogueID
@@ -446,6 +449,9 @@ function StartDialogueWithData(dialogueData, startID)
     _npcConfigsCache = nil
     if _G["_NPCConfigs"] then _G["_NPCConfigs"] = nil end
     lastPortraitSpriteKey = nil
+    if npcSprite then
+        npcSprite.gameObject:SetActive(false)
+    end
 
     local actualID = startID or 1
     if GetDialogueData(actualID) == nil then
@@ -632,7 +638,12 @@ end
 
 function UpdateNPCInfo(data)
     local speaker = data.NpcName or ""
-    ApplyNamePanelForSpeaker(speaker)
+    local dialogue = data.Dialogue or ""
+    if dialogue:match("^（") then
+        ApplyNamePanelForSpeaker("描述")
+    else
+        ApplyNamePanelForSpeaker(speaker)
+    end
 
     if npcSprite then
         local spriteKey = ResolvePortraitSpriteKey(data)
@@ -651,8 +662,8 @@ function UpdateNPCInfo(data)
                 end
                 print("[头像加载] 找不到 spriteKey: " ..
                     tostring(spriteKey) .. ". 可用 keys: " .. table.concat(availableKeys, ", "))
-                npcSprite.gameObject:SetActive(false)
             end
+            npcSprite.gameObject:SetActive(false)
         end
     end
 

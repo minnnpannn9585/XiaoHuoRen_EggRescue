@@ -45,7 +45,7 @@ Mechanics_Code
 | 场景物体 | `npcname` | 备注 |
 |---------|-----------|------|
 | 大黄 | 大黄 | 另挂 `DaHuang.lua` 控制醉/醒模型与梯子 |
-| 淑芬 | 淑芬 | 委托起点 |
+| 淑芬 | 淑芬 | 委托起点；`ShuFen.lua` 与「淑芬2」双点切换 |
 | 黑猫 | 黑猫 | 第二章核心 |
 | 悲伤蛙 | 悲伤蛙 | 池塘线 |
 | 闪电蜗牛 | 闪电蜗牛 | 二周目 meta |
@@ -104,7 +104,8 @@ zttTouTing, miaosu
 | `BlackCatInteractionController.lua` | 黑猫 | 摇树前不可点，摇树后可点 |
 | `ClueTrigger.lua` | E 点 | 点击写入 1~2 个全局变量 |
 | `BookController.lua` | Canvas 笔记本 | 9.2.1 条目入册 + 9.2.2 连线/修饰；SetGlobalVar 实时刷新 |
-| `DaHuang.lua` | 大黄 | 监听 `E06_LadderBorrowed` 切换醉狗/醒狗与梯子 |
+| `DaHuang.lua` | 大黄 | 谷仓/红顶双点；醉醒模型与梯子 |
+| `ShuFen.lua` | 淑芬、淑芬2 | `Shufen_CommissionDone` 切换委托点与鸡舍回访点 |
 | `MainController.lua` | `MianController` | 每帧隐藏 SDK 飞行按钮与聊天面板 |
 
 路径：`Assets/luaScripts/`。

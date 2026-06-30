@@ -19,6 +19,9 @@ public static class InteractionPointFactory
     private const string DialogueTriggerGuid = "dbdfa9057e4e5a347b4a500a3d30bd57";
     private const string DouyinInteractorGuid = "0a6b2e5dd40d0804b81a27cdfccd5ba5";
     private const string ComicGateGuid = "a8b3c4d5e6f7489012345678abcdef01";
+    private const string SecondFloorWindowControllerGuid = "c7d8e9f0a1b2436589012345678def03";
+    private const string E19Name = "E19 · 关闭二层窗";
+    private const string E20Name = "E20 · 打开二层窗";
 
     private struct EPointSpec
     {
@@ -121,6 +124,8 @@ public static class InteractionPointFactory
             created++;
             Debug.Log("[InteractionPointFactory] 已创建: " + spec.GoName);
         }
+
+        EnsureSecondFloorWindowController(parent);
 
         EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
         Debug.Log($"[InteractionPointFactory] 完成。新建 {created}，跳过 {skipped}。");
@@ -262,6 +267,53 @@ public static class InteractionPointFactory
             WireInteractorActions(interactor, comic, null, "OnComicInteract", null);
             SetInteractorButtonText(interactor, "进入二层窗");
         }
+
+        go.SetActive(false);
+    }
+
+    private static void EnsureSecondFloorWindowController(Transform parent)
+    {
+        if (parent == null)
+        {
+            return;
+        }
+
+        Transform openWindow = parent.Find(E20Name);
+        if (openWindow != null && openWindow.gameObject.activeSelf)
+        {
+            openWindow.gameObject.SetActive(false);
+        }
+
+        if (FindDouyinScriptByGuid(parent.gameObject, SecondFloorWindowControllerGuid) != null)
+        {
+            return;
+        }
+
+        Type douyinScriptType = FindDouyinScriptType();
+        if (douyinScriptType == null)
+        {
+            Debug.LogWarning("[InteractionPointFactory] 未找到 DouyinScript 类型，跳过二层窗控制器");
+            return;
+        }
+
+        UnityEngine.Object controllerAsset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(
+            "Assets/luaScripts/SecondFloorWindowController.lua");
+        if (controllerAsset == null)
+        {
+            Debug.LogWarning("[InteractionPointFactory] 未找到 SecondFloorWindowController.lua");
+            return;
+        }
+
+        Component controller = parent.gameObject.AddComponent(douyinScriptType);
+        SerializedObject controllerSo = new SerializedObject(controller);
+        SerializedProperty scriptAsset = controllerSo.FindProperty("ScriptAsset");
+        if (scriptAsset != null)
+        {
+            scriptAsset.objectReferenceValue = controllerAsset;
+            controllerSo.ApplyModifiedProperties();
+        }
+
+        Debug.Log("[InteractionPointFactory] 已挂载 SecondFloorWindowController 至 InteractionPoint");
     }
 
     private static Type FindDouyinScriptType()

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7562742880158449756}
   - component: {fileID: 12517305171442381}
   m_Layer: 0
-  m_Name: CheesePickupPlaceholder
+  m_Name: CheesePickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,6 +33,7 @@ Transform:
   m_Children:
   - {fileID: 8077310389803259817}
   - {fileID: 3325653321226588296}
+  - {fileID: 8074839277526407679}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -62,8 +63,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetGUID:
-    n1: 948857229515184136
-    n2: 12939263243238601042
+    n1: 14467739471460882367
+    n2: 5389776206591096765
   RunContext: 0
 --- !u!114 &12517305171442381
 MonoBehaviour:
@@ -255,4 +256,78 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7742068945637132981, guid: 6b9e6e65af9fe4d9683700727a502df9, type: 3}
   m_PrefabInstance: {fileID: 1975116160211049756}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5507915659402883689
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7612559350633180515}
+    m_Modifications:
+    - target: {fileID: 4080198171192074912, guid: 21745284ddfc7478991a0023fc032565, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359374034086947734, guid: 21745284ddfc7478991a0023fc032565, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359374034086947734, guid: 21745284ddfc7478991a0023fc032565, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359374034086947734, guid: 21745284ddfc7478991a0023fc032565, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359374034086947734, guid: 21745284ddfc7478991a0023fc032565, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359374034086947734, guid: 21745284ddfc7478991a0023fc032565, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359374034086947734, guid: 21745284ddfc7478991a0023fc032565, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359374034086947734, guid: 21745284ddfc7478991a0023fc032565, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359374034086947734, guid: 21745284ddfc7478991a0023fc032565, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359374034086947734, guid: 21745284ddfc7478991a0023fc032565, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359374034086947734, guid: 21745284ddfc7478991a0023fc032565, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359374034086947734, guid: 21745284ddfc7478991a0023fc032565, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359374034086947735, guid: 21745284ddfc7478991a0023fc032565, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359374034086947817, guid: 21745284ddfc7478991a0023fc032565, type: 3}
+      propertyPath: m_Name
+      value: vfx_interact
+      objectReference: {fileID: 0}
+    - target: {fileID: 6216553074697375867, guid: 21745284ddfc7478991a0023fc032565, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 21745284ddfc7478991a0023fc032565, type: 3}
+--- !u!4 &8074839277526407679 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4359374034086947734, guid: 21745284ddfc7478991a0023fc032565, type: 3}
+  m_PrefabInstance: {fileID: 5507915659402883689}
   m_PrefabAsset: {fileID: 0}

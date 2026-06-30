@@ -67,8 +67,8 @@ DialogueConfig[6] = {
     Type = "Normal",
     DocTag = "1-A#6",
     NpcName = "阿满",
-    NpcSprite = "心虚",
-    Dialogue = "（发抖）……水怪。从池塘来的。把蛋叼走了……",
+    NpcSprite = "装酷",
+    Dialogue = "（压声）……水怪。从池塘来的。把蛋叼走了……",
     Next = 7  -- 下一段对话ID
 }
 

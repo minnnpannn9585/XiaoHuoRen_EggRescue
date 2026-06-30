@@ -558,8 +558,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -50}
-  m_SizeDelta: {x: 58, y: 58}
+  m_AnchoredPosition: {x: 0, y: -45}
+  m_SizeDelta: {x: 94.3428, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2294542046722831365
 CanvasRenderer:
@@ -589,9 +589,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 087f97cfb1102934180f3e8996940093, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b4ed54cd672d94c5699aa5d7c1fefe12, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -7550,8 +7550,8 @@ MonoBehaviour:
   - rid: 3883133806650327107
   - rid: 3883133806650327108
   - rid: 3883133806650327109
-  - rid: 3883133806650327110
-  - rid: 3883133806650327111
+  - rid: 3883133810448531466
+  - rid: 3883133810448531467
   - rid: 3883133806650327112
   - rid: 3883133806650327113
   - rid: 3883133806650327114
@@ -7843,18 +7843,6 @@ MonoBehaviour:
         varName: link_D05_E23
         Data: {fileID: 2863233606583752129}
         varType: UnityEngine.GameObject
-    - rid: 3883133806650327110
-      type: {class: DouyinLuaDataUObject, ns: , asm: com.douyin.script}
-      data:
-        varName: link_E17_D05
-        Data: {fileID: 2863233607665300086}
-        varType: UnityEngine.GameObject
-    - rid: 3883133806650327111
-      type: {class: DouyinLuaDataUObject, ns: , asm: com.douyin.script}
-      data:
-        varName: link_E17_E23
-        Data: {fileID: 2863233606402536184}
-        varType: UnityEngine.GameObject
     - rid: 3883133806650327112
       type: {class: DouyinLuaDataUObject, ns: , asm: com.douyin.script}
       data:
@@ -8016,6 +8004,18 @@ MonoBehaviour:
       data:
         varName: intelLeftColumnMax
         Data: 9
+    - rid: 3883133810448531466
+      type: {class: DouyinLuaDataGameObjectArr, ns: , asm: com.douyin.script}
+      data:
+        varName: link_E17_D05
+        Data: []
+        varType: UnityEngine.GameObject[]
+    - rid: 3883133810448531467
+      type: {class: DouyinLuaDataGameObjectArr, ns: , asm: com.douyin.script}
+      data:
+        varName: link_E17_E23
+        Data: []
+        varType: UnityEngine.GameObject[]
 --- !u!114 &2294542047800930406
 MonoBehaviour:
   m_ObjectHideFlags: 0

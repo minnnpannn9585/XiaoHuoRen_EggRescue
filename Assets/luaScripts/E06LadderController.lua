@@ -254,6 +254,9 @@ function PlaceLadderAtE06()
     SetGlobalBool("E06_LadderPlaced", true)
     print("[E06Ladder] E06_LadderPlaced = true")
     RefreshLadderState(true)
+    if _G.ClimbPath_Refresh then
+        _G.ClimbPath_Refresh("barn")
+    end
     StartPlacedDialogue()
 end
 

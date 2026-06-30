@@ -9,8 +9,8 @@ DialogueConfig = {}
 DialogueConfig[0] = {
     Type = "Normal",
     DocTag = "entry#0",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "老鼠兄弟",
+    NpcSprite = "兜售",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "NGPlus", VarType = "bool", TrueNext = 900, FalseNext = 80 },
@@ -180,8 +180,8 @@ DialogueConfig[28] = {
 DialogueConfig[80] = {
     Type = "Normal",
     DocTag = "entry#wall",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "老鼠兄弟",
+    NpcSprite = "兜售",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "Mouse_FirstGreetShown", VarType = "bool", TrueNext = 95, FalseNext = 20 },
@@ -192,8 +192,8 @@ DialogueConfig[80] = {
 DialogueConfig[95] = {
     Type = "Normal",
     DocTag = "1-hub-revisit-dispatch",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "老鼠兄弟",
+    NpcSprite = "兜售",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "Mouse_CheapPoolAvailable", VarType = "bool", TrueNext = 96, FalseNext = 98 },
@@ -228,8 +228,8 @@ DialogueConfig[97] = {
 DialogueConfig[98] = {
     Type = "Normal",
     DocTag = "1-hub-revisit-premium-only",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "老鼠兄弟",
+    NpcSprite = "兜售",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "Mouse_PremiumPoolAvailable", VarType = "bool", TrueNext = 96, FalseNext = 97 },
@@ -1242,7 +1242,7 @@ DialogueConfig[364] = {
 DialogueConfig[500] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "八卦",
+    NpcSprite = "兜售",
     Dialogue = "农场那条狗，大黄，见过吗？",
     Next = 501
 }
@@ -1290,7 +1290,7 @@ DialogueConfig[504] = {
 DialogueConfig[510] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "八卦",
+    NpcSprite = "兜售",
     Dialogue = "池塘那只蛙，见过没？",
     Next = 511
 }
@@ -1356,7 +1356,7 @@ DialogueConfig[516] = {
 DialogueConfig[520] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "八卦",
+    NpcSprite = "兜售",
     Dialogue = "鸡舍那只最大的母鸡，淑芬，认识吗？",
     Next = 521
 }
@@ -1413,7 +1413,7 @@ DialogueConfig[525] = {
 DialogueConfig[530] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "八卦",
+    NpcSprite = "兜售",
     Dialogue = "鸡舍外宽叶上的蜗牛，注意到没？",
     Next = 531
 }
@@ -1470,7 +1470,7 @@ DialogueConfig[535] = {
 DialogueConfig[540] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "八卦",
+    NpcSprite = "兜售",
     Dialogue = "主人床底有本书。",
     Next = 541
 }
@@ -1518,7 +1518,7 @@ DialogueConfig[544] = {
 DialogueConfig[550] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "八卦",
+    NpcSprite = "兜售",
     Dialogue = "那棵大橡树，仔细看了没？",
     Next = 551
 }
@@ -1584,7 +1584,7 @@ DialogueConfig[556] = {
 DialogueConfig[560] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "八卦",
+    NpcSprite = "兜售",
     Dialogue = "那条狗大黄，偶尔偷喝主人的发酵苹果渣。",
     Next = 561
 }
@@ -1632,7 +1632,7 @@ DialogueConfig[564] = {
 DialogueConfig[570] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "八卦",
+    NpcSprite = "兜售",
     Dialogue = "主人这几天，常趴窗往鸡舍方向看。",
     Next = 571
 }
@@ -1680,7 +1680,7 @@ DialogueConfig[574] = {
 DialogueConfig[580] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "八卦",
+    NpcSprite = "兜售",
     Dialogue = "那群戴假墨镜的小鬼，注意过没？",
     Next = 581
 }
@@ -1728,7 +1728,7 @@ DialogueConfig[584] = {
 DialogueConfig[590] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "八卦",
+    NpcSprite = "兜售",
     Dialogue = "这条值价。",
     Next = 591
 }
@@ -1737,7 +1737,7 @@ DialogueConfig[590] = {
 DialogueConfig[591] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "八卦",
+    NpcSprite = "发怵",
     Dialogue = "前天下午，黑猫自己爬上了谷仓屋顶。",
     Next = 592
 }
@@ -1746,7 +1746,7 @@ DialogueConfig[591] = {
 DialogueConfig[592] = {
     Type = "Normal",
     NpcName = "鼠弟",
-    NpcSprite = "八卦",
+    NpcSprite = "发怵",
     Dialogue = "没多大会儿，又下来了，爪子上什么都没带！！",
     Next = 593
 }
@@ -1785,7 +1785,7 @@ DialogueConfig[595] = {
 DialogueConfig[600] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "八卦",
+    NpcSprite = "兜售",
     Dialogue = "你知道那群小鸡为什么怕水怪吗？",
     Next = 601
 }
@@ -1833,7 +1833,7 @@ DialogueConfig[604] = {
 DialogueConfig[610] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "八卦",
+    NpcSprite = "兜售",
     Dialogue = "谷仓顶的乌鸦，前天早上从鸡舍门口草丛边捡了个东西。",
     Next = 611
 }
@@ -1881,7 +1881,7 @@ DialogueConfig[614] = {
 DialogueConfig[620] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "八卦",
+    NpcSprite = "兜售",
     Dialogue = "昨晚深夜，红顶屋里亮起一个黄灯。",
     Next = 621
 }
@@ -1929,7 +1929,7 @@ DialogueConfig[624] = {
 DialogueConfig[630] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "八卦",
+    NpcSprite = "兜售",
     Dialogue = "昨晚深夜，主人的雨靴来回走了两趟。",
     Next = 631
 }
@@ -1986,7 +1986,7 @@ DialogueConfig[635] = {
 DialogueConfig[640] = {
     Type = "Normal",
     NpcName = "鼠弟",
-    NpcSprite = "八卦",
+    NpcSprite = "兜售",
     Dialogue = "你知道水怪声是怎么来的吗——",
     Next = 641
 }
@@ -2070,7 +2070,7 @@ DialogueConfig[648] = {
 DialogueConfig[650] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "八卦",
+    NpcSprite = "兜售",
     Dialogue = "这条，自信度较高。",
     Next = 651
 }
@@ -2136,7 +2136,7 @@ DialogueConfig[656] = {
 DialogueConfig[660] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "八卦",
+    NpcSprite = "兜售",
     Dialogue = "这面墙南段，以前住着另一家卖情报的，跟我们一个行当。",
     Next = 661
 }
@@ -2193,7 +2193,7 @@ DialogueConfig[665] = {
 DialogueConfig[670] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "八卦",
+    NpcSprite = "兜售",
     Dialogue = "昨晚深夜，亲眼目睹。",
     Next = 671
 }
@@ -2249,8 +2249,8 @@ DialogueConfig[675] = {
 DialogueConfig[900] = {
     Type = "Normal",
     DocTag = "NGPlus",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "老鼠兄弟",
+    NpcSprite = "兜售",
     Dialogue = "",
     RotatePool = { 1001 },
     Next = -1

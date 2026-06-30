@@ -26,8 +26,8 @@ DialogueConfig = {}
 DialogueConfig[1] = {
     Type = "Normal",
     DocTag = "1-A#1",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "淑芬",
+    NpcSprite = "守望",
     Dialogue = "（鸡舍门口，一只母鸡正站着，忽然抬起头来）",
     Next = 2  -- 下一段对话ID
 }
@@ -49,7 +49,7 @@ DialogueConfig[3] = {
     Type = "Normal",
     DocTag = "1-A#3",
     NpcName = "淑芬",
-    NpcSprite = "守望",
+    NpcSprite = "护雏",
     Dialogue = "帮个忙行不行？我找不到孩儿了——",
     Next = 4  -- 下一段对话ID
 }
@@ -71,7 +71,7 @@ DialogueConfig[5] = {
     Type = "Normal",
     DocTag = "1-A#5",
     NpcName = "淑芬",
-    NpcSprite = "守望",
+    NpcSprite = "护雏",
     Dialogue = "今早发现，我画了爱心标记的那最后一颗蛋，没了。",
     Next = 6  -- 下一段对话ID
 }
@@ -82,7 +82,7 @@ DialogueConfig[6] = {
     Type = "Normal",
     DocTag = "1-A#6",
     NpcName = "淑芬",
-    NpcSprite = "守望",
+    NpcSprite = "护雏",
     Dialogue = "其他孩子出壳都好几天了，就这最小的——迟迟没动静，我一直守着它。",
     Next = 7  -- 下一段对话ID
 }
@@ -93,7 +93,7 @@ DialogueConfig[7] = {
     Type = "Normal",
     DocTag = "1-A#7",
     NpcName = "淑芬",
-    NpcSprite = "守望",
+    NpcSprite = "护雏",
     Dialogue = "昨晚前还动过一下，那种感觉……我不可能认错的。",
     Next = 8  -- 下一段对话ID
 }
@@ -115,7 +115,7 @@ DialogueConfig[9] = {
     Type = "Normal",
     DocTag = "1-A#9",
     NpcName = "淑芬",
-    NpcSprite = "守望",
+    NpcSprite = "护雏",
     Dialogue = "最近天骤然凉了，我就担心——",
     Next = 10  -- 下一段对话ID
 }
@@ -126,7 +126,7 @@ DialogueConfig[10] = {
     Type = "Normal",
     DocTag = "1-A#10",
     NpcName = "淑芬",
-    NpcSprite = "守望",
+    NpcSprite = "护雏",
     Dialogue = "主人也来看了好几回，就那样站着不说话。",
     Next = 11  -- 下一段对话ID
 }
@@ -137,7 +137,7 @@ DialogueConfig[11] = {
     Type = "Normal",
     DocTag = "1-A#11",
     NpcName = "淑芬",
-    NpcSprite = "守望",
+    NpcSprite = "护雏",
     Dialogue = "你帮我找找吧，行吗？",
     Next = 12  -- 下一段对话ID
 }
@@ -160,7 +160,7 @@ DialogueConfig[13] = {
     DocTag = "1-A#13",
     NpcName = "淑芬",
     NpcSprite = "守望",
-    Dialogue = "谢谢你，真的。有什么要问的随时来找我——农场的事，我比谁都熟。",
+    Dialogue = "谢谢你，真的。有什么要问的随时来找我——农场的事，我比谁都熟。我就在那边的鸡舍那。",
     SetVariables = {
         { VarName = "Shufen_CommissionDone", VarType = "bool", Value = true }
     },
@@ -205,8 +205,8 @@ DialogueConfig[16] = {
 DialogueConfig[17] = {
     Type = "Normal",
     DocTag = "1-hub-intro@v2#1",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "淑芬",
+    NpcSprite = "护雏",
     Dialogue = "（听见动静猛地抬起头）",
     Next = 18  -- 下一段对话ID
 }
@@ -271,8 +271,8 @@ DialogueConfig[22] = {
 DialogueConfig[23] = {
     Type = "Normal",
     DocTag = "1-hub-intro",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "淑芬",
+    NpcSprite = "护雏",
     Dialogue = "",
     RotatePool = { 14, 17, 21 },
     Next = 24  -- 下一段对话ID
@@ -419,7 +419,7 @@ DialogueConfig[30] = {
     Type = "Normal",
     DocTag = "1-B#6",
     NpcName = "淑芬",
-    NpcSprite = "守望",
+    NpcSprite = "护雏",
     Dialogue = "来了我就知道，他也在惦记着孩儿。",
     SetVariables = {
         { VarName = "Shufen_MasterAsked", VarType = "bool", Value = true }
@@ -665,7 +665,7 @@ DialogueConfig[51] = {
     Type = "Normal",
     DocTag = "1-G#4",
     NpcName = "淑芬",
-    NpcSprite = "守望",
+    NpcSprite = "护雏",
     Dialogue = "狗窝都空着——准又醉在谷仓那边了。",
     Next = 52  -- 下一段对话ID
 }
@@ -733,8 +733,8 @@ DialogueConfig[56] = {
 DialogueConfig[57] = {
     Type = "Normal",
     DocTag = "2-A#2",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "淑芬",
+    NpcSprite = "护雏",
     Dialogue = "（淑芬盯着笔记本，半天没动）",
     Next = 58  -- 下一段对话ID
 }
@@ -888,7 +888,7 @@ DialogueConfig[71] = {
     Type = "Normal",
     DocTag = "2-A#16",
     NpcName = "淑芬",
-    NpcSprite = "护雏",
+    NpcSprite = "守望",
     Dialogue = "……不过那是大前天下午的事。今早才发现蛋没了的。",
     Next = 72  -- 下一段对话ID
 }
@@ -899,7 +899,7 @@ DialogueConfig[72] = {
     Type = "Normal",
     DocTag = "2-A#17",
     NpcName = "淑芬",
-    NpcSprite = "护雏",
+    NpcSprite = "守望",
     Dialogue = "谢谢你找到这个。",
     SetVariables = {
         { VarName = "Shufen_StoneRevealShown", VarType = "bool", Value = true }
@@ -912,8 +912,8 @@ DialogueConfig[72] = {
 DialogueConfig[73] = {
     Type = "Normal",
     DocTag = "3-A#2",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "淑芬",
+    NpcSprite = "护雏",
     Dialogue = "我觉得……主人把蛋带走了。",
     Next = 74  -- 下一段对话ID
 }
@@ -924,7 +924,7 @@ DialogueConfig[74] = {
     Type = "Normal",
     DocTag = "3-A#3",
     NpcName = "淑芬",
-    NpcSprite = "守望",
+    NpcSprite = "护雏",
     Dialogue = "（淑芬皱眉，想了想）",
     Next = 75  -- 下一段对话ID
 }
@@ -946,7 +946,7 @@ DialogueConfig[76] = {
     Type = "Normal",
     DocTag = "3-A#5",
     NpcName = "淑芬",
-    NpcSprite = "守望",
+    NpcSprite = "护雏",
     Dialogue = "主人绝对不是坏人。",
     Next = 77  -- 下一段对话ID
 }
@@ -968,7 +968,7 @@ DialogueConfig[78] = {
     Type = "Normal",
     DocTag = "3-A#7",
     NpcName = "淑芬",
-    NpcSprite = "守望",
+    NpcSprite = "护雏",
     Dialogue = "（停顿，羽毛微微绷了一下）",
     Next = 79  -- 下一段对话ID
 }
@@ -1080,8 +1080,8 @@ DialogueConfig[87] = {
 DialogueConfig[88] = {
     Type = "Normal",
     DocTag = "NGPlus-revisit",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "淑芬",
+    NpcSprite = "护雏",
     Dialogue = "",
     RotatePool = { 82, 85 },
     Next = -1  -- 下一段对话ID
@@ -1092,8 +1092,8 @@ DialogueConfig[88] = {
 DialogueConfig[89] = {
     Type = "Normal",
     DocTag = "entry#comm",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "淑芬",
+    NpcSprite = "护雏",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "Shufen_CommissionDone", VarType = "bool", TrueNext = 23, FalseNext = -1 }
@@ -1106,8 +1106,8 @@ DialogueConfig[89] = {
 DialogueConfig[90] = {
     Type = "Normal",
     DocTag = "entry#new",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "淑芬",
+    NpcSprite = "护雏",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "Shufen_CommissionDone", VarType = "bool", TrueNext = 89, FalseNext = 1 }
@@ -1120,8 +1120,8 @@ DialogueConfig[90] = {
 DialogueConfig[0] = {
     Type = "Normal",
     DocTag = "entry#0",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "淑芬",
+    NpcSprite = "护雏",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "NGPlus", VarType = "bool", TrueNext = 88, FalseNext = 90 }

@@ -126,6 +126,9 @@ function SetGlobalVar(varName, value, varType)
     if varName == "NGPlus" and varType == "bool" and runtimeValue == true and _G["CheeseRefresh_OnNGPlus"] then
         _G["CheeseRefresh_OnNGPlus"]()
     end
+    if varName == "BlackCat_Entered" and _G["SecondFloorWindow_Refresh"] then
+        _G["SecondFloorWindow_Refresh"](true)
+    end
     if _G["BookController_OnVarChanged"] then
         _G["BookController_OnVarChanged"](varName)
     end

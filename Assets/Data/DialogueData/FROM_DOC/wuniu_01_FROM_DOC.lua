@@ -17,8 +17,8 @@ DialogueConfig = {}
 DialogueConfig[0] = {
     Type = "Normal",
     DocTag = "entry#0",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "NGPlus", VarType = "bool", TrueNext = 80, FalseNext = 81 }
@@ -29,8 +29,8 @@ DialogueConfig[0] = {
 DialogueConfig[80] = {
     Type = "Normal",
     DocTag = "entry#ngplus",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "Flash_Stage6Shown", VarType = "bool", TrueNext = 40, FalseNext = 50 }
@@ -41,8 +41,8 @@ DialogueConfig[80] = {
 DialogueConfig[81] = {
     Type = "Normal",
     DocTag = "entry#week1-dog4",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "DogStatus", VarType = "int", Op = "==", Value = 4, Next = 40 }
@@ -53,8 +53,8 @@ DialogueConfig[81] = {
 DialogueConfig[82] = {
     Type = "Normal",
     DocTag = "entry#chick3",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "ChickStatus", VarType = "int", Op = ">=", Value = 3, Next = 30 }
@@ -65,8 +65,8 @@ DialogueConfig[82] = {
 DialogueConfig[83] = {
     Type = "Normal",
     DocTag = "entry#e10",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "E10_ViewWhiteStone", VarType = "bool", TrueNext = 20, FalseNext = 84 }
@@ -77,8 +77,8 @@ DialogueConfig[83] = {
 DialogueConfig[84] = {
     Type = "Normal",
     DocTag = "entry#dog2",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "DogStatus", VarType = "int", Op = ">=", Value = 2, Next = 10 }
@@ -91,8 +91,8 @@ DialogueConfig[84] = {
 DialogueConfig[1] = {
     Type = "Normal",
     DocTag = "F-1#1",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "（宽叶上，一只极小蜗牛眼柄慢慢转向你）",
     Next = 2
 }
@@ -213,7 +213,7 @@ DialogueConfig[20] = {
     Type = "Normal",
     DocTag = "F-3#1",
     NpcName = "闪电蜗牛",
-    NpcSprite = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "我……",
     Next = 21
 }
@@ -222,7 +222,7 @@ DialogueConfig[21] = {
     Type = "Normal",
     DocTag = "F-3#2",
     NpcName = "闪电蜗牛",
-    NpcSprite = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "看……",
     Next = 22
 }
@@ -231,7 +231,7 @@ DialogueConfig[22] = {
     Type = "Normal",
     DocTag = "F-3#3",
     NpcName = "闪电蜗牛",
-    NpcSprite = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "见……",
     Next = 23
 }
@@ -249,7 +249,7 @@ DialogueConfig[24] = {
     Type = "Normal",
     DocTag = "F-3#5",
     NpcName = "闪电蜗牛",
-    NpcSprite = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "叼……走……了……",
     Next = 25
 }
@@ -305,7 +305,7 @@ DialogueConfig[30] = {
     Type = "Normal",
     DocTag = "F-4#1",
     NpcName = "闪电蜗牛",
-    NpcSprite = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "我……",
     Next = 31
 }
@@ -314,7 +314,7 @@ DialogueConfig[31] = {
     Type = "Normal",
     DocTag = "F-4#2",
     NpcName = "闪电蜗牛",
-    NpcSprite = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "看……",
     Next = 32
 }
@@ -323,7 +323,7 @@ DialogueConfig[32] = {
     Type = "Normal",
     DocTag = "F-4#3",
     NpcName = "闪电蜗牛",
-    NpcSprite = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "见……",
     Next = 33
 }
@@ -341,7 +341,7 @@ DialogueConfig[34] = {
     Type = "Normal",
     DocTag = "F-4#5",
     NpcName = "闪电蜗牛",
-    NpcSprite = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "叼……走……了……",
     Next = 35
 }
@@ -388,7 +388,7 @@ DialogueConfig[40] = {
     Type = "Normal",
     DocTag = "F-5#1",
     NpcName = "闪电蜗牛",
-    NpcSprite = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "我……",
     Next = 41
 }
@@ -397,7 +397,7 @@ DialogueConfig[41] = {
     Type = "Normal",
     DocTag = "F-5#2",
     NpcName = "闪电蜗牛",
-    NpcSprite = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "看……",
     Next = 42
 }
@@ -406,7 +406,7 @@ DialogueConfig[42] = {
     Type = "Normal",
     DocTag = "F-5#3",
     NpcName = "闪电蜗牛",
-    NpcSprite = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "见……",
     Next = 43
 }
@@ -424,7 +424,7 @@ DialogueConfig[44] = {
     Type = "Normal",
     DocTag = "F-5#5",
     NpcName = "闪电蜗牛",
-    NpcSprite = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "叼……走……了……",
     Next = 45
 }
@@ -480,7 +480,7 @@ DialogueConfig[50] = {
     Type = "Normal",
     DocTag = "F-6#1",
     NpcName = "闪电蜗牛",
-    NpcSprite = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "我……",
     Next = 51
 }
@@ -489,7 +489,7 @@ DialogueConfig[51] = {
     Type = "Normal",
     DocTag = "F-6#2",
     NpcName = "闪电蜗牛",
-    NpcSprite = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "看……",
     Next = 52
 }
@@ -498,7 +498,7 @@ DialogueConfig[52] = {
     Type = "Normal",
     DocTag = "F-6#3",
     NpcName = "闪电蜗牛",
-    NpcSprite = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "见……",
     Next = 53
 }
@@ -516,7 +516,7 @@ DialogueConfig[54] = {
     Type = "Normal",
     DocTag = "F-6#5",
     NpcName = "闪电蜗牛",
-    NpcSprite = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "叼……走……了……",
     Next = 55
 }
@@ -570,7 +570,7 @@ DialogueConfig[60] = {
     Type = "Normal",
     DocTag = "F-6#11",
     NpcName = "闪电蜗牛",
-    NpcSprite = "闪电蜗牛",
+    NpcSprite = "待机",
     Dialogue = "大……侦……探……，",
     Next = 61
 }

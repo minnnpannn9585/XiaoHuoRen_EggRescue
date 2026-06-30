@@ -2,7 +2,7 @@
 -- Inspector 接线：每条目 / 每条连线 / 每个修饰各拖一个 GameObject（字段名 = 下表名）
 --
 -- 壳层：open, openRedDot, boolPanel, leftBtn, rightBtn, pageContents（含第 4 页老鼠情报）
--- 条目 entry_*（33）| 老鼠 prefab + LayoutLeft/Right | 连线 link_*（15）| 修饰 mod_*（13）
+-- 条目 entry_*（33）| 老鼠 prefab + LayoutLeft/Right | 连线 link_*（15，E17 两条为 GameObject[] 断线段）| 修饰 mod_*（13）
 -- 详见 MissingEggDoc-main/docs/09-侦探笔记本.md §9.8 与 docs/IMPLEMENTATION.md §6
 
 ---@var open :UnityEngine.UI.Button
@@ -56,8 +56,8 @@
 ---@var link_D03_D05 :UnityEngine.GameObject
 ---@var link_D03_D06 :UnityEngine.GameObject
 ---@var link_D05_E23 :UnityEngine.GameObject
----@var link_E17_D05 :UnityEngine.GameObject
----@var link_E17_E23 :UnityEngine.GameObject
+---@var link_E17_D05 :UnityEngine.GameObject[]
+---@var link_E17_E23 :UnityEngine.GameObject[]
 ---@var link_D06_D07 :UnityEngine.GameObject
 ---@var link_E04_E06 :UnityEngine.GameObject
 ---@var link_E07_E08 :UnityEngine.GameObject
@@ -177,8 +177,8 @@ local function BuildCatalog()
         { go = link_D03_D05, ends = { "D03", "D05" } },
         { go = link_D03_D06, ends = { "D03", "D06" } },
         { go = link_D05_E23, ends = { "D05", "E23" } },
-        { go = link_E17_D05, ends = { "E17", "D05" } },
-        { go = link_E17_E23, ends = { "E17", "E23" } },
+        { gos = link_E17_D05, ends = { "E17", "D05" } },
+        { gos = link_E17_E23, ends = { "E17", "E23" } },
         { go = link_D06_D07, ends = { "D06", "D07" } },
         { go = link_E04_E06, ends = { "E04", "E06" } },
         { go = link_E07_E08, ends = { "E07", "E08" } },
@@ -399,6 +399,20 @@ local function ShowGo(go)
     go:SetActive(true)
 end
 
+local function HideGos(gos)
+    if not gos then return end
+    for i = 0, gos.Length - 1 do
+        HideGo(gos[i])
+    end
+end
+
+local function ShowGos(gos)
+    if not gos then return end
+    for i = 0, gos.Length - 1 do
+        ShowGo(gos[i])
+    end
+end
+
 local function UpdateRedDot()
     if not openRedDot then return end
     local panelOpen = boolPanel and boolPanel.activeSelf
@@ -441,11 +455,15 @@ function ReconcileLinksAndMods()
     if not LINK_DEFS or not MOD_DEFS then return end
 
     for _, link in ipairs(LINK_DEFS) do
-        if link.go and link.ends then
+        if link.ends then
             local a = IsEntryUnlocked(link.ends[1])
             local b = IsEntryUnlocked(link.ends[2])
             if a and b then
-                ShowGo(link.go)
+                if link.gos then
+                    ShowGos(link.gos)
+                elseif link.go then
+                    ShowGo(link.go)
+                end
             end
         end
     end
@@ -489,7 +507,11 @@ end
 local function InitializeLinksAndMods()
     if LINK_DEFS then
         for _, link in ipairs(LINK_DEFS) do
-            HideGo(link.go)
+            if link.gos then
+                HideGos(link.gos)
+            elseif link.go then
+                HideGo(link.go)
+            end
         end
     end
     if MOD_DEFS then
