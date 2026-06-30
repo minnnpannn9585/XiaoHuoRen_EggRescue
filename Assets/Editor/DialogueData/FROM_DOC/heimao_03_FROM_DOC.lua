@@ -459,7 +459,7 @@ DialogueConfig[30] = {
             },
         },
         {
-            Text = "谷仓角落那里……那个草窝，是你的吧。",
+            Text = "谷仓那草窝……是你的吧。",
             Next = 74,
             DisplayConditions = {
                 { VarName = "E07_ViewNapSpot", VarType = "bool", Value = true },
@@ -767,7 +767,7 @@ DialogueConfig[50] = {
     Dialogue = "……",
     Options = {
         {
-            Text = "门旁有个空水桶，桶底是池塘泥沙。",
+            Text = "门旁空水桶，桶底池塘泥。",
             Next = 51,
             DisplayConditions = {
                 { VarName = "E17_ViewEmptyBucket", VarType = "bool", Value = true },
@@ -775,7 +775,7 @@ DialogueConfig[50] = {
             },
         },
         {
-            Text = "门前的雨靴脚印，夜里朝鸡窝方向。",
+            Text = "雨靴脚印，夜里朝鸡窝方向。",
             Next = 56,
             DisplayConditions = {
                 { VarName = "E18_ViewBootprints", VarType = "bool", Value = true },

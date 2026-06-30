@@ -291,7 +291,7 @@ DialogueConfig[23] = {
             },
         },
         {
-            Text = "谷仓角落有个草窝，你们知道是谁的吗？",
+            Text = "谷仓角落草窝，知道谁的吗？",
             Next = 45,
             DisplayConditions = {
                 { VarName = "E07_ViewNapSpot", VarType = "bool", Value = true },
@@ -299,7 +299,7 @@ DialogueConfig[23] = {
             },
         },
         {
-            Text = "大黄宿醉成那样，有什么法子叫醒他吗？",
+            Text = "大黄宿醉那样，怎么叫醒？",
             Next = 51,
             DisplayConditions = {
                 { VarName = "DogStatus", VarType = "int", Op = "==", Value = 2 },
@@ -2030,7 +2030,7 @@ DialogueConfig[173] = {
             },
         },
         {
-            Text = "谷仓角落有个草窝，你们知道是谁的吗？",
+            Text = "谷仓角落草窝，知道谁的吗？",
             Next = 45,
             DisplayConditions = {
                 { VarName = "E07_ViewNapSpot", VarType = "bool", Value = true },
@@ -2038,7 +2038,7 @@ DialogueConfig[173] = {
             },
         },
         {
-            Text = "大黄宿醉成那样，有什么法子叫醒他吗？",
+            Text = "大黄宿醉那样，怎么叫醒？",
             Next = 51,
             DisplayConditions = {
                 { VarName = "DogStatus", VarType = "int", Op = "==", Value = 2 },
@@ -2096,7 +2096,7 @@ DialogueConfig[174] = {
             },
         },
         {
-            Text = "谷仓角落有个草窝，你们知道是谁的吗？",
+            Text = "谷仓角落草窝，知道谁的吗？",
             Next = 45,
             DisplayConditions = {
                 { VarName = "E07_ViewNapSpot", VarType = "bool", Value = true },
@@ -2104,7 +2104,7 @@ DialogueConfig[174] = {
             },
         },
         {
-            Text = "大黄宿醉成那样，有什么法子叫醒他吗？",
+            Text = "大黄宿醉那样，怎么叫醒？",
             Next = 51,
             DisplayConditions = {
                 { VarName = "DogStatus", VarType = "int", Op = "==", Value = 2 },
@@ -2162,7 +2162,7 @@ DialogueConfig[175] = {
             },
         },
         {
-            Text = "谷仓角落有个草窝，你们知道是谁的吗？",
+            Text = "谷仓角落草窝，知道谁的吗？",
             Next = 45,
             DisplayConditions = {
                 { VarName = "E07_ViewNapSpot", VarType = "bool", Value = true },
@@ -2170,7 +2170,7 @@ DialogueConfig[175] = {
             },
         },
         {
-            Text = "大黄宿醉成那样，有什么法子叫醒他吗？",
+            Text = "大黄宿醉那样，怎么叫醒？",
             Next = 51,
             DisplayConditions = {
                 { VarName = "DogStatus", VarType = "int", Op = "==", Value = 2 },
@@ -2242,7 +2242,7 @@ DialogueConfig[177] = {
             },
         },
         {
-            Text = "谷仓角落有个草窝，你们知道是谁的吗？",
+            Text = "谷仓角落草窝，知道谁的吗？",
             Next = 45,
             DisplayConditions = {
                 { VarName = "E07_ViewNapSpot", VarType = "bool", Value = true },
@@ -2250,7 +2250,7 @@ DialogueConfig[177] = {
             },
         },
         {
-            Text = "大黄宿醉成那样，有什么法子叫醒他吗？",
+            Text = "大黄宿醉那样，怎么叫醒？",
             Next = 51,
             DisplayConditions = {
                 { VarName = "DogStatus", VarType = "int", Op = "==", Value = 2 },

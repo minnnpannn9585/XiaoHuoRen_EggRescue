@@ -516,7 +516,7 @@ DialogueConfig[38] = {
     Dialogue = "凡人，记清楚本王的辉煌。",
     Options = {
         {
-            Text = "谷仓下面那些烧焦的痕迹，是你干的？",
+            Text = "谷仓下面烧焦痕迹，是你干的？",
             Next = 39,
             DisplayConditions = {
                 { VarName = "E08_ViewBurnMark", VarType = "bool", Value = true },

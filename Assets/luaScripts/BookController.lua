@@ -546,7 +546,57 @@ function Start()
     end
 
     CheckAllEntries()
+    TryRegisterEndingController()
 end
+
+function TryRegisterEndingController()
+    if _G["EndingController_Start"] then return true end
+
+    local notebookGo = CS.UnityEngine.GameObject.Find("Notebook")
+    if not notebookGo then return false end
+    local endingTf = notebookGo.transform:Find("Ending")
+    if not endingTf then return false end
+    local endingGo = endingTf.gameObject
+
+    local scripts = endingGo:GetComponents(typeof(DouyinScript))
+    if not scripts then return false end
+
+    local endingDs = nil
+    for i = 0, scripts.Length - 1 do
+        local ds = scripts[i]
+        if ds and ds.script and ds.script.EndingController_Start then
+            endingDs = ds
+            break
+        end
+    end
+
+    if not endingDs then
+        for i = 0, scripts.Length - 1 do
+            local ds = scripts[i]
+            if ds then
+                endingDs = ds
+                break
+            end
+        end
+    end
+
+    if not endingDs then return false end
+
+    -- 不激活 Ending（避免 Image 挡交互）；E20 触发时再加载脚本并打开
+    _G["EndingController_Start"] = function()
+        if not endingDs.script or not endingDs.script.EndingController_Start then
+            endingGo:SetActive(true)
+        end
+        if endingDs.script and endingDs.script.EndingController_Start then
+            endingDs.script.EndingController_Start()
+        else
+            print("[EndingController] ✗ 脚本未就绪，请确认 Ending 上已挂 EndingController.lua")
+        end
+    end
+    return true
+end
+
+_G["EndingController_TryRegister"] = TryRegisterEndingController
 
 function Update()
     local toRemove = {}
