@@ -3708,7 +3708,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2863233606929869018
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3766,7 +3766,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2863233606971782692
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4096,7 +4096,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2863233607072437438
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4248,7 +4248,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2863233607097777839
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7967,7 +7967,6 @@ MonoBehaviour:
         varName: link_E17_D05
         Data:
         - {fileID: 2863233607665300086}
-        - {fileID: 2863233606402536184}
         - {fileID: 2863233606377656082}
         - {fileID: 2863233607099634678}
         varType: UnityEngine.GameObject[]
@@ -7975,7 +7974,10 @@ MonoBehaviour:
       type: {class: DouyinLuaDataGameObjectArr, ns: , asm: com.douyin.script}
       data:
         varName: link_E17_E23
-        Data: []
+        Data:
+        - {fileID: 2863233606402536184}
+        - {fileID: 2863233606377656082}
+        - {fileID: 2863233607099634678}
         varType: UnityEngine.GameObject[]
     - rid: 3883133810448531468
       type: {class: DouyinLuaDataGameObjectArr, ns: , asm: com.douyin.script}
