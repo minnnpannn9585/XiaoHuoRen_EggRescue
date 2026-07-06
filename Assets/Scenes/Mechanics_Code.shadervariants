@@ -34,6 +34,24 @@ ShaderVariantCollection:
         passType: 13
       - keywords: _METALLICSPECGLOSSMAP
         passType: 13
+  - first: {fileID: 4800000, guid: 211feea29a4364d27bca96926245669d, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800000, guid: 7dc7dccd9200dd64890d0915743b1824, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: 
+        passType: 13
   - first: {fileID: 4800000, guid: 650dd9526735d5b46b79224bc6e94025, type: 3}
     second:
       variants:

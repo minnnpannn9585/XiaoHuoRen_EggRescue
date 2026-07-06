@@ -5,6 +5,7 @@
 -- 条目 entry_*（33）| 老鼠 prefab + LayoutLeft/Right | 连线 link_*（15，断线段用 GameObject[]：E17×2、D06↔D07）| 修饰 mod_*（13）
 -- 详见 MissingEggDoc-main/docs/09-侦探笔记本.md §9.8 与 docs/IMPLEMENTATION.md §6
 
+---@var openAndClosesprites :UnityEngine.Sprite[]
 ---@var open :UnityEngine.UI.Button
 ---@var openRedDot :UnityEngine.GameObject
 ---@var boolPanel :UnityEngine.GameObject
@@ -623,10 +624,13 @@ function Update()
 end
 
 function OnOpenClick()
+    local image = open:GetComponent(typeof(UnityEngine.UI.Image))
     if not boolPanel.activeSelf then
         _G["PlayAudio"]("audio_openNote")
+        image.sprite = openAndClosesprites[0]
     else
         _G["PlayAudio"]("audio_closeNote")
+        image.sprite = openAndClosesprites[1]
     end
 
 
