@@ -1,6 +1,11 @@
 ---@var audioClips :UnityEngine.AudioClip[]   -- 音频数组，可在 Unity Inspector 中赋值
 ---@var audioSource :UnityEngine.AudioSource -- 用于播放的音频源，若为空则自动添加
 ---@var open :UnityEngine.UI.Button
+---@var particleSystems :UnityEngine.ParticleSystem[] -- 粒子系统数组，可在 Unity Inspector 中赋值
+---@var fishObtainedModel :UnityEngine.GameObject -- 获得鱼后的模型
+---@var fishNotObtainedModel :UnityEngine.GameObject -- 未获得鱼的模型
+---@var fishcushionModel :UnityEngine.GameObject -- 未获得鱼的模型
+local lastFishObtained = nil
 -- Unity 启动入口
 function Start()
     -- 获取或添加 AudioSource 组件
@@ -10,16 +15,51 @@ function Start()
     -- end
     if open then open.onClick:AddListener(OnOpenClick) end
     _G["PlayAudio"] = PlayAudioByName
+    _G["PlayParticle"] = PlayParticleByName
+end
+
+local function UpdateFishModelVisibility()
+    local obtained = false
+    local getFunc = _G["GetGlobalVar"] or _G["GetGlobalVariable"]
+    if getFunc then
+        obtained = getFunc("MintFish_Obtained") == true
+    else
+        local vars = _G["_GlobalVariables"]
+        if vars and vars["MintFish_Obtained"] then
+            obtained = vars["MintFish_Obtained"].value == true
+        end
+    end
+
+    if lastFishObtained == obtained then
+        return
+    end
+    lastFishObtained = obtained
+
+    if fishObtainedModel then
+        fishObtainedModel:SetActive(obtained)
+    end
+    if fishNotObtainedModel then
+        fishNotObtainedModel:SetActive(not obtained)
+    end
+    if fishcushionModel then
+        fishcushionModel:SetActive(not obtained)
+    end
 end
 
 function OnOpenClick()
     -- PlayAudioByName("audio_openNote")
+    local playParticle = _G["PlayParticle"]
+    if playParticle then
+        playParticle("vfx_characterChange", self.transform.position)
+    end
+    print("OnOpenClick 执行完成")
 end
 
 -- Unity 每一帧都会调用 Update
 function Update()
     DouyinUIService.GetInteractionButton(HandType.Right, UIType.Fly).gameObject:SetActive(false)
     OnChatClose()
+    UpdateFishModelVisibility()
 end
 
 function OnChatClose()
@@ -74,4 +114,49 @@ function PlayAudioByName(name)
         end
     end
     print("No audio clip found with name: " .. tostring(name))
+end
+
+-- 播放粒子函数，参数为粒子数组索引（从 0 开始），可选位置参数
+function PlayParticle(index, position)
+    if particleSystems == nil or particleSystems.Length == 0 then
+        print("[PlayParticle] 粒子数组为空")
+        return
+    end
+    if index < 0 or index >= particleSystems.Length then
+        print("[PlayParticle] 无效索引: " .. tostring(index))
+        return
+    end
+    local ps = particleSystems[index]
+    if ps == nil then
+        print("[PlayParticle] 粒子为空: " .. tostring(index))
+        return
+    end
+
+    if position then
+        ps.transform.position = position
+    end
+
+    ps:Stop()
+    ps:Clear()
+    ps:Play()
+end
+
+-- 通过粒子系统名称查找并播放（ParticleSystem 的 name 属性），可选位置参数
+function PlayParticleByName(name, position)
+    if particleSystems == nil or particleSystems.Length == 0 then
+        print("[PlayParticle] 粒子数组为空")
+        return
+    end
+    print("[PlayParticle] 查找粒子: " .. tostring(name) .. ", 数组长度: " .. particleSystems.Length)
+    for i = 0, particleSystems.Length - 1 do
+        local ps = particleSystems[i]
+        if ps then
+            print("[PlayParticle] 粒子[" .. i .. "]: " .. ps.name)
+            if ps.name == name then
+                PlayParticle(i, position)
+                return
+            end
+        end
+    end
+    print("[PlayParticle] 未找到粒子: " .. tostring(name))
 end

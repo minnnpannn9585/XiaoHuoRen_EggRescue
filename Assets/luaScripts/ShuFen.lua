@@ -52,6 +52,11 @@ local function SetInteractionEnabled(enabled)
                 colliders[i].enabled = false
             end
         end
+
+        local playParticle = _G["PlayParticle"]
+        if playParticle then
+            playParticle("vfx_characterChange", self.transform.position)
+        end
     end
 
     if henModel then
