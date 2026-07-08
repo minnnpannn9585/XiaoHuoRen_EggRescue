@@ -2,6 +2,7 @@
 ---@var targetObject :UnityEngine.GameObject -- 目标物体（在Inspector中拖入）
 
 function Start()
+    _G["ResetPosition"] = OnMoveBtnClick
     if moveBtn then
         moveBtn.onClick:AddListener(OnMoveBtnClick)
     end
@@ -28,8 +29,8 @@ function OnMoveBtnClick()
 
     -- 4. 移动玩家并设置旋转
     actor.position = targetPos
-    actor.rotation = targetRot  -- 直接复制旋转
+    actor.rotation = targetRot -- 直接复制旋转
 
-    print(string.format("✅ 玩家已移动到 (%.2f, %.2f, %.2f)，旋转已同步", 
-          targetPos.x, targetPos.y, targetPos.z))
+    print(string.format("✅ 玩家已移动到 (%.2f, %.2f, %.2f)，旋转已同步",
+        targetPos.x, targetPos.y, targetPos.z))
 end

@@ -60,6 +60,10 @@ end
 local function ApplyAwakeModels(isAwake)
     if sleepDog then
         sleepDog:SetActive(not isAwake)
+        local playParticle = _G["PlayParticle"]
+        if playParticle and sleepDog then
+            playParticle("vfx_characterChange", sleepDog.transform.position)
+        end
     end
     if soberDog then
         soberDog:SetActive(isAwake)

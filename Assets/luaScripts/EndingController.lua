@@ -162,6 +162,11 @@ local function FinalizeEnding()
         CS.DouyinTaskService.SendEvent(CS.DouyinTaskEvent.Terminal)
     end
 
+    if _G["ResetPosition"] then
+        _G["ResetPosition"]()
+        print("[EndingController] 调用 ResetPosition")
+    end
+
     if DouyinUIService.SetNativeUIVisible then
         DouyinUIService.SetNativeUIVisible(true)
     end

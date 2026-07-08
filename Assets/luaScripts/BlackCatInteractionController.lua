@@ -74,6 +74,10 @@ local function SetInteractionEnabled(enabled)
     end
 
     if catModel then
+        local playParticle = _G["PlayParticle"]
+        if playParticle then
+            playParticle("vfx_characterChange", catModel.transform.position)
+        end
         catModel:SetActive(enabled)
     end
 end
