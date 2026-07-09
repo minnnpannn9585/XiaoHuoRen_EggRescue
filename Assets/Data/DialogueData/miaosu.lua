@@ -1,6 +1,6 @@
 -- 对话配置文件 · 环境描述（miaosu / 描述 NPC）
 -- E 点 startID 对照（doc 13）：
---   E01=1  E02=2  E12=3  E25=5  E23=7  E06发现=8  E05=9  E08=12  E07=14
+--   E01=1  E02=2  E12=3  E25=5  E23=7  E06发现=8  E05=90(gate→9|91)  E08=12  E07=14
 --   E09=16  E27=17  E10=19  E17=21  E18=23  E14=24  E28=26  E15=27
 --   E16=29  E13=30  E06架梯完成=31
 --   E22未找到=32  E22已找到=34  E11=36  E06翻越=37
@@ -89,13 +89,36 @@ DialogueConfig[8] = {
     Next = 11
 }
 
--- E05 · 鸡舍水槽边谷物泡水
+-- E05 · 鸡舍水槽边谷物泡水（gate：D08 三源任一 → 取物链 9→10，否则仅氛围 91）
+DialogueConfig[90] = {
+    Type = "Normal",
+    DocTag = "E05#gate",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "",
+    ConditionBranches = {
+        { VarName = "Shufen_DaHuangWakeAsked", VarType = "bool", TrueNext = 9 },
+        { VarName = "Chick_WakeDogHintShown", VarType = "bool", TrueNext = 9 },
+        { VarName = "Mouse_CheapSold_07", VarType = "bool", TrueNext = 9 },
+    },
+    Next = 91
+}
+
+DialogueConfig[91] = {
+    Type = "Normal",
+    DocTag = "E05#preview",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "一桶浑浊的液体，气味有点酸。",
+    Next = -1
+}
+
 DialogueConfig[9] = {
     Type = "Normal",
     DocTag = "E05#1",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "水槽旁放着一桶浑浊的液体，水面浮着几粒胀开的谷粒，气味有点酸。",
+    Dialogue = "一桶浑浊的液体，水面浮着几粒胀开的谷粒，气味有点酸。",
     Next = 10
 }
 
@@ -105,6 +128,9 @@ DialogueConfig[10] = {
     NpcName = "玩家",
     NpcSprite = "",
     Dialogue = "这个气味……说不定正是大黄需要的。",
+    SetVariables = {
+        { VarName = "E05_GrainSoakGet", VarType = "bool", Value = true },
+    },
     Next = -1
 }
 

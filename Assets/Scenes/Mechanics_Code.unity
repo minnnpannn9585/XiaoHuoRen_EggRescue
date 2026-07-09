@@ -5871,7 +5871,7 @@ MonoBehaviour:
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: varName1
-        Data: E05_GrainSoakGet
+        Data: 0
     - rid: 1482841578848649247
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
@@ -6012,7 +6012,7 @@ MonoBehaviour:
             normalImage: {fileID: 0}
             normalBackgroundImage: {fileID: 0}
           ButtonText: 1
-          Text: "\u8C37\u7269\u6CE1\u6C34"
+          Text: "\u6D51\u6D4A\u6DB2\u4F53"
           TextSize: 0
           TextColor: {r: 0.03137255, g: 0.023529412, b: 0.13725491, a: 1}
           ButtonActions:
@@ -6057,7 +6057,7 @@ MonoBehaviour:
       type: {class: DouyinLuaDataVarInt, ns: , asm: com.douyin.script}
       data:
         varName: ID
-        Data: 9
+        Data: 90
     - rid: 1482841612812550180
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
