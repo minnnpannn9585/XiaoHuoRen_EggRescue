@@ -52,6 +52,15 @@ ShaderVariantCollection:
         passType: 11
       - keywords: 
         passType: 13
+  - first: {fileID: 4800000, guid: 0406db5a14f94604a8c57ccfbc9f3b46, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: _SURFACE_TYPE_TRANSPARENT
+        passType: 0
+      - keywords: 
+        passType: 13
   - first: {fileID: 4800000, guid: 650dd9526735d5b46b79224bc6e94025, type: 3}
     second:
       variants:
@@ -61,15 +70,6 @@ ShaderVariantCollection:
         passType: 0
       - keywords: 
         passType: 11
-      - keywords: 
-        passType: 13
-  - first: {fileID: 4800000, guid: 0406db5a14f94604a8c57ccfbc9f3b46, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-      - keywords: _SURFACE_TYPE_TRANSPARENT
-        passType: 0
       - keywords: 
         passType: 13
   - first: {fileID: -6465566751694194690, guid: 823a688a56b12f94d8994e23758f6cd3, type: 3}
