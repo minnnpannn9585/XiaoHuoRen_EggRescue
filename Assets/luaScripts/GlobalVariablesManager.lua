@@ -243,6 +243,44 @@ local function AddIncrementIntButton(contentRt, varName, initialValue, maxValue)
     end)
 end
 
+local function SetVarDebugPanelVisible(visible)
+    local canvas = UnityEngine.GameObject.Find("Canvas")
+    if not canvas then return end
+    local panel = canvas.transform:Find("VarDebugPanel")
+    local openBtn = canvas.transform:Find("VarDebugOpenBtn")
+    if panel then
+        panel.gameObject:SetActive(visible)
+    end
+    if openBtn then
+        openBtn.gameObject:SetActive(not visible)
+    end
+end
+
+local function AddFixedButton(parentRt, name, anchorMin, anchorMax, offsetMin, offsetMax, label, color, onClick)
+    local btnGo, btnRt = CreateRectChild(name, parentRt, anchorMin, anchorMax, offsetMin, offsetMax)
+    local img = btnGo:AddComponent(typeof(UnityEngine.UI.Image))
+    img.color = color or COLOR_ACTION
+
+    local btn = btnGo:AddComponent(typeof(UnityEngine.UI.Button))
+    btn.targetGraphic = img
+    btn.onClick:AddListener(onClick)
+
+    local textGo = UnityEngine.GameObject("Label")
+    textGo.transform:SetParent(btnRt, false)
+    local textRt = textGo:AddComponent(typeof(UnityEngine.RectTransform))
+    textRt.anchorMin = UnityEngine.Vector2(0, 0)
+    textRt.anchorMax = UnityEngine.Vector2(1, 1)
+    textRt.offsetMin = UnityEngine.Vector2(4, 2)
+    textRt.offsetMax = UnityEngine.Vector2(-4, -2)
+    local text = textGo:AddComponent(typeof(UnityEngine.UI.Text))
+    text.text = label
+    text.font = UnityEngine.Resources.GetBuiltinResource(typeof(UnityEngine.Font), "Arial.ttf")
+    text.fontSize = 13
+    text.alignment = UnityEngine.TextAnchor.MiddleCenter
+    text.color = UnityEngine.Color(0.95, 0.95, 0.95, 1)
+    return btnGo
+end
+
 local function AddActionButton(parentRt, label, onClick)
     local btnGo = UnityEngine.GameObject("ActionBtn_" .. label)
     btnGo.transform:SetParent(parentRt, false)
@@ -326,10 +364,24 @@ local function BuildVarDebugScrollPanel()
         return
     end
 
-    if canvas.transform:Find("VarDebugPanel") then
-        print("[GlobalVarDebug] VarDebugPanel 已存在，跳过创建")
+    if canvas.transform:Find("VarDebugPanel") or canvas.transform:Find("VarDebugOpenBtn") then
+        print("[GlobalVarDebug] 调试 UI 已存在，跳过创建")
         return
     end
+
+    AddFixedButton(
+        canvasRt,
+        "VarDebugOpenBtn",
+        UnityEngine.Vector2(1, 1),
+        UnityEngine.Vector2(1, 1),
+        UnityEngine.Vector2(-112, -44),
+        UnityEngine.Vector2(-12, -12),
+        "打开调试",
+        COLOR_ACTION,
+        function()
+            SetVarDebugPanelVisible(true)
+        end
+    )
 
     local panelGo, panelRt = CreateRectChild(
         "VarDebugPanel",
@@ -342,13 +394,21 @@ local function BuildVarDebugScrollPanel()
     local panelBg = panelGo:AddComponent(typeof(UnityEngine.UI.Image))
     panelBg.color = UnityEngine.Color(0.08, 0.09, 0.12, 0.88)
 
-    local titleGo, titleRt = CreateRectChild(
-        "Title",
+    local headerGo, headerRt = CreateRectChild(
+        "Header",
         panelRt,
         UnityEngine.Vector2(0, 1),
         UnityEngine.Vector2(1, 1),
         UnityEngine.Vector2(8, -38),
         UnityEngine.Vector2(-8, -8)
+    )
+    local titleGo, titleRt = CreateRectChild(
+        "Title",
+        headerRt,
+        UnityEngine.Vector2(0, 0),
+        UnityEngine.Vector2(1, 1),
+        UnityEngine.Vector2(0, 0),
+        UnityEngine.Vector2(-76, 0)
     )
     local titleText = titleGo:AddComponent(typeof(UnityEngine.UI.Text))
     titleText.text = "调试面板"
@@ -356,6 +416,20 @@ local function BuildVarDebugScrollPanel()
     titleText.fontSize = 14
     titleText.alignment = UnityEngine.TextAnchor.MiddleLeft
     titleText.color = UnityEngine.Color(1, 1, 1, 0.9)
+
+    AddFixedButton(
+        headerRt,
+        "CloseBtn",
+        UnityEngine.Vector2(1, 0.5),
+        UnityEngine.Vector2(1, 0.5),
+        UnityEngine.Vector2(-68, -14),
+        UnityEngine.Vector2(0, 14),
+        "关闭调试",
+        UnityEngine.Color(0.55, 0.22, 0.22, 0.95),
+        function()
+            SetVarDebugPanelVisible(false)
+        end
+    )
 
     local actionsGo, actionsRt = CreateRectChild(
         "Actions",
@@ -445,7 +519,9 @@ local function BuildVarDebugScrollPanel()
         end
     end
 
-    print("[GlobalVarDebug] VarDebugPanel 已创建，bool 按钮 x" .. boolCount .. "，int 按钮 x" .. intCount)
+    panelGo:SetActive(false)
+
+    print("[GlobalVarDebug] VarDebugPanel 已创建（默认关闭），bool 按钮 x" .. boolCount .. "，int 按钮 x" .. intCount)
 end
 
 function ResetAllNPCBranchesToStart()

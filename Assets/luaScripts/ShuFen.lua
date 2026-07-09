@@ -1,9 +1,11 @@
 ---@var henModel :UnityEngine.GameObject
+---@var gateBlockCollider :UnityEngine.Collider
 ---@end
 
 -- 委托前「淑芬」与委托后「淑芬2」：Shufen_CommissionDone 切换交互点
 
 local lastSpotEnabled = nil
+local lastCommissionDone = nil
 
 local function IsHubSpot()
     return self.gameObject.name == "淑芬2"
@@ -64,10 +66,22 @@ local function SetInteractionEnabled(enabled)
     end
 end
 
+local function UpdateGateBlockCollider(commissionDone)
+    if not gateBlockCollider then
+        return
+    end
+    gateBlockCollider.enabled = not commissionDone
+end
+
 function CheckShufenState()
     local commissionDone = GetCommissionDone()
     local hubSpot = IsHubSpot()
     local spotEnabled = hubSpot and commissionDone or (not hubSpot and not commissionDone)
+
+    if lastCommissionDone ~= commissionDone then
+        lastCommissionDone = commissionDone
+        UpdateGateBlockCollider(commissionDone)
+    end
 
     if lastSpotEnabled == spotEnabled then
         return

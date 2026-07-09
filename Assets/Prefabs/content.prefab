@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -7.9403076, y: 0.84950066}
+  m_AnchoredPosition: {x: -7.9403076, y: 0.84950256}
   m_SizeDelta: {x: 184.7649, y: 10.2368}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1188259244
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -67,19 +67,19 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: cd928a5802bd1c649be26739e8b64526, type: 3}
-    m_FontSize: 50
+    m_Font: {fileID: 12800000, guid: d91fda04f1805d44882f200616e5dbfb, type: 3}
+    m_FontSize: 40
     m_FontStyle: 1
-    m_BestFit: 0
-    m_MinSize: 0
-    m_MaxSize: 125
+    m_BestFit: 1
+    m_MinSize: 20
+    m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: AAA
+  m_Text: "\u8C37\u4ED3\u4E0B\u9762\u70E7\u7126\u75D5\u8FF9\uFF0C\u662F\u4F60\u5E72\u7684\uFF1F"
 --- !u!1 &7161055703521758399
 GameObject:
   m_ObjectHideFlags: 0

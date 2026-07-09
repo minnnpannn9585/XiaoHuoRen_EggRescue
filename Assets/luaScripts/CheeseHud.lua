@@ -1,6 +1,5 @@
 -- HUD：奶酪碎计数（doc 11）
 ---@var countText :UnityEngine.UI.Text
----@var panelRoot :UnityEngine.GameObject
 ---@end
 
 local function GetCheeseCount()
@@ -15,9 +14,6 @@ function RefreshCheeseHud()
     local count = GetCheeseCount()
     if countText then
         countText.text = tostring(count)
-    end
-    if panelRoot then
-        panelRoot:SetActive(true)
     end
 end
 

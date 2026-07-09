@@ -58,7 +58,6 @@ public static class CheeseHudWireFactory
         }
 
         InteractionPointFactoryHelpers.SetObjectBinding(hud, "countText", countText);
-        InteractionPointFactoryHelpers.SetObjectBinding(hud, "panelRoot", countText.gameObject);
 
         EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
         string msg = "已接入 CheeseCount HUD → " + GetHierarchyPath(countText.transform);

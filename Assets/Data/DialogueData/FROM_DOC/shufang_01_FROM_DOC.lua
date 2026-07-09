@@ -164,7 +164,7 @@ DialogueConfig[13] = {
     SetVariables = {
         { VarName = "Shufen_CommissionDone", VarType = "bool", Value = true }
     },
-    Next = 24  -- 下一段对话ID（1-hub，首次不经 intro）
+    Next = -1  -- 对话结束；再点淑芬2走 1-hub-intro → 1-hub
 }
 
 -- 普通对话类型  -- doc:1-hub-intro@v1#1
