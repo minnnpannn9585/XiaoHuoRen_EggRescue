@@ -164,7 +164,7 @@ DialogueConfig[5] = {
     Type = "Normal",
     DocTag = "2-A#5",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "你就是那棵大树！！",
     Next = 6  -- 下一段对话ID
 }
@@ -1023,7 +1023,7 @@ DialogueConfig[69] = {
     Type = "Normal",
     DocTag = "2-B-C#7",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "但为什么？",
     Next = 70  -- 下一段对话ID
 }
@@ -1093,7 +1093,7 @@ DialogueConfig[74] = {
     Type = "Normal",
     DocTag = "2-C#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "谷仓角落那里……那个草窝，是你的吧？",
     Next = 75  -- 下一段对话ID
 }
@@ -1137,7 +1137,7 @@ DialogueConfig[78] = {
     Type = "Normal",
     DocTag = "2-C#5",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "那个焦痕是怎么回事？",
     Next = 79  -- 下一段对话ID
 }
@@ -1192,7 +1192,7 @@ DialogueConfig[83] = {
     Type = "Normal",
     DocTag = "2-C#10",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "跟老鼠有关系吗？",
     Next = 84  -- 下一段对话ID
 }
@@ -1393,7 +1393,7 @@ DialogueConfig[101] = {
     Type = "Normal",
     DocTag = "2-C-D#12",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "你有办法吗？",
     Next = 102  -- 下一段对话ID
 }
@@ -2148,7 +2148,7 @@ DialogueConfig[213] = {
     Type = "Normal",
     DocTag = "NGPlus@v1#3",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "那颗蛋呢？",
     Next = 214
 }
@@ -2184,7 +2184,7 @@ DialogueConfig[220] = {
     Type = "Normal",
     DocTag = "NGPlus@v2#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "你下次还会上那棵树吗？",
     Next = 221
 }

@@ -104,7 +104,7 @@ DialogueConfig[4] = {
     Type = "Normal",
     DocTag = "2-A#4",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "……这里是你的地方？",
     Next = 5
 }
@@ -235,7 +235,7 @@ DialogueConfig[131] = {
     Type = "Normal",
     DocTag = "2-hub-intro@v3#2",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "等……什么？",
     Next = 132
 }
@@ -333,7 +333,7 @@ DialogueConfig[165] = {
     Type = "Normal",
     DocTag = "2-hub-intro@v7#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "……你还好吗？",
     Next = 166
 }
@@ -391,7 +391,7 @@ DialogueConfig[205] = {
     DocTag = "2-hub#return#menu",
     NpcName = "悲伤蛙",
     NpcSprite = "介入",
-    Dialogue = "……还说？",
+    Dialogue = "……还有事吗？",
     Options = {
         {
             Text = "水怪……这池塘里真的有水怪？",
@@ -430,7 +430,7 @@ DialogueConfig[16] = {
     Type = "Normal",
     DocTag = "2-B#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "这里有没有见过……一颗蛋？",
     Next = 17
 }
@@ -457,7 +457,7 @@ DialogueConfig[19] = {
     Type = "Normal",
     DocTag = "2-B#4",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "所以是……有，还是没有？",
     Next = 20
 }
@@ -480,7 +480,7 @@ DialogueConfig[21] = {
     Type = "Normal",
     DocTag = "2-C#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "谷仓那边……你去过吗？",
     Next = 22
 }
@@ -512,7 +512,7 @@ DialogueConfig[24] = {
     Type = "Normal",
     DocTag = "2-D#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "水怪……这池塘里真的有水怪？",
     Next = 25
 }
@@ -787,7 +787,7 @@ DialogueConfig[42] = {
     Type = "Normal",
     DocTag = "3-A#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "你身下那块绿垫子……能给我吗？",
     Next = 43
 }
@@ -1041,7 +1041,7 @@ DialogueConfig[59] = {
     Type = "Normal",
     DocTag = "3-C#8",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "这东西……你一直坐在上面？",
     Next = 60
 }

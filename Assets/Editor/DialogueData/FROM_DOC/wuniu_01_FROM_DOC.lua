@@ -137,7 +137,7 @@ DialogueConfig[6] = {
     Type = "Normal",
     DocTag = "F-1#6",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "这蜗牛……话说到一半就没有了？",
     Next = -1
 }
@@ -202,7 +202,7 @@ DialogueConfig[16] = {
     Type = "Normal",
     DocTag = "F-2#7",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "——乌鸦？叼走了什么？你倒是说完啊……",
     Next = -1
 }
@@ -294,7 +294,7 @@ DialogueConfig[29] = {
     Type = "Normal",
     DocTag = "F-3#10",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "白石头？！你早就看见了？！后面呢？！",
     Next = -1
 }
@@ -377,7 +377,7 @@ DialogueConfig[38] = {
     Type = "Normal",
     DocTag = "F-4#9",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "真蛋被……怎么了？！接着说啊！！",
     Next = -1
 }
@@ -469,7 +469,7 @@ DialogueConfig[49] = {
     Type = "Normal",
     DocTag = "F-5#10",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "主人？！被主人怎么了？！不指望你了，去找黑猫开门！",
     Next = -1
 }

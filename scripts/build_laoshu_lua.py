@@ -10,6 +10,7 @@ MD = ROOT / "MissingEggDoc-main/docs/characters/老鼠兄弟-对话脚本-树状
 OUT = ROOT / "Assets/Editor/DialogueData/FROM_DOC/laoshu_01_FROM_DOC.lua"
 
 HUB = 100
+HUB_REVISIT = 95  # 【回访】想买什么？/没情报了 → then HUB menu
 ENTRY = 0
 NODE_0A = 1
 NODE_1A = 20
@@ -117,7 +118,7 @@ def build_intel_cheap(md: str) -> dict[int, int]:
             continue
         start = CHEAP_BASE + (idx - 1) * 10
         var = f"Mouse_CheapSold_{idx:02d}"
-        chain_lines(start, lines, HUB, [var])
+        chain_lines(start, lines, HUB_REVISIT, [var])
         mapping[idx] = start
     return mapping
 
@@ -134,7 +135,7 @@ def build_intel_premium(md: str) -> dict[int, int]:
             continue
         start = PREMIUM_BASE + (idx - 1) * 10
         var = f"Mouse_PremiumSold_{idx:02d}"
-        chain_lines(start, lines, HUB, [var])
+        chain_lines(start, lines, HUB_REVISIT, [var])
         mapping[idx] = start
     return mapping
 
@@ -147,7 +148,7 @@ def build_simple_section(md: str, header_substr: str, start_id: int, set_vars: l
             break
     lines = parse_tree_block(block)
     if lines:
-        chain_lines(start_id, lines, HUB, set_vars)
+        chain_lines(start_id, lines, HUB_REVISIT, set_vars)
     return start_id
 
 
@@ -162,7 +163,7 @@ def main() -> None:
 
     # 1-A
     lines_1a = parse_tree_block(extract_section(md, "1-A · 首次问候"))
-    chain_lines(NODE_1A, lines_1a, HUB, ["Mouse_FirstGreetShown"])
+    chain_lines(NODE_1A, lines_1a, HUB_REVISIT, ["Mouse_FirstGreetShown"])
 
     # 1-D
     build_simple_section(md, "1-D · 黑猫盯视闲聊", NODE_1D, ["Mouse_BlackCatStareShown"])
@@ -239,7 +240,7 @@ def main() -> None:
         }},
         {{
             Text = "算了。",
-            Next = {HUB},
+            Next = {HUB_REVISIT},
         }},
     }},
     Next = -1
@@ -276,7 +277,7 @@ def main() -> None:
         }},
         {{
             Text = "算了。",
-            Next = {HUB},
+            Next = {HUB_REVISIT},
         }},
     }},
     Next = -1
@@ -372,7 +373,7 @@ def main() -> None:
         {{
             Text = "便宜的，一块。",
             ShopAction = "cheap",
-            Next = {HUB},
+            Next = {HUB_REVISIT},
             DisplayConditions = {{
                 {{ VarName = "Mouse_CheapPoolAvailable", VarType = "bool", Value = true }},
                 {{ VarName = "CheeseCount", VarType = "int", Op = ">=", Value = 1 }},
@@ -381,7 +382,7 @@ def main() -> None:
         {{
             Text = "贵一点的，五块。",
             ShopAction = "premium",
-            Next = {HUB},
+            Next = {HUB_REVISIT},
             DisplayConditions = {{
                 {{ VarName = "Mouse_PremiumPoolAvailable", VarType = "bool", Value = true }},
                 {{ VarName = "Mouse_PremiumBudgetOK", VarType = "bool", Value = true }},

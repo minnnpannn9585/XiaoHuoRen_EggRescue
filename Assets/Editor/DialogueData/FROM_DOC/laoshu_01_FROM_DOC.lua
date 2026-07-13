@@ -49,7 +49,7 @@ DialogueConfig[3] = {
 DialogueConfig[4] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "……谁在喊？",
     Next = 5
 }
@@ -67,7 +67,7 @@ DialogueConfig[5] = {
 DialogueConfig[6] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "墙缝……里面？",
     Next = 7
 }
@@ -115,7 +115,7 @@ DialogueConfig[21] = {
 DialogueConfig[22] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "……你们这里卖情报？",
     Next = 23
 }
@@ -134,7 +134,7 @@ DialogueConfig[24] = {
     Type = "Normal",
     NpcName = "鼠弟",
     NpcSprite = "兜售",
-    Dialogue = "便宜的一块，贵一点的五块——",
+    Dialogue = "便宜的一块奶酪碎，贵一点的五块——",
     Next = 25
 }
 
@@ -171,10 +171,19 @@ DialogueConfig[28] = {
     NpcName = "鼠弟",
     NpcSprite = "兜售",
     Dialogue = "……嗯。",
+    Next = 29
+}
+
+-- Position: { 50, 150 }
+DialogueConfig[29] = {
+    Type = "Normal",
+    NpcName = "鼠哥",
+    NpcSprite = "兜售",
+    Dialogue = "农场里捡到奶酪碎，记得拿来找我们换情报。一块便宜货，五块贵货——明码标价。",
     SetVariables = {
         { VarName = "Mouse_FirstGreetShown", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 DialogueConfig[80] = {
@@ -248,7 +257,7 @@ DialogueConfig[100] = {
         {
             Text = "便宜的，一块。",
             ShopAction = "cheap",
-            Next = 100,
+            Next = 95,
             DisplayConditions = {
                 { VarName = "Mouse_CheapPoolAvailable", VarType = "bool", Value = true },
                 { VarName = "CheeseCount", VarType = "int", Op = ">=", Value = 1 },
@@ -257,7 +266,7 @@ DialogueConfig[100] = {
         {
             Text = "贵一点的，五块。",
             ShopAction = "premium",
-            Next = 100,
+            Next = 95,
             DisplayConditions = {
                 { VarName = "Mouse_PremiumPoolAvailable", VarType = "bool", Value = true },
                 { VarName = "Mouse_PremiumBudgetOK", VarType = "bool", Value = true },
@@ -397,7 +406,7 @@ DialogueConfig[205] = {
     SetVariables = {
         { VarName = "Mouse_BlackCatStareShown", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -587,7 +596,7 @@ DialogueConfig[255] = {
     NpcName = "描述",
     NpcSprite = "",
     Dialogue = "（鼠弟还想说什么，生生咽了回去）",
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -605,7 +614,7 @@ DialogueConfig[261] = {
     NpcName = "鼠弟",
     NpcSprite = "兜售",
     Dialogue = "随时回来——",
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -657,7 +666,7 @@ DialogueConfig[274] = {
 DialogueConfig[275] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "掉了？！你刚说还在你这里？",
     Next = 276
 }
@@ -726,7 +735,7 @@ DialogueConfig[282] = {
         { VarName = "Mouse_MintFishPaid", VarType = "bool", Value = true },
         { VarName = "Mouse_PremiumPoolUnlocked", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -846,7 +855,7 @@ DialogueConfig[302] = {
     SetVariables = {
         { VarName = "Mouse_PremiumPoolUnlocked", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -875,7 +884,7 @@ DialogueConfig[311] = {
         },
         {
             Text = "算了。",
-            Next = 100,
+            Next = 95,
         },
     },
     Next = -1
@@ -963,7 +972,7 @@ DialogueConfig[325] = {
         { VarName = "Mouse_MintFishPaid", VarType = "bool", Value = true },
         { VarName = "Mouse_PremiumPoolUnlocked", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -1035,14 +1044,14 @@ DialogueConfig[337] = {
     NpcName = "描述",
     NpcSprite = "",
     Dialogue = "（鼠哥把账本合上，算盘在指尖转了一圈）",
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
 DialogueConfig[340] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "那怎么办？",
     Next = 341
 }
@@ -1101,7 +1110,7 @@ DialogueConfig[346] = {
     SetVariables = {
         { VarName = "Mouse_FrogFallbackGiven", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -1130,7 +1139,7 @@ DialogueConfig[351] = {
         },
         {
             Text = "算了。",
-            Next = 100,
+            Next = 95,
         },
     },
     Next = -1
@@ -1158,7 +1167,7 @@ DialogueConfig[353] = {
 DialogueConfig[354] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "那怎么开？",
     Next = 355
 }
@@ -1235,7 +1244,7 @@ DialogueConfig[364] = {
     SetVariables = {
         { VarName = "Mouse_PremiumPoolUnlocked", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -1283,7 +1292,7 @@ DialogueConfig[504] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_01", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -1317,7 +1326,7 @@ DialogueConfig[512] = {
 DialogueConfig[513] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "……什么？",
     Next = 514
 }
@@ -1349,7 +1358,7 @@ DialogueConfig[516] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_02", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -1406,7 +1415,7 @@ DialogueConfig[525] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_03", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -1440,7 +1449,7 @@ DialogueConfig[532] = {
 DialogueConfig[533] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "……蜗牛？",
     Next = 534
 }
@@ -1463,7 +1472,7 @@ DialogueConfig[535] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_04", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -1511,7 +1520,7 @@ DialogueConfig[544] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_05", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -1577,7 +1586,7 @@ DialogueConfig[556] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_06", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -1625,7 +1634,7 @@ DialogueConfig[564] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_07", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -1673,7 +1682,7 @@ DialogueConfig[574] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_08", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -1721,7 +1730,7 @@ DialogueConfig[584] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_09", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -1764,7 +1773,7 @@ DialogueConfig[593] = {
 DialogueConfig[594] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "……上去干什么？",
     Next = 595
 }
@@ -1778,7 +1787,7 @@ DialogueConfig[595] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_10", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -1826,7 +1835,7 @@ DialogueConfig[604] = {
     SetVariables = {
         { VarName = "Mouse_PremiumSold_01", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -1860,7 +1869,7 @@ DialogueConfig[612] = {
 DialogueConfig[613] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "捡的是什么？",
     Next = 614
 }
@@ -1874,7 +1883,7 @@ DialogueConfig[614] = {
     SetVariables = {
         { VarName = "Mouse_PremiumSold_02", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -1922,7 +1931,7 @@ DialogueConfig[624] = {
     SetVariables = {
         { VarName = "Mouse_PremiumSold_03", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -1956,7 +1965,7 @@ DialogueConfig[632] = {
 DialogueConfig[633] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "……手里拿什么了？",
     Next = 634
 }
@@ -1979,7 +1988,7 @@ DialogueConfig[635] = {
     SetVariables = {
         { VarName = "Mouse_PremiumSold_04", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -2031,7 +2040,7 @@ DialogueConfig[644] = {
 DialogueConfig[645] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "……醉狗？",
     Next = 646
 }
@@ -2063,7 +2072,7 @@ DialogueConfig[648] = {
     SetVariables = {
         { VarName = "Mouse_PremiumSold_05", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -2097,7 +2106,7 @@ DialogueConfig[652] = {
 DialogueConfig[653] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "……咬什么？",
     Next = 654
 }
@@ -2129,7 +2138,7 @@ DialogueConfig[656] = {
     SetVariables = {
         { VarName = "Mouse_PremiumSold_06", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -2186,7 +2195,7 @@ DialogueConfig[665] = {
     SetVariables = {
         { VarName = "Mouse_PremiumSold_07", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -2243,7 +2252,7 @@ DialogueConfig[675] = {
     SetVariables = {
         { VarName = "Mouse_PremiumSold_08", VarType = "bool", Value = true },
     },
-    Next = 100
+    Next = 95
 }
 
 DialogueConfig[900] = {

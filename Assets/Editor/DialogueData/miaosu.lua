@@ -45,7 +45,7 @@ DialogueConfig[4] = {
     Type = "Normal",
     DocTag = "E12#2",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "那个气味……垫着什么？",
     Next = -1
 }
@@ -64,7 +64,7 @@ DialogueConfig[6] = {
     Type = "Normal",
     DocTag = "E25#2",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "有鸡来过池塘边？",
     Next = -1
 }
@@ -176,7 +176,7 @@ DialogueConfig[15] = {
     Type = "Normal",
     DocTag = "E07#2",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "谁经常在这里睡觉？",
     Next = -1
 }
@@ -205,7 +205,7 @@ DialogueConfig[18] = {
     Type = "Normal",
     DocTag = "E27#2",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "那是什么东西的反光——乌鸦在这里摆了什么亮晶晶的东西？",
     Next = -1
 }
@@ -224,7 +224,7 @@ DialogueConfig[20] = {
     Type = "Normal",
     DocTag = "E10#2",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "这是……什么东西？？......反正不是蛋",
     Next = -1
 }
@@ -272,7 +272,7 @@ DialogueConfig[25] = {
     Type = "Normal",
     DocTag = "E14#2",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "这是给谁专用的小门？",
     Next = -1
 }
@@ -353,7 +353,7 @@ DialogueConfig[293] = {
     Type = "Normal",
     DocTag = "E16#e30Seen",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "又是这种黑色细毛……乌鸦真的长毛吗？",
     Next = -1
 }
@@ -406,7 +406,7 @@ DialogueConfig[33] = {
     Type = "Normal",
     DocTag = "E22#notFound#2",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "看守的狗呢？",
     Next = -1
 }
@@ -528,7 +528,7 @@ DialogueConfig[46] = {
     Type = "Normal",
     DocTag = "E30#black#2",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "我竟然不知道乌鸦是长毛的？",
     Next = -1
 }

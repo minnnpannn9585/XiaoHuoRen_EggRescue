@@ -364,7 +364,7 @@ DialogueConfig[25] = {
     Type = "Normal",
     DocTag = "1-B#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "主人那边……你说他最近老在你窝边转悠？",
     Next = 26  -- 下一段对话ID
 }
@@ -433,7 +433,7 @@ DialogueConfig[31] = {
     Type = "Normal",
     DocTag = "1-C#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "那只乌鸦，你觉得它知道什么吗？",
     Next = 32  -- 下一段对话ID
 }
@@ -480,7 +480,7 @@ DialogueConfig[35] = {
     Type = "Normal",
     DocTag = "1-D#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "池塘边那只青蛙，你了解它吗？",
     Next = 36  -- 下一段对话ID
 }
@@ -538,7 +538,7 @@ DialogueConfig[40] = {
     Type = "Normal",
     DocTag = "1-E#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "红顶屋那俩老鼠，你知道它们的事吗？",
     Next = 41  -- 下一段对话ID
 }
@@ -596,7 +596,7 @@ DialogueConfig[45] = {
     Type = "Normal",
     DocTag = "1-F#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "谷仓那边有个草窝——那是你的午睡点吗？",
     Next = 46  -- 下一段对话ID
 }
@@ -632,7 +632,7 @@ DialogueConfig[48] = {
     Type = "Normal",
     DocTag = "1-G#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "大黄好像喝多了，有什么办法把他叫醒吗？",
     Next = 49  -- 下一段对话ID
 }

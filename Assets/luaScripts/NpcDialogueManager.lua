@@ -4,6 +4,7 @@
 ---@var npcNamePanel :UnityEngine.GameObject
 ---@var npcName :UnityEngine.UI.Text
 ---@var npcSprite :UnityEngine.UI.Image
+---@var playerSprite :UnityEngine.UI.Image
 ---@var npcDialogueText :UnityEngine.UI.Text
 ---@var next :UnityEngine.UI.Button
 ---@var playerPanel :UnityEngine.GameObject
@@ -30,6 +31,9 @@
 ---@var 立绘_黑猫_炸毛 :UnityEngine.Sprite
 ---@var 立绘_闪电蜗牛_待机 :UnityEngine.Sprite
 ---@var 立绘_闪电蜗牛_闪电蜗牛 :UnityEngine.Sprite
+---@var 立绘_玩家_正常 :UnityEngine.Sprite
+---@var 立绘_玩家_惊讶 :UnityEngine.Sprite
+---@var 立绘_玩家_疑惑 :UnityEngine.Sprite
 ---@end
 
 local dialogueManager = {}
@@ -111,6 +115,58 @@ local function InitPortraitRefs()
     RegPortrait("炸毛", GetLuaBinding("立绘_黑猫_炸毛"))
     RegPortrait("待机", GetLuaBinding("立绘_闪电蜗牛_待机"))
     RegPortrait("闪电蜗牛", GetLuaBinding("立绘_闪电蜗牛_闪电蜗牛"))
+    RegPortrait("正常", GetLuaBinding("立绘_玩家_正常"))
+    RegPortrait("惊讶", GetLuaBinding("立绘_玩家_惊讶"))
+    RegPortrait("疑惑", GetLuaBinding("立绘_玩家_疑惑"))
+end
+
+local PLAYER_PORTRAIT_KEYS = {
+    ["正常"] = true,
+    ["惊讶"] = true,
+    ["疑惑"] = true,
+}
+
+local function HideAllPortraits()
+    if npcSprite then
+        npcSprite.gameObject:SetActive(false)
+    end
+    if playerSprite then
+        playerSprite.gameObject:SetActive(false)
+    end
+end
+
+-- TREE_TO_LUA_SPEC §5.1.1 冲突优先级（选项回显无 NpcSprite 时用）
+local function ClassifyPlayerPortraitFromText(text)
+    if not text or text == "" then
+        return "正常"
+    end
+    if text:find("！", 1, true) or text:find("!", 1, true)
+        or text:find("竟然", 1, true) or text:find("？？", 1, true)
+        or text:find("??", 1, true) then
+        return "惊讶"
+    end
+    if text:match("？$") or text:match("%?$") then
+        local core = text:gsub("[？?。.！!…．]+$", "")
+        local len = (utf8 and utf8.len(core)) or #core
+        if len <= 4 then
+            return "惊讶"
+        end
+        return "疑惑"
+    end
+    if text:find("？", 1, true) or text:find("?", 1, true) then
+        return "疑惑"
+    end
+    return "正常"
+end
+
+local function ResolvePlayerPortraitKey(data)
+    if data and data.NpcSprite and data.NpcSprite ~= "" then
+        if PLAYER_PORTRAIT_KEYS[data.NpcSprite] then
+            return data.NpcSprite
+        end
+        return data.NpcSprite
+    end
+    return "正常"
 end
 
 -- ========== 新增：头像辅助功能 ==========
@@ -180,12 +236,35 @@ local function ResolvePortraitSpriteKey(data)
     return nil
 end
 
+-- speaker=玩家 → playerSprite；否则 → npcSprite（描述沿用 lastPortrait，不改 last）
 local function ApplyPortraitSprite(spriteKey, speaker)
-    if not npcSprite or not spriteKey or spriteKey == "" then
+    if not spriteKey or spriteKey == "" then
         return false
     end
     local sprite = allSprites[spriteKey]
-    if not sprite then
+
+    if speaker == "玩家" then
+        if npcSprite then
+            npcSprite.gameObject:SetActive(false)
+        end
+        if not playerSprite or not sprite then
+            if playerSprite then
+                playerSprite.gameObject:SetActive(false)
+            end
+            return false
+        end
+        playerSprite.sprite = sprite
+        playerSprite.gameObject:SetActive(true)
+        return true
+    end
+
+    if playerSprite then
+        playerSprite.gameObject:SetActive(false)
+    end
+    if not npcSprite or not sprite then
+        if npcSprite then
+            npcSprite.gameObject:SetActive(false)
+        end
         return false
     end
     npcSprite.sprite = sprite
@@ -404,9 +483,7 @@ function StartDialogue(dialogueID)
     _npcConfigsCache = nil
     if _G["_NPCConfigs"] then _G["_NPCConfigs"] = nil end
     lastPortraitSpriteKey = nil
-    if npcSprite then
-        npcSprite.gameObject:SetActive(false)
-    end
+    HideAllPortraits()
 
     SetPlayerNamePanel(false)
     currentDialogueID = dialogueID
@@ -450,9 +527,7 @@ function StartDialogueWithData(dialogueData, startID)
     _npcConfigsCache = nil
     if _G["_NPCConfigs"] then _G["_NPCConfigs"] = nil end
     lastPortraitSpriteKey = nil
-    if npcSprite then
-        npcSprite.gameObject:SetActive(false)
-    end
+    HideAllPortraits()
 
     local actualID = startID or 1
     if GetDialogueData(actualID) == nil then
@@ -645,32 +720,32 @@ end
 function UpdateNPCInfo(data)
     local speaker = data.NpcName or ""
     local dialogue = data.Dialogue or ""
+    local displaySpeaker = speaker
     if dialogue:match("^（") then
-        ApplyNamePanelForSpeaker("描述")
+        displaySpeaker = "描述"
+    end
+    ApplyNamePanelForSpeaker(displaySpeaker)
+
+    local spriteKey = nil
+    if displaySpeaker == "玩家" then
+        spriteKey = ResolvePlayerPortraitKey(data)
     else
-        ApplyNamePanelForSpeaker(speaker)
+        spriteKey = ResolvePortraitSpriteKey(data)
+        if (not spriteKey or spriteKey == "") and displaySpeaker == "描述" then
+            spriteKey = lastPortraitSpriteKey
+        end
     end
 
-    if npcSprite then
-        local spriteKey = ResolvePortraitSpriteKey(data)
-        if speaker == "玩家" then
-            -- 玩家无立绘：沿用上一句 NPC 立绘，避免头像区空白
-            spriteKey = lastPortraitSpriteKey
-        elseif (not spriteKey or spriteKey == "") and speaker == "描述" then
-            spriteKey = lastPortraitSpriteKey
-        end
-
-        if not ApplyPortraitSprite(spriteKey, speaker) then
-            if speaker ~= "描述" and speaker ~= "玩家" then
-                local availableKeys = {}
-                for k, v in pairs(allSprites) do
-                    table.insert(availableKeys, k)
-                end
-                print("[头像加载] 找不到 spriteKey: " ..
-                    tostring(spriteKey) .. ". 可用 keys: " .. table.concat(availableKeys, ", "))
+    if not ApplyPortraitSprite(spriteKey, displaySpeaker) then
+        if displaySpeaker ~= "描述" and displaySpeaker ~= "玩家" then
+            local availableKeys = {}
+            for k, v in pairs(allSprites) do
+                table.insert(availableKeys, k)
             end
-            npcSprite.gameObject:SetActive(false)
+            print("[头像加载] 找不到 spriteKey: " ..
+                tostring(spriteKey) .. ". 可用 keys: " .. table.concat(availableKeys, ", "))
         end
+        HideAllPortraits()
     end
 
     if npcDialogueText then
@@ -1197,6 +1272,7 @@ function OnOptionSelected(option)
         npcName.text = "玩家"
     end
     fullDialogueText = option.Text
+    ApplyPortraitSprite(ClassifyPlayerPortraitFromText(option.Text), "玩家")
     StartTypingEffect()
 end
 
@@ -1263,6 +1339,7 @@ function EndDialogue(reason)
     externalDialogueConfig = nil
     unlockedBranchCache = {}
     lastPortraitSpriteKey = nil
+    HideAllPortraits()
 
     if dialoguePanel then
         dialoguePanel:SetActive(false)

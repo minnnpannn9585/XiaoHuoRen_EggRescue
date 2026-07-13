@@ -355,7 +355,7 @@ DialogueConfig[24] = {
     Type = "Normal",
     DocTag = "2-A#15",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "让我看看你那个神灵宝石行吗？",
     Next = 25  -- 下一段对话ID
 }
@@ -536,7 +536,7 @@ DialogueConfig[39] = {
     Type = "Normal",
     DocTag = "2-C#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "谷仓下面那些烧焦的痕迹，是你干的？",
     Next = 40  -- 下一段对话ID
 }
@@ -569,7 +569,7 @@ DialogueConfig[42] = {
     Type = "Normal",
     DocTag = "2-C#4",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "把稻草烧着了也叫防盗？",
     Next = 43  -- 下一段对话ID
 }
@@ -808,7 +808,7 @@ DialogueConfig[214] = {
     Type = "Normal",
     DocTag = "NGPlus#5",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "……你现在承认了？",
     Next = 215
 }
@@ -853,7 +853,7 @@ DialogueConfig[219] = {
     Type = "Normal",
     DocTag = "NGPlus#10",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "黑猫呢？你们和好了吗？",
     Next = 220
 }

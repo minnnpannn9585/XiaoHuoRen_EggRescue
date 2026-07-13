@@ -61,7 +61,7 @@ DialogueConfig[2] = {
     Type = "Normal",
     DocTag = "1-A#2",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "谁？大树？大树说话了？",
     Next = 3
 }
@@ -79,7 +79,7 @@ DialogueConfig[4] = {
     Type = "Normal",
     DocTag = "1-A#4",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "哦！那大树你说的傻子和瞎子是谁？",
     Next = 5
 }
@@ -135,7 +135,7 @@ DialogueConfig[6] = {
     Type = "Normal",
     DocTag = "1-B@v1#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "大树？",
     Next = 7
 }
@@ -177,7 +177,7 @@ DialogueConfig[11] = {
     Type = "Normal",
     DocTag = "1-B@v2#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "大树，农场里出大事了，你知道吗？",
     Next = 12
 }
@@ -193,7 +193,7 @@ DialogueConfig[13] = {
     Type = "Normal",
     DocTag = "1-B@v2#3",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "什么吵？",
     Next = 14
 }
@@ -211,7 +211,7 @@ DialogueConfig[15] = {
     Type = "Normal",
     DocTag = "1-B@v3#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "大树你每天在这里，能看到什么？",
     Next = 16
 }
@@ -245,7 +245,7 @@ DialogueConfig[19] = {
     Type = "Normal",
     DocTag = "1-B@v4#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "大树，谷仓屋顶上是不是有什么东西？",
     Next = 20
 }
@@ -269,7 +269,7 @@ DialogueConfig[22] = {
     Type = "Normal",
     DocTag = "1-B@v4#4",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "什么宝贝？",
     Next = 23
 }
@@ -285,7 +285,7 @@ DialogueConfig[24] = {
     Type = "Normal",
     DocTag = "1-B@v4#6",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "你是说乌鸦吗？",
     Next = 25
 }
@@ -303,7 +303,7 @@ DialogueConfig[26] = {
     Type = "Normal",
     DocTag = "1-B@v5#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "大树，你有没有听到什么奇怪的声音？",
     Next = 27
 }
@@ -319,7 +319,7 @@ DialogueConfig[28] = {
     Type = "Normal",
     DocTag = "1-B@v5#3",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "谁在叫？",
     Next = 29
 }

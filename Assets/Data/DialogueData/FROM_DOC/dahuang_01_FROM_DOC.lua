@@ -75,7 +75,7 @@ DialogueConfig[4] = {
     Type = "Normal",
     DocTag = "1-A#4",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "淑芬的蛋不见了。你看到过什么吗？",
     Next = 5  -- 下一段对话ID
 }
@@ -108,7 +108,7 @@ DialogueConfig[7] = {
     Type = "Normal",
     DocTag = "1-A#7",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "乌鸦？",
     Next = 8  -- 下一段对话ID
 }
@@ -158,7 +158,7 @@ DialogueConfig[11] = {
     Type = "Normal",
     DocTag = "1-A@cond#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "你身下压着一架短木梯，能先挪一下吗？谷仓入口那道矮墙翻不过去。",
     Next = 12  -- 下一段对话ID
 }
@@ -381,7 +381,7 @@ DialogueConfig[29] = {
     Type = "Question",
     DocTag = "1-D",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "执勤",
     Dialogue = "你还有什么事吗？",
     Options = {
         {
@@ -420,7 +420,7 @@ DialogueConfig[30] = {
     Type = "Normal",
     DocTag = "1-E#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "大黄，梯子能借我吗？入口那道小围墙，我得翻过去。",
     Next = 31  -- 下一段对话ID
 }
@@ -492,7 +492,7 @@ DialogueConfig[36] = {
     Type = "Normal",
     DocTag = "1-F#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "谷仓角落有一片被压扁的草窝，你知道是哪个动物的吗？",
     Next = 37  -- 下一段对话ID
 }
@@ -554,7 +554,7 @@ DialogueConfig[41] = {
     Type = "Normal",
     DocTag = "1-G#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "大黄，你看这个——是不是你那天追的蛋？",
     Next = 42  -- 下一段对话ID
 }
@@ -769,7 +769,7 @@ DialogueConfig[60] = {
     Type = "Normal",
     DocTag = "2-hub!E13#1",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "执勤",
     Dialogue = "你先去看看那扇门。",
     Next = -1  -- 下一段对话ID
 }
@@ -780,7 +780,7 @@ DialogueConfig[61] = {
     Type = "Question",
     DocTag = "2-hub#menu",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "执勤",
     Dialogue = "查到什么了吗？",
     Options = {
         {
@@ -858,7 +858,7 @@ DialogueConfig[65] = {
     Type = "Normal",
     DocTag = "2-B#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "这里有一扇精美的小门，还有一撮动物的毛，红屋顶里还住着别的动物？",
     SetVariables = {
         { VarName = "BlackCat_TreeShakeStarted", VarType = "bool", Value = true }
@@ -894,7 +894,7 @@ DialogueConfig[68] = {
     Type = "Normal",
     DocTag = "2-B#4",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "你想起什么了？",
     Next = 69  -- 下一段对话ID
 }
@@ -916,7 +916,7 @@ DialogueConfig[70] = {
     Type = "Normal",
     DocTag = "2-B#6",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "他在哪儿？",
     Next = 71  -- 下一段对话ID
 }
@@ -964,7 +964,7 @@ DialogueConfig[74] = {
     Type = "Normal",
     DocTag = "2-C@v1#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "大黄，你认识那只黑猫很久了吗？",
     Next = 75  -- 下一段对话ID
 }
@@ -1008,7 +1008,7 @@ DialogueConfig[78] = {
     Type = "Normal",
     DocTag = "2-C@v1#5",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "他学会了吗？",
     Next = 79  -- 下一段对话ID
 }
@@ -1030,7 +1030,7 @@ DialogueConfig[80] = {
     Type = "Normal",
     DocTag = "2-C@v2#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "他小时候怕什么吗？",
     Next = 81  -- 下一段对话ID
 }
@@ -1096,7 +1096,7 @@ DialogueConfig[86] = {
     Type = "Normal",
     DocTag = "2-C@v3#3",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "什么？",
     Next = 87  -- 下一段对话ID
 }
@@ -1199,7 +1199,7 @@ DialogueConfig[95] = {
     Type = "Normal",
     DocTag = "NGPlus@v1#1",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "执勤",
     Dialogue = "巡逻中。一切正常。",
     Next = -1  -- 下一段对话ID
 }
@@ -1210,7 +1210,7 @@ DialogueConfig[96] = {
     Type = "Normal",
     DocTag = "NGPlus@v2#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "大黄，那块石头最后怎么了？",
     Next = 97  -- 下一段对话ID
 }
@@ -1221,7 +1221,7 @@ DialogueConfig[97] = {
     Type = "Normal",
     DocTag = "NGPlus@v2#2",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "执勤",
     Dialogue = "还在乌鸦那儿呢。我问过它，它说那是图腾宝石，意义非凡。",
     Next = 98  -- 下一段对话ID
 }
@@ -1243,7 +1243,7 @@ DialogueConfig[99] = {
     Type = "Normal",
     DocTag = "NGPlus@v2#4",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "执勤",
     Dialogue = "……随它去吧。",
     Next = -1  -- 下一段对话ID
 }
@@ -1276,7 +1276,7 @@ DialogueConfig[102] = {
     Type = "Normal",
     DocTag = "NGPlus@v3#3",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "振奋",
     Dialogue = "我是保安。不是酒鬼。",
     Next = -1  -- 下一段对话ID
 }
@@ -1287,7 +1287,7 @@ DialogueConfig[103] = {
     Type = "Normal",
     DocTag = "NGPlus@v4#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "大黄，以后还会有蛋失踪吗？",
     Next = 104  -- 下一段对话ID
 }
@@ -1298,7 +1298,7 @@ DialogueConfig[104] = {
     Type = "Normal",
     DocTag = "NGPlus@v4#2",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "执勤",
     Dialogue = "不会了。",
     Next = 105  -- 下一段对话ID
 }
@@ -1320,7 +1320,7 @@ DialogueConfig[106] = {
     Type = "Normal",
     DocTag = "NGPlus@v4#4",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "执勤",
     Dialogue = "我的鼻子好用着呢。",
     Next = -1  -- 下一段对话ID
 }
