@@ -18,7 +18,7 @@ RenderSettings:
   m_FogColor: {r: 0.60784316, g: 0.80392164, b: 0.9960785, a: 1}
   m_FogMode: 1
   m_FogDensity: 0.01
-  m_LinearFogStart: 0
+  m_LinearFogStart: 5
   m_LinearFogEnd: 130
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
@@ -4493,7 +4493,7 @@ MonoBehaviour:
     fogEnable: 1
     fogColor: {r: 0.60784316, g: 0.80392164, b: 0.9960785, a: 1}
     fogMode: 1
-    startFog: 0
+    startFog: 5
     endFog: 130
     fogDensity: 0.01
     skyMaterial: {fileID: 2100000, guid: d4b9755ff80e2cb449e439c5303fa794, type: 2}
@@ -4518,7 +4518,7 @@ MonoBehaviour:
     BloomEnabled: 1
     BloomColor: {r: 0.9960785, g: 0.9960785, b: 0.8980393, a: 1}
     BloomThreshold: 0.801
-    BloomIntensity: 1.99
+    BloomIntensity: 0.4
     BloomScatter: 0.72
     LUT: 1
     LutAmount: 0.375
@@ -4582,7 +4582,7 @@ MonoBehaviour:
     fogEnable: 1
     fogColor: {r: 0.60784316, g: 0.80392164, b: 0.9960785, a: 1}
     fogMode: 1
-    startFog: 0
+    startFog: 5
     endFog: 130
     fogDensity: 0.01
     skyMaterial: {fileID: 2100000, guid: d4b9755ff80e2cb449e439c5303fa794, type: 2}
@@ -4607,7 +4607,7 @@ MonoBehaviour:
     BloomEnabled: 1
     BloomColor: {r: 0.9960785, g: 0.9960785, b: 0.8980393, a: 1}
     BloomThreshold: 0.801
-    BloomIntensity: 1.99
+    BloomIntensity: 0.4
     BloomScatter: 0.72
     LUT: 1
     LutAmount: 0.375
@@ -16949,7 +16949,7 @@ MonoBehaviour:
   m_IsGlobal: 1
   priority: 0
   blendDistance: 0
-  weight: 0.316
+  weight: 1
   sharedProfile: {fileID: 11400000, guid: 53aaa8fb4e94cd2459377b1907573a24, type: 2}
 --- !u!1 &1374433795
 GameObject:
