@@ -57,13 +57,35 @@ local function SetInteractionEnabled(enabled)
     end
 end
 
-local function ApplyAwakeModels(isAwake)
+local function GetVfxPosition()
+    if soberDog and soberDog.activeSelf then
+        return soberDog.transform.position
+    end
+    if sleepDog and sleepDog.activeSelf then
+        return sleepDog.transform.position
+    end
+    if soberDog then
+        return soberDog.transform.position
+    end
+    if sleepDog then
+        return sleepDog.transform.position
+    end
+    return self.transform.position
+end
+
+local function PlayCharacterChangeVfx()
+    local playParticle = _G["PlayParticle"]
+    if playParticle then
+        playParticle("vfx_characterChange", GetVfxPosition())
+    end
+end
+
+local function ApplyAwakeModels(isAwake, playVfx)
+    if playVfx then
+        PlayCharacterChangeVfx()
+    end
     if sleepDog then
         sleepDog:SetActive(not isAwake)
-        local playParticle = _G["PlayParticle"]
-        if playParticle and sleepDog then
-            playParticle("vfx_characterChange", sleepDog.transform.position)
-        end
     end
     if soberDog then
         soberDog:SetActive(isAwake)
@@ -85,20 +107,28 @@ function CheckDogState()
     if lastSpotEnabled == spotEnabled and lastAwake == isAwake then
         return
     end
+
+    -- 首帧初始化不播粒子；仅实际状态切换时播
+    local spotChanged = lastSpotEnabled ~= nil and lastSpotEnabled ~= spotEnabled
+    local awakeChanged = lastAwake ~= nil and lastAwake ~= isAwake
+
     lastSpotEnabled = spotEnabled
     lastAwake = isAwake
 
     SetInteractionEnabled(spotEnabled)
 
     if not spotEnabled then
+        if spotChanged then
+            PlayCharacterChangeVfx()
+        end
         HideAllModels()
         return
     end
 
     if redRoof then
-        ApplyAwakeModels(true)
+        ApplyAwakeModels(true, spotChanged)
     else
-        ApplyAwakeModels(isAwake)
+        ApplyAwakeModels(isAwake, spotChanged or awakeChanged)
     end
 end
 

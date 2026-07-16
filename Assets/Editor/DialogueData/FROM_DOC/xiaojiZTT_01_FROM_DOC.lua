@@ -9,7 +9,9 @@
 --   2-D -> DialogueConfig[51]
 --   2-F -> DialogueConfig[60]
 --   2-E -> DialogueConfig[74]
+--   2-G -> DialogueConfig[200]
 --   3-A -> DialogueConfig[130]
+--   entry#2g -> DialogueConfig[190]
 --   NGPlus -> DialogueConfig[131]
 --   NGPlus-revisit -> DialogueConfig[172]
 
@@ -44,7 +46,7 @@ DialogueConfig[1] = {
 DialogueConfig[2] = {
     Type = "Normal",
     DocTag = "2-A#2",
-    NpcName = "小鸡侦探团",
+    NpcName = "小鸡们",
     NpcSprite = "装酷",
     Dialogue = "（四只小鸡挤在鸡舍边，纸板墨镜歪着）",
     Next = 3  -- 下一段对话ID
@@ -287,7 +289,8 @@ DialogueConfig[23] = {
             Next = 24,
             DisplayConditions = {
                 { VarName = "ChickTraceCount", VarType = "int", Op = ">=", Value = 2 },
-                { VarName = "ChickStatus", VarType = "int", Op = "==", Value = 1 }
+                { VarName = "ChickStatus", VarType = "int", Op = "==", Value = 1 },
+                { VarName = "BlackCat_CaseLineStarted", VarType = "bool", Value = false }
             },
         },
         {
@@ -311,7 +314,8 @@ DialogueConfig[23] = {
             Next = 74,
             DisplayConditions = {
                 { VarName = "E10_ViewWhiteStone", VarType = "bool", Value = true },
-                { VarName = "ChickStatus", VarType = "int", Op = "<=", Value = 2 }
+                { VarName = "ChickStatus", VarType = "int", Op = "<=", Value = 2 },
+                { VarName = "BlackCat_CaseLineStarted", VarType = "bool", Value = false }
             },
         },
         {
@@ -355,7 +359,7 @@ DialogueConfig[24] = {
 DialogueConfig[25] = {
     Type = "Normal",
     DocTag = "2-B#2",
-    NpcName = "小鸡侦探团",
+    NpcName = "小鸡们",
     NpcSprite = "心虚",
     Dialogue = "（阿满脖子一缩）",
     Next = 26  -- 下一段对话ID
@@ -660,7 +664,7 @@ DialogueConfig[51] = {
 DialogueConfig[52] = {
     Type = "Normal",
     DocTag = "2-D#2",
-    NpcName = "小鸡侦探团",
+    NpcName = "小鸡们",
     NpcSprite = "装酷",
     Dialogue = "（豆豆蹦了一下，墨镜歪了）",
     Next = 53  -- 下一段对话ID
@@ -921,7 +925,7 @@ DialogueConfig[74] = {
 DialogueConfig[75] = {
     Type = "Normal",
     DocTag = "2-E#2",
-    NpcName = "小鸡侦探团",
+    NpcName = "小鸡们",
     NpcSprite = "愧疚",
     Dialogue = "（四只小鸡对视，谁也不说话）",
     Next = 76  -- 下一段对话ID
@@ -1481,7 +1485,7 @@ DialogueConfig[124] = {
 DialogueConfig[125] = {
     Type = "Normal",
     DocTag = "3-A@v3#2",
-    NpcName = "小鸡侦探团",
+    NpcName = "小鸡们",
     NpcSprite = "愧疚",
     Dialogue = "（四只小鸡都不吭声）",
     Next = 126  -- 下一段对话ID
@@ -1539,7 +1543,7 @@ DialogueConfig[129] = {
 DialogueConfig[130] = {
     Type = "Normal",
     DocTag = "3-A",
-    NpcName = "小鸡侦探团",
+    NpcName = "小鸡们",
     NpcSprite = "装酷",
     Dialogue = "",
     RotatePool = { 111, 117, 124 },
@@ -1551,7 +1555,7 @@ DialogueConfig[130] = {
 DialogueConfig[131] = {
     Type = "Normal",
     DocTag = "NGPlus#2",
-    NpcName = "小鸡侦探团",
+    NpcName = "小鸡们",
     NpcSprite = "愧疚",
     Dialogue = "（四只小鸡坐在鸡舍门口）",
     Next = 132  -- 下一段对话ID
@@ -1829,7 +1833,7 @@ DialogueConfig[155] = {
 DialogueConfig[156] = {
     Type = "Normal",
     DocTag = "NGPlus-revisit@v1#1",
-    NpcName = "小鸡侦探团",
+    NpcName = "小鸡们",
     NpcSprite = "愧疚",
     Dialogue = "（四只小鸡排成一列，墨镜戴正了）",
     Next = 157  -- 下一段对话ID
@@ -1939,7 +1943,7 @@ DialogueConfig[165] = {
 DialogueConfig[166] = {
     Type = "Normal",
     DocTag = "NGPlus-revisit@v3#1",
-    NpcName = "小鸡侦探团",
+    NpcName = "小鸡们",
     NpcSprite = "愧疚",
     Dialogue = "（瓜子盯着鸡舍里）",
     Next = 167  -- 下一段对话ID
@@ -2005,7 +2009,7 @@ DialogueConfig[171] = {
 DialogueConfig[172] = {
     Type = "Normal",
     DocTag = "NGPlus-revisit",
-    NpcName = "小鸡侦探团",
+    NpcName = "小鸡们",
     NpcSprite = "装酷",
     Dialogue = "",
     RotatePool = { 156, 162, 166 },
@@ -2026,7 +2030,8 @@ DialogueConfig[173] = {
             Next = 24,
             DisplayConditions = {
                 { VarName = "ChickTraceCount", VarType = "int", Op = ">=", Value = 2 },
-                { VarName = "ChickStatus", VarType = "int", Op = "==", Value = 1 }
+                { VarName = "ChickStatus", VarType = "int", Op = "==", Value = 1 },
+                { VarName = "BlackCat_CaseLineStarted", VarType = "bool", Value = false }
             },
         },
         {
@@ -2050,7 +2055,8 @@ DialogueConfig[173] = {
             Next = 74,
             DisplayConditions = {
                 { VarName = "E10_ViewWhiteStone", VarType = "bool", Value = true },
-                { VarName = "ChickStatus", VarType = "int", Op = "<=", Value = 2 }
+                { VarName = "ChickStatus", VarType = "int", Op = "<=", Value = 2 },
+                { VarName = "BlackCat_CaseLineStarted", VarType = "bool", Value = false }
             },
         },
         {
@@ -2092,7 +2098,8 @@ DialogueConfig[174] = {
             Next = 24,
             DisplayConditions = {
                 { VarName = "ChickTraceCount", VarType = "int", Op = ">=", Value = 2 },
-                { VarName = "ChickStatus", VarType = "int", Op = "==", Value = 1 }
+                { VarName = "ChickStatus", VarType = "int", Op = "==", Value = 1 },
+                { VarName = "BlackCat_CaseLineStarted", VarType = "bool", Value = false }
             },
         },
         {
@@ -2116,7 +2123,8 @@ DialogueConfig[174] = {
             Next = 74,
             DisplayConditions = {
                 { VarName = "E10_ViewWhiteStone", VarType = "bool", Value = true },
-                { VarName = "ChickStatus", VarType = "int", Op = "<=", Value = 2 }
+                { VarName = "ChickStatus", VarType = "int", Op = "<=", Value = 2 },
+                { VarName = "BlackCat_CaseLineStarted", VarType = "bool", Value = false }
             },
         },
         {
@@ -2158,7 +2166,8 @@ DialogueConfig[175] = {
             Next = 24,
             DisplayConditions = {
                 { VarName = "ChickTraceCount", VarType = "int", Op = ">=", Value = 2 },
-                { VarName = "ChickStatus", VarType = "int", Op = "==", Value = 1 }
+                { VarName = "ChickStatus", VarType = "int", Op = "==", Value = 1 },
+                { VarName = "BlackCat_CaseLineStarted", VarType = "bool", Value = false }
             },
         },
         {
@@ -2182,7 +2191,8 @@ DialogueConfig[175] = {
             Next = 74,
             DisplayConditions = {
                 { VarName = "E10_ViewWhiteStone", VarType = "bool", Value = true },
-                { VarName = "ChickStatus", VarType = "int", Op = "<=", Value = 2 }
+                { VarName = "ChickStatus", VarType = "int", Op = "<=", Value = 2 },
+                { VarName = "BlackCat_CaseLineStarted", VarType = "bool", Value = false }
             },
         },
         {
@@ -2215,7 +2225,7 @@ DialogueConfig[175] = {
 DialogueConfig[176] = {
     Type = "Normal",
     DocTag = "2-hub#return@pre#1",
-    NpcName = "小鸡侦探团",
+    NpcName = "小鸡们",
     NpcSprite = "装酷",
     Dialogue = "（四只小鸡又挤到一起）",
     SetVariables = {
@@ -2238,7 +2248,8 @@ DialogueConfig[177] = {
             Next = 24,
             DisplayConditions = {
                 { VarName = "ChickTraceCount", VarType = "int", Op = ">=", Value = 2 },
-                { VarName = "ChickStatus", VarType = "int", Op = "==", Value = 1 }
+                { VarName = "ChickStatus", VarType = "int", Op = "==", Value = 1 },
+                { VarName = "BlackCat_CaseLineStarted", VarType = "bool", Value = false }
             },
         },
         {
@@ -2262,7 +2273,8 @@ DialogueConfig[177] = {
             Next = 74,
             DisplayConditions = {
                 { VarName = "E10_ViewWhiteStone", VarType = "bool", Value = true },
-                { VarName = "ChickStatus", VarType = "int", Op = "<=", Value = 2 }
+                { VarName = "ChickStatus", VarType = "int", Op = "<=", Value = 2 },
+                { VarName = "BlackCat_CaseLineStarted", VarType = "bool", Value = false }
             },
         },
         {
@@ -2351,7 +2363,7 @@ DialogueConfig[182] = {
 DialogueConfig[183] = {
     Type = "Normal",
     DocTag = "entry#hub",
-    NpcName = "小鸡侦探团",
+    NpcName = "小鸡们",
     NpcSprite = "装酷",
     Dialogue = "",
     ConditionBranches = {
@@ -2365,7 +2377,7 @@ DialogueConfig[183] = {
 DialogueConfig[184] = {
     Type = "Normal",
     DocTag = "entry#3a1",
-    NpcName = "小鸡侦探团",
+    NpcName = "小鸡们",
     NpcSprite = "装酷",
     Dialogue = "",
     ConditionBranches = {
@@ -2379,7 +2391,7 @@ DialogueConfig[184] = {
 DialogueConfig[185] = {
     Type = "Normal",
     DocTag = "entry#3a2",
-    NpcName = "小鸡侦探团",
+    NpcName = "小鸡们",
     NpcSprite = "装酷",
     Dialogue = "",
     ConditionBranches = {
@@ -2393,7 +2405,7 @@ DialogueConfig[185] = {
 DialogueConfig[186] = {
     Type = "Normal",
     DocTag = "entry#3a0",
-    NpcName = "小鸡侦探团",
+    NpcName = "小鸡们",
     NpcSprite = "装酷",
     Dialogue = "",
     ConditionBranches = {
@@ -2407,7 +2419,7 @@ DialogueConfig[186] = {
 DialogueConfig[187] = {
     Type = "Normal",
     DocTag = "entry#2a",
-    NpcName = "小鸡侦探团",
+    NpcName = "小鸡们",
     NpcSprite = "装酷",
     Dialogue = "",
     ConditionBranches = {
@@ -2421,13 +2433,13 @@ DialogueConfig[187] = {
 DialogueConfig[188] = {
     Type = "Normal",
     DocTag = "entry#ng1",
-    NpcName = "小鸡侦探团",
+    NpcName = "小鸡们",
     NpcSprite = "装酷",
     Dialogue = "",
     ConditionBranches = {
-        { VarName = "Chick_NGPlusShown", VarType = "bool", TrueNext = 187, FalseNext = 131 }
+        { VarName = "Chick_NGPlusShown", VarType = "bool", TrueNext = 190, FalseNext = 131 }
     },
-    Next = 187  -- 下一段对话ID
+    Next = 190  -- 下一段对话ID
 }
 
 -- 普通对话类型  -- doc:entry#ng2
@@ -2435,7 +2447,7 @@ DialogueConfig[188] = {
 DialogueConfig[189] = {
     Type = "Normal",
     DocTag = "entry#ng2",
-    NpcName = "小鸡侦探团",
+    NpcName = "小鸡们",
     NpcSprite = "装酷",
     Dialogue = "",
     ConditionBranches = {
@@ -2449,11 +2461,177 @@ DialogueConfig[189] = {
 DialogueConfig[0] = {
     Type = "Normal",
     DocTag = "entry#0",
-    NpcName = "小鸡侦探团",
+    NpcName = "小鸡们",
     NpcSprite = "装酷",
     Dialogue = "",
     ConditionBranches = {
-        { VarName = "NGPlus", VarType = "bool", TrueNext = 189, FalseNext = 187 }
+        { VarName = "NGPlus", VarType = "bool", TrueNext = 189, FalseNext = 190 }
     },
-    Next = 187  -- 下一段对话ID
+    Next = 190  -- 下一段对话ID
+}
+
+-- entry#2g · BlackCat_CaseLineStarted && ChickStatus<=1 → 2-G
+DialogueConfig[190] = {
+    Type = "Normal",
+    DocTag = "entry#2g",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "",
+    ConditionBranches = {
+        { VarName = "BlackCat_CaseLineStarted", VarType = "bool", TrueNext = 191, FalseNext = 187 }
+    },
+    Next = 187
+}
+
+DialogueConfig[191] = {
+    Type = "Normal",
+    DocTag = "entry#2g-status",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "",
+    ConditionBranches = {
+        { VarName = "ChickStatus", VarType = "int", Op = "<=", Value = 1, Next = 200 }
+    },
+    Next = 187
+}
+
+-- ==================== 2-G · 黑猫案情补漏全招 ====================
+
+DialogueConfig[200] = {
+    Type = "Normal",
+    DocTag = "2-G#1",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "黑猫让我来问——你们这两天到底发生了什么？",
+    Next = 201
+}
+
+DialogueConfig[201] = {
+    Type = "Normal",
+    DocTag = "2-G#2",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "（四只小鸡僵住）",
+    Next = 202
+}
+
+DialogueConfig[202] = {
+    Type = "Normal",
+    DocTag = "2-G#3",
+    NpcName = "阿满",
+    NpcSprite = "心虚",
+    Dialogue = "……",
+    Next = 203
+}
+
+DialogueConfig[203] = {
+    Type = "Normal",
+    DocTag = "2-G#4",
+    NpcName = "瓜子",
+    NpcSprite = "心虚",
+    Dialogue = "（哭腔）我们……我们把弟弟弄丢了……",
+    Next = 204
+}
+
+DialogueConfig[204] = {
+    Type = "Normal",
+    DocTag = "2-G#5",
+    NpcName = "阿满",
+    NpcSprite = "愧疚",
+    Dialogue = "大前天捡了块白石头，画成蛋，把弟弟偷出来踢球——",
+    Next = 205
+}
+
+DialogueConfig[205] = {
+    Type = "Normal",
+    DocTag = "2-G#6",
+    NpcName = "米粒",
+    NpcSprite = "心虚",
+    Dialogue = "（小声）老鼠叔叔说有沼泽水怪……",
+    Next = 206
+}
+
+DialogueConfig[206] = {
+    Type = "Normal",
+    DocTag = "2-G#7",
+    NpcName = "豆豆",
+    NpcSprite = "心虚",
+    Dialogue = "（气鼓鼓）现在想起来他们全程在憋笑！！",
+    Next = 207
+}
+
+DialogueConfig[207] = {
+    Type = "Normal",
+    DocTag = "2-G#8",
+    NpcName = "阿满",
+    NpcSprite = "愧疚",
+    Dialogue = "我们吓得把真蛋推回窝，假石头扔草丛——被乌鸦叼走了。",
+    Next = 208
+}
+
+DialogueConfig[208] = {
+    Type = "Normal",
+    DocTag = "2-G#9",
+    NpcName = "阿满",
+    NpcSprite = "心虚",
+    Dialogue = "弟弟昨晚才不见的！根本不是水怪……",
+    Next = 209
+}
+
+DialogueConfig[209] = {
+    Type = "Normal",
+    DocTag = "2-G#10",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "昨晚有动静吗？",
+    Next = 210
+}
+
+DialogueConfig[210] = {
+    Type = "Normal",
+    DocTag = "2-G#11",
+    NpcName = "米粒",
+    NpcSprite = "心虚",
+    Dialogue = "有好响的声音……我们以为是水怪……",
+    Next = 211
+}
+
+DialogueConfig[211] = {
+    Type = "Normal",
+    DocTag = "2-G#12",
+    NpcName = "阿满",
+    NpcSprite = "愧疚",
+    Dialogue = "（哭）没有水怪……到底是谁带走了弟弟？",
+    Next = 212
+}
+
+DialogueConfig[212] = {
+    Type = "Normal",
+    DocTag = "2-G#13",
+    NpcName = "豆豆",
+    NpcSprite = "心虚",
+    Dialogue = "池塘那只青蛙肯定见过什么！！",
+    Next = 213
+}
+
+DialogueConfig[213] = {
+    Type = "Normal",
+    DocTag = "2-G#14",
+    NpcName = "米粒",
+    NpcSprite = "心虚",
+    Dialogue = "快去问他……求你快去……",
+    Next = 214
+}
+
+DialogueConfig[214] = {
+    Type = "Normal",
+    DocTag = "2-G#15",
+    NpcName = "阿满",
+    NpcSprite = "心虚",
+    Dialogue = "你去池塘……快去……",
+    SetVariables = {
+        { VarName = "ChickStatus", VarType = "int", Value = 3 },
+        { VarName = "Chick_HubFromSubItem", VarType = "bool", Value = true },
+    },
+    Next = 182
 }

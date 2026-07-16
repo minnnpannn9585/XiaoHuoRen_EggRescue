@@ -682,7 +682,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1565963071944870157
 RectTransform:
   m_ObjectHideFlags: 0
@@ -984,6 +984,7 @@ MonoBehaviour:
   - rid: 1482841202479595541
   - rid: 3883133810448531460
   - rid: 3883133810448531461
+  - rid: 3238642656491864068
   - rid: 1482841202479595544
   - rid: 3883133810448531462
   - rid: 3883133810448531463
@@ -1134,6 +1135,12 @@ MonoBehaviour:
         varName: "\u7ACB\u7ED8_\u95EA\u7535\u8717\u725B_\u95EA\u7535\u8717\u725B"
         Data: {fileID: -1753796012, guid: 920ba8ad7a87f43db8b217e53a71663f, type: 3}
         varType: UnityEngine.Sprite
+    - rid: 3238642656491864068
+      type: {class: DouyinLuaDataUObject, ns: , asm: com.douyin.script}
+      data:
+        varName: "\u7ACB\u7ED8_\u5C0F\u9E21_\u80CC\u5BF9"
+        Data: {fileID: 1127678413, guid: 7c8e3aa1e82e5ef4ba5844d853e363f2, type: 3}
+        varType: UnityEngine.Sprite
     - rid: 3883133810448531456
       type: {class: DouyinLuaDataUObject, ns: , asm: com.douyin.script}
       data:
@@ -1192,19 +1199,19 @@ MonoBehaviour:
       type: {class: DouyinLuaDataUObject, ns: , asm: com.douyin.script}
       data:
         varName: "\u7ACB\u7ED8_\u73A9\u5BB6_\u6B63\u5E38"
-        Data: {fileID: 0}
+        Data: {fileID: 1514297200, guid: 4c0ee398b260fb342943c2cb06414040, type: 3}
         varType: UnityEngine.Sprite
     - rid: 3883133810448531466
       type: {class: DouyinLuaDataUObject, ns: , asm: com.douyin.script}
       data:
         varName: "\u7ACB\u7ED8_\u73A9\u5BB6_\u60CA\u8BB6"
-        Data: {fileID: 0}
+        Data: {fileID: 485439963, guid: 8fef75fe9edc8464aa80a989cca062cc, type: 3}
         varType: UnityEngine.Sprite
     - rid: 3883133810448531467
       type: {class: DouyinLuaDataUObject, ns: , asm: com.douyin.script}
       data:
         varName: "\u7ACB\u7ED8_\u73A9\u5BB6_\u7591\u60D1"
-        Data: {fileID: 0}
+        Data: {fileID: -724900012, guid: bc28706f47017a64a83c1f4ec032609f, type: 3}
         varType: UnityEngine.Sprite
 --- !u!1 &8970362166947979574
 GameObject:

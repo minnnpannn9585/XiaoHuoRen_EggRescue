@@ -2,7 +2,7 @@
 -- Scene DialogueTrigger start ID should be 0 (entry dispatcher)
 -- doc node map:
 --   entry#0 -> DialogueConfig[0]
---   gate80–85 -> DialogueConfig[80–85]
+--   gate80–85 -> DialogueConfig[80–85]（85 = DogStatus==4 后再判 Dog_BlackCatSummoned）
 --   F-1 -> DialogueConfig[1]
 --   F-2 -> DialogueConfig[10]
 --   F-3 -> DialogueConfig[20]
@@ -45,7 +45,19 @@ DialogueConfig[81] = {
     NpcSprite = "待机",
     Dialogue = "",
     ConditionBranches = {
-        { VarName = "DogStatus", VarType = "int", Op = "==", Value = 4, Next = 40 }
+        { VarName = "DogStatus", VarType = "int", Op = "==", Value = 4, Next = 85 }
+    },
+    Next = 82
+}
+
+DialogueConfig[85] = {
+    Type = "Normal",
+    DocTag = "entry#week1-dog4-cat",
+    NpcName = "闪电蜗牛",
+    NpcSprite = "待机",
+    Dialogue = "",
+    ConditionBranches = {
+        { VarName = "Dog_BlackCatSummoned", VarType = "bool", TrueNext = 40, FalseNext = 82 }
     },
     Next = 82
 }

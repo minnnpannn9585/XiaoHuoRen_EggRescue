@@ -45,9 +45,9 @@ Mechanics_Code
 | 场景物体 | `npcname` | 备注 |
 |---------|-----------|------|
 | 大黄 | 大黄 | 另挂 `DaHuang.lua` 控制醉/醒模型与梯子 |
-| 淑芬 | 淑芬 | 委托起点；`ShuFen.lua` 与「淑芬2」双点切换 |
+| 淑芬 | 淑芬 | 委托起点；`ShuFen.lua` 拖三点引用切换（二周目换「淑芬3」） |
 | 黑猫 | 黑猫 | 第二章核心 |
-| 悲伤蛙 | 悲伤蛙 | 池塘线 |
+| 悲伤蛙 | 悲伤蛙 | 池塘线；`BeiShangWa.lua` 拖两点引用，交薄荷鱼后切姿态 |
 | 闪电蜗牛 | 闪电蜗牛 | 二周目 meta |
 | 乌鸦 | 乌鸦 | 谷仓顶 |
 | 小鸡侦探团 | 小鸡侦探团 | 第一章误导 |
@@ -105,8 +105,9 @@ zttTouTing, miaosu
 | `ClueTrigger.lua` | E 点 | 点击写入 1~2 个全局变量 |
 | `BookController.lua` | Canvas 笔记本 | 9.2.1 条目入册 + 9.2.2 连线/修饰；SetGlobalVar 实时刷新 |
 | `DaHuang.lua` | 大黄 | 谷仓/红顶双点；醉醒模型与梯子 |
-| `ShuFen.lua` | 淑芬、淑芬2 | `Shufen_CommissionDone` 切换委托点与鸡舍回访点 |
-| `MainController.lua` | `MianController` | 每帧隐藏 SDK 飞行按钮与聊天面板 |
+| `ShuFen.lua` | 淑芬 parent | 拖 `commissionSpot`/`hubSpot`/`ngPlusSpot`；只 SetActive 三个 Spot，不动 parent |
+| `BeiShangWa.lua` | 悲伤蛙 parent | 拖 `beforeSpot`/`afterSpot`/`cushionSpot`（E12）；`MintFish_Obtained` 切换交鱼前后姿态与绿垫点 |
+| `MainController.lua` | `MianController` | 每帧隐藏 SDK 飞行按钮与聊天面板；注册 `PlayAudio`/`PlayParticle` |
 
 路径：`Assets/luaScripts/`。
 
@@ -263,8 +264,8 @@ E03 偷听：`npcname=E03_Eavesdrop`，`zttTouTing.lua` 内容不变。
 | `open` | 入口按钮 |
 | `openRedDot` | 有新条目入册且面板关闭时显示 |
 | `boolPanel` | 笔记本面板根 |
-| `leftBtn` / `rightBtn` | 翻页 |
 | `pageContents` | 翻页底板（含第 4 页老鼠情报） |
+| `page1TabBtns` … `page4TabBtns` | 各页底部页签（Button[4]，元素 i→第 i+1 页；本页槽位可空） |
 
 ### 9.2.1 主线条目（33 个 `entry_*`）
 
@@ -291,7 +292,7 @@ SetGlobalVar（对话 / ClueTrigger / 老鼠商店）
 ```
 
 - 条件语法：`&` AND、`|` OR；`VarName==true`、`VarName>=2` 等
-- 入册演出：1s `CanvasGroup.alpha` 渐显
+- 入册演出：解锁后保持 alpha=0；打开本子 / 翻页到该页时（`ShowCurrentPage`）播 1s 渐显 + 一次 alpha 闪烁
 - `E10` 入册：自动 `currentIndex = 2`（翻到第二页）
 
 完整 Inspector 字段名对照表见 [`09` §9.8](../MissingEggDoc-main/docs/09-侦探笔记本.md#98-inspector-接线对照bookcontroller)（与 `BookController.lua` `---@var` 一一对应）。

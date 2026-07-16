@@ -46,7 +46,7 @@ DialogueConfig[4] = {
     DocTag = "E12#2",
     NpcName = "玩家",
     NpcSprite = "疑惑",
-    Dialogue = "那个气味……垫着什么？",
+    Dialogue = "那个气味……这是什么东西？",
     Next = -1
 }
 
@@ -75,7 +75,7 @@ DialogueConfig[7] = {
     DocTag = "E23",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "池塘近岸处有几处被踩进的浅坑，旁边留有一个圆底压印，底部粘着带水草腥气的湿泥。",
+    Dialogue = "几处被踩进的浅坑，旁边留有一个圆底压印，底部粘着带水草腥气的湿泥。",
     Next = -1
 }
 
@@ -187,7 +187,7 @@ DialogueConfig[16] = {
     DocTag = "E09",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "乌鸦巢前的木板边缘有几枚浅浅的爪印，脚掌小而利。",
+    Dialogue = "几枚浅浅的爪印，脚掌小而利。",
     Next = -1
 }
 
@@ -235,7 +235,7 @@ DialogueConfig[21] = {
     DocTag = "E17#1",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "倒扣着一只空水桶，桶底粘着湿泥和细沙，有股池塘边的水草味。",
+    Dialogue = "一只空水桶，桶底粘着湿泥和细沙，有股池塘边的水草味。",
     Next = 22
 }
 

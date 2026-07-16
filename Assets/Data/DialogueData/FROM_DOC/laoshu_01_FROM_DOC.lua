@@ -269,7 +269,6 @@ DialogueConfig[100] = {
             Next = 95,
             DisplayConditions = {
                 { VarName = "Mouse_PremiumPoolAvailable", VarType = "bool", Value = true },
-                { VarName = "Mouse_PremiumBudgetOK", VarType = "bool", Value = true },
                 { VarName = "CheeseCount", VarType = "int", Op = ">=", Value = 5 },
             },
         },
@@ -301,7 +300,7 @@ DialogueConfig[100] = {
                 { VarName = "MintFish_Obtained", VarType = "bool", Value = false },
                 { VarName = "Mouse_MintFishPitchShown", VarType = "bool", Value = true },
                 { VarName = "Frog_PadRefused", VarType = "bool", Value = false },
-                { VarName = "CheeseCount", VarType = "int", Op = ">=", Value = 8 },
+                { VarName = "Mouse_CanAffordMint8InGame", VarType = "bool", Value = true },
             },
         },
         {
@@ -524,7 +523,7 @@ DialogueConfig[230] = {
             ShopAction = "pay8_mint",
             DisplayConditions = {
                 { VarName = "Frog_PadRefused", VarType = "bool", Value = false },
-                { VarName = "CheeseCount", VarType = "int", Op = ">=", Value = 8 },
+                { VarName = "Mouse_CanAffordMint8InGame", VarType = "bool", Value = true },
             },
         },
         {
@@ -879,7 +878,7 @@ DialogueConfig[311] = {
             Next = 320,
             ShopAction = "pay8_frog",
             DisplayConditions = {
-                { VarName = "CheeseCount", VarType = "int", Op = ">=", Value = 8 },
+                { VarName = "Mouse_CanAffordMint8InGame", VarType = "bool", Value = true },
             },
         },
         {
@@ -1134,7 +1133,7 @@ DialogueConfig[351] = {
             Next = 360,
             ShopAction = "pay8_pool",
             DisplayConditions = {
-                { VarName = "CheeseCount", VarType = "int", Op = ">=", Value = 8 },
+                { VarName = "Mouse_CanAffordMint8InGame", VarType = "bool", Value = true },
             },
         },
         {

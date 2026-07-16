@@ -2,10 +2,11 @@
 ---@var audioSource :UnityEngine.AudioSource -- 用于播放的音频源，若为空则自动添加
 ---@var open :UnityEngine.UI.Button
 ---@var particleSystems :UnityEngine.ParticleSystem[] -- 粒子系统数组，可在 Unity Inspector 中赋值
----@var fishObtainedModel :UnityEngine.GameObject -- 获得鱼后的模型
----@var fishNotObtainedModel :UnityEngine.GameObject -- 未获得鱼的模型
----@var fishcushionModel :UnityEngine.GameObject -- 未获得鱼的模型
-local lastFishObtained = nil
+---@end
+
+-- 场景杂项：隐藏 SDK 飞行键/聊天面板；注册全局 PlayAudio / PlayParticle。
+-- 薄荷鱼蛙模型切换见 BeiShangWa.lua。
+
 -- Unity 启动入口
 function Start()
     -- 获取或添加 AudioSource 组件
@@ -16,34 +17,6 @@ function Start()
     if open then open.onClick:AddListener(OnOpenClick) end
     _G["PlayAudio"] = PlayAudioByName
     _G["PlayParticle"] = PlayParticleByName
-end
-
-local function UpdateFishModelVisibility()
-    local obtained = false
-    local getFunc = _G["GetGlobalVar"] or _G["GetGlobalVariable"]
-    if getFunc then
-        obtained = getFunc("MintFish_Obtained") == true
-    else
-        local vars = _G["_GlobalVariables"]
-        if vars and vars["MintFish_Obtained"] then
-            obtained = vars["MintFish_Obtained"].value == true
-        end
-    end
-
-    if lastFishObtained == obtained then
-        return
-    end
-    lastFishObtained = obtained
-
-    if fishObtainedModel then
-        fishObtainedModel:SetActive(obtained)
-    end
-    if fishNotObtainedModel then
-        fishNotObtainedModel:SetActive(not obtained)
-    end
-    if fishcushionModel then
-        fishcushionModel:SetActive(not obtained)
-    end
 end
 
 function OnOpenClick()
@@ -59,7 +32,6 @@ end
 function Update()
     DouyinUIService.GetInteractionButton(HandType.Right, UIType.Fly).gameObject:SetActive(false)
     OnChatClose()
-    UpdateFishModelVisibility()
 end
 
 function OnChatClose()

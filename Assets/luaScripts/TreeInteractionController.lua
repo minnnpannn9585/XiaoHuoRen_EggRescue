@@ -34,28 +34,42 @@ local function GetClickInteractorScript()
     return nil
 end
 
--- Range 交互靠 SphereCollider + OnPlayerTriggerEnter，只关 Collider 无法撤按钮；须 DisableInteraction + SetActive(false)
+-- 对齐 DaHuang / ShuFen：开点只开 Area/Collider（永不 EnableInteraction，
+-- 否则 Force→Click 切换时玩家仍在区内会把交互键强制弹在屏幕上）；
+-- 关点须 DisableInteraction + 关 Collider，不能只 SetActive(false)。
 local function SetClickInteractionEnabled(enabled)
     if not clickZone then
         return
     end
 
+    local interactor = GetClickInteractorScript()
+
     if enabled then
         if not clickZone.activeSelf then
             clickZone:SetActive(true)
         end
-        local interactor = GetClickInteractorScript()
-        if interactor and interactor.EnableInteraction then
-            interactor.EnableInteraction()
+        if interactor and interactor.InteractionArea then
+            interactor.InteractionArea.enabled = true
+        end
+        local colliders = clickZone:GetComponentsInChildren(typeof(CS.UnityEngine.Collider))
+        if colliders then
+            for i = 0, colliders.Length - 1 do
+                colliders[i].enabled = true
+            end
         end
         return
     end
 
-    if clickZone.activeSelf then
-        local interactor = GetClickInteractorScript()
-        if interactor and interactor.DisableInteraction then
-            interactor.DisableInteraction()
+    if interactor and interactor.DisableInteraction then
+        interactor.DisableInteraction()
+    end
+    local colliders = clickZone:GetComponentsInChildren(typeof(CS.UnityEngine.Collider), true)
+    if colliders then
+        for i = 0, colliders.Length - 1 do
+            colliders[i].enabled = false
         end
+    end
+    if clickZone.activeSelf then
         clickZone:SetActive(false)
     end
 end

@@ -69,12 +69,27 @@ local function PremiumPoolAvailable()
     return false
 end
 
-local function PremiumBudgetOK()
-    if GetBool("MintFish_Obtained") or GetBool("BlackCat_MintFishLineDone") then
-        return true
+-- 钱包 + 场景未捡（C02 仅 NGPlus 计入）
+local function CheeseRemainingTotal()
+    local wallet = tonumber(GetVar("CheeseCount")) or 0
+    local unpicked = 0
+    local registry = _G._CheesePickupRegistry
+    local picked = _G._CheesePickupState
+    local ngPlus = GetBool("NGPlus")
+    if registry then
+        for id, info in pairs(registry) do
+            if info and not (picked and picked[id]) then
+                if not info.requiresNGPlus or ngPlus then
+                    unpicked = unpicked + (tonumber(info.amount) or 1)
+                end
+            end
+        end
     end
-    local cheese = tonumber(GetVar("CheeseCount")) or 0
-    return cheese >= 13
+    return wallet + unpicked
+end
+
+local function CanAffordMint8InGame()
+    return CheeseRemainingTotal() >= 8
 end
 
 local function PreMintPoolSoldOut()
@@ -94,7 +109,7 @@ function RefreshDerivedFlags()
     refreshingDerived = true
     SetVar("Mouse_CheapPoolAvailable", CheapPoolAvailable(), "bool")
     SetVar("Mouse_PremiumPoolAvailable", PremiumPoolAvailable(), "bool")
-    SetVar("Mouse_PremiumBudgetOK", PremiumBudgetOK(), "bool")
+    SetVar("Mouse_CanAffordMint8InGame", CanAffordMint8InGame(), "bool")
     SetVar("Mouse_PreMintPoolSoldOut", PreMintPoolSoldOut(), "bool")
     refreshingDerived = false
 end

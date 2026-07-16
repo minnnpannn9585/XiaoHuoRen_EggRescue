@@ -536,7 +536,7 @@ DialogueConfig[40] = {
     Type = "Normal",
     DocTag = "1-F#5",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "执勤",
     Dialogue = "也可能是我那两天喝糊涂了。",
     SetVariables = {
         { VarName = "E07_NapSpotAsked", VarType = "bool", Value = true }
@@ -787,6 +787,7 @@ DialogueConfig[61] = {
             Text = "正门进不去。",
             Next = 63,
             DisplayConditions = {
+                { VarName = "E13_ViewDoorBlocked", VarType = "bool", Value = true },
                 { VarName = "RedRoof_DoorHintShown", VarType = "bool", Value = false }
             },
         },
@@ -794,7 +795,8 @@ DialogueConfig[61] = {
             Text = "红屋顶里还住着别的动物？",
             Next = 65,
             DisplayConditions = {
-                { VarName = "TreeClueCount >= 2", VarType = "bool", Value = true },
+                { VarName = "E13_ViewDoorBlocked", VarType = "bool", Value = true },
+                { VarName = "TreeClueCount", VarType = "int", Op = ">=", Value = 2 },
                 { VarName = "Dog_BlackCatSummoned", VarType = "bool", Value = false }
             },
         },
@@ -822,7 +824,7 @@ DialogueConfig[62] = {
     NpcSprite = "",
     Dialogue = "",
     ConditionBranches = {
-        { VarName = "E13_ViewDoorBlocked", VarType = "bool", TrueNext = 60, FalseNext = 61 }
+        { VarName = "E13_ViewDoorBlocked", VarType = "bool", TrueNext = 61, FalseNext = 60 }
     },
     Next = 60  -- 下一段对话ID
 }
@@ -1254,7 +1256,7 @@ DialogueConfig[100] = {
     Type = "Normal",
     DocTag = "NGPlus@v3#1",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "执勤",
     Dialogue = "我想……下次再见到苹果渣，就不喝了。",
     Next = 101  -- 下一段对话ID
 }
@@ -1337,6 +1339,7 @@ DialogueConfig[107] = {
     Next = -1  -- 下一段对话ID
 }
 
+-- 红顶入口（按序）：!Intro→2-A · !Summoned→2-hub · !Entered→2-C · !RoofWait→2-E · else→2-C
 -- 普通对话类型  -- doc:entry#rr5
 -- Position: { 4950, 150 }
 DialogueConfig[108] = {
@@ -1360,30 +1363,30 @@ DialogueConfig[109] = {
     NpcSprite = "醉倒",
     Dialogue = "",
     ConditionBranches = {
-        { VarName = "BlackCat_Entered", VarType = "bool", TrueNext = 92, FalseNext = 108 }
+        { VarName = "RedRoof_RoofWaitShown", VarType = "bool", TrueNext = 108, FalseNext = 93 }
     },
     Next = 108  -- 下一段对话ID
 }
 
--- 普通对话类型  -- doc:entry#rr4b
--- Position: { 4250, 150 }
+-- 普通对话类型  -- doc:entry#rr3
+-- Position: { 3900, 150 }
 DialogueConfig[110] = {
     Type = "Normal",
-    DocTag = "entry#rr4b",
+    DocTag = "entry#rr3",
     NpcName = "大黄",
     NpcSprite = "醉倒",
     Dialogue = "",
     ConditionBranches = {
-        { VarName = "Dog_BlackCatSummoned", VarType = "bool", TrueNext = 92, FalseNext = 109 }
+        { VarName = "BlackCat_Entered", VarType = "bool", TrueNext = 109, FalseNext = 92 }
     },
     Next = 109  -- 下一段对话ID
 }
 
--- 普通对话类型  -- doc:entry#rr3
--- Position: { 3900, 150 }
+-- 普通对话类型  -- doc:entry#rr2
+-- Position: { 2150, 150 }
 DialogueConfig[111] = {
     Type = "Normal",
-    DocTag = "entry#rr3",
+    DocTag = "entry#rr2",
     NpcName = "大黄",
     NpcSprite = "醉倒",
     Dialogue = "",
@@ -1393,74 +1396,50 @@ DialogueConfig[111] = {
     Next = 110  -- 下一段对话ID
 }
 
--- 普通对话类型  -- doc:entry#rr2b
--- Position: { 3550, 150 }
+-- 废弃旧门链节点（保留 ID 以免外部引用断裂；不再接入入口）
 DialogueConfig[112] = {
     Type = "Normal",
-    DocTag = "entry#rr2b",
+    DocTag = "entry#rr2b-unused",
     NpcName = "大黄",
     NpcSprite = "醉倒",
     Dialogue = "",
-    ConditionBranches = {
-        { VarName = "BlackCat_Entered", VarType = "bool", TrueNext = 111, FalseNext = 92 }
-    },
-    Next = 111  -- 下一段对话ID
+    Next = -1
 }
 
--- 普通对话类型  -- doc:entry#rr2a
--- Position: { 3200, 150 }
 DialogueConfig[113] = {
     Type = "Normal",
-    DocTag = "entry#rr2a",
+    DocTag = "entry#rr2a-unused",
     NpcName = "大黄",
     NpcSprite = "醉倒",
     Dialogue = "",
-    ConditionBranches = {
-        { VarName = "Dog_BlackCatSummoned", VarType = "bool", TrueNext = 92, FalseNext = 112 }
-    },
-    Next = 112  -- 下一段对话ID
+    Next = -1
 }
 
--- 普通对话类型  -- doc:entry#rr2e
--- Position: { 2850, 150 }
 DialogueConfig[114] = {
     Type = "Normal",
-    DocTag = "entry#rr2e",
+    DocTag = "entry#rr2e-unused",
     NpcName = "大黄",
     NpcSprite = "醉倒",
     Dialogue = "",
-    ConditionBranches = {
-        { VarName = "RedRoof_RoofWaitShown", VarType = "bool", TrueNext = 113, FalseNext = 93 }
-    },
-    Next = 113  -- 下一段对话ID
+    Next = -1
 }
 
--- 普通对话类型  -- doc:entry#rr2d
--- Position: { 2500, 150 }
 DialogueConfig[115] = {
     Type = "Normal",
-    DocTag = "entry#rr2d",
+    DocTag = "entry#rr2d-unused",
     NpcName = "大黄",
     NpcSprite = "醉倒",
     Dialogue = "",
-    ConditionBranches = {
-        { VarName = "BlackCat_Entered", VarType = "bool", TrueNext = 93, FalseNext = 114 }
-    },
-    Next = 114  -- 下一段对话ID
+    Next = -1
 }
 
--- 普通对话类型  -- doc:entry#rr2c
--- Position: { 2150, 150 }
 DialogueConfig[116] = {
     Type = "Normal",
-    DocTag = "entry#rr2c",
+    DocTag = "entry#rr2c-unused",
     NpcName = "大黄",
     NpcSprite = "醉倒",
     Dialogue = "",
-    ConditionBranches = {
-        { VarName = "Dog_BlackCatSummoned", VarType = "bool", TrueNext = 93, FalseNext = 115 }
-    },
-    Next = 115  -- 下一段对话ID
+    Next = -1
 }
 
 -- 普通对话类型  -- doc:entry#rr1
@@ -1472,9 +1451,9 @@ DialogueConfig[117] = {
     NpcSprite = "醉倒",
     Dialogue = "",
     ConditionBranches = {
-        { VarName = "RedRoof_IntroShown", VarType = "bool", TrueNext = 116, FalseNext = 58 }
+        { VarName = "RedRoof_IntroShown", VarType = "bool", TrueNext = 111, FalseNext = 58 }
     },
-    Next = 116  -- 下一段对话ID
+    Next = 111  -- 下一段对话ID
 }
 
 -- 普通对话类型  -- doc:entry#ds4

@@ -23,6 +23,7 @@
 ---@var 立绘_小鸡_装酷 :UnityEngine.Sprite
 ---@var 立绘_小鸡_心虚 :UnityEngine.Sprite
 ---@var 立绘_小鸡_愧疚 :UnityEngine.Sprite
+---@var 立绘_小鸡_背对 :UnityEngine.Sprite
 ---@var 立绘_乌鸦_得意 :UnityEngine.Sprite
 ---@var 立绘_乌鸦_吝啬 :UnityEngine.Sprite
 ---@var 立绘_乌鸦_叫嚣 :UnityEngine.Sprite
@@ -107,6 +108,7 @@ local function InitPortraitRefs()
     RegPortrait("装酷", GetLuaBinding("立绘_小鸡_装酷"))
     RegPortrait("心虚", GetLuaBinding("立绘_小鸡_心虚"))
     RegPortrait("愧疚", GetLuaBinding("立绘_小鸡_愧疚"))
+    RegPortrait("背对", GetLuaBinding("立绘_小鸡_背对"))
     RegPortrait("得意", GetLuaBinding("立绘_乌鸦_得意"))
     RegPortrait("吝啬", GetLuaBinding("立绘_乌鸦_吝啬"))
     RegPortrait("叫嚣", GetLuaBinding("立绘_乌鸦_叫嚣"))

@@ -973,7 +973,7 @@ def build_section(parsed: ParsedSection, builder: NodeBuilder, cross_map: dict[s
         builder.register_doc_entry("2-hub#menu", hub.node_id)
         if short_chain:
             gate = add_bool_gate(
-                builder, "2-hub#gate", "E13_ViewDoorBlocked", False,
+                builder, "2-hub#gate", "E13_ViewDoorBlocked", True,
                 "2-hub#menu", short_chain[0].node_id,
             )
             builder.register_doc_entry("2-hub", gate)
@@ -1128,37 +1128,32 @@ def add_int_gate(
 
 
 def build_red_roof_entry(builder: NodeBuilder) -> int:
+    """红顶入口按序：!Intro→2-A · !Summoned→2-hub · !Entered→2-C · !RoofWait→2-E · else→2-C。"""
+    # 自底向上：else 链指向更低优先级；最后返回的节点为入口首检
     fail = -1
     fail = add_bool_gate(
         builder, "entry#rr5", "RedRoof_RoofWaitShown", True,
         "2-C", fail,
     )
+    # RoofWait false → 2-E；true → rr5 → 2-C
     fail = add_bool_gate(
-        builder, "entry#rr4", "BlackCat_Entered", True, "2-C", fail,
+        builder, "entry#rr4", "RedRoof_RoofWaitShown", False,
+        "2-E", fail,
     )
+    # Entered false → 2-C；true → rr4
     fail = add_bool_gate(
-        builder, "entry#rr4b", "Dog_BlackCatSummoned", True, "2-C", fail,
+        builder, "entry#rr3", "BlackCat_Entered", False,
+        "2-C", fail,
     )
+    # Summoned false → 2-hub；true → rr3
     fail = add_bool_gate(
-        builder, "entry#rr3", "Dog_BlackCatSummoned", False, "2-hub", fail,
+        builder, "entry#rr2", "Dog_BlackCatSummoned", False,
+        "2-hub", fail,
     )
+    # Intro false → 2-A；true → rr2
     fail = add_bool_gate(
-        builder, "entry#rr2b", "BlackCat_Entered", False, "2-C", fail,
-    )
-    fail = add_bool_gate(
-        builder, "entry#rr2a", "Dog_BlackCatSummoned", True, "2-C", fail,
-    )
-    fail = add_bool_gate(
-        builder, "entry#rr2e", "RedRoof_RoofWaitShown", False, "2-E", fail,
-    )
-    fail = add_bool_gate(
-        builder, "entry#rr2d", "BlackCat_Entered", True, "2-E", fail,
-    )
-    fail = add_bool_gate(
-        builder, "entry#rr2c", "Dog_BlackCatSummoned", True, "2-E", fail,
-    )
-    fail = add_bool_gate(
-        builder, "entry#rr1", "RedRoof_IntroShown", False, "2-A", fail,
+        builder, "entry#rr1", "RedRoof_IntroShown", False,
+        "2-A", fail,
     )
     return fail
 

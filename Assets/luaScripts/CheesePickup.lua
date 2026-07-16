@@ -12,6 +12,10 @@ end
 if _G._CheesePickupRefreshers == nil then
     _G._CheesePickupRefreshers = {}
 end
+-- id -> { amount, requiresNGPlus }；供老鼠「整场剩余奶酪」计算
+if _G._CheesePickupRegistry == nil then
+    _G._CheesePickupRegistry = {}
+end
 
 local function GetPickupId()
     if pickupId and pickupId ~= "" then
@@ -185,12 +189,31 @@ local function UnregisterRefresher()
     end
 end
 
+local function RegisterPickup()
+    local id = GetPickupId()
+    _G._CheesePickupRegistry[id] = {
+        amount = amount or 1,
+        requiresNGPlus = requiresNGPlus == true,
+    }
+end
+
+local function UnregisterPickup()
+    if _G._CheesePickupRegistry then
+        _G._CheesePickupRegistry[GetPickupId()] = nil
+    end
+end
+
 function Start()
+    RegisterPickup()
     RegisterRefresher()
     ApplyVisibility()
+    if _G["MouseBrother_RefreshDerivedFlags"] then
+        _G["MouseBrother_RefreshDerivedFlags"]()
+    end
 end
 
 function OnDestroy()
+    UnregisterPickup()
     UnregisterRefresher()
 end
 

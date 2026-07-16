@@ -18,7 +18,7 @@ Flash 位于 **E32 宽叶**，**无 hub** · **无菜单** · **单锁型阶段�
 | **2** | **F-2** | 我看见乌鸦叼走了               | `DogStatus>=2`（D07 · 大黄 **1-A** 后）   |
 | **3** | **F-3** | 我看见乌鸦叼走了白石头            | `E10_ViewWhiteStone`                 |
 | **4** | **F-4** | 我看见乌鸦叼走了白石头，真蛋被        | `ChickStatus>=3`（D09 · 小鸡 **2-E** 后） |
-| **5** | **F-5** | 我看见乌鸦叼走了白石头，真蛋被主人      | `DogStatus==4`（大黄 **1-G** · 一周目顶）    |
+| **5** | **F-5** | 我看见乌鸦叼走了白石头，真蛋被主人      | `DogStatus==4 && Dog_BlackCatSummoned`（大黄 **2-B** 摇树后） |
 | **6** | **F-6** | 我看见乌鸦叼走了白石头，真蛋被主人抱进了屋子 | `NGPlus && !Flash_Stage6Shown` · 一次性 |
 
 
@@ -37,7 +37,7 @@ Flash 位于 **E32 宽叶**，**无 hub** · **无菜单** · **单锁型阶段�
 
 > 1. `NGPlus && !Flash_Stage6Shown` → **F-6**
 > 2. `NGPlus && Flash_Stage6Shown` → **F-5**（二周目回访固定 **F-5**）
-> 3. `DogStatus==4` → **F-5**
+> 3. `DogStatus==4 && Dog_BlackCatSummoned` → **F-5**
 > 4. `ChickStatus>=3` → **F-4**
 > 5. `E10_ViewWhiteStone` → **F-3**
 > 6. `DogStatus>=2` → **F-2**
@@ -133,7 +133,7 @@ F-4
 
 ### F-5 · 阶段 5
 
-> 〔系统注〕`DogStatus==4`。对齐 `07` 一-12 后、进入红顶屋章前。**一周目最高阶段**。**当次终点**：「我看见乌鸦叼走了白石头，真蛋被主人」。
+> 〔系统注〕`DogStatus==4 && Dog_BlackCatSummoned`。大黄 **2-B** 摇树、黑猫已现身之后。**一周目最高阶段**。**当次终点**：「我看见乌鸦叼走了白石头，真蛋被主人」。
 
 ```text
 F-5
@@ -186,7 +186,7 @@ F-6
 
 ### 入口判定（点 E32 宽叶）
 
-`NGPlus&&!Flash_Stage6Shown`→**F-6** · `NGPlus&&Flash_Stage6Shown`→**F-5** · `DogStatus==4`→**F-5** · `ChickStatus>=3`→**F-4** · `E10_ViewWhiteStone`→**F-3** · `DogStatus>=2`→**F-2** · 默认→**F-1**
+`NGPlus&&!Flash_Stage6Shown`→**F-6** · `NGPlus&&Flash_Stage6Shown`→**F-5** · `DogStatus==4&&Dog_BlackCatSummoned`→**F-5** · `ChickStatus>=3`→**F-4** · `E10_ViewWhiteStone`→**F-3** · `DogStatus>=2`→**F-2** · 默认→**F-1**
 
 ### 节点 / 返链
 
@@ -197,13 +197,13 @@ F-6
 | **F-2** | `DogStatus>=2`                 | —                   | 结束  |
 | **F-3** | `E10_ViewWhiteStone`           | —                   | 结束  |
 | **F-4** | `ChickStatus>=3`               | —                   | 结束  |
-| **F-5** | `DogStatus==4` 或二周目回访          | —                   | 结束  |
+| **F-5** | `DogStatus==4 && Dog_BlackCatSummoned` 或二周目回访 | —                   | 结束  |
 | **F-6** | `NGPlus && !Flash_Stage6Shown` | `Flash_Stage6Shown` | 结束  |
 
 
 **本脚本【变量】块（1 处）**：**F-6**
 
-**只读（他线写入）**：`NGPlus` · `DogStatus` · `E10_ViewWhiteStone` · `ChickStatus`
+**只读（他线写入）**：`NGPlus` · `DogStatus` · `Dog_BlackCatSummoned` · `E10_ViewWhiteStone` · `ChickStatus`
 
 ---
 

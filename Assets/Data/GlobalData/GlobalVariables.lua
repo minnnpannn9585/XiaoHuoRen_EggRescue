@@ -40,7 +40,7 @@ GlobalVariables = {
     -- ========== 老鼠兄弟 · 派生 hub 条件（MouseBrotherController 刷新）==========
     { name = "Mouse_CheapPoolAvailable",    type = "bool", value = false },
     { name = "Mouse_PremiumPoolAvailable",  type = "bool", value = false },
-    { name = "Mouse_PremiumBudgetOK",       type = "bool", value = false },
+    { name = "Mouse_CanAffordMint8InGame",  type = "bool", value = false },
     { name = "Mouse_PreMintPoolSoldOut",    type = "bool", value = false },
 
     -- ========== NPC状态变量 ==========
@@ -48,6 +48,7 @@ GlobalVariables = {
     { name = "Dog_BlackCatSummoned",        type = "bool", value = false },
     { name = "BlackCat_CaseLineDone",       type = "bool", value = false },
     { name = "BlackCat_CaseLineStarted",    type = "bool", value = false },
+    { name = "BlackCat_CaseLineFrogSaid",   type = "bool", value = false },
     { name = "BlackCat_CaseLineBucketSaid", type = "bool", value = false },
     { name = "BlackCat_CaseLineBootSaid",   type = "bool", value = false },
     { name = "BlackCat_MintFishLineDone",   type = "bool", value = false },

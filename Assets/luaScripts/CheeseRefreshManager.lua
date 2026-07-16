@@ -6,6 +6,9 @@ local function RefreshAllPickups()
     if _G["CheeseSpawner_Respawn"] then
         _G["CheeseSpawner_Respawn"]()
     end
+    if _G["MouseBrother_RefreshDerivedFlags"] then
+        _G["MouseBrother_RefreshDerivedFlags"]()
+    end
     print("[CheeseRefreshManager] 已刷新全部奶酪拾取点")
 end
 

@@ -1,7 +1,10 @@
 -- 侦探笔记本 · doc 09 §9.2.1 / §9.2.2
 -- Inspector 接线：每条目 / 每条连线 / 每个修饰各拖一个 GameObject（字段名 = 下表名）
 --
--- 壳层：open, openRedDot, boolPanel, leftBtn, rightBtn, pageContents（含第 4 页老鼠情报）
+-- 壳层：open, openRedDot, boolPanel, pageContents（含第 4 页老鼠情报）
+-- 翻页：每页底部 4 个页签 pageNTabBtns[1..4]→跳到第 N 页；本页对应槽位可留空
+-- 红点：openRedDot + 页签子节点 Dot；有 pendingReveals（已解锁未观看）时显示
+-- 入口：对话中禁用 open；红点亮起时 NoteImage 单次弹跳 1→1.5→1（不改 Button 自身 scale）
 -- 条目 entry_*（33）| 老鼠 prefab + LayoutLeft/Right | 连线 link_*（15，断线段用 GameObject[]：E17×2、D06↔D07）| 修饰 mod_*（13）
 -- 详见 MissingEggDoc-main/docs/09-侦探笔记本.md §9.8 与 docs/IMPLEMENTATION.md §6
 
@@ -9,9 +12,11 @@
 ---@var close :UnityEngine.UI.Button
 ---@var openRedDot :UnityEngine.GameObject
 ---@var boolPanel :UnityEngine.GameObject
----@var leftBtn :UnityEngine.UI.Button
----@var rightBtn :UnityEngine.UI.Button
 ---@var pageContents :UnityEngine.GameObject[]
+---@var page1TabBtns :UnityEngine.UI.Button[]
+---@var page2TabBtns :UnityEngine.UI.Button[]
+---@var page3TabBtns :UnityEngine.UI.Button[]
+---@var page4TabBtns :UnityEngine.UI.Button[]
 
 ---@var entry_D01 :UnityEngine.GameObject
 ---@var entry_E01 :UnityEngine.GameObject
@@ -86,11 +91,17 @@
 
 local BOOK_DEBUG = false
 local FADE_DURATION = 1.0
+local BLINK_DURATION = 0.35
+local BLINK_MIN_ALPHA = 0.15
+local ICON_BOUNCE_DURATION = 0.4
+local ICON_BOUNCE_PEAK = 1.5
 
 local currentIndex = 1
 local unlockedEntries = {}
-local fadingItems = {}
-local hasUnread = false
+-- 已解锁、尚未首次翻到所在页：{ canvasGroup, pageIndex }
+local pendingReveals = {}
+-- 正在播渐显 / 闪烁：{ canvasGroup, phase = "fade"|"blink", elapsed }
+local revealAnims = {}
 
 local ENTRY_DEFS = nil
 local LINK_DEFS = nil
@@ -100,11 +111,29 @@ local INTEL_VAR_ORDER = nil
 
 local intelSpawned = {}
 local intelSpawnOrder = {}
+-- pageIndex → Dot GameObject[]（从各页 pageNTabBtns 子节点 "Dot" 收集）
+local pageTabDots = {}
+-- 入口图标弹跳：单次 1→peak→1，缩放 NoteImage，避免改 Button 影响 Layout
+local openIconTf = nil
+local openIconBaseScale = nil
+local iconBouncePlaying = false
+local iconBounceElapsed = 0
+local lastRedDotShow = false
+local lastOpenInteractable = nil
 
 local function Dbg(msg)
     if BOOK_DEBUG then
         print("[BookController] " .. msg)
     end
+end
+
+local function GetCanvasGroup(obj)
+    if not obj then return nil end
+    local canvasGroup = obj:GetComponent(typeof(CS.UnityEngine.CanvasGroup))
+    if not canvasGroup then
+        canvasGroup = obj:AddComponent(typeof(CS.UnityEngine.CanvasGroup))
+    end
+    return canvasGroup
 end
 
 local function BuildCatalog()
@@ -256,6 +285,191 @@ local function SetIntelTextOnInstance(instance, text)
     end
 end
 
+local function ResolvePageIndex(go)
+    if not go or not pageContents then return nil end
+    local t = go.transform
+    for i = 0, pageContents.Length - 1 do
+        local page = pageContents[i]
+        if page and t:IsChildOf(page.transform) then
+            return i + 1
+        end
+    end
+    return nil
+end
+
+local function IsNotebookOpen()
+    return boolPanel and boolPanel.activeSelf
+end
+
+local function PageHasPending(pageIndex)
+    for _, info in pairs(pendingReveals) do
+        if info.pageIndex == pageIndex then
+            return true
+        end
+    end
+    return false
+end
+
+local function HasAnyPending()
+    for _ in pairs(pendingReveals) do
+        return true
+    end
+    return false
+end
+
+local function IsDialogueActive()
+    local mgr = _G["_DialogueManager"]
+    if mgr and mgr.IsDialogueActive then
+        return mgr.IsDialogueActive()
+    end
+    return false
+end
+
+local function ResolveOpenIcon()
+    if openIconTf or not open then return end
+    local t = open.transform:Find("NoteImage")
+    if not t then return end
+    openIconTf = t
+    local s = t.localScale
+    openIconBaseScale = CS.UnityEngine.Vector3(s.x, s.y, s.z)
+end
+
+local function PlayIconBounce()
+    ResolveOpenIcon()
+    if not openIconTf or not openIconBaseScale then return end
+    iconBouncePlaying = true
+    iconBounceElapsed = 0
+end
+
+local function TickIconBounce(dt)
+    if not iconBouncePlaying then return end
+    ResolveOpenIcon()
+    if not openIconTf or not openIconBaseScale then
+        iconBouncePlaying = false
+        return
+    end
+    iconBounceElapsed = iconBounceElapsed + dt
+    local progress = iconBounceElapsed / ICON_BOUNCE_DURATION
+    if progress >= 1 then
+        openIconTf.localScale = openIconBaseScale
+        iconBouncePlaying = false
+        return
+    end
+    -- sin(0..π)：1 → peak → 1，播完即停
+    local s = 1 + (ICON_BOUNCE_PEAK - 1) * math.sin(progress * math.pi)
+    openIconTf.localScale = CS.UnityEngine.Vector3(
+        openIconBaseScale.x * s,
+        openIconBaseScale.y * s,
+        openIconBaseScale.z
+    )
+end
+
+local function RefreshOpenInteractable()
+    if not open then return end
+    local canOpen = not IsDialogueActive()
+    if lastOpenInteractable == canOpen then return end
+    lastOpenInteractable = canOpen
+    open.interactable = canOpen
+end
+
+local function UpdateRedDot()
+    local panelOpen = boolPanel and boolPanel.activeSelf
+    local show = HasAnyPending() and not panelOpen
+    if openRedDot then
+        openRedDot:SetActive(show)
+    end
+    if show and not lastRedDotShow then
+        PlayIconBounce()
+    end
+    lastRedDotShow = show
+end
+
+local function UpdatePageDots()
+    for page = 1, 4 do
+        local dots = pageTabDots[page]
+        if dots then
+            local show = PageHasPending(page)
+            for _, go in ipairs(dots) do
+                if go then
+                    go:SetActive(show)
+                end
+            end
+        end
+    end
+    UpdateRedDot()
+end
+
+local function CollectPageTabDots()
+    pageTabDots = {}
+    local function collect(tabs)
+        if not tabs then return end
+        for i = 0, tabs.Length - 1 do
+            local btn = tabs[i]
+            local targetPage = i + 1
+            if btn then
+                local dotTf = btn.transform:Find("Dot")
+                if dotTf then
+                    if not pageTabDots[targetPage] then
+                        pageTabDots[targetPage] = {}
+                    end
+                    table.insert(pageTabDots[targetPage], dotTf.gameObject)
+                    dotTf.gameObject:SetActive(false)
+                end
+            end
+        end
+    end
+    collect(page1TabBtns)
+    collect(page2TabBtns)
+    collect(page3TabBtns)
+    collect(page4TabBtns)
+end
+
+local function TryStartPendingReveals()
+    if not IsNotebookOpen() then return end
+    local started = {}
+    for id, info in pairs(pendingReveals) do
+        if info.pageIndex == currentIndex and info.canvasGroup then
+            revealAnims[id] = {
+                canvasGroup = info.canvasGroup,
+                phase = "fade",
+                elapsed = 0
+            }
+            info.canvasGroup.alpha = 0
+            table.insert(started, id)
+            Dbg("开始入册演出 " .. tostring(id) .. " @ page " .. tostring(currentIndex))
+        end
+    end
+    for _, id in ipairs(started) do
+        pendingReveals[id] = nil
+    end
+    if #started > 0 then
+        _G["PlayAudio"]("audio_showClue")
+        UpdatePageDots()
+    end
+end
+
+local function QueueReveal(id, go)
+    if not go then return end
+    if pendingReveals[id] or revealAnims[id] then return end
+    local canvasGroup = GetCanvasGroup(go)
+    canvasGroup.alpha = 0
+    local pageIdx = ResolvePageIndex(go)
+    if not pageIdx then
+        Dbg("QueueReveal 找不到页: " .. tostring(id))
+        canvasGroup.alpha = 1
+        return
+    end
+    pendingReveals[id] = {
+        canvasGroup = canvasGroup,
+        pageIndex = pageIdx
+    }
+    _G["PlayAudio"]("audio_receiveClue")
+    if IsNotebookOpen() then
+        TryStartPendingReveals()
+    end
+    UpdatePageDots()
+end
+
 local function SpawnIntelInstance(varName, withFade)
     if intelSpawned[varName] then
         return false
@@ -283,14 +497,9 @@ local function SpawnIntelInstance(varName, withFade)
     SetIntelTextOnInstance(instance, content.text)
 
     if withFade then
-        local canvasGroup = GetCanvasGroup(instance)
-        canvasGroup.alpha = 0
-        fadingItems["intel_" .. varName] = {
-            canvasGroup = canvasGroup,
-            elapsed = 0
-        }
-        hasUnread = true
-        UpdateRedDot()
+        QueueReveal("intel_" .. varName, instance)
+    else
+        GetCanvasGroup(instance).alpha = 1
     end
 
     intelSpawned[varName] = instance
@@ -387,15 +596,6 @@ function CheckUnlockCondition(condition)
     return false
 end
 
-local function GetCanvasGroup(obj)
-    if not obj then return nil end
-    local canvasGroup = obj:GetComponent(typeof(CS.UnityEngine.CanvasGroup))
-    if not canvasGroup then
-        canvasGroup = obj:AddComponent(typeof(CS.UnityEngine.CanvasGroup))
-    end
-    return canvasGroup
-end
-
 local function HideGo(go)
     if not go then return end
     go:SetActive(false)
@@ -420,15 +620,7 @@ local function ShowGos(gos)
     end
 end
 
-local function UpdateRedDot()
-    if not openRedDot then return end
-    local panelOpen = boolPanel and boolPanel.activeSelf
-    openRedDot:SetActive(hasUnread and not panelOpen)
-end
-
 local function UnlockEntry(entryId)
-    _G["PlayAudio"]("audio_showClue")
-
     local def = ENTRY_DEFS and ENTRY_DEFS[entryId]
     if not def or not def.go or unlockedEntries[entryId] then
         return false
@@ -436,21 +628,13 @@ local function UnlockEntry(entryId)
 
     unlockedEntries[entryId] = true
     def.go:SetActive(true)
+    QueueReveal(entryId, def.go)
 
-    local canvasGroup = GetCanvasGroup(def.go)
-    canvasGroup.alpha = 0
-    fadingItems[entryId] = {
-        canvasGroup = canvasGroup,
-        elapsed = 0
-    }
-
-    hasUnread = true
-    UpdateRedDot()
     Dbg("解锁条目 " .. entryId)
 
     if entryId == "E10" then
         currentIndex = 2
-        if boolPanel and boolPanel.activeSelf then
+        if IsNotebookOpen() then
             HideAllPages()
             ShowCurrentPage()
         end
@@ -535,20 +719,49 @@ function BookController_OnVarChanged(varName)
     TrySpawnIntelOnVarChanged(varName)
 end
 
+local function GoToPage(pageIndex)
+    if not pageContents or pageContents.Length == 0 then return end
+    if pageIndex < 1 or pageIndex > pageContents.Length then return end
+    if pageIndex == currentIndex then return end
+    _G["PlayAudio"]("audio_switchPage")
+    currentIndex = pageIndex
+    HideAllPages()
+    ShowCurrentPage()
+end
+
+local function BindPageTabBtns(tabs, fromPage)
+    if not tabs then return end
+    for i = 0, tabs.Length - 1 do
+        local btn = tabs[i]
+        local targetPage = i + 1
+        if btn and targetPage ~= fromPage then
+            local target = targetPage
+            btn.onClick:AddListener(function()
+                GoToPage(target)
+            end)
+        end
+    end
+end
+
 function Start()
     BuildCatalog()
     boolPanel:SetActive(false)
     if open then open.onClick:AddListener(OnOpenClick) end
     if close then close.onClick:AddListener(OnCloseClick) end
-    if leftBtn then leftBtn.onClick:AddListener(OnLeftClick) end
-    if rightBtn then rightBtn.onClick:AddListener(OnRightClick) end
+    BindPageTabBtns(page1TabBtns, 1)
+    BindPageTabBtns(page2TabBtns, 2)
+    BindPageTabBtns(page3TabBtns, 3)
+    BindPageTabBtns(page4TabBtns, 4)
+    CollectPageTabDots()
 
     InitializeEntries()
     InitializeLinksAndMods()
     RebuildIntelFromSoldVars()
     HideAllPages()
     ShowCurrentPage()
-    UpdateRedDot()
+    ResolveOpenIcon()
+    RefreshOpenInteractable()
+    UpdatePageDots()
 
     _G["BookController_OnVarChanged"] = BookController_OnVarChanged
     _G["BookController_UnlockMouseIntel"] = function(varName)
@@ -610,17 +823,41 @@ _G["EndingController_TryRegister"] = TryRegisterEndingController
 
 function Update()
     local toRemove = {}
-    for idx, info in pairs(fadingItems) do
-        info.elapsed = info.elapsed + CS.UnityEngine.Time.deltaTime
-        local progress = info.elapsed / FADE_DURATION
-        if progress >= 1 then
-            progress = 1
-            table.insert(toRemove, idx)
+    local dt = CS.UnityEngine.Time.deltaTime
+    RefreshOpenInteractable()
+    TickIconBounce(dt)
+    for id, info in pairs(revealAnims) do
+        if not info.canvasGroup then
+            table.insert(toRemove, id)
+            goto continue_anim
         end
-        info.canvasGroup.alpha = progress
+        info.elapsed = info.elapsed + dt
+        if info.phase == "fade" then
+            local progress = info.elapsed / FADE_DURATION
+            if progress >= 1 then
+                info.canvasGroup.alpha = 1
+                info.phase = "blink"
+                info.elapsed = 0
+            else
+                info.canvasGroup.alpha = progress
+            end
+        elseif info.phase == "blink" then
+            local progress = info.elapsed / BLINK_DURATION
+            if progress >= 1 then
+                info.canvasGroup.alpha = 1
+                table.insert(toRemove, id)
+            else
+                -- 三角波：1 → BLINK_MIN → 1
+                local t = progress < 0.5 and (progress * 2) or (2 - progress * 2)
+                info.canvasGroup.alpha = 1 - t * (1 - BLINK_MIN_ALPHA)
+            end
+        else
+            table.insert(toRemove, id)
+        end
+        ::continue_anim::
     end
-    for _, idx in ipairs(toRemove) do
-        fadingItems[idx] = nil
+    for _, id in ipairs(toRemove) do
+        revealAnims[id] = nil
     end
 end
 function OnCloseClick()
@@ -628,49 +865,25 @@ function OnCloseClick()
     boolPanel:SetActive(false)
     open.gameObject:SetActive(true)
     close.gameObject:SetActive(false)
+    lastOpenInteractable = nil
+    RefreshOpenInteractable()
+    UpdateRedDot()
 end
 function OnOpenClick()
---     local image = open:GetComponent(typeof(UnityEngine.UI.Image))
---     if not boolPanel.activeSelf then
---         _G["PlayAudio"]("audio_openNote")
---     else
---         _G["PlayAudio"]("audio_closeNote")
---     end
+    if IsDialogueActive() then
+        return
+    end
 
     _G["PlayAudio"]("audio_openNote")
-     boolPanel:SetActive(true)
-     open.gameObject:SetActive(false)
-     close.gameObject:SetActive(true)
---     boolPanel:SetActive(not boolPanel.activeSelf)
+    boolPanel:SetActive(true)
+    open.gameObject:SetActive(false)
+    close.gameObject:SetActive(true)
     if boolPanel.activeSelf then
-        hasUnread = false
         UpdateRedDot()
         CheckAllEntries()
         HideAllPages()
         ShowCurrentPage()
     end
-end
-
-function OnLeftClick()
-    _G["PlayAudio"]("audio_switchPage")
-    if not pageContents or pageContents.Length == 0 then return end
-    currentIndex = currentIndex - 1
-    if currentIndex < 1 then
-        currentIndex = pageContents.Length
-    end
-    HideAllPages()
-    ShowCurrentPage()
-end
-
-function OnRightClick()
-    _G["PlayAudio"]("audio_switchPage")
-    if not pageContents or pageContents.Length == 0 then return end
-    currentIndex = currentIndex + 1
-    if currentIndex > pageContents.Length then
-        currentIndex = 1
-    end
-    HideAllPages()
-    ShowCurrentPage()
 end
 
 function HideAllPages()
@@ -686,4 +899,5 @@ function ShowCurrentPage()
     if idx >= 0 and idx < pageContents.Length then
         pageContents[idx]:SetActive(true)
     end
+    TryStartPendingReveals()
 end

@@ -1,17 +1,14 @@
----@var commissionSpot :UnityEngine.GameObject
----@var hubSpot :UnityEngine.GameObject
----@var ngPlusSpot :UnityEngine.GameObject
----@var gateBlockCollider :UnityEngine.Collider
+---@var beforeSpot :UnityEngine.GameObject
+---@var afterSpot :UnityEngine.GameObject
+---@var cushionSpot :UnityEngine.GameObject
 ---@end
 
--- 挂在 parent 上；只 SetActive 下面三个 Spot 引用，不动 parent。
--- !NGPlus && !Shufen_CommissionDone → commissionSpot
--- !NGPlus && Shufen_CommissionDone  → hubSpot
--- NGPlus                            → ngPlusSpot
+-- 挂在 parent 上；只切换下面三个引用，不动 parent。
+-- !MintFish_Obtained → beforeSpot（悲伤蛙1）+ cushionSpot（E12 绿垫交互点）
+-- MintFish_Obtained  → afterSpot（悲伤蛙2）；关掉蛙1 与 E12
 -- 交互开关对齐 DaHuang：开点只开 Area/Collider；关点 DisableInteraction + 关 Collider；永不 EnableInteraction。
 
 local lastActiveKey = nil
-local lastCommissionDone = nil
 
 local function GetGlobalBool(varName)
     local getFunc = _G["GetGlobalVar"] or _G["GetGlobalVariable"]
@@ -83,52 +80,30 @@ local function SetSpotEnabled(pointGo, enabled)
     end
 end
 
-local function UpdateGateBlockCollider(commissionDone)
-    if not gateBlockCollider then
-        return
-    end
-    gateBlockCollider.enabled = not commissionDone
+local function ApplySpots(mintFishObtained)
+    SetSpotEnabled(beforeSpot, not mintFishObtained)
+    SetSpotEnabled(afterSpot, mintFishObtained)
+    -- E12 绿垫也是交互点，必须走 DisableInteraction，不能只 SetActive
+    SetSpotEnabled(cushionSpot, not mintFishObtained)
 end
 
-local function ResolveActiveKey(commissionDone, ngPlus)
-    if ngPlus then
-        return "ngplus"
-    end
-    if commissionDone then
-        return "hub"
-    end
-    return "commission"
-end
-
-local function ApplySpots(activeKey)
-    SetSpotEnabled(commissionSpot, activeKey == "commission")
-    SetSpotEnabled(hubSpot, activeKey == "hub")
-    SetSpotEnabled(ngPlusSpot, activeKey == "ngplus")
-end
-
-function CheckShufenState()
-    local commissionDone = GetGlobalBool("Shufen_CommissionDone")
-    local ngPlus = GetGlobalBool("NGPlus")
-    local activeKey = ResolveActiveKey(commissionDone, ngPlus)
-
-    if lastCommissionDone ~= commissionDone then
-        lastCommissionDone = commissionDone
-        UpdateGateBlockCollider(commissionDone)
-    end
+function CheckFrogState()
+    local mintFishObtained = GetGlobalBool("MintFish_Obtained")
+    local activeKey = mintFishObtained and "after" or "before"
 
     if lastActiveKey == activeKey then
         return
     end
     lastActiveKey = activeKey
 
-    -- 对话中变量一变就切（同大黄 DogStatus=4），开新点不 EnableInteraction
-    ApplySpots(activeKey)
+    -- 3-C / 3-D 末句写 MintFish_Obtained 时立刻切（同大黄 / 淑芬）
+    ApplySpots(mintFishObtained)
 end
 
 function Start()
-    CheckShufenState()
+    CheckFrogState()
 end
 
 function Update()
-    CheckShufenState()
+    CheckFrogState()
 end

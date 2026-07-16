@@ -191,7 +191,7 @@ def main() -> None:
             ShopAction = "pay8_mint",
             DisplayConditions = {{
                 {{ VarName = "Frog_PadRefused", VarType = "bool", Value = false }},
-                {{ VarName = "CheeseCount", VarType = "int", Op = ">=", Value = 8 }},
+                {{ VarName = "Mouse_CanAffordMint8InGame", VarType = "bool", Value = true }},
             }},
         }},
         {{
@@ -235,7 +235,7 @@ def main() -> None:
             Next = {NODE_1GP},
             ShopAction = "pay8_frog",
             DisplayConditions = {{
-                {{ VarName = "CheeseCount", VarType = "int", Op = ">=", Value = 8 }},
+                {{ VarName = "Mouse_CanAffordMint8InGame", VarType = "bool", Value = true }},
             }},
         }},
         {{
@@ -272,7 +272,7 @@ def main() -> None:
             Next = {NODE_1HB},
             ShopAction = "pay8_pool",
             DisplayConditions = {{
-                {{ VarName = "CheeseCount", VarType = "int", Op = ">=", Value = 8 }},
+                {{ VarName = "Mouse_CanAffordMint8InGame", VarType = "bool", Value = true }},
             }},
         }},
         {{
@@ -385,7 +385,6 @@ def main() -> None:
             Next = {HUB_REVISIT},
             DisplayConditions = {{
                 {{ VarName = "Mouse_PremiumPoolAvailable", VarType = "bool", Value = true }},
-                {{ VarName = "Mouse_PremiumBudgetOK", VarType = "bool", Value = true }},
                 {{ VarName = "CheeseCount", VarType = "int", Op = ">=", Value = 5 }},
             }},
         }},
@@ -417,7 +416,7 @@ def main() -> None:
                 {{ VarName = "MintFish_Obtained", VarType = "bool", Value = false }},
                 {{ VarName = "Mouse_MintFishPitchShown", VarType = "bool", Value = true }},
                 {{ VarName = "Frog_PadRefused", VarType = "bool", Value = false }},
-                {{ VarName = "CheeseCount", VarType = "int", Op = ">=", Value = 8 }},
+                {{ VarName = "Mouse_CanAffordMint8InGame", VarType = "bool", Value = true }},
             }},
         }},
         {{
