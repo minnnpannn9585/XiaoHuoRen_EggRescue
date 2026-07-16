@@ -66,7 +66,6 @@ function RefreshCrowInteraction(force)
     lastInteractionEnabled = interactionEnabled
 
     SetInteractionEnabled(interactionEnabled)
-    print(string.format("[CrowInteraction] enabled=%s (RoofIntroShown=%s)", tostring(interactionEnabled), tostring(roofIntroShown)))
 end
 
 function Start()

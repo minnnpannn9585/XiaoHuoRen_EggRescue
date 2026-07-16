@@ -818,7 +818,16 @@ DialogueConfig[215] = {
     DocTag = "NGPlus#6",
     NpcName = "乌鸦",
     NpcSprite = "得意",
-    Dialogue = "本王从来都知道！爱心封印、鬼脸结界——都是本王亲自设计的考题！",
+    Dialogue = "本王从来都知道！爱心封印、鬼脸结界——",
+    Next = 300
+}
+
+DialogueConfig[300] = {
+    Type = "Normal",
+    DocTag = "NGPlus#6b",
+    NpcName = "乌鸦",
+    NpcSprite = "得意",
+    Dialogue = "都是本王亲自设计的考题！",
     Next = 216
 }
 
@@ -872,7 +881,16 @@ DialogueConfig[221] = {
     DocTag = "NGPlus#12",
     NpcName = "乌鸦",
     NpcSprite = "吝啬",
-    Dialogue = "本王用碎玻璃反光晃了他一眼——他就龇了一声「别照本喵」，甩着尾巴下去了。",
+    Dialogue = "本王用碎玻璃反光晃了他一眼——",
+    Next = 301
+}
+
+DialogueConfig[301] = {
+    Type = "Normal",
+    DocTag = "NGPlus#12b",
+    NpcName = "乌鸦",
+    NpcSprite = "吝啬",
+    Dialogue = "他就龇了一声「别照本喵」，甩着尾巴下去了。",
     Next = 222
 }
 

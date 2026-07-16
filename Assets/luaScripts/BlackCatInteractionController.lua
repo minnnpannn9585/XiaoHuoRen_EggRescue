@@ -91,11 +91,6 @@ function RefreshBlackCatInteraction(force)
     lastInteractionEnabled = interactionEnabled
 
     SetInteractionEnabled(interactionEnabled)
-    print(string.format(
-        "[BlackCatInteraction] enabled=%s (Summoned=%s Entered=%s)",
-        tostring(interactionEnabled),
-        tostring(GetGlobalBool("Dog_BlackCatSummoned")),
-        tostring(GetGlobalBool("BlackCat_Entered"))))
 end
 
 function Start()

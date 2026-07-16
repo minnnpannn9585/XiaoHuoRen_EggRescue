@@ -780,8 +780,17 @@ DialogueConfig[62] = {
     DocTag = "2-F#3",
     NpcName = "玩家",
     NpcSprite = "",
-    Dialogue = "大黄亲眼看见的——今早，乌鸦从草丛叼走了一颗白色的蛋，飞上了谷仓顶。",
-    Next = 63  -- 下一段对话ID
+    Dialogue = "大黄亲眼看见的——今早，乌鸦从草丛叼走了一颗白色的蛋，",
+    Next = 220
+}
+
+DialogueConfig[220] = {
+    Type = "Normal",
+    DocTag = "2-F#3b",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "飞上了谷仓顶。",
+    Next = 63
 }
 
 -- 普通对话类型  -- doc:2-F#4
@@ -1103,8 +1112,17 @@ DialogueConfig[91] = {
     DocTag = "2-E#18",
     NpcName = "阿满",
     NpcSprite = "愧疚",
-    Dialogue = "推着弟弟路过谷仓的时候，老鼠叔叔蹿出来，说有沼泽水怪，晚上爬出来，专门吃沾了泥土的蛋！",
-    Next = 92  -- 下一段对话ID
+    Dialogue = "推着弟弟路过谷仓的时候，老鼠叔叔蹿出来说——",
+    Next = 221
+}
+
+DialogueConfig[221] = {
+    Type = "Normal",
+    DocTag = "2-E#18b",
+    NpcName = "阿满",
+    NpcSprite = "愧疚",
+    Dialogue = "有沼泽水怪，晚上爬出来，专门吃沾了泥土的蛋！",
+    Next = 92
 }
 
 -- 普通对话类型  -- doc:2-E#19
@@ -1125,8 +1143,17 @@ DialogueConfig[93] = {
     DocTag = "2-E#20",
     NpcName = "阿满",
     NpcSprite = "愧疚",
-    Dialogue = "我们跑去池塘边把弟弟洗干净，青蛙在说我们听不懂的很吓人很吓人的话",
-    Next = 94  -- 下一段对话ID
+    Dialogue = "我们跑去池塘边把弟弟洗干净，",
+    Next = 222
+}
+
+DialogueConfig[222] = {
+    Type = "Normal",
+    DocTag = "2-E#20b",
+    NpcName = "阿满",
+    NpcSprite = "愧疚",
+    Dialogue = "青蛙在说我们听不懂的很吓人很吓人的话",
+    Next = 94
 }
 
 -- 普通对话类型  -- doc:2-E#21
@@ -1213,8 +1240,17 @@ DialogueConfig[101] = {
     DocTag = "2-E#28",
     NpcName = "米粒",
     NpcSprite = "心虚",
-    Dialogue = "大黄叔叔都喝了两天了，他昨天还醉着呢，哪能看见什么乌鸦呀。",
-    Next = 102  -- 下一段对话ID
+    Dialogue = "大黄叔叔都喝了两天了，他昨天还醉着呢，",
+    Next = 223
+}
+
+DialogueConfig[223] = {
+    Type = "Normal",
+    DocTag = "2-E#28b",
+    NpcName = "米粒",
+    NpcSprite = "心虚",
+    Dialogue = "哪能看见什么乌鸦呀。",
+    Next = 102
 }
 
 -- 普通对话类型  -- doc:2-E#29
@@ -2538,16 +2574,34 @@ DialogueConfig[204] = {
     DocTag = "2-G#5",
     NpcName = "阿满",
     NpcSprite = "愧疚",
-    Dialogue = "大前天捡了块白石头，画成蛋，把弟弟偷出来踢球——",
+    Dialogue = "大前天下午，我们捡了块白石头，画成蛋，假装成弟弟，",
+    Next = 217
+}
+
+DialogueConfig[217] = {
+    Type = "Normal",
+    DocTag = "2-G#5b",
+    NpcName = "阿满",
+    NpcSprite = "愧疚",
+    Dialogue = "然后把弟弟偷出来踢球。",
     Next = 205
 }
 
 DialogueConfig[205] = {
     Type = "Normal",
     DocTag = "2-G#6",
-    NpcName = "米粒",
-    NpcSprite = "心虚",
-    Dialogue = "（小声）老鼠叔叔说有沼泽水怪……",
+    NpcName = "阿满",
+    NpcSprite = "愧疚",
+    Dialogue = "推着弟弟路过谷仓时，老鼠叔叔蹿出来说——",
+    Next = 218
+}
+
+DialogueConfig[218] = {
+    Type = "Normal",
+    DocTag = "2-G#6b",
+    NpcName = "阿满",
+    NpcSprite = "愧疚",
+    Dialogue = "有沼泽水怪，专门吃沾泥的蛋！",
     Next = 206
 }
 
@@ -2565,67 +2619,94 @@ DialogueConfig[207] = {
     DocTag = "2-G#8",
     NpcName = "阿满",
     NpcSprite = "愧疚",
-    Dialogue = "我们吓得把真蛋推回窝，假石头扔草丛——被乌鸦叼走了。",
+    Dialogue = "我们吓得去池塘洗蛋，又被青蛙的话吓到——",
+    Next = 219
+}
+
+DialogueConfig[219] = {
+    Type = "Normal",
+    DocTag = "2-G#8b",
+    NpcName = "阿满",
+    NpcSprite = "愧疚",
+    Dialogue = "马上把真蛋推回窝！",
     Next = 208
 }
 
 DialogueConfig[208] = {
     Type = "Normal",
     DocTag = "2-G#9",
-    NpcName = "阿满",
-    NpcSprite = "心虚",
-    Dialogue = "弟弟昨晚才不见的！根本不是水怪……",
+    NpcName = "米粒",
+    NpcSprite = "愧疚",
+    Dialogue = "假石头扔草丛……被乌鸦叼走了。",
     Next = 209
 }
 
 DialogueConfig[209] = {
     Type = "Normal",
     DocTag = "2-G#10",
-    NpcName = "玩家",
-    NpcSprite = "",
-    Dialogue = "昨晚有动静吗？",
+    NpcName = "阿满",
+    NpcSprite = "心虚",
+    Dialogue = "弟弟昨晚才不见的！根本不是水怪……",
     Next = 210
 }
 
 DialogueConfig[210] = {
     Type = "Normal",
     DocTag = "2-G#11",
-    NpcName = "米粒",
-    NpcSprite = "心虚",
-    Dialogue = "有好响的声音……我们以为是水怪……",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "昨晚有动静吗？",
     Next = 211
 }
 
 DialogueConfig[211] = {
     Type = "Normal",
     DocTag = "2-G#12",
-    NpcName = "阿满",
+    NpcName = "豆豆",
     NpcSprite = "愧疚",
-    Dialogue = "（哭）没有水怪……到底是谁带走了弟弟？",
+    Dialogue = "睡前还在……半夜窝空了……",
     Next = 212
 }
 
 DialogueConfig[212] = {
     Type = "Normal",
     DocTag = "2-G#13",
-    NpcName = "豆豆",
+    NpcName = "米粒",
     NpcSprite = "心虚",
-    Dialogue = "池塘那只青蛙肯定见过什么！！",
+    Dialogue = "有好响的声音……我们以为是水怪……",
     Next = 213
 }
 
 DialogueConfig[213] = {
     Type = "Normal",
     DocTag = "2-G#14",
-    NpcName = "米粒",
-    NpcSprite = "心虚",
-    Dialogue = "快去问他……求你快去……",
+    NpcName = "阿满",
+    NpcSprite = "愧疚",
+    Dialogue = "（哭）没有水怪……到底是谁带走了弟弟？",
     Next = 214
 }
 
 DialogueConfig[214] = {
     Type = "Normal",
     DocTag = "2-G#15",
+    NpcName = "豆豆",
+    NpcSprite = "心虚",
+    Dialogue = "池塘那只青蛙肯定见过什么！！",
+    Next = 215
+}
+
+DialogueConfig[215] = {
+    Type = "Normal",
+    DocTag = "2-G#16",
+    NpcName = "米粒",
+    NpcSprite = "心虚",
+    Dialogue = "快去问他……求你快去……",
+    Next = 216
+}
+
+DialogueConfig[216] = {
+    Type = "Normal",
+    DocTag = "2-G#17",
     NpcName = "阿满",
     NpcSprite = "心虚",
     Dialogue = "你去池塘……快去……",

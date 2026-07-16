@@ -11,7 +11,7 @@ local debugIntLabels = {}
 local debugIntInitialValues = {}
 
 -- 开发测 bool/int 变量 UI（Canvas 滚动列表）；发布前改 false
-local VAR_DEBUG_UI_ENABLED = true
+local VAR_DEBUG_UI_ENABLED = false
 
 -- int 调试按钮循环上限（doc 17）；到顶后回到 GlobalVariables 初始 value
 local DEBUG_INT_MAX = {
@@ -24,7 +24,7 @@ local DEBUG_INT_MAX = {
 
 -- 开发测对话分支时设为 true：保留 NPCData_Config 里 Publish 的 currentBranchId（如大黄 branch 5 → FROM_DOC）
 -- 正式打包/发布前改回 false
-local KEEP_NPC_BRANCH_FOR_TEST = true
+local KEEP_NPC_BRANCH_FOR_TEST = false
 
 local COLOR_OFF = UnityEngine.Color(0.22, 0.24, 0.28, 0.92)
 local COLOR_ON = UnityEngine.Color(0.18, 0.62, 0.32, 1.0)

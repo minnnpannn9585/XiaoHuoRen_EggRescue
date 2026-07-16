@@ -15535,7 +15535,7 @@ MonoBehaviour:
             normalImage: {fileID: 0}
             normalBackgroundImage: {fileID: 0}
           ButtonText: 1
-          Text: "\u9752\u86D9"
+          Text: "\u60B2\u4F24\u86D9"
           TextSize: 0
           TextColor: {r: 0.03137255, g: 0.023529412, b: 0.13725491, a: 1}
           ButtonActions:
@@ -15582,7 +15582,7 @@ MonoBehaviour:
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
-        Data: "\u9752\u86D9"
+        Data: "\u60B2\u4F24\u86D9"
 --- !u!114 &1052425907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15857,6 +15857,7 @@ GameObject:
   - component: {fileID: 1176394743}
   - component: {fileID: 1176394742}
   - component: {fileID: 1176394745}
+  - component: {fileID: 1176394746}
   m_Layer: 0
   m_Name: "E03 \xB7 \u8EAB\u540E\u5077\u542C\u70B9"
   m_TagString: Untagged
@@ -16122,6 +16123,27 @@ MonoBehaviour:
       data:
         varName: varIsAdd2
         Data: 1
+--- !u!114 &1176394746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1176394740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -413692930, guid: c1a957cff7a534cbab677bbff81abab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScriptAsset: {fileID: -4320198879241519195, guid: b3e8f1a92c4d4e7a8f6b0d1c5a9e2f47, type: 3}
+  ParaLuaBindingData: []
+  IsServerScript: 0
+  IsManualedVar: 1
+  eNetState: 0
+  autoUpdate: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1001 &1195528046
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16336,7 +16358,7 @@ MonoBehaviour:
             normalImage: {fileID: 0}
             normalBackgroundImage: {fileID: 0}
           ButtonText: 1
-          Text: "\u9752\u86D9"
+          Text: "\u60B2\u4F24\u86D9"
           TextSize: 0
           TextColor: {r: 0.03137255, g: 0.023529412, b: 0.13725491, a: 1}
           ButtonActions:
@@ -16383,7 +16405,7 @@ MonoBehaviour:
       type: {class: DouyinLuaDataString, ns: , asm: com.douyin.script}
       data:
         varName: npcname
-        Data: "\u9752\u86D9"
+        Data: "\u60B2\u4F24\u86D9"
 --- !u!114 &1207321615
 MonoBehaviour:
   m_ObjectHideFlags: 0

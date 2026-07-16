@@ -79,9 +79,6 @@ function TryFireDialogue()
         DisableSelfCollider()
     end
 
-    print(string.format(
-        "[DialogueAreaTrigger] fire npc=%s startID=%s",
-        tostring(npcName), tostring(startNodeId or 1)))
     startFn(npcName, startNodeId or 1)
 end
 

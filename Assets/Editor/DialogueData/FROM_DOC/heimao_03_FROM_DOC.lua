@@ -597,8 +597,17 @@ DialogueConfig[39] = {
     DocTag = "2-B#9",
     NpcName = "玩家",
     NpcSprite = "",
-    Dialogue = "大黄的鼻子刚恢复，他说蛋的气味现在还从红顶屋里飘出来。",
-    Next = 40  -- 下一段对话ID
+    Dialogue = "大黄的鼻子刚恢复，",
+    Next = 933
+}
+
+DialogueConfig[933] = {
+    Type = "Normal",
+    DocTag = "2-B#9b",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "他说蛋的气味现在还从红顶屋里飘出来。",
+    Next = 40
 }
 
 -- 普通对话类型  -- doc:2-B#10
@@ -632,7 +641,16 @@ DialogueConfig[920] = {
     DocTag = "2-B@no-frog#1",
     NpcName = "黑猫",
     NpcSprite = "审视",
-    Dialogue = "有一群小鸡这两天一直在叽叽喳喳的，你去了解一下发生什么了。",
+    Dialogue = "有一群小鸡这两天一直在叽叽喳喳的，",
+    Next = 934
+}
+
+DialogueConfig[934] = {
+    Type = "Normal",
+    DocTag = "2-B@no-frog#1b",
+    NpcName = "黑猫",
+    NpcSprite = "审视",
+    Dialogue = "你去了解一下发生什么了。",
     Next = 921
 }
 
@@ -663,8 +681,17 @@ DialogueConfig[42] = {
     DocTag = "2-B#12",
     NpcName = "玩家",
     NpcSprite = "",
-    Dialogue = "高大的两脚兽，带着冰冷的容器，把什么「生命之源」从池塘抽走了。",
-    Next = 43  -- 下一段对话ID
+    Dialogue = "高大的两脚兽，带着冰冷的容器，",
+    Next = 935
+}
+
+DialogueConfig[935] = {
+    Type = "Normal",
+    DocTag = "2-B#12b",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "把什么「生命之源」从池塘抽走了。",
+    Next = 43
 }
 
 -- 普通对话类型  -- doc:2-B#13
@@ -797,7 +824,19 @@ DialogueConfig[905] = {
     NpcSprite = "审视",
     Dialogue = "",
     ConditionBranches = {
-        { VarName = "Frog_WaterMonsterQueried", VarType = "bool", TrueNext = 906, FalseNext = 912 }
+        { VarName = "Frog_WaterMonsterQueried", VarType = "bool", TrueNext = 906, FalseNext = 925 }
+    },
+    Next = 925
+}
+
+DialogueConfig[925] = {
+    Type = "Normal",
+    DocTag = "2-hub#case-chick-status",
+    NpcName = "黑猫",
+    NpcSprite = "审视",
+    Dialogue = "",
+    ConditionBranches = {
+        { VarName = "ChickStatus", VarType = "int", Op = ">=", Value = 3, Next = 930 }
     },
     Next = 912
 }
@@ -838,7 +877,7 @@ DialogueConfig[910] = {
     Next = 907
 }
 
--- 2-B-R-frog · 未取得悲伤蛙证词
+-- 2-B-R-frog · 未问清小鸡
 DialogueConfig[912] = {
     Type = "Normal",
     DocTag = "2-B-R-frog#1",
@@ -853,7 +892,44 @@ DialogueConfig[913] = {
     DocTag = "2-B-R-frog#2",
     NpcName = "黑猫",
     NpcSprite = "高傲",
-    Dialogue = "它们这两天叽叽喳喳的——先弄明白，再来谈池塘。",
+    Dialogue = "它们这两天叽叽喳喳的——先弄明白再说。",
+    Next = -1
+}
+
+-- 2-B-R-chick · 小鸡已招 · 催问悲伤蛙
+DialogueConfig[930] = {
+    Type = "Normal",
+    DocTag = "2-B-R-chick#1",
+    NpcName = "黑猫",
+    NpcSprite = "审视",
+    Dialogue = "小鸡那边怎么说。",
+    Next = 931
+}
+
+DialogueConfig[931] = {
+    Type = "Normal",
+    DocTag = "2-B-R-chick#2",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "它们招了——真蛋大前天就推回窝了，假石头被乌鸦叼走；",
+    Next = 936
+}
+
+DialogueConfig[936] = {
+    Type = "Normal",
+    DocTag = "2-B-R-chick#2b",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "弟弟昨晚才不见。它们让我去池塘问青蛙。",
+    Next = 932
+}
+
+DialogueConfig[932] = {
+    Type = "Normal",
+    DocTag = "2-B-R-chick#3",
+    NpcName = "黑猫",
+    NpcSprite = "审视",
+    Dialogue = "……去问那只蛤蟆。昨夜池塘边它看见了什么，问清楚再来。",
     Next = -1
 }
 
@@ -881,7 +957,16 @@ DialogueConfig[916] = {
     DocTag = "2-B-F#3",
     NpcName = "玩家",
     NpcSprite = "",
-    Dialogue = "高大的两脚兽，带着冰冷的容器，把什么「生命之源」从池塘抽走了。",
+    Dialogue = "高大的两脚兽，带着冰冷的容器，",
+    Next = 937
+}
+
+DialogueConfig[937] = {
+    Type = "Normal",
+    DocTag = "2-B-F#3b",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "把什么「生命之源」从池塘抽走了。",
     Next = 917
 }
 
@@ -1839,8 +1924,17 @@ DialogueConfig[122] = {
     DocTag = "2-E#7",
     NpcName = "大黄",
     NpcSprite = "执勤",
-    Dialogue = "这要是传出去，今年冬天你睡稻草堆里，我可不让你蹭我狗窝。",
-    Next = 123  -- 下一段对话ID
+    Dialogue = "这要是传出去，今年冬天你睡稻草堆里，",
+    Next = 938
+}
+
+DialogueConfig[938] = {
+    Type = "Normal",
+    DocTag = "2-E#7b",
+    NpcName = "大黄",
+    NpcSprite = "执勤",
+    Dialogue = "我可不让你蹭我狗窝。",
+    Next = 123
 }
 
 -- 普通对话类型  -- doc:2-E#8
@@ -1938,8 +2032,17 @@ DialogueConfig[131] = {
     DocTag = "2-E#16",
     NpcName = "黑猫",
     NpcSprite = "审视",
-    Dialogue = "至于你说的那颗破蛋——既然它现在多半就在屋里，顺便看一眼也不亏。",
-    Next = 132  -- 下一段对话ID
+    Dialogue = "至于你说的那颗破蛋——",
+    Next = 939
+}
+
+DialogueConfig[939] = {
+    Type = "Normal",
+    DocTag = "2-E#16b",
+    NpcName = "黑猫",
+    NpcSprite = "审视",
+    Dialogue = "既然它现在多半就在屋里，顺便看一眼也不亏。",
+    Next = 132
 }
 
 -- 普通对话类型  -- doc:2-E#17
@@ -1949,8 +2052,17 @@ DialogueConfig[132] = {
     DocTag = "2-E#17",
     NpcName = "黑猫",
     NpcSprite = "炸毛",
-    Dialogue = "本喵有专属钥匙。你要进去——爬二层窗。本喵从里面推开。你不许走本喵的猫门。",
-    Next = 133  -- 下一段对话ID
+    Dialogue = "本喵有专属钥匙。你要进去——爬二层窗。",
+    Next = 940
+}
+
+DialogueConfig[940] = {
+    Type = "Normal",
+    DocTag = "2-E#17b",
+    NpcName = "黑猫",
+    NpcSprite = "炸毛",
+    Dialogue = "本喵从里面推开。你不许走本喵的猫门。",
+    Next = 133
 }
 
 -- 普通对话类型  -- doc:2-E#18
@@ -2186,8 +2298,17 @@ DialogueConfig[153] = {
     DocTag = "3-B#4",
     NpcName = "黑猫",
     NpcSprite = "高傲",
-    Dialogue = "早上窗台就看见了。白石头，晨光一照，闪得很——任何不瞎的都看得出来不是蛋。",
-    Next = 154  -- 下一段对话ID
+    Dialogue = "早上窗台就看见了。白石头，晨光一照，闪得很——",
+    Next = 941
+}
+
+DialogueConfig[941] = {
+    Type = "Normal",
+    DocTag = "3-B#4b",
+    NpcName = "黑猫",
+    NpcSprite = "高傲",
+    Dialogue = "任何不瞎的都看得出来不是蛋。",
+    Next = 154
 }
 
 -- 普通对话类型  -- doc:3-B#5

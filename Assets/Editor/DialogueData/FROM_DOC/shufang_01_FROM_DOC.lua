@@ -83,8 +83,17 @@ DialogueConfig[6] = {
     DocTag = "1-A#6",
     NpcName = "淑芬",
     NpcSprite = "护雏",
-    Dialogue = "其他孩子出壳都好几天了，就这最小的——迟迟没动静，我一直守着它。",
-    Next = 7  -- 下一段对话ID
+    Dialogue = "其他孩子出壳都好几天了，就这最小的——",
+    Next = 200
+}
+
+DialogueConfig[200] = {
+    Type = "Normal",
+    DocTag = "1-A#6b",
+    NpcName = "淑芬",
+    NpcSprite = "护雏",
+    Dialogue = "迟迟没动静，我一直守着它。",
+    Next = 7
 }
 
 -- 普通对话类型  -- doc:1-A#7
@@ -160,11 +169,20 @@ DialogueConfig[13] = {
     DocTag = "1-A#13",
     NpcName = "淑芬",
     NpcSprite = "守望",
-    Dialogue = "谢谢你，真的。有什么要问的随时来找我——农场的事，我比谁都熟。我就在那边的鸡舍那。",
+    Dialogue = "谢谢你，真的。有什么要问的随时来找我——",
+    Next = 201
+}
+
+DialogueConfig[201] = {
+    Type = "Normal",
+    DocTag = "1-A#13b",
+    NpcName = "淑芬",
+    NpcSprite = "守望",
+    Dialogue = "农场的事，我比谁都熟。我就在那边的鸡舍那。",
     SetVariables = {
         { VarName = "Shufen_CommissionDone", VarType = "bool", Value = true }
     },
-    Next = -1  -- 对话结束；再点淑芬2走 1-hub-intro → 1-hub
+    Next = -1
 }
 
 -- 普通对话类型  -- doc:1-hub-intro@v1#1
@@ -324,7 +342,8 @@ DialogueConfig[24] = {
             Next = 31,
             DisplayConditions = {
                 { VarName = "DogStatus", VarType = "int", Op = ">=", Value = 2 },
-                { VarName = "Shufen_CrowAsked", VarType = "bool", Value = false }
+                { VarName = "Shufen_CrowAsked", VarType = "bool", Value = false },
+                { VarName = "Crow_RoofIntroShown", VarType = "bool", Value = false }
             },
         },
         {
@@ -445,8 +464,17 @@ DialogueConfig[32] = {
     DocTag = "1-C#2",
     NpcName = "淑芬",
     NpcSprite = "守望",
-    Dialogue = "那只乌鸦啊，什么东西都往顶上搬——亮的、白的、圆的，见了就叼。",
-    Next = 33  -- 下一段对话ID
+    Dialogue = "那只乌鸦啊，什么东西都往顶上搬——",
+    Next = 202
+}
+
+DialogueConfig[202] = {
+    Type = "Normal",
+    DocTag = "1-C#2b",
+    NpcName = "淑芬",
+    NpcSprite = "守望",
+    Dialogue = "亮的、白的、圆的，见了就叼。",
+    Next = 33
 }
 
 -- 普通对话类型  -- doc:1-C#3
@@ -514,8 +542,17 @@ DialogueConfig[38] = {
     DocTag = "1-D#4",
     NpcName = "淑芬",
     NpcSprite = "守望",
-    Dialogue = "说的东西听不太懂，但它就在水边，什么路过的都看在眼里。",
-    Next = 39  -- 下一段对话ID
+    Dialogue = "说的东西听不太懂，但它就在水边，",
+    Next = 203
+}
+
+DialogueConfig[203] = {
+    Type = "Normal",
+    DocTag = "1-D#4b",
+    NpcName = "淑芬",
+    NpcSprite = "守望",
+    Dialogue = "什么路过的都看在眼里。",
+    Next = 39
 }
 
 -- 普通对话类型  -- doc:1-D#5
@@ -688,8 +725,17 @@ DialogueConfig[53] = {
     DocTag = "1-G#6",
     NpcName = "淑芬",
     NpcSprite = "守望",
-    Dialogue = "鸡舍水槽边有桶老谷物泡水，他爱喝那个味儿，灌下去就醒了。",
-    Next = 54  -- 下一段对话ID
+    Dialogue = "鸡舍水槽边有桶老谷物泡水，他爱喝那个味儿，",
+    Next = 204
+}
+
+DialogueConfig[204] = {
+    Type = "Normal",
+    DocTag = "1-G#6b",
+    NpcName = "淑芬",
+    NpcSprite = "守望",
+    Dialogue = "灌下去就醒了。",
+    Next = 54
 }
 
 -- 普通对话类型  -- doc:1-G#7
@@ -779,8 +825,17 @@ DialogueConfig[61] = {
     DocTag = "2-A#6",
     NpcName = "淑芬",
     NpcSprite = "护雏",
-    Dialogue = "大前天下午，我离窝去转了一圈，搞了搞沙浴，就那一小会儿。",
-    Next = 62  -- 下一段对话ID
+    Dialogue = "大前天下午，我离窝去转了一圈，搞了搞沙浴，",
+    Next = 205
+}
+
+DialogueConfig[205] = {
+    Type = "Normal",
+    DocTag = "2-A#6b",
+    NpcName = "淑芬",
+    NpcSprite = "护雏",
+    Dialogue = "就那一小会儿。",
+    Next = 62
 }
 
 -- 普通对话类型  -- doc:2-A#7
@@ -812,8 +867,17 @@ DialogueConfig[64] = {
     DocTag = "2-A#9",
     NpcName = "淑芬",
     NpcSprite = "护雏",
-    Dialogue = "心一下子空了。我满院子跑，深蹲做到腿软，想要把孩儿焐回来。",
-    Next = 65  -- 下一段对话ID
+    Dialogue = "心一下子空了。我满院子跑，深蹲做到腿软，",
+    Next = 206
+}
+
+DialogueConfig[206] = {
+    Type = "Normal",
+    DocTag = "2-A#9b",
+    NpcName = "淑芬",
+    NpcSprite = "护雏",
+    Dialogue = "想要把孩儿焐回来。",
+    Next = 65
 }
 
 -- 普通对话类型  -- doc:2-A#10

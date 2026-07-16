@@ -179,7 +179,15 @@ DialogueConfig[29] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "农场里捡到奶酪碎，记得拿来找我们换情报。一块便宜货，五块贵货——明码标价。",
+    Dialogue = "农场里捡到奶酪碎，记得拿来找我们换情报。",
+    Next = 910
+}
+
+DialogueConfig[910] = {
+    Type = "Normal",
+    NpcName = "鼠哥",
+    NpcSprite = "兜售",
+    Dialogue = "一块便宜货，五块贵货——明码标价。",
     SetVariables = {
         { VarName = "Mouse_FirstGreetShown", VarType = "bool", Value = true },
     },
@@ -503,7 +511,15 @@ DialogueConfig[220] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "只不过，东西放我们这里——保管费、搬运费、折旧费……综合算下来，八块奶酪碎，公道价。",
+    Dialogue = "只不过，东西放我们这里——保管费、搬运费、折旧费……",
+    Next = 911
+}
+
+DialogueConfig[911] = {
+    Type = "Normal",
+    NpcName = "鼠哥",
+    NpcSprite = "兜售",
+    Dialogue = "综合算下来，八块奶酪碎，公道价。",
     Next = 230
 }
 
@@ -948,7 +964,15 @@ DialogueConfig[323] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "付清这八块，后面还有一批贵情报——现在也一起给您开放购买了。",
+    Dialogue = "付清这八块，后面还有一批贵情报——",
+    Next = 912
+}
+
+DialogueConfig[912] = {
+    Type = "Normal",
+    NpcName = "鼠哥",
+    NpcSprite = "兜售",
+    Dialogue = "现在也一起给您开放购买了。",
     Next = 324
 }
 
@@ -1069,7 +1093,15 @@ DialogueConfig[342] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "我走南闯北，见过很多只跟它一模一样的蛙，说的话我都能背出来了。它在这一带顶多排第七。",
+    Dialogue = "我走南闯北，见过很多只跟它一模一样的蛙，说的话我都能背出来了。",
+    Next = 913
+}
+
+DialogueConfig[913] = {
+    Type = "Normal",
+    NpcName = "鼠哥",
+    NpcSprite = "兜售",
+    Dialogue = "它在这一带顶多排第七。",
     Next = 343
 }
 
@@ -1336,15 +1368,6 @@ DialogueConfig[514] = {
     NpcName = "鼠弟",
     NpcSprite = "八卦",
     Dialogue = "排队的！",
-    Next = 515
-}
-
--- Position: { 50, 150 }
-DialogueConfig[515] = {
-    Type = "Normal",
-    NpcName = "鼠哥",
-    NpcSprite = "八卦",
-    Dialogue = "就是它。",
     Next = 516
 }
 
@@ -1602,7 +1625,15 @@ DialogueConfig[561] = {
     Type = "Normal",
     NpcName = "鼠弟",
     NpcSprite = "八卦",
-    Dialogue = "有次喝大了，整晚趴在谷仓墙根出不来！大半个身子压着一架木梯！",
+    Dialogue = "有次喝大了，整晚趴在谷仓墙根出不来！",
+    Next = 914
+}
+
+DialogueConfig[914] = {
+    Type = "Normal",
+    NpcName = "鼠弟",
+    NpcSprite = "八卦",
+    Dialogue = "大半个身子压着一架木梯！",
     Next = 562
 }
 
@@ -1611,7 +1642,15 @@ DialogueConfig[562] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "八卦",
-    Dialogue = "最后淑芬端了鸡舍水槽边那桶泡软的谷物过去，把他叫醒了。",
+    Dialogue = "最后淑芬端了鸡舍水槽边那桶泡软的谷物过去，",
+    Next = 915
+}
+
+DialogueConfig[915] = {
+    Type = "Normal",
+    NpcName = "鼠哥",
+    NpcSprite = "八卦",
+    Dialogue = "把他叫醒了。",
     Next = 563
 }
 
@@ -1821,7 +1860,15 @@ DialogueConfig[603] = {
     Type = "Normal",
     NpcName = "鼠弟",
     NpcSprite = "八卦",
-    Dialogue = "……那天看见它们推了个泥糊糊的圆东西路过谷仓，太好玩了，随口编的。",
+    Dialogue = "……那天看见它们推了个泥糊糊的圆东西路过谷仓，",
+    Next = 916
+}
+
+DialogueConfig[916] = {
+    Type = "Normal",
+    NpcName = "鼠弟",
+    NpcSprite = "八卦",
+    Dialogue = "太好玩了，随口编的。",
     Next = 604
 }
 
@@ -2163,7 +2210,15 @@ DialogueConfig[662] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "八卦",
-    Dialogue = "他们卖的全是假货，我们举报了，后来墙被修缮，把那边堵死了。",
+    Dialogue = "他们卖的全是假货，我们举报了，",
+    Next = 917
+}
+
+DialogueConfig[917] = {
+    Type = "Normal",
+    NpcName = "鼠哥",
+    NpcSprite = "八卦",
+    Dialogue = "后来墙被修缮，把那边堵死了。",
     Next = 663
 }
 

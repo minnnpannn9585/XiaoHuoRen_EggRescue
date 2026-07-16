@@ -43,8 +43,17 @@ DialogueConfig[1] = {
     DocTag = "1-A#1",
     NpcName = "大黄",
     NpcSprite = "醉倒",
-    Dialogue = "（谷仓墙根旁，一架短木梯侧倒在地，一只大黄色的狗半压在上面，低沉的鼾声带着哨音）",
-    Next = 2  -- 下一段对话ID
+    Dialogue = "（谷仓墙根旁，一架短木梯侧倒在地，",
+    Next = 820
+}
+
+DialogueConfig[820] = {
+    Type = "Normal",
+    DocTag = "1-A#1b",
+    NpcName = "大黄",
+    NpcSprite = "醉倒",
+    Dialogue = "一只大黄色的狗半压在上面，低沉的鼾声带着哨音）",
+    Next = 2
 }
 
 -- 普通对话类型  -- doc:1-A#2
@@ -159,8 +168,17 @@ DialogueConfig[11] = {
     DocTag = "1-A@cond#1",
     NpcName = "玩家",
     NpcSprite = "疑惑",
-    Dialogue = "你身下压着一架短木梯，能先挪一下吗？谷仓入口那道矮墙翻不过去。",
-    Next = 12  -- 下一段对话ID
+    Dialogue = "你身下压着一架短木梯，能先挪一下吗？",
+    Next = 821
+}
+
+DialogueConfig[821] = {
+    Type = "Normal",
+    DocTag = "1-A@cond#1b",
+    NpcName = "玩家",
+    NpcSprite = "疑惑",
+    Dialogue = "谷仓入口那道矮墙翻不过去。",
+    Next = 12
 }
 
 -- 普通对话类型  -- doc:1-A@cond#2
@@ -861,11 +879,20 @@ DialogueConfig[65] = {
     DocTag = "2-B#1",
     NpcName = "玩家",
     NpcSprite = "疑惑",
-    Dialogue = "这里有一扇精美的小门，还有一撮动物的毛，红屋顶里还住着别的动物？",
+    Dialogue = "这里有一扇精美的小门，还有一撮动物的毛，",
+    Next = 822
+}
+
+DialogueConfig[822] = {
+    Type = "Normal",
+    DocTag = "2-B#1b",
+    NpcName = "玩家",
+    NpcSprite = "疑惑",
+    Dialogue = "红屋顶里还住着别的动物？",
     SetVariables = {
         { VarName = "BlackCat_TreeShakeStarted", VarType = "bool", Value = true }
     },
-    Next = 66  -- 下一段对话ID
+    Next = 66
 }
 
 -- 普通对话类型  -- doc:2-B#2
@@ -908,8 +935,17 @@ DialogueConfig[69] = {
     DocTag = "2-B#5",
     NpcName = "大黄",
     NpcSprite = "振奋",
-    Dialogue = "有一只猫！那只傲慢的黑猫！他有专属猫门，钥匙就挂在脖子上！",
-    Next = 70  -- 下一段对话ID
+    Dialogue = "有一只猫！那只傲慢的黑猫！",
+    Next = 823
+}
+
+DialogueConfig[823] = {
+    Type = "Normal",
+    DocTag = "2-B#5b",
+    NpcName = "大黄",
+    NpcSprite = "振奋",
+    Dialogue = "他有专属猫门，钥匙就挂在脖子上！",
+    Next = 70
 }
 
 -- 普通对话类型  -- doc:2-B#6
@@ -1044,8 +1080,39 @@ DialogueConfig[81] = {
     DocTag = "2-C@v2#2",
     NpcName = "大黄",
     NpcSprite = "执勤",
-    Dialogue = "怕下雨。每次打雷，他就跑来我狗窝旁边蹲着。我说进来吧，他说本喵只是路过，然后在门口站了整整一夜。",
-    Next = 82  -- 下一段对话ID
+    Dialogue = "怕下雨。",
+    Next = 810  -- 下一段对话ID
+}
+
+-- 普通对话类型  -- doc:2-C@v2#2b
+-- Position: { 12600, 1060 }
+DialogueConfig[810] = {
+    Type = "Normal",
+    DocTag = "2-C@v2#2b",
+    NpcName = "大黄",
+    NpcSprite = "执勤",
+    Dialogue = "每次打雷，他就跑来我狗窝旁边蹲着。",
+    Next = 811  -- 下一段对话ID
+}
+
+-- 普通对话类型  -- doc:2-C@v2#2c
+-- Position: { 12700, 1060 }
+DialogueConfig[811] = {
+    Type = "Normal",
+    DocTag = "2-C@v2#2c",
+    NpcName = "大黄",
+    NpcSprite = "执勤",
+    Dialogue = "我说进来吧，他说本喵只是路过，",
+    Next = 824
+}
+
+DialogueConfig[824] = {
+    Type = "Normal",
+    DocTag = "2-C@v2#2d",
+    NpcName = "大黄",
+    NpcSprite = "执勤",
+    Dialogue = "然后在门口站了整整一夜。",
+    Next = 82
 }
 
 -- 普通对话类型  -- doc:2-C@v2#3
@@ -1066,8 +1133,17 @@ DialogueConfig[83] = {
     DocTag = "2-C@v2#4",
     NpcName = "大黄",
     NpcSprite = "执勤",
-    Dialogue = "我后来提过一次，他说从来没进过我狗窝、那种地方。就是这样的。",
-    Next = -1  -- 下一段对话ID
+    Dialogue = "我后来提过一次，他说从来没进过我狗窝、那种地方。",
+    Next = 825
+}
+
+DialogueConfig[825] = {
+    Type = "Normal",
+    DocTag = "2-C@v2#4b",
+    NpcName = "大黄",
+    NpcSprite = "执勤",
+    Dialogue = "就是这样的。",
+    Next = -1
 }
 
 -- 普通对话类型  -- doc:2-C@v3#1

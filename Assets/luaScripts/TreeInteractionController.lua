@@ -101,11 +101,6 @@ function RefreshTreeInteraction(force)
     -- 先关 Click（避免与 Force 重叠时弹出「大树对话」键）
     SetClickInteractionEnabled(clickEnabled)
     SetForceZoneEnabled(forceEnabled)
-
-    print(string.format(
-        "[TreeInteraction] force=%s click=%s (TreeHardShown=%s Summoned=%s Shake=%s)",
-        tostring(forceEnabled), tostring(clickEnabled),
-        tostring(treeHardShown), tostring(summoned), tostring(treeShakeStarted)))
 end
 
 function Awake()

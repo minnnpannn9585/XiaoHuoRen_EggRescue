@@ -68,7 +68,7 @@ local unlockedBranchCache = {}     -- 已处理过的分支缓存，防止同一
 local lastPortraitSpriteKey = nil  -- 描述行沿用上一句 NPC 立绘
 
 -- World Debugger 对话调试（过滤关键字 [Dialogue]）
-local DIALOGUE_DEBUG = true
+local DIALOGUE_DEBUG = false
 
 local function Dbg(msg)
     if DIALOGUE_DEBUG then
@@ -409,7 +409,7 @@ function CheckAndUnlockBranch(data)
                         npc.currentBranchId = entry.branchId
                         unlockedBranchCache[cacheKey] = true
                         DouyinUtility.Toast("NPC [" .. entry.npcName .. "] 已解锁分支 " .. entry.branchId)
-                        print("[NPC分支解锁] " ..
+                        Dbg("[NPC分支解锁] " ..
                             entry.npcName .. " currentBranchId: " .. oldBranchId .. " -> " .. entry.branchId)
                         break
                     end
@@ -432,7 +432,7 @@ function Awake()
     RegisterDialogueManagerApi(self.script)
     _G["_DialogueManager"] = self.script
     dialogueManager = self.script
-    print("[Dialogue] DialogueManager 已注册 (_DialogueManager.StartDialogueWithData OK)")
+    Dbg("DialogueManager 已注册 (_DialogueManager.StartDialogueWithData OK)")
 
     InitPortraitRefs()
 
@@ -744,7 +744,7 @@ function UpdateNPCInfo(data)
             for k, v in pairs(allSprites) do
                 table.insert(availableKeys, k)
             end
-            print("[头像加载] 找不到 spriteKey: " ..
+            Dbg("[头像加载] 找不到 spriteKey: " ..
                 tostring(spriteKey) .. ". 可用 keys: " .. table.concat(availableKeys, ", "))
         end
         HideAllPortraits()
@@ -936,13 +936,13 @@ function CheckOptionDisplayConditions(option)
 
     local getFunc = _G["GetGlobalVar"]
 
-    print(string.format("[DisplayCond] 检查选项: %s, AND=%d OR=%d",
+    Dbg(string.format("[DisplayCond] 检查选项: %s, AND=%d OR=%d",
         tostring(option.Text), hasAnd and #conditions or 0, hasOr and #anyConditions or 0))
 
     if hasAnd then
         for i, cond in ipairs(conditions) do
             if not EvaluateDisplayCondition(cond, getFunc) then
-                print(string.format("[DisplayCond] AND[%d] 不满足，返回 false", i))
+                Dbg(string.format("[DisplayCond] AND[%d] 不满足，返回 false", i))
                 return false
             end
         end
@@ -957,12 +957,12 @@ function CheckOptionDisplayConditions(option)
             end
         end
         if not anyMatch then
-            print("[DisplayCond] OR 组无匹配，返回 false")
+            Dbg("[DisplayCond] OR 组无匹配，返回 false")
             return false
         end
     end
 
-    print("[DisplayCond] 所有条件通过，选项显示")
+    Dbg("[DisplayCond] 所有条件通过，选项显示")
     return true
 end
 
