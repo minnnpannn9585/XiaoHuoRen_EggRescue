@@ -1,11 +1,9 @@
 -- E20 漫画收束 · Notebook/Ending（prefab 内默认 inactive）
 -- 黑底仅开场渐黑一次；换页用 crossfade，避免闪黑
+-- 最后一张图后整体渐隐并关闭 Ending
 
 ---@var panels :UnityEngine.GameObject[]
 ---@var clickArea :UnityEngine.UI.Button
----@var epiloguePanel :UnityEngine.GameObject
----@var epilogueText :UnityEngine.UI.Text
----@var epilogueMessage :string = "真相已经浮出水面……\n小鸡到底去了哪里？\n下次更新再回来一探究竟！"
 ---@var fadeDuration :float = 1.0
 ---@end
 
@@ -19,6 +17,7 @@ local advanceBound = false
 local crossfadeFrom = nil
 local crossfadeTo = nil
 local fadeInTarget = nil
+local fadeOutPanel = nil
 
 local function RegisterGlobal()
     if _G["EndingController_Start"] then return end
@@ -95,16 +94,6 @@ local function HideAllPanels()
     end
 end
 
-local function HideEpilogue()
-    DeactivateGo(epiloguePanel)
-end
-
-local function ApplyEpilogueText()
-    if epilogueText and epilogueMessage and epilogueMessage ~= "" then
-        epilogueText.text = epilogueMessage
-    end
-end
-
 local function SetClickEnabled(enabled)
     if clickArea then
         clickArea.interactable = enabled
@@ -116,6 +105,11 @@ local function SetRootRaycastEnabled(enabled)
     if img then
         img.raycastTarget = enabled
     end
+end
+
+local function DisableButtonColorTransition(btn)
+    if not btn then return end
+    btn.transition = CS.UnityEngine.UI.Selectable.Transition.None
 end
 
 local function DisableConflictingComponents()
@@ -135,8 +129,6 @@ local function InitializeVisuals()
     DisableConflictingComponents()
     SetBgAlpha(0)
     HideAllPanels()
-    HideEpilogue()
-    ApplyEpilogueText()
     SetClickEnabled(false)
 end
 
@@ -157,9 +149,14 @@ local function FinalizeEnding()
     print("[EndingController] 漫画收束完成，上报 Terminal")
     if DouyinApplication and DouyinApplication.isSimulator then
         print("[EndingController] 模拟器跳过 Terminal")
-        DouyinUtility.Toast("抖音虚拟调试器暂不支持通关组件完成任务")
     else
         CS.DouyinTaskService.SendEvent(CS.DouyinTaskEvent.Terminal)
+    end
+
+    -- 漫画收束完毕 → 进入二周目（各 NPC entry 分发 / 奶酪刷新）
+    if _G["SetGlobalVar"] then
+        _G["SetGlobalVar"]("NGPlus", true, "bool")
+        print("[EndingController] NGPlus = true")
     end
 
     if _G["ResetPosition"] then
@@ -170,6 +167,8 @@ local function FinalizeEnding()
     if DouyinUIService.SetNativeUIVisible then
         DouyinUIService.SetNativeUIVisible(true)
     end
+
+    self.gameObject:SetActive(false)
 end
 
 local function OnFadeComplete()
@@ -184,16 +183,7 @@ local function OnFadeComplete()
             SetVisualAlpha(go, 0)
             fadeInfo = { kind = "in", elapsed = 0, onComplete = OnFadeComplete }
         else
-            ApplyEpilogueText()
-            if epiloguePanel then
-                phase = "fadeIn"
-                fadeInTarget = epiloguePanel
-                epiloguePanel:SetActive(true)
-                SetVisualAlpha(epiloguePanel, 0)
-                fadeInfo = { kind = "in", elapsed = 0, onComplete = OnFadeComplete }
-            else
-                FinalizeEnding()
-            end
+            FinalizeEnding()
         end
         return
     end
@@ -212,7 +202,7 @@ local function OnFadeComplete()
         return
     end
 
-    if phase == "crossfade" or phase == "fadeEpilogue" then
+    if phase == "crossfade" then
         if crossfadeFrom then
             DeactivateGo(crossfadeFrom)
         end
@@ -221,19 +211,32 @@ local function OnFadeComplete()
         end
         crossfadeFrom = nil
         crossfadeTo = nil
+        phase = "waitClick"
+        SetClickEnabled(true)
+        return
+    end
 
-        if phase == "fadeEpilogue" then
-            FinalizeEnding()
-        else
-            phase = "waitClick"
-            SetClickEnabled(true)
+    if phase == "fadeOut" then
+        if fadeOutPanel then
+            DeactivateGo(fadeOutPanel)
+            fadeOutPanel = nil
         end
+        SetBgAlpha(0)
+        FinalizeEnding()
         return
     end
 end
 
-local function StartCrossfade(fromGo, toGo, nextPhase)
-    phase = nextPhase or "crossfade"
+local function StartFadeOut(panelGo)
+    phase = "fadeOut"
+    fadeOutPanel = panelGo
+    bgLocked = false
+    SetClickEnabled(false)
+    fadeInfo = { kind = "out", elapsed = 0, onComplete = OnFadeComplete }
+end
+
+local function StartCrossfade(fromGo, toGo)
+    phase = "crossfade"
     crossfadeFrom = fromGo
     crossfadeTo = toGo
     SetClickEnabled(false)
@@ -261,15 +264,9 @@ local function OnAdvanceClick()
 
     currentPanelIndex = currentPanelIndex + 1
     if currentPanelIndex <= GetPanelCount() then
-        StartCrossfade(prevGo, panels[currentPanelIndex - 1], "crossfade")
+        StartCrossfade(prevGo, panels[currentPanelIndex - 1])
     else
-        ApplyEpilogueText()
-        if epiloguePanel then
-            StartCrossfade(prevGo, epiloguePanel, "fadeEpilogue")
-        else
-            DeactivateGo(prevGo)
-            FinalizeEnding()
-        end
+        StartFadeOut(prevGo)
     end
 end
 
@@ -278,6 +275,7 @@ local function BindClickArea()
     advanceBound = true
 
     if clickArea then
+        DisableButtonColorTransition(clickArea)
         clickArea.onClick:AddListener(OnAdvanceClick)
         return
     end
@@ -287,6 +285,7 @@ local function BindClickArea()
     if not btn then
         btn = rootGo:AddComponent(typeof(CS.UnityEngine.UI.Button))
     end
+    DisableButtonColorTransition(btn)
     btn.onClick:AddListener(OnAdvanceClick)
     clickArea = btn
 end
@@ -301,6 +300,7 @@ function EndingController_Start()
     currentPanelIndex = 0
     fadeInfo = nil
     fadeInTarget = nil
+    fadeOutPanel = nil
     crossfadeFrom = nil
     crossfadeTo = nil
     phase = "fadeBg"
@@ -346,6 +346,12 @@ function Update()
         end
         if crossfadeTo then
             SetVisualAlpha(crossfadeTo, eased)
+        end
+    elseif fadeInfo.kind == "out" then
+        local alpha = 1 - eased
+        SetBgAlpha(alpha)
+        if fadeOutPanel then
+            SetVisualAlpha(fadeOutPanel, alpha)
         end
     end
 

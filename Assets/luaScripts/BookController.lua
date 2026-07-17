@@ -23,6 +23,7 @@
 ---@var entry_E02 :UnityEngine.GameObject
 ---@var entry_D02 :UnityEngine.GameObject
 ---@var entry_D03 :UnityEngine.GameObject
+---@var entry_FrogImage :UnityEngine.GameObject
 ---@var entry_E12 :UnityEngine.GameObject
 ---@var entry_D04 :UnityEngine.GameObject
 ---@var entry_D05 :UnityEngine.GameObject
@@ -143,6 +144,8 @@ local function BuildCatalog()
         E02 = { go = entry_E02, cond = "E02_ViewFeather==true" },
         D02 = { go = entry_D02, cond = "E03_Overheard==true" },
         D03 = { go = entry_D03, cond = "ChickStatus>=2" },
+        -- 青蛙图片与 E12 绿垫文字必须是两个独立（非父子）引用，才能分时解锁。
+        FROG_IMAGE = { go = entry_FrogImage, cond = "Frog_FirstMeetShown==true" },
         E12 = { go = entry_E12, cond = "E12_ViewGreenPad==true" },
         D04 = { go = entry_D04, cond = "Frog_WaterMonsterQueried==true" },
         D05 = { go = entry_D05, cond = "Frog_WaterMonsterQueried==true" },

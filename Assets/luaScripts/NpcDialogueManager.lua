@@ -12,6 +12,7 @@
 -- 立绘引用（拖切好的 Sprite；NpcSprite key 见括号）
 ---@var 立绘_淑芬_守望 :UnityEngine.Sprite
 ---@var 立绘_淑芬_护雏 :UnityEngine.Sprite
+---@var 立绘_淑芬_团聚 :UnityEngine.Sprite
 ---@var 立绘_大黄_醉倒 :UnityEngine.Sprite
 ---@var 立绘_大黄_执勤 :UnityEngine.Sprite
 ---@var 立绘_大黄_振奋 :UnityEngine.Sprite
@@ -97,6 +98,7 @@ end
 local function InitPortraitRefs()
     RegPortrait("守望", GetLuaBinding("立绘_淑芬_守望"))
     RegPortrait("护雏", GetLuaBinding("立绘_淑芬_护雏"))
+    RegPortrait("团聚", GetLuaBinding("立绘_淑芬_团聚"))
     RegPortrait("醉倒", GetLuaBinding("立绘_大黄_醉倒"))
     RegPortrait("执勤", GetLuaBinding("立绘_大黄_执勤"))
     RegPortrait("振奋", GetLuaBinding("立绘_大黄_振奋"))
@@ -408,7 +410,6 @@ function CheckAndUnlockBranch(data)
                         local oldBranchId = npc.currentBranchId or 1
                         npc.currentBranchId = entry.branchId
                         unlockedBranchCache[cacheKey] = true
-                        DouyinUtility.Toast("NPC [" .. entry.npcName .. "] 已解锁分支 " .. entry.branchId)
                         Dbg("[NPC分支解锁] " ..
                             entry.npcName .. " currentBranchId: " .. oldBranchId .. " -> " .. entry.branchId)
                         break
@@ -477,7 +478,6 @@ end
 
 function StartDialogue(dialogueID)
     if GetDialogueData(dialogueID) == nil then
-        DouyinUtility.Toast("对话id出现配置错误，请检查～")
         return
     end
 
@@ -539,7 +539,6 @@ function StartDialogueWithData(dialogueData, startID)
         end
     end
     if GetDialogueData(actualID) == nil then
-        DouyinUtility.Toast("对话数据为空～")
         return
     end
     SetPlayerNamePanel(false)
@@ -579,7 +578,6 @@ function OnNextClick()
     -- 普通对话的 Next 逻辑...
     local currentData = GetDialogueData(currentDialogueID)
     if currentData == nil then
-        DouyinUtility.Toast("当前对话数据不存在～")
         EndDialogue()
         return
     end
@@ -603,7 +601,6 @@ function OnNextClick()
         UpdateDialogueUI()
     else
         DbgError("Leave node=" .. fromID .. " target " .. tostring(nextID) .. " missing")
-        DouyinUtility.Toast("对话配置错误，下一段对话不存在～")
         EndDialogue("missing next " .. tostring(nextID))
     end
 end
@@ -612,7 +609,6 @@ function UpdateDialogueUI()
     local data = GetDialogueData(currentDialogueID)
     if data == nil then
         DbgError("Enter node=" .. tostring(currentDialogueID) .. " — data missing")
-        DouyinUtility.Toast("对话数据加载失败～")
         EndDialogue("data missing")
         return
     end
@@ -659,7 +655,6 @@ function UpdateDialogueUI()
             end
             if nextID == nil or GetDialogueData(nextID) == nil then
                 DbgError("empty dispatcher " .. currentDialogueID .. " → missing " .. tostring(nextID))
-                DouyinUtility.Toast("对话配置错误，下一段对话不存在～")
                 EndDialogue("missing next " .. tostring(nextID))
                 return
             end
@@ -1014,7 +1009,6 @@ function ShowQuestionUI(data)
     currentOptions = ApplyHubMenuCap(currentOptions, data)
 
     if #currentOptions == 0 then
-        DouyinUtility.Toast("提问模式缺少满足条件的选项～")
         EndDialogue()
         return
     end
@@ -1035,12 +1029,10 @@ end
 
 function GenerateOptionButtons()
     if not playerPanel then
-        DouyinUtility.Toast("玩家选项面板不存在～")
         return
     end
 
     if not playerPanelBtn then
-        DouyinUtility.Toast("玩家选项按钮预制体不存在～")
         return
     end
 
@@ -1062,8 +1054,6 @@ function GenerateOptionButtons()
         local btnText = btnObj:GetComponentInChildren(typeof(UnityEngine.UI.Text))
         if btnText then
             btnText.text = option.Text
-        else
-            DouyinUtility.Toast("按钮文本组件不存在～")
         end
 
         local rect = btnObj:GetComponent(typeof(UnityEngine.RectTransform))
@@ -1242,7 +1232,6 @@ function PerformOptionJump(option, skipRedundantPlayerLine)
         currentDialogueID = nextID
         UpdateDialogueUI()
     else
-        DouyinUtility.Toast("选项配置错误，下一段对话不存在～")
         EndDialogue()
     end
 end

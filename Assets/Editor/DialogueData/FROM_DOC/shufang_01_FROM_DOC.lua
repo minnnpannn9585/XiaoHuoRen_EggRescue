@@ -1079,7 +1079,7 @@ DialogueConfig[82] = {
     Type = "Normal",
     DocTag = "NGPlus-revisit@v1#1",
     NpcName = "淑芬",
-    NpcSprite = "守望",
+    NpcSprite = "团聚",
     Dialogue = "孩儿在身边了。谢谢你。",
     Next = 83  -- 下一段对话ID
 }
@@ -1101,7 +1101,7 @@ DialogueConfig[84] = {
     Type = "Normal",
     DocTag = "NGPlus-revisit@v1#3",
     NpcName = "淑芬",
-    NpcSprite = "守望",
+    NpcSprite = "团聚",
     Dialogue = "……也挺搞的。",
     Next = -1  -- 下一段对话ID
 }
@@ -1112,7 +1112,7 @@ DialogueConfig[85] = {
     Type = "Normal",
     DocTag = "NGPlus-revisit@v2#1",
     NpcName = "淑芬",
-    NpcSprite = "守望",
+    NpcSprite = "团聚",
     Dialogue = "主人那两脚兽……我以后也不赶他了。",
     Next = 86  -- 下一段对话ID
 }
@@ -1134,7 +1134,7 @@ DialogueConfig[87] = {
     Type = "Normal",
     DocTag = "NGPlus-revisit@v2#3",
     NpcName = "淑芬",
-    NpcSprite = "守望",
+    NpcSprite = "团聚",
     Dialogue = "……偶尔。",
     Next = -1  -- 下一段对话ID
 }
@@ -1145,7 +1145,7 @@ DialogueConfig[88] = {
     Type = "Normal",
     DocTag = "NGPlus-revisit",
     NpcName = "淑芬",
-    NpcSprite = "护雏",
+    NpcSprite = "团聚",
     Dialogue = "",
     RotatePool = { 82, 85 },
     Next = -1  -- 下一段对话ID

@@ -53,6 +53,7 @@ GlobalVariables = {
     { name = "BlackCat_CaseLineBootSaid",   type = "bool", value = false },
     { name = "BlackCat_MintFishLineDone",   type = "bool", value = false },
     { name = "BlackCat_MintFishPending",    type = "bool", value = false },
+    { name = "BlackCat_FrogHelpAsked",      type = "bool", value = false },
     { name = "BlackCat_Entered",            type = "bool", value = false },
     { name = "BlackCat_TreeHardShown",      type = "bool", value = false },
     { name = "BlackCat_TreeShakeStarted",   type = "bool", value = false },

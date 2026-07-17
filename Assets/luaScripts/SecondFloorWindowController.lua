@@ -47,27 +47,41 @@ local function GetInteractorScript(pointGo)
     return nil
 end
 
+-- 对齐 ShuFen/DaHuang：开点只开 Area/Collider，永不 EnableInteraction；
+-- 关点 DisableInteraction + 关 Collider。按钮由玩家走进交互区自然触发。
 local function SetPointActive(pointGo, active)
     if pointGo == nil then
         return
     end
 
+    local interactor = GetInteractorScript(pointGo)
+
     if active then
         if not pointGo.activeSelf then
             pointGo:SetActive(true)
         end
-        local interactor = GetInteractorScript(pointGo)
-        if interactor and interactor.EnableInteraction then
-            interactor.EnableInteraction()
+        if interactor and interactor.InteractionArea then
+            interactor.InteractionArea.enabled = true
+        end
+        local colliders = pointGo:GetComponentsInChildren(typeof(CS.UnityEngine.Collider))
+        if colliders then
+            for i = 0, colliders.Length - 1 do
+                colliders[i].enabled = true
+            end
         end
         return
     end
 
-    if pointGo.activeSelf then
-        local interactor = GetInteractorScript(pointGo)
-        if interactor and interactor.DisableInteraction then
-            interactor.DisableInteraction()
+    if interactor and interactor.DisableInteraction then
+        interactor.DisableInteraction()
+    end
+    local colliders = pointGo:GetComponentsInChildren(typeof(CS.UnityEngine.Collider), true)
+    if colliders then
+        for i = 0, colliders.Length - 1 do
+            colliders[i].enabled = false
         end
+    end
+    if pointGo.activeSelf then
         pointGo:SetActive(false)
     end
 end

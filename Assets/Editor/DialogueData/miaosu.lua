@@ -601,13 +601,13 @@ DialogueConfig[53] = {
     Next = -1
 }
 
--- E19 · 红顶屋屋顶关闭的二层窗
+-- E19 · 红顶屋屋顶关闭的阁楼窗子
 DialogueConfig[54] = {
     Type = "Normal",
     DocTag = "E19",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "二层窗从里面扣着，玻璃后只透出一层模糊的暖光。",
+    Dialogue = "阁楼的窗子从里面扣着，玻璃后只透出一层模糊的暖光。",
     Next = -1
 }
 

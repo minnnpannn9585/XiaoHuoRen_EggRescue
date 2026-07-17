@@ -373,17 +373,6 @@ DialogueConfig[26] = {
     NpcName = "阿满",
     NpcSprite = "心虚",
     Dialogue = "……那是……",
-    Next = 27  -- 下一段对话ID
-}
-
--- 普通对话类型  -- doc:2-B#4
--- Position: { 12750, 150 }
-DialogueConfig[27] = {
-    Type = "Normal",
-    DocTag = "2-B#4",
-    NpcName = "米粒",
-    NpcSprite = "心虚",
-    Dialogue = "工具……",
     Next = 28  -- 下一段对话ID
 }
 
@@ -1057,7 +1046,7 @@ DialogueConfig[86] = {
     DocTag = "2-E#13",
     NpcName = "阿满",
     NpcSprite = "愧疚",
-    Dialogue = "大前天下午，我们捡了块白石头，画成蛋，把弟弟偷出来——",
+    Dialogue = "大前天下午，我们捡了块白石头，画成蛋的样子放进窝里【假装是蛋】，再把真的蛋偷了出来——",
     Next = 87  -- 下一段对话ID
 }
 
@@ -2574,7 +2563,7 @@ DialogueConfig[204] = {
     DocTag = "2-G#5",
     NpcName = "阿满",
     NpcSprite = "愧疚",
-    Dialogue = "大前天下午，我们捡了块白石头，画成蛋，假装成弟弟，",
+    Dialogue = "大前天下午，我们捡了块白石头，画成蛋的样子放进窝里假装是蛋，",
     Next = 217
 }
 

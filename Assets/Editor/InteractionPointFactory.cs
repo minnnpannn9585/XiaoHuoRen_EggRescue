@@ -265,7 +265,7 @@ public static class InteractionPointFactory
         if (interactor != null)
         {
             WireInteractorActions(interactor, comic, null, "OnComicInteract", null);
-            SetInteractorButtonText(interactor, "进入二层窗");
+            SetInteractorButtonText(interactor, "进入阁楼的窗子");
         }
 
         go.SetActive(false);

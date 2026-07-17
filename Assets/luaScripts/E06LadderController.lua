@@ -276,6 +276,9 @@ function OnE06Interact()
 
     if not viewNeed then
         SetGlobalBool("E06_ViewNeedLadder", true)
+        if _G.InteractionPointVfx_DiscoverFrom then
+            _G.InteractionPointVfx_DiscoverFrom(self.gameObject)
+        end
         StartDiscoveryDialogue()
         RefreshLadderState(true)
         return

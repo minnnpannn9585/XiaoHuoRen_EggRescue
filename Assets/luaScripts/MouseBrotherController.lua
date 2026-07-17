@@ -165,12 +165,10 @@ function MouseShop_HandleAction(action, option)
     if action == "cheap" then
         local node = PickCheapIntel()
         if not node then
-            DouyinUtility.Toast("便宜情报已经卖光了～")
             GoToHub()
             return true
         end
         if not TrySpendCheese(1) then
-            DouyinUtility.Toast("奶酪碎不够～")
             GoToHub()
             return true
         end
@@ -182,12 +180,10 @@ function MouseShop_HandleAction(action, option)
     if action == "premium" then
         local node = PickPremiumIntel()
         if not node then
-            DouyinUtility.Toast("贵情报已经卖光了～")
             GoToHub()
             return true
         end
         if not TrySpendCheese(5) then
-            DouyinUtility.Toast("奶酪碎不够～")
             GoToHub()
             return true
         end
@@ -198,7 +194,6 @@ function MouseShop_HandleAction(action, option)
 
     if action == "pay8_mint" or action == "pay8_frog" or action == "pay8_pool" then
         if not TrySpendCheese(8) then
-            DouyinUtility.Toast("奶酪碎不够～")
             GoToHub()
             return true
         end

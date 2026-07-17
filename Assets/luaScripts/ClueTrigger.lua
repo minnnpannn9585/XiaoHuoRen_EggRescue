@@ -31,6 +31,10 @@ function SetClue()
     SetVariable(1, varName1, varType1, varValue1, varIntValue1, varIsAdd1, setFunc, getFunc)
     SetVariable(2, varName2, varType2, varValue2, varIntValue2, varIsAdd2, setFunc, getFunc)
 
+    if _G.InteractionPointVfx_DiscoverFrom then
+        _G.InteractionPointVfx_DiscoverFrom(self.gameObject)
+    end
+
     print("[ClueTrigger] ✓ 所有变量设置完成")
 end
 

@@ -312,6 +312,9 @@ _G.StartNpcDialogue = StartNpcDialogue
 _G.LoadNPCScript = LoadNPCScript
 
 function StartDialogue()
+    if _G.InteractionPointVfx_DiscoverFrom then
+        _G.InteractionPointVfx_DiscoverFrom(self.gameObject)
+    end
     if npcname and npcname ~= "" then
         StartNpcDialogue(npcname, ID)
         return

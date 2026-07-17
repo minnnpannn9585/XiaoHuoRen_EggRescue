@@ -28,7 +28,7 @@ DialogueConfig[0] = {
     Type = "Normal",
     DocTag = "entry#0",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "NGPlus", VarType = "bool", TrueNext = 107, FalseNext = 121 }
@@ -749,7 +749,16 @@ DialogueConfig[57] = {
     DocTag = "1-G#17",
     NpcName = "大黄",
     NpcSprite = "振奋",
-    Dialogue = "蛋气味在那边。红顶屋那一片。我先走一步。",
+    Dialogue = "蛋气味在那边——红顶屋那一片。就是主人住的那栋房子，过了桥就到。",
+    Next = 826  -- 下一段对话ID
+}
+
+DialogueConfig[826] = {
+    Type = "Normal",
+    DocTag = "1-G#17b",
+    NpcName = "大黄",
+    NpcSprite = "振奋",
+    Dialogue = "我先走一步，桥那边见！",
     SetVariables = {
         { VarName = "DogStatus", VarType = "int", Value = 4 }
     },
@@ -1240,7 +1249,7 @@ DialogueConfig[92] = {
     Type = "Normal",
     DocTag = "2-C",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "",
     Dialogue = "",
     RotatePool = { 74, 80, 84, 90 },
     Next = -1  -- 下一段对话ID
@@ -1409,7 +1418,7 @@ DialogueConfig[107] = {
     Type = "Normal",
     DocTag = "NGPlus",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "",
     Dialogue = "",
     RotatePool = { 95, 96, 100, 103 },
     Next = -1  -- 下一段对话ID
@@ -1422,7 +1431,7 @@ DialogueConfig[108] = {
     Type = "Normal",
     DocTag = "entry#rr5",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "RedRoof_RoofWaitShown", VarType = "bool", TrueNext = 92, FalseNext = -1 }
@@ -1436,7 +1445,7 @@ DialogueConfig[109] = {
     Type = "Normal",
     DocTag = "entry#rr4",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "RedRoof_RoofWaitShown", VarType = "bool", TrueNext = 108, FalseNext = 93 }
@@ -1450,7 +1459,7 @@ DialogueConfig[110] = {
     Type = "Normal",
     DocTag = "entry#rr3",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "BlackCat_Entered", VarType = "bool", TrueNext = 109, FalseNext = 92 }
@@ -1464,7 +1473,7 @@ DialogueConfig[111] = {
     Type = "Normal",
     DocTag = "entry#rr2",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "Dog_BlackCatSummoned", VarType = "bool", TrueNext = 110, FalseNext = 62 }
@@ -1477,7 +1486,7 @@ DialogueConfig[112] = {
     Type = "Normal",
     DocTag = "entry#rr2b-unused",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "",
     Dialogue = "",
     Next = -1
 }
@@ -1486,7 +1495,7 @@ DialogueConfig[113] = {
     Type = "Normal",
     DocTag = "entry#rr2a-unused",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "",
     Dialogue = "",
     Next = -1
 }
@@ -1495,7 +1504,7 @@ DialogueConfig[114] = {
     Type = "Normal",
     DocTag = "entry#rr2e-unused",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "",
     Dialogue = "",
     Next = -1
 }
@@ -1504,7 +1513,7 @@ DialogueConfig[115] = {
     Type = "Normal",
     DocTag = "entry#rr2d-unused",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "",
     Dialogue = "",
     Next = -1
 }
@@ -1513,7 +1522,7 @@ DialogueConfig[116] = {
     Type = "Normal",
     DocTag = "entry#rr2c-unused",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "",
     Dialogue = "",
     Next = -1
 }
@@ -1524,7 +1533,7 @@ DialogueConfig[117] = {
     Type = "Normal",
     DocTag = "entry#rr1",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "RedRoof_IntroShown", VarType = "bool", TrueNext = 111, FalseNext = 58 }
@@ -1538,7 +1547,7 @@ DialogueConfig[118] = {
     Type = "Normal",
     DocTag = "entry#ds4",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "DogStatus", VarType = "int", Op = "==", Value = 4, Next = 117 }
@@ -1552,7 +1561,7 @@ DialogueConfig[119] = {
     Type = "Normal",
     DocTag = "entry#barn3",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "DogStatus", VarType = "int", Op = "==", Value = 3, Next = 29 }
@@ -1566,7 +1575,7 @@ DialogueConfig[120] = {
     Type = "Normal",
     DocTag = "entry#barn2",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "DogStatus", VarType = "int", Op = "==", Value = 2, Next = 14 }
@@ -1580,7 +1589,7 @@ DialogueConfig[121] = {
     Type = "Normal",
     DocTag = "entry#barn1",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "",
     Dialogue = "",
     ConditionBranches = {
         { VarName = "DogStatus", VarType = "int", Op = "==", Value = 1, Next = 1 }

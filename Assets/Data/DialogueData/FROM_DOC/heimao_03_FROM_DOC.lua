@@ -474,7 +474,16 @@ DialogueConfig[30] = {
                 { VarName = "BlackCat_MintFishPending", VarType = "bool", Value = true },
                 { VarName = "MintFish_Obtained", VarType = "bool", Value = false },
                 { VarName = "Frog_PadRefused", VarType = "bool", Value = true },
-                { VarName = "Mouse_FrogFallbackGiven", VarType = "bool", Value = false }
+                { VarName = "Mouse_FrogFallbackGiven", VarType = "bool", Value = false },
+                { VarName = "BlackCat_FrogHelpAsked", VarType = "bool", Value = false }
+            },
+        },
+        {
+            Text = "你要的东西，我还在想办法。",
+            Next = 950,
+            DisplayConditions = {
+                { VarName = "BlackCat_MintFishPending", VarType = "bool", Value = true },
+                { VarName = "MintFish_Obtained", VarType = "bool", Value = false }
             },
         },
         {
@@ -1723,7 +1732,37 @@ DialogueConfig[105] = {
     NpcName = "黑猫",
     NpcSprite = "高傲",
     Dialogue = "他们肯定有办法。",
+    SetVariables = {
+        { VarName = "BlackCat_FrogHelpAsked", VarType = "bool", Value = true }
+    },
     Next = 30  -- 下一段对话ID
+}
+
+DialogueConfig[950] = {
+    Type = "Normal",
+    DocTag = "2-C-R#1",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "你要的东西，我还在想办法。",
+    Next = 951
+}
+
+DialogueConfig[951] = {
+    Type = "Normal",
+    DocTag = "2-C-R#2",
+    NpcName = "黑猫",
+    NpcSprite = "高傲",
+    Dialogue = "哼。本喵说过——去找老鼠。",
+    Next = 952
+}
+
+DialogueConfig[952] = {
+    Type = "Normal",
+    DocTag = "2-C-R#3",
+    NpcName = "黑猫",
+    NpcSprite = "高傲",
+    Dialogue = "拿回来之前，钥匙的事免谈。",
+    Next = 30
 }
 
 -- 普通对话类型  -- doc:2-D#1
@@ -1820,7 +1859,7 @@ DialogueConfig[114] = {
     Type = "Normal",
     DocTag = "2-D#9",
     NpcName = "大黄",
-    NpcSprite = "醉倒",
+    NpcSprite = "执勤",
     Dialogue = "（小声）你刚才呼噜了……",
     Next = 115  -- 下一段对话ID
 }
@@ -2052,7 +2091,7 @@ DialogueConfig[132] = {
     DocTag = "2-E#17",
     NpcName = "黑猫",
     NpcSprite = "炸毛",
-    Dialogue = "本喵有专属钥匙。你要进去——爬二层窗。",
+    Dialogue = "本喵有专属钥匙。你要进去——爬阁楼的窗子。",
     Next = 940
 }
 
@@ -2083,7 +2122,7 @@ DialogueConfig[134] = {
     DocTag = "2-E#19",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（片刻后，红屋顶二层的窗子被从内推开，传来一声清脆的啪嗒）",
+    Dialogue = "（片刻后，红屋顶阁楼的窗子被从内推开，传来一声清脆的啪嗒）",
     SetVariables = {
         { VarName = "BlackCat_Entered", VarType = "bool", Value = true }
     },
@@ -2412,7 +2451,7 @@ DialogueConfig[180] = {
     DocTag = "2-F#E38#1",
     NpcName = "黑猫",
     NpcSprite = "高傲",
-    Dialogue = "二层窗开着。",
+    Dialogue = "阁楼的窗子开着。",
     Next = 181
 }
 

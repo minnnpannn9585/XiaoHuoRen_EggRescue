@@ -973,6 +973,7 @@ MonoBehaviour:
   - rid: 1482841202479595527
   - rid: 3883133810448531456
   - rid: 3883133810448531457
+  - rid: 3883133810448531468
   - rid: 1482841202479595533
   - rid: 1482841202479595534
   - rid: 1482841202479595535
@@ -1152,6 +1153,12 @@ MonoBehaviour:
       data:
         varName: "\u7ACB\u7ED8_\u6DD1\u82AC_\u62A4\u96CF"
         Data: {fileID: -1851695145, guid: 7c9cc88148bfc4a6ebd1e16c7ab74f71, type: 3}
+        varType: UnityEngine.Sprite
+    - rid: 3883133810448531468
+      type: {class: DouyinLuaDataUObject, ns: , asm: com.douyin.script}
+      data:
+        varName: "\u7ACB\u7ED8_\u6DD1\u82AC_\u56E2\u805A"
+        Data: {fileID: 712782417, guid: 7dc9dfe258df3334780182af9f1bd68a, type: 3}
         varType: UnityEngine.Sprite
     - rid: 3883133810448531458
       type: {class: DouyinLuaDataUObject, ns: , asm: com.douyin.script}

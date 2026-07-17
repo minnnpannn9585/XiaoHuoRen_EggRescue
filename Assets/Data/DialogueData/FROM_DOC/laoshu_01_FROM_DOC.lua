@@ -180,14 +180,6 @@ DialogueConfig[29] = {
     NpcName = "鼠哥",
     NpcSprite = "兜售",
     Dialogue = "农场里捡到奶酪碎，记得拿来找我们换情报。",
-    Next = 910
-}
-
-DialogueConfig[910] = {
-    Type = "Normal",
-    NpcName = "鼠哥",
-    NpcSprite = "兜售",
-    Dialogue = "一块便宜货，五块贵货——明码标价。",
     SetVariables = {
         { VarName = "Mouse_FirstGreetShown", VarType = "bool", Value = true },
     },
@@ -879,7 +871,7 @@ DialogueConfig[310] = {
     NpcName = "描述",
     NpcSprite = "",
     Dialogue = "（鼠弟探出头来）",
-    Next = 311
+    Next = 312
 }
 
 DialogueConfig[311] = {
