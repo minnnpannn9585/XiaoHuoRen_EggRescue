@@ -1,4 +1,5 @@
 -- 进入 Trigger 区域后强制播放 NPC 对话（不需按交互键）
+-- 条件未满足时不置 fired；玩家仍在区内且条件稍后满足会补播
 ---@var npcName :string
 ---@var startNodeId :int
 ---@var requireVarName :string
@@ -10,6 +11,7 @@
 ---@end
 
 local fired = false
+local playerInside = false
 
 local function GetGlobalBool(name)
     if not name or name == "" then
@@ -41,6 +43,27 @@ local function DisableSelfCollider()
     end
 end
 
+local function ConditionsMet()
+    if requireVarName and requireVarName ~= "" then
+        local actual = GetGlobalBool(requireVarName)
+        local expected = requireVarMustBe == true
+        if actual ~= expected then
+            return false
+        end
+    end
+
+    if blockVarName and blockVarName ~= "" then
+        local blocked = GetGlobalBool(blockVarName)
+        if blockWhenTrue ~= false and blocked then
+            return false
+        end
+        if blockWhenTrue == false and not blocked then
+            return false
+        end
+    end
+    return true
+end
+
 function TryFireDialogue()
     if fired then
         return
@@ -50,22 +73,8 @@ function TryFireDialogue()
         return
     end
 
-    if requireVarName and requireVarName ~= "" then
-        local actual = GetGlobalBool(requireVarName)
-        local expected = requireVarMustBe == true
-        if actual ~= expected then
-            return
-        end
-    end
-
-    if blockVarName and blockVarName ~= "" then
-        local blocked = GetGlobalBool(blockVarName)
-        if blockWhenTrue ~= false and blocked then
-            return
-        end
-        if blockWhenTrue == false and not blocked then
-            return
-        end
+    if not ConditionsMet() then
+        return
     end
 
     local startFn = _G.StartNpcDialogue
@@ -82,6 +91,13 @@ function TryFireDialogue()
     startFn(npcName, startNodeId or 1)
 end
 
+function Update()
+    if fired or not playerInside then
+        return
+    end
+    TryFireDialogue()
+end
+
 function OnPlayerTriggerEnter(douyinPlayer)
     if douyinPlayer == nil then
         return
@@ -90,5 +106,17 @@ function OnPlayerTriggerEnter(douyinPlayer)
     if actor == nil or actor.isLocal ~= true then
         return
     end
+    playerInside = true
     TryFireDialogue()
+end
+
+function OnPlayerTriggerExit(douyinPlayer)
+    if douyinPlayer == nil then
+        return
+    end
+    local actor = douyinPlayer:GetActor()
+    if actor == nil or actor.isLocal ~= true then
+        return
+    end
+    playerInside = false
 end

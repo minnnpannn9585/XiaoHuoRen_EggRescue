@@ -95,8 +95,8 @@ DialogueConfig[207] = {
 DialogueConfig[1] = {
     Type = "Normal",
     DocTag = "1-A#1",
-    NpcName = "乌鸦",
-    NpcSprite = "得意",
+    NpcName = "描述",
+    NpcSprite = "",
     Dialogue = "（谷仓顶传来一阵得意的嘎嘎声）",
     Next = 2  -- 下一段对话ID
 }
@@ -469,7 +469,7 @@ DialogueConfig[34] = {
     DocTag = "2-B#5",
     NpcName = "乌鸦",
     NpcSprite = "吝啬",
-    Dialogue = "爱心是远古封印！",
+    Dialogue = "看清楚——正面是爱心，那是远古封印！",
     Next = 35  -- 下一段对话ID
 }
 
@@ -480,7 +480,7 @@ DialogueConfig[35] = {
     DocTag = "2-B#6",
     NpcName = "乌鸦",
     NpcSprite = "吝啬",
-    Dialogue = "鬼脸是驱邪结界！",
+    Dialogue = "翻过来是鬼脸，那是驱邪结界！",
     Next = 36  -- 下一段对话ID
 }
 
@@ -491,7 +491,7 @@ DialogueConfig[36] = {
     DocTag = "2-B#7",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（乌鸦翅膀死死盖住白石头，只露出爱心那一面）",
+    Dialogue = "（乌鸦翅膀死死盖住白石头，只故意露出爱心那一面）",
     Next = 37  -- 下一段对话ID
 }
 
@@ -502,7 +502,7 @@ DialogueConfig[37] = {
     DocTag = "2-B#8",
     NpcName = "乌鸦",
     NpcSprite = "吝啬",
-    Dialogue = "充满神秘力量。",
+    Dialogue = "里头充满神秘力量！",
     Next = 38  -- 下一段对话ID
 }
 
@@ -548,7 +548,7 @@ DialogueConfig[40] = {
     DocTag = "2-C#2",
     NpcName = "乌鸦",
     NpcSprite = "吝啬",
-    Dialogue = "本王的玻璃法阵。",
+    Dialogue = "那是本王布的玻璃珠法阵。",
     Next = 41  -- 下一段对话ID
 }
 
@@ -559,7 +559,7 @@ DialogueConfig[41] = {
     DocTag = "2-C#3",
     NpcName = "乌鸦",
     NpcSprite = "吝啬",
-    Dialogue = "防贼防盗防黑毛。",
+    Dialogue = "阳光一照，珠子聚成火点——防贼、防盗、防黑毛。",
     Next = 42  -- 下一段对话ID
 }
 
@@ -570,7 +570,7 @@ DialogueConfig[42] = {
     DocTag = "2-C#4",
     NpcName = "玩家",
     NpcSprite = "疑惑",
-    Dialogue = "把稻草烧着了也叫防盗？",
+    Dialogue = "所以下面稻草是被聚光点着的？",
     Next = 43  -- 下一段对话ID
 }
 
@@ -581,7 +581,7 @@ DialogueConfig[43] = {
     DocTag = "2-C#5",
     NpcName = "乌鸦",
     NpcSprite = "吝啬",
-    Dialogue = "那是阵法的余波。",
+    Dialogue = "烧着稻草……那是阵法余波。",
     Next = 44  -- 下一段对话ID
 }
 
@@ -771,8 +771,8 @@ DialogueConfig[58] = {
 DialogueConfig[210] = {
     Type = "Normal",
     DocTag = "NGPlus#1",
-    NpcName = "乌鸦",
-    NpcSprite = "得意",
+    NpcName = "描述",
+    NpcSprite = "",
     Dialogue = "（乌鸦蹲在巢边，比平时安静）",
     Next = 211
 }
@@ -890,7 +890,7 @@ DialogueConfig[301] = {
     DocTag = "NGPlus#12b",
     NpcName = "乌鸦",
     NpcSprite = "吝啬",
-    Dialogue = "他就龇了一声「别照本喵」，甩着尾巴下去了。",
+    Dialogue = "他就甩着尾巴下去了。",
     Next = 222
 }
 

@@ -4,7 +4,7 @@
 -- 壳层：open, openRedDot, boolPanel, pageContents（含第 4 页老鼠情报）
 -- 翻页：每页底部 4 个页签 pageNTabBtns[1..4]→跳到第 N 页；本页对应槽位可留空
 -- 红点：openRedDot + 页签子节点 Dot；有 pendingReveals（已解锁未观看）时显示
--- 入口：对话中禁用 open；红点亮起时 NoteImage 单次弹跳 1→1.5→1（不改 Button 自身 scale）
+-- 入口：开局隐藏 open；线索入册时显示 + NoteImage 弹跳（含已有未看线索时再解锁）；关本后红点亮起时同款弹跳
 -- 条目 entry_*（33）| 老鼠 prefab + LayoutLeft/Right | 连线 link_*（15，断线段用 GameObject[]：E17×2、D06↔D07）| 修饰 mod_*（13）
 -- 详见 MissingEggDoc-main/docs/09-侦探笔记本.md §9.8 与 docs/IMPLEMENTATION.md §6
 
@@ -95,7 +95,7 @@ local FADE_DURATION = 1.0
 local BLINK_DURATION = 0.35
 local BLINK_MIN_ALPHA = 0.15
 local ICON_BOUNCE_DURATION = 0.4
-local ICON_BOUNCE_PEAK = 1.5
+local ICON_BOUNCE_PEAK = 2.0
 
 local currentIndex = 1
 local unlockedEntries = {}
@@ -121,6 +121,8 @@ local iconBouncePlaying = false
 local iconBounceElapsed = 0
 local lastRedDotShow = false
 local lastOpenInteractable = nil
+-- 首条线索入册前隐藏笔记本入口
+local notebookIconVisible = false
 
 local function Dbg(msg)
     if BOOK_DEBUG then
@@ -375,12 +377,21 @@ local function RefreshOpenInteractable()
     open.interactable = canOpen
 end
 
+local function RevealNotebookIcon()
+    if notebookIconVisible or not open then return end
+    notebookIconVisible = true
+    open.gameObject:SetActive(true)
+    lastOpenInteractable = nil
+    RefreshOpenInteractable()
+end
+
 local function UpdateRedDot()
     local panelOpen = boolPanel and boolPanel.activeSelf
     local show = HasAnyPending() and not panelOpen
     if openRedDot then
         openRedDot:SetActive(show)
     end
+    -- 关本后红点由隐→显（例如刚解锁时本子开着，关掉才看到红点）
     if show and not lastRedDotShow then
         PlayIconBounce()
     end
@@ -466,7 +477,12 @@ local function QueueReveal(id, go)
         canvasGroup = canvasGroup,
         pageIndex = pageIdx
     }
+    RevealNotebookIcon()
     _G["PlayAudio"]("audio_receiveClue")
+    -- 本子关闭时每条新线索都弹跳；红点已亮时 UpdateRedDot 不会再触发边沿
+    if not IsNotebookOpen() then
+        PlayIconBounce()
+    end
     if IsNotebookOpen() then
         TryStartPendingReveals()
     end
@@ -749,7 +765,11 @@ end
 function Start()
     BuildCatalog()
     boolPanel:SetActive(false)
-    if open then open.onClick:AddListener(OnOpenClick) end
+    if open then
+        open.gameObject:SetActive(false)
+        notebookIconVisible = false
+        open.onClick:AddListener(OnOpenClick)
+    end
     if close then close.onClick:AddListener(OnCloseClick) end
     BindPageTabBtns(page1TabBtns, 1)
     BindPageTabBtns(page2TabBtns, 2)
@@ -866,7 +886,9 @@ end
 function OnCloseClick()
     _G["PlayAudio"]("audio_closeNote")
     boolPanel:SetActive(false)
-    open.gameObject:SetActive(true)
+    if notebookIconVisible and open then
+        open.gameObject:SetActive(true)
+    end
     close.gameObject:SetActive(false)
     lastOpenInteractable = nil
     RefreshOpenInteractable()
@@ -876,10 +898,13 @@ function OnOpenClick()
     if IsDialogueActive() then
         return
     end
+    if IsNotebookOpen() then
+        return
+    end
 
     _G["PlayAudio"]("audio_openNote")
     boolPanel:SetActive(true)
-    open.gameObject:SetActive(false)
+    -- 打开面板后仍保留笔记本入口 icon
     close.gameObject:SetActive(true)
     if boolPanel.activeSelf then
         UpdateRedDot()

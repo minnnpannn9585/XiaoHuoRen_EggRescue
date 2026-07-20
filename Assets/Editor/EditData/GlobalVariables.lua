@@ -18,6 +18,8 @@ GlobalVariables = {
     { name = "E30_BlackFurSeen",            type = "bool", value = false },
     { name = "E35_CrowTauntShown",          type = "bool", value = false },
     { name = "E36_CrowTauntShown",          type = "bool", value = false },
+    { name = "E37_BlackCatTauntShown",      type = "bool", value = false },
+    { name = "E38_BlackCatTauntShown",      type = "bool", value = false },
     { name = "E25_ChickenFootprints",       type = "bool", value = false },
     { name = "E23_dabble",                  type = "bool", value = false },
     { name = "E08_TreatingHangover",        type = "bool", value = false },

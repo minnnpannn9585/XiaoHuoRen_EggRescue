@@ -26,8 +26,8 @@ DialogueConfig = {}
 DialogueConfig[1] = {
     Type = "Normal",
     DocTag = "1-A#1",
-    NpcName = "淑芬",
-    NpcSprite = "守望",
+    NpcName = "描述",
+    NpcSprite = "",
     Dialogue = "（鸡舍门口，一只母鸡正站着，忽然抬起头来）",
     Next = 2  -- 下一段对话ID
 }
@@ -103,7 +103,7 @@ DialogueConfig[7] = {
     DocTag = "1-A#7",
     NpcName = "淑芬",
     NpcSprite = "护雏",
-    Dialogue = "昨晚前还动过一下，那种感觉……我不可能认错的。",
+    Dialogue = "昨晚之前还动过一下，那种感觉……我不可能认错的。",
     Next = 8  -- 下一段对话ID
 }
 
@@ -158,7 +158,7 @@ DialogueConfig[12] = {
     DocTag = "1-A#12",
     NpcName = "玩家",
     NpcSprite = "",
-    Dialogue = "好，我来帮你找找。",
+    Dialogue = "交给我。我去找。",
     Next = 13  -- 下一段对话ID
 }
 
@@ -169,7 +169,7 @@ DialogueConfig[13] = {
     DocTag = "1-A#13",
     NpcName = "淑芬",
     NpcSprite = "守望",
-    Dialogue = "谢谢你，真的。有什么要问的随时来找我——",
+    Dialogue = "谢谢你，真的。有什么要问的，随时来找我——",
     Next = 201
 }
 
@@ -178,7 +178,7 @@ DialogueConfig[201] = {
     DocTag = "1-A#13b",
     NpcName = "淑芬",
     NpcSprite = "守望",
-    Dialogue = "农场的事，我比谁都熟。我就在那边的鸡舍那。",
+    Dialogue = "农场的事我比谁都熟。我就在鸡舍这边。",
     SetVariables = {
         { VarName = "Shufen_CommissionDone", VarType = "bool", Value = true }
     },
@@ -214,7 +214,7 @@ DialogueConfig[16] = {
     DocTag = "1-hub-intro@v1#3",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（眼神里是止不住的期待，很快又压下去）",
+    Dialogue = "（身子往前倾了倾，又收住）",
     Next = 24  -- 下一段对话ID（1-hub）
 }
 
@@ -223,9 +223,9 @@ DialogueConfig[16] = {
 DialogueConfig[17] = {
     Type = "Normal",
     DocTag = "1-hub-intro@v2#1",
-    NpcName = "淑芬",
-    NpcSprite = "护雏",
-    Dialogue = "（听见动静猛地抬起头）",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "（听见动静，猛地抬起头）",
     Next = 18  -- 下一段对话ID
 }
 
@@ -258,7 +258,7 @@ DialogueConfig[20] = {
     DocTag = "1-hub-intro@v2#4",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（说完拢了拢翅膀，像是刚才那句话太着急了）",
+    Dialogue = "（拢了拢翅膀，别过脸去）",
     Next = 24  -- 下一段对话ID（1-hub）
 }
 
@@ -473,7 +473,7 @@ DialogueConfig[202] = {
     DocTag = "1-C#2b",
     NpcName = "淑芬",
     NpcSprite = "守望",
-    Dialogue = "亮的、白的、圆的，见了就叼。",
+    Dialogue = "亮的、白的、圆的，见了就往顶上叼。",
     Next = 33
 }
 
@@ -495,7 +495,7 @@ DialogueConfig[34] = {
     DocTag = "1-C#4",
     NpcName = "淑芬",
     NpcSprite = "守望",
-    Dialogue = "你要找什么丢了的东西，去它那翻翻也好。",
+    Dialogue = "你要找丢了的东西，去它那翻翻也好。",
     SetVariables = {
         { VarName = "Shufen_CrowAsked", VarType = "bool", Value = true }
     },
@@ -531,7 +531,7 @@ DialogueConfig[37] = {
     DocTag = "1-D#3",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（轻轻摇了摇头，是无奈不是嫌弃）",
+    Dialogue = "（轻轻摇了摇头）",
     Next = 38  -- 下一段对话ID
 }
 
@@ -542,7 +542,7 @@ DialogueConfig[38] = {
     DocTag = "1-D#4",
     NpcName = "淑芬",
     NpcSprite = "守望",
-    Dialogue = "说的东西听不太懂，但它就在水边，",
+    Dialogue = "说的东西听不太懂。可它就待在水边——",
     Next = 203
 }
 
@@ -656,7 +656,7 @@ DialogueConfig[47] = {
     DocTag = "1-F#3",
     NpcName = "淑芬",
     NpcSprite = "守望",
-    Dialogue = "鸡舍这边就挺好的...",
+    Dialogue = "鸡舍这边就挺好的……",
     SetVariables = {
         { VarName = "Shufen_NapSpotAsked", VarType = "bool", Value = true }
     },
@@ -725,7 +725,7 @@ DialogueConfig[53] = {
     DocTag = "1-G#6",
     NpcName = "淑芬",
     NpcSprite = "守望",
-    Dialogue = "鸡舍水槽边有桶老谷物泡水，他爱喝那个味儿，",
+    Dialogue = "鸡舍水槽边有桶老谷物泡的水，他爱喝那个味儿，",
     Next = 204
 }
 
@@ -770,7 +770,7 @@ DialogueConfig[56] = {
     DocTag = "2-A#1",
     NpcName = "玩家",
     NpcSprite = "",
-    Dialogue = "乌鸦屋顶有颗石头，上面画着爱心和鬼脸，你看长这样子。",
+    Dialogue = "谷仓顶上有颗石头，上面画着爱心和鬼脸——你看，长这样。",
     Next = 57  -- 下一段对话ID
 }
 
@@ -779,9 +779,9 @@ DialogueConfig[56] = {
 DialogueConfig[57] = {
     Type = "Normal",
     DocTag = "2-A#2",
-    NpcName = "淑芬",
-    NpcSprite = "护雏",
-    Dialogue = "（淑芬盯着笔记本，半天没动）",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "（盯着笔记本，半天没动）",
     Next = 58  -- 下一段对话ID
 }
 
@@ -856,7 +856,7 @@ DialogueConfig[63] = {
     DocTag = "2-A#8",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（停顿，声音低下去）",
+    Dialogue = "（停了停；嗓门低了下去）",
     Next = 64  -- 下一段对话ID
 }
 
@@ -942,7 +942,7 @@ DialogueConfig[70] = {
     DocTag = "2-A#15",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（停了片刻，气势稍稍泄了一点）",
+    Dialogue = "（停了片刻；翅膀松了松）",
     Next = 71  -- 下一段对话ID
 }
 
@@ -953,7 +953,7 @@ DialogueConfig[71] = {
     DocTag = "2-A#16",
     NpcName = "淑芬",
     NpcSprite = "守望",
-    Dialogue = "……不过那是大前天下午的事。今早才发现蛋没了的。",
+    Dialogue = "……大前天下午是虚惊一场。",
     Next = 72  -- 下一段对话ID
 }
 
@@ -964,7 +964,7 @@ DialogueConfig[72] = {
     DocTag = "2-A#17",
     NpcName = "淑芬",
     NpcSprite = "守望",
-    Dialogue = "谢谢你找到这个。",
+    Dialogue = "孩儿是今早才不见的。谢谢你找到这个。",
     SetVariables = {
         { VarName = "Shufen_StoneRevealShown", VarType = "bool", Value = true }
     },
@@ -976,8 +976,8 @@ DialogueConfig[72] = {
 DialogueConfig[73] = {
     Type = "Normal",
     DocTag = "3-A#2",
-    NpcName = "淑芬",
-    NpcSprite = "护雏",
+    NpcName = "玩家",
+    NpcSprite = "",
     Dialogue = "我觉得……主人把蛋带走了。",
     Next = 74  -- 下一段对话ID
 }
@@ -987,9 +987,9 @@ DialogueConfig[73] = {
 DialogueConfig[74] = {
     Type = "Normal",
     DocTag = "3-A#3",
-    NpcName = "淑芬",
-    NpcSprite = "护雏",
-    Dialogue = "（淑芬皱眉，想了想）",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "（皱眉，想了想）",
     Next = 75  -- 下一段对话ID
 }
 
@@ -999,7 +999,7 @@ DialogueConfig[75] = {
     Type = "Normal",
     DocTag = "3-A#4",
     NpcName = "淑芬",
-    NpcSprite = "守望",
+    NpcSprite = "护雏",
     Dialogue = "……主人？",
     Next = 76  -- 下一段对话ID
 }
@@ -1010,7 +1010,7 @@ DialogueConfig[76] = {
     Type = "Normal",
     DocTag = "3-A#5",
     NpcName = "淑芬",
-    NpcSprite = "护雏",
+    NpcSprite = "守望",
     Dialogue = "主人绝对不是坏人。",
     Next = 77  -- 下一段对话ID
 }
@@ -1020,9 +1020,9 @@ DialogueConfig[76] = {
 DialogueConfig[77] = {
     Type = "Normal",
     DocTag = "3-A#6",
-    NpcName = "描述",
-    NpcSprite = "",
-    Dialogue = "大前天下午，我深蹲做到腿软那会儿——他就站在旁边看着，他也很担心的。",
+    NpcName = "淑芬",
+    NpcSprite = "护雏",
+    Dialogue = "大前天我急疯了满院子跑那会儿——他就站旁边看着，也很担心。",
     Next = 78  -- 下一段对话ID
 }
 
@@ -1031,9 +1031,9 @@ DialogueConfig[77] = {
 DialogueConfig[78] = {
     Type = "Normal",
     DocTag = "3-A#7",
-    NpcName = "淑芬",
-    NpcSprite = "护雏",
-    Dialogue = "（停顿，羽毛微微绷了一下）",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "（羽毛微微绷了一下）",
     Next = 79  -- 下一段对话ID
 }
 
@@ -1042,8 +1042,8 @@ DialogueConfig[78] = {
 DialogueConfig[79] = {
     Type = "Normal",
     DocTag = "3-A#8",
-    NpcName = "描述",
-    NpcSprite = "",
+    NpcName = "淑芬",
+    NpcSprite = "护雏",
     Dialogue = "不会有事的。",
     Next = 80  -- 下一段对话ID
 }
@@ -1053,9 +1053,9 @@ DialogueConfig[79] = {
 DialogueConfig[80] = {
     Type = "Normal",
     DocTag = "3-A#9",
-    NpcName = "淑芬",
-    NpcSprite = "守望",
-    Dialogue = "（轻声，像是说给自己听）",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "（声音压得很轻）",
     Next = 81  -- 下一段对话ID
 }
 
@@ -1102,7 +1102,7 @@ DialogueConfig[84] = {
     DocTag = "NGPlus-revisit@v1#3",
     NpcName = "淑芬",
     NpcSprite = "团聚",
-    Dialogue = "……也挺搞的。",
+    Dialogue = "……闹成这样了。",
     Next = -1  -- 下一段对话ID
 }
 
@@ -1135,7 +1135,7 @@ DialogueConfig[87] = {
     DocTag = "NGPlus-revisit@v2#3",
     NpcName = "淑芬",
     NpcSprite = "团聚",
-    Dialogue = "……偶尔。",
+    Dialogue = "呃……偶尔还是赶一下。",
     Next = -1  -- 下一段对话ID
 }
 

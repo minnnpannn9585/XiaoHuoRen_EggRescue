@@ -13,7 +13,7 @@ DialogueConfig[1] = {
     DocTag = "1-A#1",
     NpcName = "豆豆",
     NpcSprite = "背对",
-    Dialogue = "（压声）昨晚那声音……肯定是水怪……",
+    Dialogue = "（压声）昨晚外面那声音……肯定是水怪干的……",
     Next = 2  -- 下一段对话ID
 }
 
@@ -24,7 +24,7 @@ DialogueConfig[2] = {
     DocTag = "1-A#2",
     NpcName = "米粒",
     NpcSprite = "背对",
-    Dialogue = "（压声）池塘那边……青蛙还说宝珠沉下去了……",
+    Dialogue = "（压声）池塘那边青蛙还说，宝珠沉下去了……",
     Next = 3  -- 下一段对话ID
 }
 
@@ -35,7 +35,7 @@ DialogueConfig[3] = {
     DocTag = "1-A#3",
     NpcName = "瓜子",
     NpcSprite = "背对",
-    Dialogue = "（极小声）……可是大前天……明明是我们……",
+    Dialogue = "（极小声）……可是大前天……明明是我们自己……",
     Next = 4  -- 下一段对话ID
 }
 
@@ -57,7 +57,7 @@ DialogueConfig[5] = {
     DocTag = "1-A#5",
     NpcName = "豆豆",
     NpcSprite = "背对",
-    Dialogue = "（压声）那要是有人来问……",
+    Dialogue = "（压声）那要是有人来问，咱们怎么说？",
     Next = 6  -- 下一段对话ID
 }
 
@@ -68,7 +68,7 @@ DialogueConfig[6] = {
     DocTag = "1-A#6",
     NpcName = "阿满",
     NpcSprite = "背对",
-    Dialogue = "（压声）……水怪。从池塘来的。把蛋叼走了……",
+    Dialogue = "（压声）就说……水怪。从池塘来的。把蛋叼走了……",
     Next = 7  -- 下一段对话ID
 }
 
@@ -79,7 +79,7 @@ DialogueConfig[7] = {
     DocTag = "1-A#7",
     NpcName = "阿满",
     NpcSprite = "背对",
-    Dialogue = "（压声）只能是这样……不然弟弟怎么不见了……",
+    Dialogue = "（压声）只能是这样……不然弟弟怎么会不见……",
     SetVariables = {
         { VarName = "E03_Overheard", VarType = "bool", Value = true }
     },

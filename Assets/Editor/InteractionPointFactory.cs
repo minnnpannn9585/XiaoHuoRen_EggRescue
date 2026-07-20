@@ -20,8 +20,12 @@ public static class InteractionPointFactory
     private const string DouyinInteractorGuid = "0a6b2e5dd40d0804b81a27cdfccd5ba5";
     private const string ComicGateGuid = "a8b3c4d5e6f7489012345678abcdef01";
     private const string SecondFloorWindowControllerGuid = "c7d8e9f0a1b2436589012345678def03";
+    private const string DialogueAreaTriggerGuid = "f7e8d9c0b1a24365869708090a0b1c2d";
     private const string E19Name = "E19 · 关闭二层窗";
     private const string E20Name = "E20 · 打开二层窗";
+    private const string E35Name = "E35 · 攀爬放狠话·B-1";
+    private const string E37Name = "E37 · 攻顶喊话·F-1";
+    private const string E38Name = "E38 · 攻顶喊话·F-2";
 
     private struct EPointSpec
     {
@@ -69,6 +73,130 @@ public static class InteractionPointFactory
     public static void BatchSpawnMissingEPoints()
     {
         SpawnMissingEPointsInternal(showDialog: false);
+    }
+
+    /// <summary>
+    /// E37/E38：改为进范围强制播（同 E35/E36）；需 BlackCat_Entered，播完写 Shown 一次性。
+    /// 菜单：EggRescue / Interaction Points / Wire E37 E38 Area Taunts
+    /// </summary>
+    [MenuItem("EggRescue/Interaction Points/Wire E37 E38 Area Taunts")]
+    public static void WireE37E38AreaTaunts()
+    {
+        WireE37E38AreaTauntsInternal(showDialog: true);
+    }
+
+    public static void BatchWireE37E38AreaTaunts()
+    {
+        WireE37E38AreaTauntsInternal(showDialog: false);
+    }
+
+    private static void WireE37E38AreaTauntsInternal(bool showDialog)
+    {
+        if (!EnsureSceneOpen())
+        {
+            return;
+        }
+
+        Transform parent = FindChildTransform(null, ParentName);
+        if (parent == null)
+        {
+            Debug.LogError("[InteractionPointFactory] 未找到 InteractionPoint 父节点");
+            return;
+        }
+
+        Transform e35 = FindChildTransform(parent, E35Name);
+        Component areaTemplate = e35 != null
+            ? FindDouyinScriptByGuid(e35.gameObject, DialogueAreaTriggerGuid)
+            : null;
+        if (areaTemplate == null)
+        {
+            Debug.LogError("[InteractionPointFactory] 未找到 E35 DialogueAreaTrigger 模板");
+            return;
+        }
+
+        int wired = 0;
+        wired += ConfigureRoofTauntArea(
+            parent, E37Name, 170, "E37_BlackCatTauntShown", areaTemplate) ? 1 : 0;
+        wired += ConfigureRoofTauntArea(
+            parent, E38Name, 180, "E38_BlackCatTauntShown", areaTemplate) ? 1 : 0;
+
+        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        EditorSceneManager.SaveScene(SceneManager.GetActiveScene());
+        string msg = $"已接线攻顶喊话 AreaTrigger：{wired}/2（需 BlackCat_Entered + 一次性 Shown）";
+        Debug.Log("[InteractionPointFactory] " + msg);
+        if (showDialog)
+        {
+            EditorUtility.DisplayDialog("Wire E37/E38", msg, "OK");
+        }
+    }
+
+    private static bool ConfigureRoofTauntArea(
+        Transform parent,
+        string goName,
+        int startNodeId,
+        string shownVar,
+        Component areaTemplate)
+    {
+        Transform t = FindChildTransform(parent, goName);
+        if (t == null)
+        {
+            Debug.LogWarning("[InteractionPointFactory] 未找到: " + goName);
+            return false;
+        }
+
+        GameObject go = t.gameObject;
+
+        DestroyDouyinScriptByGuid(go, ClueTriggerGuid);
+        DestroyDouyinScriptByGuid(go, DialogueTriggerGuid);
+        DestroyDouyinScriptByGuid(go, DouyinInteractorGuid);
+
+        Component area = FindDouyinScriptByGuid(go, DialogueAreaTriggerGuid);
+        if (area == null)
+        {
+            Type douyinScriptType = FindDouyinScriptType();
+            if (douyinScriptType == null)
+            {
+                Debug.LogError("[InteractionPointFactory] 未找到 DouyinScript 类型");
+                return false;
+            }
+
+            area = go.AddComponent(douyinScriptType);
+            EditorUtility.CopySerialized(areaTemplate, area);
+        }
+
+        SetStringBinding(area, "npcName", "黑猫");
+        SetIntBinding(area, "startNodeId", startNodeId);
+        SetStringBinding(area, "requireVarName", "BlackCat_Entered");
+        SetBoolBinding(area, "requireVarMustBe", true);
+        SetStringBinding(area, "blockVarName", shownVar);
+        SetBoolBinding(area, "blockWhenTrue", true);
+        SetBoolBinding(area, "disableColliderAfterFire", true);
+        SetBoolBinding(area, "skipIfDialogueActive", true);
+
+        BoxCollider box = go.GetComponent<BoxCollider>();
+        if (box == null)
+        {
+            box = go.AddComponent<BoxCollider>();
+        }
+
+        box.isTrigger = true;
+        if (box.size.sqrMagnitude < 0.01f)
+        {
+            box.size = new Vector3(2f, 2.5f, 2f);
+            box.center = new Vector3(0f, 1f, 0f);
+        }
+
+        Debug.Log("[InteractionPointFactory] 已接线 AreaTrigger: " + goName);
+        return true;
+    }
+
+    private static void DestroyDouyinScriptByGuid(GameObject go, string scriptGuid)
+    {
+        Component comp = FindDouyinScriptByGuid(go, scriptGuid);
+        if (comp != null)
+        {
+            UnityEngine.Object.DestroyImmediate(comp);
+        }
     }
 
     private static void SpawnMissingEPointsInternal(bool showDialog)

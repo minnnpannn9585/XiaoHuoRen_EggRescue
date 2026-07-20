@@ -129,6 +129,9 @@ function SetGlobalVar(varName, value, varType)
     if varName == "BlackCat_Entered" and _G["SecondFloorWindow_Refresh"] then
         _G["SecondFloorWindow_Refresh"](true)
     end
+    if varName == "BlackCat_Entered" and runtimeValue == true and _G.ClimbPath_Refresh then
+        _G.ClimbPath_Refresh("roof")
+    end
     if _G["BookController_OnVarChanged"] then
         _G["BookController_OnVarChanged"](varName)
     end

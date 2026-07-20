@@ -76,8 +76,8 @@ DialogueConfig[82] = {
 DialogueConfig[1] = {
     Type = "Normal",
     DocTag = "2-A#1",
-    NpcName = "悲伤蛙",
-    NpcSprite = "丧",
+    NpcName = "描述",
+    NpcSprite = "",
     Dialogue = "（一股刺鼻的草本甜味，混着池水腥气）",
     Next = 2
 }
@@ -123,7 +123,7 @@ DialogueConfig[6] = {
     DocTag = "2-A#6",
     NpcName = "悲伤蛙",
     NpcSprite = "丧",
-    Dialogue = "坐了很久了。",
+    Dialogue = "我在这儿坐了很久了。",
     SetVariables = {
         { VarName = "Frog_FirstMeetShown", VarType = "bool", Value = true }
     },
@@ -158,8 +158,8 @@ DialogueConfig[101] = {
 DialogueConfig[110] = {
     Type = "Normal",
     DocTag = "2-hub-intro@v1#1",
-    NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcName = "描述",
+    NpcSprite = "",
     Dialogue = "（水面纹丝不动）",
     Next = 111
 }
@@ -167,7 +167,7 @@ DialogueConfig[111] = {
     Type = "Normal",
     DocTag = "2-hub-intro@v1#2",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "今天的水……跟昨天的水一样。",
     Next = 112
 }
@@ -175,7 +175,7 @@ DialogueConfig[112] = {
     Type = "Normal",
     DocTag = "2-hub-intro@v1#3",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "但昨天已经消失了。",
     Next = 113
 }
@@ -201,8 +201,8 @@ DialogueConfig[121] = {
     Type = "Normal",
     DocTag = "2-hub-intro@v2#2",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
-    Dialogue = "好什么。",
+    NpcSprite = "丧",
+    Dialogue = "好什么好。",
     Next = 122
 }
 DialogueConfig[122] = {
@@ -217,7 +217,7 @@ DialogueConfig[123] = {
     Type = "Normal",
     DocTag = "2-hub-intro@v2#4",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "……来过就是来过。",
     Next = 200
 }
@@ -227,8 +227,8 @@ DialogueConfig[130] = {
     Type = "Normal",
     DocTag = "2-hub-intro@v3#1",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
-    Dialogue = "活着就是在等一个不会来的什么。",
+    NpcSprite = "丧",
+    Dialogue = "活着，就是在等一个不会来的东西。",
     Next = 131
 }
 DialogueConfig[131] = {
@@ -251,8 +251,8 @@ DialogueConfig[133] = {
     Type = "Normal",
     DocTag = "2-hub-intro@v3#4",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
-    Dialogue = "但感觉就是在等。",
+    NpcSprite = "丧",
+    Dialogue = "可感觉上，就是在等。",
     Next = 200
 }
 
@@ -269,7 +269,7 @@ DialogueConfig[141] = {
     Type = "Normal",
     DocTag = "2-hub-intro@v4#2",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "一直在出事。",
     Next = 142
 }
@@ -277,7 +277,7 @@ DialogueConfig[142] = {
     Type = "Normal",
     DocTag = "2-hub-intro@v4#3",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "只是你们才刚注意到。",
     Next = 200
 }
@@ -296,8 +296,8 @@ DialogueConfig[150] = {
 DialogueConfig[151] = {
     Type = "Normal",
     DocTag = "2-hub-intro@v5#1",
-    NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcName = "描述",
+    NpcSprite = "",
     Dialogue = "（蛙重新盯向水面，不再看过来）",
     Next = 152
 }
@@ -305,7 +305,7 @@ DialogueConfig[152] = {
     Type = "Normal",
     DocTag = "2-hub-intro@v5#2",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "你已经知道了。",
     Next = 153
 }
@@ -313,7 +313,7 @@ DialogueConfig[153] = {
     Type = "Normal",
     DocTag = "2-hub-intro@v5#3",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "但知道了也没有用。",
     Next = 200
 }
@@ -323,7 +323,7 @@ DialogueConfig[160] = {
     Type = "Normal",
     DocTag = "2-hub-intro@v6#1",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "……虚无不会因为被发现而消失。",
     Next = 200
 }
@@ -352,7 +352,7 @@ DialogueConfig[200] = {
     Type = "Question",
     DocTag = "2-hub#menu",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "……",
     Options = {
         {
@@ -390,7 +390,7 @@ DialogueConfig[205] = {
     Type = "Question",
     DocTag = "2-hub#return#menu",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "……还有事吗？",
     Options = {
         {
@@ -440,7 +440,7 @@ DialogueConfig[17] = {
     DocTag = "2-B#2",
     NpcName = "悲伤蛙",
     NpcSprite = "丧",
-    Dialogue = "蛋。",
+    Dialogue = "蛋……什么蛋。",
     Next = 18
 }
 
@@ -467,7 +467,7 @@ DialogueConfig[20] = {
     DocTag = "2-B#5",
     NpcName = "悲伤蛙",
     NpcSprite = "丧",
-    Dialogue = "问错了地方。",
+    Dialogue = "问错了人。",
     SetVariables = {
         { VarName = "Frog_EggAsked", VarType = "bool", Value = true }
     },
@@ -490,7 +490,7 @@ DialogueConfig[22] = {
     DocTag = "2-C#2",
     NpcName = "悲伤蛙",
     NpcSprite = "丧",
-    Dialogue = "离水远的地方。",
+    Dialogue = "我只趴水边。",
     Next = 23
 }
 
@@ -499,7 +499,7 @@ DialogueConfig[23] = {
     DocTag = "2-C#3",
     NpcName = "悲伤蛙",
     NpcSprite = "丧",
-    Dialogue = "……连虚无都是干的。",
+    Dialogue = "离水远的地方……连虚无都是干的。",
     SetVariables = {
         { VarName = "Frog_NapSpotAsked", VarType = "bool", Value = true }
     },
@@ -520,9 +520,9 @@ DialogueConfig[24] = {
 DialogueConfig[25] = {
     Type = "Normal",
     DocTag = "2-D#2",
-    NpcName = "悲伤蛙",
-    NpcSprite = "介入",
-    Dialogue = "（蛙缓缓转头，目光第一次落过来，眼神不对焦）",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "（蛙缓缓转头，目光第一次落过来，却散着）",
     Next = 26
 }
 
@@ -549,7 +549,7 @@ DialogueConfig[28] = {
     DocTag = "2-D#5",
     NpcName = "悲伤蛙",
     NpcSprite = "介入",
-    Dialogue = "但有比水怪更令人心碎的东西。",
+    Dialogue = "但有比水怪更让人心碎的东西。",
     Next = 29
 }
 
@@ -558,7 +558,7 @@ DialogueConfig[29] = {
     DocTag = "2-D#6",
     NpcName = "悲伤蛙",
     NpcSprite = "介入",
-    Dialogue = "这片水……见证了连环的消逝。",
+    Dialogue = "这片水……看着一样接一样地消失。",
     Next = 30
 }
 
@@ -594,7 +594,7 @@ DialogueConfig[33] = {
     DocTag = "2-D#10",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（蛙低头，视线落在水面，久久不抬起来）",
+    Dialogue = "（蛙低头盯着水面，久久不抬）",
     Next = 34
 }
 
@@ -621,7 +621,7 @@ DialogueConfig[36] = {
     DocTag = "2-D#13",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（蛙喉咙动了一下，沉默）",
+    Dialogue = "（蛙喉咙动了一下，又哑住）",
     Next = 37
 }
 
@@ -630,7 +630,7 @@ DialogueConfig[37] = {
     DocTag = "2-D#14",
     NpcName = "悲伤蛙",
     NpcSprite = "介入",
-    Dialogue = "带走了宝珠。",
+    Dialogue = "它带走了宝珠。",
     Next = 38
 }
 
@@ -648,7 +648,7 @@ DialogueConfig[39] = {
     DocTag = "2-D#16",
     NpcName = "玩家",
     NpcSprite = "",
-    Dialogue = "神经病...",
+    Dialogue = "……你到底在说什么。",
     SetVariables = {
         { VarName = "Frog_WaterMonsterQueried", VarType = "bool", Value = true }
     },
@@ -681,7 +681,7 @@ DialogueConfig[600] = {
     Type = "Question",
     DocTag = "3-hub#menu",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "……",
     Options = {
         {
@@ -715,7 +715,7 @@ DialogueConfig[605] = {
     Type = "Question",
     DocTag = "3-hub#return#menu",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "……嗯。",
     Options = {
         {
@@ -806,7 +806,7 @@ DialogueConfig[44] = {
     DocTag = "3-A#3",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（蛙低头看了一眼胯下，再抬头，眼神仍不对焦）",
+    Dialogue = "（蛙低头看了一眼身下，再抬头，目光仍散着）",
     Next = 430
 }
 
@@ -814,7 +814,7 @@ DialogueConfig[430] = {
     Type = "Question",
     DocTag = "3-A#r1",
     NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcSprite = "丧",
     Dialogue = "……你来这里，是因为什么？",
     Options = {
         { Text = "我来拿你身下那块绿垫子。", Next = 606 },
@@ -826,8 +826,8 @@ DialogueConfig[430] = {
 DialogueConfig[46] = {
     Type = "Normal",
     DocTag = "3-A#4",
-    NpcName = "悲伤蛙",
-    NpcSprite = "丧",
+    NpcName = "描述",
+    NpcSprite = "",
     Dialogue = "（蛙没有立刻回应，视线在水面上停了一会儿）",
     Next = 472
 }
@@ -850,7 +850,7 @@ DialogueConfig[48] = {
     DocTag = "3-A#5",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（蛙视线从水面慢慢移到胯下，又移回来）",
+    Dialogue = "（蛙视线从水面慢慢移到身下，又移回来）",
     Next = 492
 }
 
@@ -954,8 +954,8 @@ DialogueConfig[614] = {
 DialogueConfig[50] = {
     Type = "Normal",
     DocTag = "3-B#1",
-    NpcName = "悲伤蛙",
-    NpcSprite = "丧",
+    NpcName = "描述",
+    NpcSprite = "",
     Dialogue = "（蛙重新盯向水面，不再看过来）",
     Next = 51
 }
@@ -965,7 +965,7 @@ DialogueConfig[51] = {
     DocTag = "3-B#2",
     NpcName = "悲伤蛙",
     NpcSprite = "丧",
-    Dialogue = "……你不懂。",
+    Dialogue = "……你还没懂。",
     SetVariables = {
         { VarName = "Frog_PadRefused", VarType = "bool", Value = true }
     },
@@ -977,9 +977,9 @@ DialogueConfig[51] = {
 DialogueConfig[52] = {
     Type = "Normal",
     DocTag = "3-C#1",
-    NpcName = "悲伤蛙",
-    NpcSprite = "介入",
-    Dialogue = "（蛙缓缓挪动身体，绿色的东西从胯下露出来，草本甜气骤然加重）",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "（蛙缓缓挪开身体，绿色的东西露出来，草本甜气骤然加重）",
     Next = 53
 }
 
@@ -997,7 +997,7 @@ DialogueConfig[54] = {
     DocTag = "3-C#3",
     NpcName = "悲伤蛙",
     NpcSprite = "介入",
-    Dialogue = "它散发着令人迷幻的腐朽气味……",
+    Dialogue = "它散发着腐朽又甜的气味……",
     Next = 55
 }
 
@@ -1006,7 +1006,7 @@ DialogueConfig[55] = {
     DocTag = "3-C#4",
     NpcName = "悲伤蛙",
     NpcSprite = "介入",
-    Dialogue = "就像生命流逝时……让人头晕目眩的气息。",
+    Dialogue = "像生命流走时，那种让人发晕的气息。",
     Next = 56
 }
 
@@ -1015,7 +1015,7 @@ DialogueConfig[56] = {
     DocTag = "3-C#5",
     NpcName = "悲伤蛙",
     NpcSprite = "介入",
-    Dialogue = "既然你喜欢收集虚无……",
+    Dialogue = "既然你要把这片虚无收走……",
     Next = 57
 }
 
@@ -1078,7 +1078,7 @@ DialogueConfig[63] = {
     DocTag = "3-C#12",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（一阵风，水面荡开，月影散了又聚）",
+    Dialogue = "（一阵风掠过，水面荡开，月影散了又聚）",
     SetVariables = {
         { VarName = "MintFish_Obtained", VarType = "bool", Value = true }
     },
@@ -1099,8 +1099,8 @@ DialogueConfig[64] = {
 DialogueConfig[65] = {
     Type = "Normal",
     DocTag = "3-D#2",
-    NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcName = "描述",
+    NpcSprite = "",
     Dialogue = "（蛙缓缓转头，目光第一次集中起来）",
     Next = 66
 }
@@ -1119,7 +1119,7 @@ DialogueConfig[67] = {
     DocTag = "3-D#4",
     NpcName = "玩家",
     NpcSprite = "",
-    Dialogue = "同款台词，同款姿势，同款池塘。",
+    Dialogue = "一样的台词，一样的姿势，一样的池塘。",
     Next = 68
 }
 
@@ -1137,7 +1137,7 @@ DialogueConfig[69] = {
     DocTag = "3-D#6",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（蛙发呆了好几秒，眼神出现了罕见的慌乱）",
+    Dialogue = "（蛙发呆了好几秒，眼睛猛地定住）",
     Next = 70
 }
 
@@ -1155,7 +1155,7 @@ DialogueConfig[71] = {
     DocTag = "3-D#8",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（沉默）",
+    Dialogue = "（沉默片刻）",
     Next = 72
 }
 
@@ -1190,6 +1190,7 @@ DialogueConfig[74] = {
 }
 
 -- ==================== NGPlus · 二周目轮播 ====================
+-- 二周目薄荷鱼线必已完成；四条等权轮播，不再分 MintFish 条件池。
 
 DialogueConfig[297] = {
     Type = "Normal",
@@ -1197,10 +1198,7 @@ DialogueConfig[297] = {
     NpcName = "悲伤蛙",
     NpcSprite = "介入",
     Dialogue = "",
-    ConditionBranches = {
-        { VarName = "MintFish_Obtained", VarType = "bool", TrueNext = 298, FalseNext = 296 }
-    },
-    Next = 296
+    Next = 298
 }
 
 DialogueConfig[296] = {
@@ -1209,13 +1207,13 @@ DialogueConfig[296] = {
     NpcName = "悲伤蛙",
     NpcSprite = "介入",
     Dialogue = "",
-    RotatePool = { 301, 305, 310 },
+    RotatePool = { 301, 305, 310, 320 },
     Next = -1
 }
 
 DialogueConfig[298] = {
     Type = "Normal",
-    DocTag = "NGPlus+MintFish",
+    DocTag = "NGPlus",
     NpcName = "悲伤蛙",
     NpcSprite = "介入",
     Dialogue = "",
@@ -1253,8 +1251,8 @@ DialogueConfig[303] = {
 DialogueConfig[305] = {
     Type = "Normal",
     DocTag = "NGPlus@v2#1",
-    NpcName = "悲伤蛙",
-    NpcSprite = "介入",
+    NpcName = "描述",
+    NpcSprite = "",
     Dialogue = "（蛙没有转头）",
     Next = 306
 }
@@ -1297,7 +1295,7 @@ DialogueConfig[312] = {
     DocTag = "NGPlus@v3#3",
     NpcName = "玩家",
     NpcSprite = "",
-    Dialogue = "……案子破了。",
+    Dialogue = "……该查的，都查完了。",
     Next = 313
 }
 DialogueConfig[313] = {
@@ -1305,11 +1303,11 @@ DialogueConfig[313] = {
     DocTag = "NGPlus@v3#4",
     NpcName = "悲伤蛙",
     NpcSprite = "介入",
-    Dialogue = "破了什么案……虚无还是虚无。",
+    Dialogue = "查完什么……虚无还是虚无。",
     Next = -1
 }
 
--- NGPlus v4 (MintFish_Obtained)
+-- NGPlus v4（腐朽浮木；二周目与前三条等权轮播）
 DialogueConfig[320] = {
     Type = "Normal",
     DocTag = "NGPlus@v4#1",
@@ -1323,7 +1321,7 @@ DialogueConfig[321] = {
     DocTag = "NGPlus@v4#2",
     NpcName = "悲伤蛙",
     NpcSprite = "介入",
-    Dialogue = "胯下冰凉。",
+    Dialogue = "身下空了，冰凉。",
     Next = 322
 }
 DialogueConfig[322] = {

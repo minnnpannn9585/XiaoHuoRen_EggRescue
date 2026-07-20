@@ -401,7 +401,7 @@ DialogueConfig[205] = {
     Type = "Normal",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（鼠哥往大橡树方向扫了一眼，没有进一步解释，缩回墙缝）",
+    Dialogue = "（鼠哥往大橡树方向扫了一眼，后半句话咽回去，缩进墙缝）",
     SetVariables = {
         { VarName = "Mouse_BlackCatStareShown", VarType = "bool", Value = true },
     },
@@ -431,7 +431,7 @@ DialogueConfig[212] = {
     Type = "Normal",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（鼠哥清了清嗓子，像在思考措辞）",
+    Dialogue = "（鼠哥清了清嗓子，顿了一下）",
     Next = 213
 }
 
@@ -441,7 +441,7 @@ DialogueConfig[213] = {
     NpcName = "鼠哥",
     NpcSprite = "兜售",
     Dialogue = "哦，那件东西啊……",
-    Next = 214
+    Next = 217
 }
 
 -- Position: { 50, 150 }
@@ -449,7 +449,7 @@ DialogueConfig[214] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "还在。",
+    Dialogue = "东西还在。",
     Next = 215
 }
 
@@ -503,8 +503,8 @@ DialogueConfig[220] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "只不过，东西放我们这里——保管费、搬运费、折旧费……",
-    Next = 911
+    Dialogue = "只不过放我们这儿——保管费八块奶酪碎，公道价。",
+    Next = 230
 }
 
 DialogueConfig[911] = {
@@ -566,7 +566,7 @@ DialogueConfig[251] = {
     Type = "Normal",
     NpcName = "玩家",
     NpcSprite = "",
-    Dialogue = "你还说在你这儿，纯骗啊哥们儿。",
+    Dialogue = "还在你这儿？你糊弄谁呢。",
     Next = 252
 }
 
@@ -620,7 +620,7 @@ DialogueConfig[261] = {
     Type = "Normal",
     NpcName = "鼠弟",
     NpcSprite = "兜售",
-    Dialogue = "随时回来——",
+    Dialogue = "钱包够了随时回来——",
     Next = 95
 }
 
@@ -638,7 +638,7 @@ DialogueConfig[271] = {
     Type = "Normal",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（鼠哥往墙缝深处探了一下，回来时神情如常）",
+    Dialogue = "（鼠哥往墙缝深处探了一下，回来时爪子上空空的）",
     Next = 272
 }
 
@@ -683,7 +683,7 @@ DialogueConfig[276] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "在我辖区范围内，广义上来说，还是在的。",
+    Dialogue = "手是滑了，可还在咱管的地界上——算还在。",
     Next = 277
 }
 
@@ -692,7 +692,7 @@ DialogueConfig[277] = {
     Type = "Normal",
     NpcName = "鼠弟",
     NpcSprite = "兜售",
-    Dialogue = "方向给你了！这叫知情告知！",
+    Dialogue = "方向给你了！这叫钱货两清！",
     Next = 278
 }
 
@@ -701,8 +701,8 @@ DialogueConfig[278] = {
     Type = "Normal",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（鼠哥把账本翻了一页，表情笃定）",
-    Next = 279
+    Dialogue = "（鼠哥把账本翻了一页，算盘没停）",
+    Next = 280
 }
 
 -- Position: { 50, 150 }
@@ -737,7 +737,7 @@ DialogueConfig[282] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "……看在大单份上，这里又多了一批情报，你随时来抽。",
+    Dialogue = "……看在这单大的份上，柜里又多上一批贵的，随时来挑。",
     SetVariables = {
         { VarName = "Mouse_MintFishPaid", VarType = "bool", Value = true },
         { VarName = "Mouse_PremiumPoolUnlocked", VarType = "bool", Value = true },
@@ -831,7 +831,7 @@ DialogueConfig[299] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "发怵",
-    Dialogue = "柜里还有一批贵情报，本来要配货才能给的。给你随便买吧。",
+    Dialogue = "柜里还有一批贵的，本来得搭别的货才肯给。现在随你挑。",
     Next = 300
 }
 
@@ -849,7 +849,7 @@ DialogueConfig[301] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "发怵",
-    Dialogue = "开。",
+    Dialogue = "开价。",
     Next = 302
 }
 
@@ -902,7 +902,7 @@ DialogueConfig[312] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "有。",
+    Dialogue = "有办法。",
     Next = 313
 }
 
@@ -912,7 +912,7 @@ DialogueConfig[313] = {
     NpcName = "鼠哥",
     NpcSprite = "兜售",
     Dialogue = "八块奶酪碎。教你一句糊弄它的。",
-    Next = 314
+    Next = 311
 }
 
 -- Position: { 50, 150 }
@@ -947,7 +947,7 @@ DialogueConfig[322] = {
     Type = "Normal",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（鼠哥把账本翻了一页，表情笃定）",
+    Dialogue = "（鼠哥把奶酪收进账本夹层，算盘轻敲一下）",
     Next = 323
 }
 
@@ -956,15 +956,15 @@ DialogueConfig[323] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "付清这八块，后面还有一批贵情报——",
-    Next = 912
+    Dialogue = "付清这八块，后面那批贵的现在也开卖了。",
+    Next = 324
 }
 
 DialogueConfig[912] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "现在也一起给您开放购买了。",
+    Dialogue = "后面那批贵的，现在也一并开卖了。",
     Next = 324
 }
 
@@ -1129,7 +1129,7 @@ DialogueConfig[346] = {
     Type = "Normal",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（鼠哥递出一个眼神，意思是：去吧）",
+    Dialogue = "（鼠哥递了个眼神：快去）",
     SetVariables = {
         { VarName = "Mouse_FrogFallbackGiven", VarType = "bool", Value = true },
     },
@@ -1173,7 +1173,7 @@ DialogueConfig[352] = {
     Type = "Normal",
     NpcName = "鼠弟",
     NpcSprite = "兜售",
-    Dialogue = "柜里还有一批——",
+    Dialogue = "柜里还有一批贵的——",
     Next = 353
 }
 
@@ -1210,7 +1210,7 @@ DialogueConfig[356] = {
     NpcName = "鼠弟",
     NpcSprite = "兜售",
     Dialogue = "……这是规矩。",
-    Next = 357
+    Next = 351
 }
 
 -- Position: { 50, 150 }
@@ -1227,7 +1227,7 @@ DialogueConfig[360] = {
     Type = "Normal",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（鼠哥接过奶酪，算盘响了三声）",
+    Dialogue = "（鼠哥数完八块，算盘叮叮响）",
     Next = 361
 }
 
@@ -1245,7 +1245,7 @@ DialogueConfig[362] = {
     Type = "Normal",
     NpcName = "鼠弟",
     NpcSprite = "兜售",
-    Dialogue = "后面那批——现在就能抽喽！",
+    Dialogue = "后面那批——现在就能买喽！",
     Next = 363
 }
 
@@ -1293,7 +1293,7 @@ DialogueConfig[502] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "八卦",
-    Dialogue = "主人省钱买甜玉米糖，狗戴镀银项圈。",
+    Dialogue = "红顶屋的主人自己抠门得很，却给狗戴镀银项圈。",
     Next = 503
 }
 
@@ -1359,7 +1359,7 @@ DialogueConfig[514] = {
     Type = "Normal",
     NpcName = "鼠弟",
     NpcSprite = "八卦",
-    Dialogue = "排队的！",
+    Dialogue = "追求它的，能排出长队！",
     Next = 516
 }
 
@@ -1389,7 +1389,7 @@ DialogueConfig[521] = {
     Type = "Normal",
     NpcName = "鼠弟",
     NpcSprite = "八卦",
-    Dialogue = "十年前是隔壁村的斗鸡冠军！主人花了大价钱把她买回来。",
+    Dialogue = "十年前是隔壁村的斗鸡冠军！红顶屋的主人花了大价钱把她买回来。",
     Next = 522
 }
 
@@ -1407,8 +1407,8 @@ DialogueConfig[523] = {
     Type = "Normal",
     NpcName = "鼠弟",
     NpcSprite = "八卦",
-    Dialogue = "据说。",
-    Next = 524
+    Dialogue = "……真不打了？",
+    Next = 525
 }
 
 -- Position: { 50, 150 }
@@ -1416,7 +1416,7 @@ DialogueConfig[524] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "八卦",
-    Dialogue = "据说。",
+    Dialogue = "据说是这样。",
     Next = 525
 }
 
@@ -1482,7 +1482,7 @@ DialogueConfig[535] = {
     Type = "Normal",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（鼠哥神情肃然，像在汇报军机大事）",
+    Dialogue = "（鼠哥郑重地点了点头）",
     SetVariables = {
         { VarName = "Mouse_CheapSold_04", VarType = "bool", Value = true },
     },
@@ -1494,7 +1494,7 @@ DialogueConfig[540] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "主人床底有本书。",
+    Dialogue = "红顶屋床底下有本书。",
     Next = 541
 }
 
@@ -1512,7 +1512,7 @@ DialogueConfig[542] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "八卦",
-    Dialogue = "鸡科圣手，尤其精通这一本。",
+    Dialogue = "红顶屋那位自封鸡科圣手，尤其精通这一本。",
     Next = 543
 }
 
@@ -1530,7 +1530,7 @@ DialogueConfig[544] = {
     Type = "Normal",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（鼠哥没有补充，表情有点微妙）",
+    Dialogue = "（鼠哥没再往下说）",
     SetVariables = {
         { VarName = "Mouse_CheapSold_05", VarType = "bool", Value = true },
     },
@@ -1608,7 +1608,7 @@ DialogueConfig[560] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "那条狗大黄，偶尔偷喝主人的发酵苹果渣。",
+    Dialogue = "那条狗大黄，偶尔偷喝红顶屋那边的发酵苹果渣。",
     Next = 561
 }
 
@@ -1617,7 +1617,7 @@ DialogueConfig[561] = {
     Type = "Normal",
     NpcName = "鼠弟",
     NpcSprite = "八卦",
-    Dialogue = "有次喝大了，整晚趴在谷仓墙根出不来！",
+    Dialogue = "昨晚又喝大了，整晚趴在谷仓墙根出不来——",
     Next = 914
 }
 
@@ -1634,7 +1634,7 @@ DialogueConfig[562] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "八卦",
-    Dialogue = "最后淑芬端了鸡舍水槽边那桶泡软的谷物过去，",
+    Dialogue = "要弄醒他，就端鸡舍水槽边那桶泡软的谷物过去。",
     Next = 915
 }
 
@@ -1642,8 +1642,11 @@ DialogueConfig[915] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "八卦",
-    Dialogue = "把他叫醒了。",
-    Next = 563
+    Dialogue = "淑芬以前这么干过，管用。",
+    SetVariables = {
+        { VarName = "Mouse_CheapSold_07", VarType = "bool", Value = true },
+    },
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -1672,7 +1675,7 @@ DialogueConfig[570] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "主人这几天，常趴窗往鸡舍方向看。",
+    Dialogue = "红顶屋的主人这几天，常趴窗往鸡舍方向看。",
     Next = 571
 }
 
@@ -1690,7 +1693,7 @@ DialogueConfig[572] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "八卦",
-    Dialogue = "很忙，不知道忙什么。",
+    Dialogue = "忙得不行，看不出在忙什么。",
     Next = 573
 }
 
@@ -1699,7 +1702,7 @@ DialogueConfig[573] = {
     Type = "Normal",
     NpcName = "鼠弟",
     NpcSprite = "八卦",
-    Dialogue = "我们猜可能是——",
+    Dialogue = "我们猜他是在找什么——",
     Next = 574
 }
 
@@ -1708,7 +1711,7 @@ DialogueConfig[574] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "八卦",
-    Dialogue = "没有结论的不卖。",
+    Dialogue = "猜的不算货。没有结论的不卖。",
     SetVariables = {
         { VarName = "Mouse_CheapSold_08", VarType = "bool", Value = true },
     },
@@ -1738,7 +1741,7 @@ DialogueConfig[582] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "八卦",
-    Dialogue = "抱成一团，像在等什么。",
+    Dialogue = "抱成一团，安静得不像它们。",
     Next = 583
 }
 
@@ -1747,8 +1750,11 @@ DialogueConfig[583] = {
     Type = "Normal",
     NpcName = "鼠弟",
     NpcSprite = "八卦",
-    Dialogue = "从来没见过它们那么安静——",
-    Next = 584
+    Dialogue = "像在等什么——等什么，不知道。",
+    SetVariables = {
+        { VarName = "Mouse_CheapSold_09", VarType = "bool", Value = true },
+    },
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -1768,7 +1774,7 @@ DialogueConfig[590] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "这条值价。",
+    Dialogue = "这条值这个价。",
     Next = 591
 }
 
@@ -1786,7 +1792,7 @@ DialogueConfig[592] = {
     Type = "Normal",
     NpcName = "鼠弟",
     NpcSprite = "发怵",
-    Dialogue = "没多大会儿，又下来了，爪子上什么都没带！！",
+    Dialogue = "没多大会儿，又下来了，什么也没说！！",
     Next = 593
 }
 
@@ -1813,7 +1819,7 @@ DialogueConfig[595] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "八卦",
-    Dialogue = "不知道。没有情报的地方，就是没有。",
+    Dialogue = "不知道就是不知道，我们不编。",
     SetVariables = {
         { VarName = "Mouse_CheapSold_10", VarType = "bool", Value = true },
     },
@@ -1917,7 +1923,7 @@ DialogueConfig[614] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "八卦",
-    Dialogue = "不知道。白白亮亮，这就是我们能卖的全部了。",
+    Dialogue = "不知道。这就是我们能卖的全部了。",
     SetVariables = {
         { VarName = "Mouse_PremiumSold_02", VarType = "bool", Value = true },
     },
@@ -1956,7 +1962,7 @@ DialogueConfig[623] = {
     Type = "Normal",
     NpcName = "鼠弟",
     NpcSprite = "八卦",
-    Dialogue = "就像屋里突然多了一个不会落山的小太阳——",
+    Dialogue = "像屋里多了个不会落山的小太阳——有光有热。",
     Next = 624
 }
 
@@ -1965,7 +1971,7 @@ DialogueConfig[624] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "八卦",
-    Dialogue = "有光有热，里面是什么，不知道。",
+    Dialogue = "里面到底是什么，不知道。",
     SetVariables = {
         { VarName = "Mouse_PremiumSold_03", VarType = "bool", Value = true },
     },
@@ -1977,7 +1983,7 @@ DialogueConfig[630] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "昨晚深夜，主人的雨靴来回走了两趟。",
+    Dialogue = "昨晚深夜，红顶屋的雨靴来回走了两趟。",
     Next = 631
 }
 
@@ -2089,7 +2095,10 @@ DialogueConfig[646] = {
     NpcName = "鼠弟",
     NpcSprite = "八卦",
     Dialogue = "那不是水怪，是大黄打的呼噜！！",
-    Next = 647
+    SetVariables = {
+        { VarName = "Mouse_PremiumSold_05", VarType = "bool", Value = true },
+    },
+    Next = 95
 }
 
 -- Position: { 50, 150 }
@@ -2118,7 +2127,7 @@ DialogueConfig[650] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "这条，自信度较高。",
+    Dialogue = "这条，我们敢拍胸脯。",
     Next = 651
 }
 
@@ -2154,7 +2163,7 @@ DialogueConfig[654] = {
     Type = "Normal",
     NpcName = "鼠弟",
     NpcSprite = "八卦",
-    Dialogue = "闷声不吭、鬼鬼祟祟、对着影子嘀嘀咕咕——",
+    Dialogue = "哪是咬！闷声不吭、鬼鬼祟祟，对着影子嘀嘀咕咕——",
     Next = 655
 }
 
@@ -2172,7 +2181,7 @@ DialogueConfig[656] = {
     Type = "Normal",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（鼠弟重重点头，神情严峻）",
+    Dialogue = "（鼠弟重重点头，硬把后半句咽回去）",
     SetVariables = {
         { VarName = "Mouse_PremiumSold_06", VarType = "bool", Value = true },
     },
@@ -2228,7 +2237,7 @@ DialogueConfig[664] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "八卦",
-    Dialogue = "垄断。",
+    Dialogue = "就我们两家在卖——垄断。",
     Next = 665
 }
 
@@ -2237,7 +2246,7 @@ DialogueConfig[665] = {
     Type = "Normal",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（鼠哥扬了扬算盘，表情颇为满足）",
+    Dialogue = "（鼠哥扬了扬算盘，嘴角翘得老高）",
     SetVariables = {
         { VarName = "Mouse_PremiumSold_07", VarType = "bool", Value = true },
     },
@@ -2249,7 +2258,7 @@ DialogueConfig[670] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "昨晚深夜，亲眼目睹。",
+    Dialogue = "昨晚深夜，我们亲眼看见的——",
     Next = 671
 }
 
@@ -2317,7 +2326,7 @@ DialogueConfig[1001] = {
     NpcName = "鼠哥",
     NpcSprite = "兜售",
     Dialogue = "还有没买的，自己来挑。",
-    Next = 1002
+    Next = 1003
 }
 
 -- Position: { 50, 150 }
@@ -2325,7 +2334,7 @@ DialogueConfig[1002] = {
     Type = "Normal",
     NpcName = "鼠弟",
     NpcSprite = "兜售",
-    Dialogue = "奶酪够的话——",
+    Dialogue = "奶酪够的话，自己来挑——",
     Next = 1003
 }
 
@@ -2334,6 +2343,6 @@ DialogueConfig[1003] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "够不够是他们的事。",
+    Dialogue = "奶酪够不够，是他们的事。",
     Next = -1
 }
