@@ -3,6 +3,7 @@
 
 local HUB_ID = 100
 local HUB_REVISIT_DISPATCH_ID = 95
+local NGPLUS_HUB_ID = 910
 
 local CHEAP_INTEL = {
     [1] = 500, [2] = 510, [3] = 520, [4] = 530, [5] = 540,
@@ -147,6 +148,9 @@ local function GoToDialogueNode(nodeId)
 end
 
 local function GoToHub()
+    if GetBool("NGPlus") then
+        return GoToDialogueNode(NGPLUS_HUB_ID)
+    end
     if GetBool("Mouse_FirstGreetShown") then
         return GoToDialogueNode(HUB_REVISIT_DISPATCH_ID)
     end

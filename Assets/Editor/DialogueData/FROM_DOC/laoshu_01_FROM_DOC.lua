@@ -198,6 +198,18 @@ DialogueConfig[80] = {
     Next = 20
 }
 
+DialogueConfig[94] = {
+    Type = "Normal",
+    DocTag = "hub-return",
+    NpcName = "老鼠兄弟",
+    NpcSprite = "兜售",
+    Dialogue = "",
+    ConditionBranches = {
+        { VarName = "NGPlus", VarType = "bool", TrueNext = 910, FalseNext = 95 },
+    },
+    Next = 95
+}
+
 DialogueConfig[95] = {
     Type = "Normal",
     DocTag = "1-hub-revisit-dispatch",
@@ -1315,7 +1327,7 @@ DialogueConfig[504] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_01", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -1372,7 +1384,7 @@ DialogueConfig[516] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_02", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -1429,7 +1441,7 @@ DialogueConfig[525] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_03", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -1486,7 +1498,7 @@ DialogueConfig[535] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_04", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -1534,7 +1546,7 @@ DialogueConfig[544] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_05", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -1600,7 +1612,7 @@ DialogueConfig[556] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_06", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -1646,7 +1658,7 @@ DialogueConfig[915] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_07", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -1667,7 +1679,7 @@ DialogueConfig[564] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_07", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -1715,7 +1727,7 @@ DialogueConfig[574] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_08", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -1754,7 +1766,7 @@ DialogueConfig[583] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_09", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -1766,7 +1778,7 @@ DialogueConfig[584] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_09", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -1823,7 +1835,7 @@ DialogueConfig[595] = {
     SetVariables = {
         { VarName = "Mouse_CheapSold_10", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -1879,7 +1891,7 @@ DialogueConfig[604] = {
     SetVariables = {
         { VarName = "Mouse_PremiumSold_01", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -1927,7 +1939,7 @@ DialogueConfig[614] = {
     SetVariables = {
         { VarName = "Mouse_PremiumSold_02", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -1975,7 +1987,7 @@ DialogueConfig[624] = {
     SetVariables = {
         { VarName = "Mouse_PremiumSold_03", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -2032,7 +2044,7 @@ DialogueConfig[635] = {
     SetVariables = {
         { VarName = "Mouse_PremiumSold_04", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -2098,7 +2110,7 @@ DialogueConfig[646] = {
     SetVariables = {
         { VarName = "Mouse_PremiumSold_05", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -2119,7 +2131,7 @@ DialogueConfig[648] = {
     SetVariables = {
         { VarName = "Mouse_PremiumSold_05", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -2185,7 +2197,7 @@ DialogueConfig[656] = {
     SetVariables = {
         { VarName = "Mouse_PremiumSold_06", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -2250,7 +2262,7 @@ DialogueConfig[665] = {
     SetVariables = {
         { VarName = "Mouse_PremiumSold_07", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 -- Position: { 50, 150 }
@@ -2307,7 +2319,7 @@ DialogueConfig[675] = {
     SetVariables = {
         { VarName = "Mouse_PremiumSold_08", VarType = "bool", Value = true },
     },
-    Next = 95
+    Next = 94
 }
 
 DialogueConfig[900] = {
@@ -2343,6 +2355,43 @@ DialogueConfig[1003] = {
     Type = "Normal",
     NpcName = "鼠哥",
     NpcSprite = "兜售",
-    Dialogue = "奶酪够不够，是他们的事。",
+    Dialogue = "奶酪够不够，是你们的事。",
+    SetVariables = {
+        { VarName = "Mouse_PremiumPoolUnlocked", VarType = "bool", Value = true },
+    },
+    Next = 910
+}
+
+DialogueConfig[910] = {
+    Type = "Question",
+    DocTag = "NGPlus-hub",
+    NpcName = "鼠哥",
+    NpcSprite = "兜售",
+    Dialogue = "",
+    MenuCap = 0,
+    Options = {
+        {
+            Text = "便宜的，一块。",
+            ShopAction = "cheap",
+            Next = 910,
+            DisplayConditions = {
+                { VarName = "Mouse_CheapPoolAvailable", VarType = "bool", Value = true },
+                { VarName = "CheeseCount", VarType = "int", Op = ">=", Value = 1 },
+            },
+        },
+        {
+            Text = "贵一点的，五块。",
+            ShopAction = "premium",
+            Next = 910,
+            DisplayConditions = {
+                { VarName = "Mouse_PremiumPoolAvailable", VarType = "bool", Value = true },
+                { VarName = "CheeseCount", VarType = "int", Op = ">=", Value = 5 },
+            },
+        },
+        {
+            Text = "没事了。",
+            Next = -1,
+        },
+    },
     Next = -1
 }

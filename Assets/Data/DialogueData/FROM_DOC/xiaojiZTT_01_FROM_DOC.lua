@@ -1792,61 +1792,6 @@ DialogueConfig[150] = {
     NpcName = "描述",
     NpcSprite = "",
     Dialogue = "（豆豆用力点头；米粒、瓜子也跟着点）",
-    Next = 151  -- 下一段对话ID
-}
-
--- 普通对话类型  -- doc:NGPlus#22
--- Position: { 10450, 2650 }
-DialogueConfig[151] = {
-    Type = "Normal",
-    DocTag = "NGPlus#22",
-    NpcName = "描述",
-    NpcSprite = "",
-    Dialogue = "（……）",
-    Next = 152  -- 下一段对话ID
-}
-
--- 普通对话类型  -- doc:NGPlus#23
--- Position: { 10800, 2650 }
-DialogueConfig[152] = {
-    Type = "Normal",
-    DocTag = "NGPlus#23",
-    NpcName = "描述",
-    NpcSprite = "",
-    Dialogue = "（……）",
-    Next = 153  -- 下一段对话ID
-}
-
--- 普通对话类型  -- doc:NGPlus#24
--- Position: { 11150, 2650 }
-DialogueConfig[153] = {
-    Type = "Normal",
-    DocTag = "NGPlus#24",
-    NpcName = "描述",
-    NpcSprite = "",
-    Dialogue = "（……）",
-    Next = 154  -- 下一段对话ID
-}
-
--- 普通对话类型  -- doc:NGPlus#25
--- Position: { 11500, 2650 }
-DialogueConfig[154] = {
-    Type = "Normal",
-    DocTag = "NGPlus#25",
-    NpcName = "描述",
-    NpcSprite = "",
-    Dialogue = "（……）",
-    Next = 155  -- 下一段对话ID
-}
-
--- 普通对话类型  -- doc:NGPlus#26
--- Position: { 11850, 2650 }
-DialogueConfig[155] = {
-    Type = "Normal",
-    DocTag = "NGPlus#26",
-    NpcName = "描述",
-    NpcSprite = "",
-    Dialogue = "（……）",
     SetVariables = {
         { VarName = "Chick_NGPlusShown", VarType = "bool", Value = true }
     },

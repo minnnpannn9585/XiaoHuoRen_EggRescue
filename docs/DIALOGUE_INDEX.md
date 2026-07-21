@@ -74,7 +74,7 @@ Scene 子物体名仍为 `luaModuleName`（无路径）；Publish 会同步 `Edi
 
 | 文件 | NPCData 分支 | 剧情说明 | Scene 触发 |
 |------|-------------|---------|-----------|
-| `FROM_DOC/shufang_01_FROM_DOC.lua` | 分支 1 | 委托、1-hub-intro 轮播、hub 菜单、1-B~G / 2-A / 3-A、NGPlus | 点 **淑芬** |
+| `FROM_DOC/shufang_01_FROM_DOC.lua` | 分支 1 | 委托、1-hub-intro 轮播、hub 菜单、1-B~G / 2-A / 3-A、NGPlus 一次性 + 轮播 | 点 **淑芬** |
 
 > 旧 `shufang_01`、`shufang_02_R1/R2/R3` 已删除；回访轮播已并入 FROM_DOC 的 `1-hub-intro` RotatePool。
 

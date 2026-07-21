@@ -363,7 +363,7 @@ DialogueConfig[23] = {
     DocTag = "2-A#23",
     NpcName = "黑猫",
     NpcSprite = "炸毛",
-    Dialogue = "你还让狗把树晃成那样？！这是什么不文明的手段？！",
+    Dialogue = "你还把树晃成那样？！这是什么不文明的手段？！",
     Next = 24  -- 下一段对话ID
 }
 

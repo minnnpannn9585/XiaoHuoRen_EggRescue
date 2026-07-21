@@ -478,7 +478,7 @@ local function QueueReveal(id, go)
         pageIndex = pageIdx
     }
     RevealNotebookIcon()
-    _G["PlayAudio"]("audio_receiveClue")
+    _G["PlayAudio"]("audio_unlockClue")
     -- 本子关闭时每条新线索都弹跳；红点已亮时 UpdateRedDot 不会再触发边沿
     if not IsNotebookOpen() then
         PlayIconBounce()

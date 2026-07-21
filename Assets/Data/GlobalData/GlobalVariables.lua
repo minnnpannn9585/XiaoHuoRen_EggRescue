@@ -69,6 +69,7 @@ GlobalVariables = {
     { name = "Chick_Chapter2GuiltShown",    type = "bool", value = false },
     { name = "Chick_NGPlusShown",           type = "bool", value = false },
     { name = "Chick_HubFromSubItem",        type = "bool", value = false },
+    { name = "Shufen_NGPlusShown",          type = "bool", value = false },
     { name = "Shufen_CommissionDone",       type = "bool", value = false },
     { name = "Shufen_NapSpotAsked",         type = "bool", value = false },
     { name = "Shufen_StoneRevealShown",     type = "bool", value = false },

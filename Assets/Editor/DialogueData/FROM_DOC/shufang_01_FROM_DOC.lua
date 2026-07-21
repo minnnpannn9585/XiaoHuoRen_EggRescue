@@ -13,12 +13,15 @@
 --   1-G -> DialogueConfig[48]
 --   2-A -> DialogueConfig[56]
 --   3-A -> DialogueConfig[73]
+--   NGPlus -> DialogueConfig[91]
 --   NGPlus-revisit -> DialogueConfig[88]
 
 --   __entry__ -> DialogueConfig[0]
 --   __entry__ -> DialogueConfig[0]
 --   entry#comm -> DialogueConfig[89]
 --   entry#new -> DialogueConfig[90]
+--   entry#ng1 -> DialogueConfig[103]
+--   entry#ng2 -> DialogueConfig[104]
 DialogueConfig = {}
 
 -- 普通对话类型  -- doc:1-A#1
@@ -1179,6 +1182,135 @@ DialogueConfig[90] = {
     Next = 89  -- 下一段对话ID
 }
 
+-- 普通对话类型  -- doc:NGPlus#1
+DialogueConfig[91] = {
+    Type = "Normal",
+    DocTag = "NGPlus#1",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "（淑芬蹲在窝边；一只刚出壳的小鸡正往她翅膀下拱）",
+    Next = 92
+}
+
+DialogueConfig[92] = {
+    Type = "Normal",
+    DocTag = "NGPlus#2",
+    NpcName = "淑芬",
+    NpcSprite = "团聚",
+    Dialogue = "……你来了。",
+    Next = 93
+}
+
+DialogueConfig[93] = {
+    Type = "Normal",
+    DocTag = "NGPlus#3",
+    NpcName = "淑芬",
+    NpcSprite = "团聚",
+    Dialogue = "你都不敢相信——他居然自己回来了。",
+    Next = 94
+}
+
+DialogueConfig[94] = {
+    Type = "Normal",
+    DocTag = "NGPlus#4",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "他自己回来的？",
+    Next = 95
+}
+
+DialogueConfig[95] = {
+    Type = "Normal",
+    DocTag = "NGPlus#5",
+    NpcName = "淑芬",
+    NpcSprite = "团聚",
+    Dialogue = "嗯。已经破壳了。小小一只。",
+    Next = 96
+}
+
+DialogueConfig[96] = {
+    Type = "Normal",
+    DocTag = "NGPlus#6",
+    NpcName = "淑芬",
+    NpcSprite = "团聚",
+    Dialogue = "自己走进来的。站在门口叫我。",
+    Next = 97
+}
+
+DialogueConfig[97] = {
+    Type = "Normal",
+    DocTag = "NGPlus#7",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "（翅膀把小鸡拢了拢）",
+    Next = 98
+}
+
+DialogueConfig[98] = {
+    Type = "Normal",
+    DocTag = "NGPlus#8",
+    NpcName = "淑芬",
+    NpcSprite = "团聚",
+    Dialogue = "窝空了那么久，我以为……",
+    Next = 99
+}
+
+DialogueConfig[99] = {
+    Type = "Normal",
+    DocTag = "NGPlus#9",
+    NpcName = "玩家",
+    NpcSprite = "",
+    Dialogue = "那就好。",
+    Next = 100
+}
+
+DialogueConfig[100] = {
+    Type = "Normal",
+    DocTag = "NGPlus#10",
+    NpcName = "淑芬",
+    NpcSprite = "团聚",
+    Dialogue = "……谢谢你。真的。",
+    Next = 101
+}
+
+DialogueConfig[101] = {
+    Type = "Normal",
+    DocTag = "NGPlus#11",
+    NpcName = "淑芬",
+    NpcSprite = "团聚",
+    Dialogue = "要不是你满院子跑，我不知道该怎么办。",
+    SetVariables = {
+        { VarName = "Shufen_NGPlusShown", VarType = "bool", Value = true }
+    },
+    Next = -1
+}
+
+-- 普通对话类型  -- doc:entry#ng1
+DialogueConfig[103] = {
+    Type = "Normal",
+    DocTag = "entry#ng1",
+    NpcName = "淑芬",
+    NpcSprite = "护雏",
+    Dialogue = "",
+    ConditionBranches = {
+        { VarName = "Shufen_NGPlusShown", VarType = "bool", TrueNext = 90, FalseNext = 91 }
+    },
+    Next = 91
+}
+
+-- 普通对话类型  -- doc:entry#ng2
+DialogueConfig[104] = {
+    Type = "Normal",
+    DocTag = "entry#ng2",
+    NpcName = "淑芬",
+    NpcSprite = "护雏",
+    Dialogue = "",
+    ConditionBranches = {
+        { VarName = "Shufen_NGPlusShown", VarType = "bool", TrueNext = 88, FalseNext = 103 }
+    },
+    Next = 103
+}
+
 -- 普通对话类型  -- doc:entry#0
 -- Position: { 50, 150 }
 DialogueConfig[0] = {
@@ -1188,7 +1320,7 @@ DialogueConfig[0] = {
     NpcSprite = "护雏",
     Dialogue = "",
     ConditionBranches = {
-        { VarName = "NGPlus", VarType = "bool", TrueNext = 88, FalseNext = 90 }
+        { VarName = "NGPlus", VarType = "bool", TrueNext = 104, FalseNext = 90 }
     },
     Next = 90  -- 下一段对话ID
 }

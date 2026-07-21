@@ -45,6 +45,7 @@ local function GetDouyinInteractorScript()
     return nil
 end
 
+-- 对齐 DaHuang / TreeInteractionController：开点只开 Area/Collider；关点 DisableInteraction + 关 Collider
 local function SetInteractionEnabled(enabled)
     local interactorScript = GetDouyinInteractorScript()
 
@@ -57,9 +58,6 @@ local function SetInteractionEnabled(enabled)
             for i = 0, colliders.Length - 1 do
                 colliders[i].enabled = true
             end
-        end
-        if interactorScript and interactorScript.EnableInteraction then
-            interactorScript.EnableInteraction()
         end
     else
         if interactorScript and interactorScript.DisableInteraction then
