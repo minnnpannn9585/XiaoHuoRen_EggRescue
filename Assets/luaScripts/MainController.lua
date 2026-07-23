@@ -1,11 +1,27 @@
 ---@var audioClips :UnityEngine.AudioClip[]   -- 音频数组，可在 Unity Inspector 中赋值
 ---@var audioSource :UnityEngine.AudioSource -- 用于播放的音频源，若为空则自动添加
+---@var bgmSource :UnityEngine.AudioSource -- 场景 BGM（Loop），可切换 ending loop
 ---@var open :UnityEngine.UI.Button
 ---@var particleSystems :UnityEngine.ParticleSystem[] -- 粒子系统数组，可在 Unity Inspector 中赋值
 ---@end
 
--- 场景杂项：隐藏 SDK 飞行键/聊天面板；注册全局 PlayAudio / PlayParticle。
+-- 场景杂项：隐藏 SDK 飞行键/聊天面板；注册全局 PlayAudio / PlayParticle / BGM API。
 -- 薄荷鱼蛙模型切换见 BeiShangWa.lua。
+
+local originalBgmClip = nil
+
+local function FindAudioClipByName(name)
+    if audioClips == nil or audioClips.Length == 0 then
+        return nil
+    end
+    for i = 0, audioClips.Length - 1 do
+        local clip = audioClips[i]
+        if clip and clip.name == name then
+            return clip
+        end
+    end
+    return nil
+end
 
 -- Unity 启动入口
 function Start()
@@ -15,8 +31,15 @@ function Start()
     --     audioSource = gameObject:AddComponent(typeof(UnityEngine.AudioSource))
     -- end
     if open then open.onClick:AddListener(OnOpenClick) end
+    if bgmSource then
+        originalBgmClip = bgmSource.clip
+    end
     _G["PlayAudio"] = PlayAudioByName
     _G["PlayParticle"] = PlayParticleByName
+    _G["StopBGM"] = StopBGM
+    _G["PlayBGM"] = PlayBGM
+    _G["PlayMusic"] = PlayMusicByName
+    _G["GetAudioClipLength"] = GetAudioClipLength
 end
 
 function OnOpenClick()
@@ -46,6 +69,48 @@ end
 
 function QuitSample()
     DouyinApplication.Quit()
+end
+
+function StopBGM()
+    if bgmSource then
+        bgmSource:Stop()
+    end
+end
+
+function PlayBGM()
+    if not bgmSource then
+        print("[BGM] bgmSource 未绑定")
+        return
+    end
+    if originalBgmClip then
+        bgmSource.clip = originalBgmClip
+    end
+    bgmSource.loop = true
+    bgmSource:Play()
+end
+
+function PlayMusicByName(name)
+    if not bgmSource then
+        print("[BGM] bgmSource 未绑定")
+        return
+    end
+    local clip = FindAudioClipByName(name)
+    if not clip then
+        print("No audio clip found with name: " .. tostring(name))
+        return
+    end
+    bgmSource:Stop()
+    bgmSource.clip = clip
+    bgmSource.loop = true
+    bgmSource:Play()
+end
+
+function GetAudioClipLength(name)
+    local clip = FindAudioClipByName(name)
+    if not clip then
+        return 0
+    end
+    return clip.length
 end
 
 -- 播放音频函数，参数为音频数组索引（从 0 开始）
@@ -78,12 +143,14 @@ function PlayAudioByName(name)
         print("No audio clips assigned")
         return
     end
-    for i = 0, audioClips.Length - 1 do
-        local clip = audioClips[i]
-        if clip and clip.name == name then
-            PlayAudioClip(i) -- 复用索引播放函数
-            return
+    local clip = FindAudioClipByName(name)
+    if clip then
+        if audioSource then
+            audioSource:PlayOneShot(clip)
+        else
+            UnityEngine.AudioSource.PlayClipAtPoint(clip, UnityEngine.Vector3.zero)
         end
+        return
     end
     print("No audio clip found with name: " .. tostring(name))
 end

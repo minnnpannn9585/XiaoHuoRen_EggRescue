@@ -1,10 +1,12 @@
 -- E20 漫画收束 · Notebook/Ending（prefab 内默认 inactive）
--- 黑底仅开场渐黑一次；换页用 crossfade，避免闪黑
--- 最后一张图后整体渐隐并关闭 Ending
+-- 点窗：立刻全黑 + preEnding oneshot + 停农场 BGM
+-- pre 播完：第一张图 fadeIn + endingLoop
+-- 末页后：淡出图（黑幕保持）→ ResetPosition/NGPlus/Terminal → 黑幕渐隐 → 恢复 BGM
 
 ---@var panels :UnityEngine.GameObject[]
 ---@var clickArea :UnityEngine.UI.Button
 ---@var fadeDuration :float = 1.0
+---@var hideOnEnding :UnityEngine.GameObject[] -- 进入 Ending 时关闭的左侧 HUD（笔记本按钮、奶酪等，Inspector 拖入）
 ---@end
 
 local phase = "idle"
@@ -18,6 +20,16 @@ local crossfadeFrom = nil
 local crossfadeTo = nil
 local fadeInTarget = nil
 local fadeOutPanel = nil
+local preEndingRemain = 0
+local hiddenHudStates = nil -- { { go, wasActive }, ... }
+
+local PRE_ENDING_FALLBACK = 2.0
+
+-- forward decls（互相调用）
+local OnFadeComplete
+local HoldBlackAndTeleport
+local StartFadeOutBg
+local BeginFirstPanel
 
 local function RegisterGlobal()
     if _G["EndingController_Start"] then return end
@@ -139,13 +151,33 @@ local function EnsureEndingHidden()
     self.gameObject:SetActive(false)
 end
 
-local function FinalizeEnding()
-    if finalized then return end
-    finalized = true
-    phase = "done"
-    SetClickEnabled(false)
-    SetRootRaycastEnabled(false)
+local function HideHudForEnding()
+    hiddenHudStates = {}
+    if not hideOnEnding then
+        return
+    end
+    for i = 0, hideOnEnding.Length - 1 do
+        local go = hideOnEnding[i]
+        if go then
+            table.insert(hiddenHudStates, { go = go, wasActive = go.activeSelf })
+            go:SetActive(false)
+        end
+    end
+end
 
+local function RestoreHudAfterEnding()
+    if not hiddenHudStates then
+        return
+    end
+    for _, info in ipairs(hiddenHudStates) do
+        if info.go then
+            info.go:SetActive(info.wasActive)
+        end
+    end
+    hiddenHudStates = nil
+end
+
+local function ApplyTeleportAndFlags()
     print("[EndingController] 漫画收束完成，上报 Terminal")
     if DouyinApplication and DouyinApplication.isSimulator then
         print("[EndingController] 模拟器跳过 Terminal")
@@ -153,7 +185,6 @@ local function FinalizeEnding()
         CS.DouyinTaskService.SendEvent(CS.DouyinTaskEvent.Terminal)
     end
 
-    -- 漫画收束完毕 → 进入二周目（各 NPC entry 分发 / 奶酪刷新）
     if _G["SetGlobalVar"] then
         _G["SetGlobalVar"]("NGPlus", true, "bool")
         print("[EndingController] NGPlus = true")
@@ -167,23 +198,50 @@ local function FinalizeEnding()
     if DouyinUIService.SetNativeUIVisible then
         DouyinUIService.SetNativeUIVisible(true)
     end
+end
 
+local function FinishEndingCleanup()
+    if finalized then return end
+    finalized = true
+    phase = "done"
+    SetClickEnabled(false)
+    SetRootRaycastEnabled(false)
+
+    if _G["StopBGM"] then
+        _G["StopBGM"]()
+    end
+    if _G["PlayBGM"] then
+        _G["PlayBGM"]()
+    end
+
+    RestoreHudAfterEnding()
     self.gameObject:SetActive(false)
 end
 
-local function OnFadeComplete()
+StartFadeOutBg = function()
+    phase = "fadeOutBg"
+    bgLocked = false
+    SetClickEnabled(false)
+    SetBgAlpha(1)
+    fadeInfo = { kind = "fadeOutBg", elapsed = 0, onComplete = OnFadeComplete }
+end
+
+HoldBlackAndTeleport = function()
+    phase = "holdBlack"
+    fadeInfo = nil
+    LockBg()
+    ApplyTeleportAndFlags()
+    StartFadeOutBg()
+end
+
+OnFadeComplete = function()
     if phase == "fadeBg" then
         LockBg()
-        currentPanelIndex = 1
-        local go = panels and panels.Length > 0 and panels[0] or nil
-        if go then
-            phase = "fadeIn"
-            fadeInTarget = go
-            go:SetActive(true)
-            SetVisualAlpha(go, 0)
-            fadeInfo = { kind = "in", elapsed = 0, onComplete = OnFadeComplete }
+        -- 黑幕渐入完成；若 preEnding 还在播则继续等，否则出首图
+        if preEndingRemain > 0 then
+            phase = "waitPreEnding"
         else
-            FinalizeEnding()
+            BeginFirstPanel()
         end
         return
     end
@@ -194,7 +252,7 @@ local function OnFadeComplete()
             fadeInTarget = nil
         end
         if GetPanelCount() == 0 then
-            FinalizeEnding()
+            HoldBlackAndTeleport()
         else
             phase = "waitClick"
             SetClickEnabled(true)
@@ -216,23 +274,49 @@ local function OnFadeComplete()
         return
     end
 
-    if phase == "fadeOut" then
+    if phase == "fadeOutPanel" then
         if fadeOutPanel then
             DeactivateGo(fadeOutPanel)
             fadeOutPanel = nil
         end
+        HoldBlackAndTeleport()
+        return
+    end
+
+    if phase == "fadeOutBg" then
         SetBgAlpha(0)
-        FinalizeEnding()
+        FinishEndingCleanup()
         return
     end
 end
 
-local function StartFadeOut(panelGo)
-    phase = "fadeOut"
+BeginFirstPanel = function()
+    LockBg()
+    if _G["PlayMusic"] then
+        _G["PlayMusic"]("audio_endingLoop")
+    end
+
+    currentPanelIndex = 1
+    local go = panels and panels.Length > 0 and panels[0] or nil
+    if go then
+        phase = "fadeIn"
+        fadeInTarget = go
+        go:SetActive(true)
+        SetVisualAlpha(go, 0)
+        fadeInfo = { kind = "in", elapsed = 0, onComplete = OnFadeComplete }
+        print("[EndingController] preEnding 结束，首图 + endingLoop")
+    else
+        HoldBlackAndTeleport()
+    end
+end
+
+local function StartFadeOutPanel(panelGo)
+    phase = "fadeOutPanel"
     fadeOutPanel = panelGo
-    bgLocked = false
+    -- 黑幕保持锁定全黑，只淡出末页图
+    LockBg()
     SetClickEnabled(false)
-    fadeInfo = { kind = "out", elapsed = 0, onComplete = OnFadeComplete }
+    fadeInfo = { kind = "outPanel", elapsed = 0, onComplete = OnFadeComplete }
 end
 
 local function StartCrossfade(fromGo, toGo)
@@ -266,7 +350,7 @@ local function OnAdvanceClick()
     if currentPanelIndex <= GetPanelCount() then
         StartCrossfade(prevGo, panels[currentPanelIndex - 1])
     else
-        StartFadeOut(prevGo)
+        StartFadeOutPanel(prevGo)
     end
 end
 
@@ -303,39 +387,77 @@ function EndingController_Start()
     fadeOutPanel = nil
     crossfadeFrom = nil
     crossfadeTo = nil
+    preEndingRemain = 0
+
+    -- 必须在 SetActive(true) 之前离开 idle：
+    -- 激活时 Unity 会立刻跑 Start()，若仍是 idle 会 EnsureEndingHidden 把 Ending 关掉
     phase = "fadeBg"
 
     BindClickArea()
-    InitializeVisuals()
+    DisableConflictingComponents()
+    HideAllPanels()
+    SetClickEnabled(false)
+    HideHudForEnding()
 
+    bgLocked = false
+    SetRootRaycastEnabled(true)
+
+    if _G["StopBGM"] then
+        _G["StopBGM"]()
+    end
     if _G["PlayAudio"] then
-        _G["PlayAudio"]("audio_ending")
+        _G["PlayAudio"]("audio_preEnding")
     end
 
-    SetRootRaycastEnabled(true)
+    local len = 0
+    if _G["GetAudioClipLength"] then
+        len = _G["GetAudioClipLength"]("audio_preEnding") or 0
+    end
+    if len <= 0 then
+        len = PRE_ENDING_FALLBACK
+    end
+    preEndingRemain = len
+
     self.gameObject:SetActive(true)
-
-    fadeInfo = { kind = "bg", elapsed = 0, onComplete = OnFadeComplete }
     SetBgAlpha(0)
+    fadeInfo = { kind = "bg", elapsed = 0, onComplete = OnFadeComplete }
 
-    print("[EndingController] 开始漫画收束")
+    print("[EndingController] 开始漫画收束：黑幕渐入 + preEnding " .. tostring(len) .. "s")
 end
 
 function Start()
     RegisterGlobal()
     BindClickArea()
-    if phase == "idle" or phase == "done" then
+    -- 仅冷启动时隐藏；演出已开始时绝不可关掉
+    if phase == "idle" then
         EnsureEndingHidden()
     end
 end
 
 function Update()
+    local dt = CS.UnityEngine.Time.deltaTime
+
+    -- preEnding 与黑幕渐入并行倒计时
+    if (phase == "fadeBg" or phase == "waitPreEnding") and preEndingRemain > 0 then
+        preEndingRemain = preEndingRemain - dt
+        if preEndingRemain < 0 then
+            preEndingRemain = 0
+        end
+    end
+
+    if phase == "waitPreEnding" then
+        if preEndingRemain <= 0 then
+            BeginFirstPanel()
+        end
+        return
+    end
+
     if not fadeInfo then return end
 
     local duration = fadeDuration or 1.0
     if duration <= 0 then duration = 1.0 end
 
-    fadeInfo.elapsed = fadeInfo.elapsed + CS.UnityEngine.Time.deltaTime
+    fadeInfo.elapsed = fadeInfo.elapsed + dt
     local progress = fadeInfo.elapsed / duration
     if progress > 1 then progress = 1 end
     local eased = SmoothStep(progress)
@@ -351,17 +473,20 @@ function Update()
         if crossfadeTo then
             SetVisualAlpha(crossfadeTo, eased)
         end
-    elseif fadeInfo.kind == "out" then
-        local alpha = 1 - eased
-        SetBgAlpha(alpha)
+    elseif fadeInfo.kind == "outPanel" then
         if fadeOutPanel then
-            SetVisualAlpha(fadeOutPanel, alpha)
+            SetVisualAlpha(fadeOutPanel, 1 - eased)
         end
+    elseif fadeInfo.kind == "fadeOutBg" then
+        -- 收束：黑幕渐隐露出场景
+        SetBgAlpha(1 - eased)
     end
 
     if progress >= 1 then
         local cb = fadeInfo.onComplete
         fadeInfo = nil
-        if cb then cb() end
+        if cb then
+            cb()
+        end
     end
 end

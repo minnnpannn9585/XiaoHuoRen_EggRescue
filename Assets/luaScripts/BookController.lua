@@ -828,9 +828,10 @@ function TryRegisterEndingController()
 
     if not endingDs then return false end
 
-    -- 不激活 Ending（避免 Image 挡交互）；E20 触发时再加载脚本并打开
+    -- 不激活 Ending（避免 Image 挡交互）；E20 触发时再打开
     _G["EndingController_Start"] = function()
-        if not endingDs.script or not endingDs.script.EndingController_Start then
+        -- 始终先激活，保证 DouyinScript Start/Update 能跑
+        if endingGo and not endingGo.activeSelf then
             endingGo:SetActive(true)
         end
         if endingDs.script and endingDs.script.EndingController_Start then

@@ -342,6 +342,37 @@ local function TeleportToCrow()
     TeleportLocalActorNear("乌鸦", UnityEngine.Vector3(0, 0, 1.8))
 end
 
+-- 传到红顶屋二层窗（E20）；若未开窗则先置 BlackCat_Entered 并刷新，便于测 Ending
+local function TeleportToAtticWindow()
+    SetGlobalVar("BlackCat_Entered", true, "bool")
+    if _G["SecondFloorWindow_Refresh"] then
+        _G["SecondFloorWindow_Refresh"](true)
+    end
+
+    local goName = "E20 · 打开二层窗"
+    local go = UnityEngine.GameObject.Find(goName)
+    if not go then
+        goName = "E19 · 关闭二层窗"
+        go = UnityEngine.GameObject.Find(goName)
+    end
+    if not go then
+        print("[GlobalVarDebug] 未找到二层窗交互点 (E19/E20)")
+        return
+    end
+
+    local actor = DouyinActorService.GetLocalActor()
+    if not actor then
+        print("[GlobalVarDebug] 未找到本地玩家 Actor")
+        return
+    end
+
+    local offset = UnityEngine.Vector3(0, 0, 1.5)
+    local targetPos = go.transform.position + offset
+    actor:Teleport(targetPos)
+    print(string.format("[GlobalVarDebug] 已传送到二层窗 %s 附近 (%.2f, %.2f, %.2f)",
+        goName, targetPos.x, targetPos.y, targetPos.z))
+end
+
 local function AddCheeseFive()
     local cur = tonumber(GetGlobalVar("CheeseCount")) or 0
     local maxVal = DEBUG_INT_MAX.CheeseCount or 99
@@ -439,7 +470,7 @@ local function BuildVarDebugScrollPanel()
         panelRt,
         UnityEngine.Vector2(0, 1),
         UnityEngine.Vector2(1, 1),
-        UnityEngine.Vector2(8, -118),
+        UnityEngine.Vector2(8, -158),
         UnityEngine.Vector2(-8, -42)
     )
     local actionsLayout = actionsGo:AddComponent(typeof(UnityEngine.UI.VerticalLayoutGroup))
@@ -450,6 +481,7 @@ local function BuildVarDebugScrollPanel()
     actionsLayout.childForceExpandHeight = false
     actionsLayout.spacing = 4
     AddActionButton(actionsRt, "到乌鸦身边", TeleportToCrow)
+    AddActionButton(actionsRt, "到二层窗", TeleportToAtticWindow)
     AddActionButton(actionsRt, "奶酪碎 +5", AddCheeseFive)
 
     local scrollGo, scrollRt = CreateRectChild(
@@ -458,7 +490,7 @@ local function BuildVarDebugScrollPanel()
         UnityEngine.Vector2(0, 0),
         UnityEngine.Vector2(1, 1),
         UnityEngine.Vector2(8, 8),
-        UnityEngine.Vector2(-8, -124)
+        UnityEngine.Vector2(-8, -164)
     )
     local scrollRect = scrollGo:AddComponent(typeof(UnityEngine.UI.ScrollRect))
     scrollRect.horizontal = false
