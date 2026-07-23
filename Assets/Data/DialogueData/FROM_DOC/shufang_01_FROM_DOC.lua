@@ -1214,7 +1214,7 @@ DialogueConfig[94] = {
     Type = "Normal",
     DocTag = "NGPlus#4",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "他自己回来的？",
     Next = 95
 }

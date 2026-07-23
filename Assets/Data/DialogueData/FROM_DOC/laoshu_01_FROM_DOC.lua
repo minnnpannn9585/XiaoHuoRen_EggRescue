@@ -49,7 +49,7 @@ DialogueConfig[3] = {
 DialogueConfig[4] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "疑惑",
+    NpcSprite = "惊讶",
     Dialogue = "……谁在喊？",
     Next = 5
 }
@@ -67,7 +67,7 @@ DialogueConfig[5] = {
 DialogueConfig[6] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "疑惑",
+    NpcSprite = "惊讶",
     Dialogue = "墙缝……里面？",
     Next = 7
 }

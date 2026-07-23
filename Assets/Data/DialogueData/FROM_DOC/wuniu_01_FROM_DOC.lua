@@ -214,7 +214,7 @@ DialogueConfig[16] = {
     Type = "Normal",
     DocTag = "F-2#7",
     NpcName = "玩家",
-    NpcSprite = "疑惑",
+    NpcSprite = "正常",
     Dialogue = "——乌鸦？叼走了什么？你倒是说完啊……",
     Next = -1
 }

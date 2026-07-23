@@ -130,6 +130,14 @@ local PLAYER_PORTRAIT_KEYS = {
     ["疑惑"] = true,
 }
 
+local function PlayPlayerEmotionSfx(spriteKey)
+    if spriteKey == "惊讶" then
+        _G["PlayAudio"]("audio_shock")
+    elseif spriteKey == "疑惑" then
+        _G["PlayAudio"]("audio_question")
+    end
+end
+
 local function HideAllPortraits()
     if npcSprite then
         npcSprite.gameObject:SetActive(false)
@@ -495,7 +503,7 @@ function StartDialogue(dialogueID)
 
     DouyinUIService.SetUIVisible(false)
 
-    _G["PlayAudio"]("audio_interactObject")
+    _G["PlayAudio"]("audio_hello")
     UpdateDialogueUI()
 end
 
@@ -547,7 +555,7 @@ function StartDialogueWithData(dialogueData, startID)
         dialoguePanel:SetActive(true)
     end
     DouyinUIService.SetUIVisible(false)
-    _G["PlayAudio"]("audio_interactObject")
+    _G["PlayAudio"]("audio_hello")
     UpdateDialogueUI()
 end
 
@@ -743,6 +751,8 @@ function UpdateNPCInfo(data)
                 tostring(spriteKey) .. ". 可用 keys: " .. table.concat(availableKeys, ", "))
         end
         HideAllPortraits()
+    elseif displaySpeaker == "玩家" then
+        PlayPlayerEmotionSfx(spriteKey)
     end
 
     if npcDialogueText then
@@ -1263,7 +1273,9 @@ function OnOptionSelected(option)
         npcName.text = "玩家"
     end
     fullDialogueText = option.Text
-    ApplyPortraitSprite(ClassifyPlayerPortraitFromText(option.Text), "玩家")
+    local optionPortraitKey = ClassifyPlayerPortraitFromText(option.Text)
+    ApplyPortraitSprite(optionPortraitKey, "玩家")
+    PlayPlayerEmotionSfx(optionPortraitKey)
     StartTypingEffect()
 end
 

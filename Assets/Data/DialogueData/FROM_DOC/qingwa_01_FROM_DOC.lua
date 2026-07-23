@@ -235,7 +235,7 @@ DialogueConfig[131] = {
     Type = "Normal",
     DocTag = "2-hub-intro@v3#2",
     NpcName = "玩家",
-    NpcSprite = "疑惑",
+    NpcSprite = "惊讶",
     Dialogue = "等……什么？",
     Next = 132
 }

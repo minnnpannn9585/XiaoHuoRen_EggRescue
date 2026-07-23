@@ -415,7 +415,7 @@ DialogueConfig[31] = {
     Type = "Normal",
     DocTag = "2-B#8",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "说！有什么事瞒着我！",
     Next = 32  -- 下一段对话ID
 }
@@ -573,7 +573,7 @@ DialogueConfig[45] = {
     Type = "Normal",
     DocTag = "2-C#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "谷仓角落有个草窝，你们知道是谁的吗？",
     Next = 46  -- 下一段对话ID
 }
@@ -643,7 +643,7 @@ DialogueConfig[51] = {
     Type = "Normal",
     DocTag = "2-D#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "大黄宿醉成那样，有什么法子叫醒他吗？",
     Next = 52  -- 下一段对话ID
 }
@@ -698,7 +698,7 @@ DialogueConfig[56] = {
     Type = "Normal",
     DocTag = "2-D#6",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "有办法吗？",
     Next = 57  -- 下一段对话ID
 }
@@ -854,7 +854,7 @@ DialogueConfig[69] = {
     Type = "Normal",
     DocTag = "2-F#10",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "什么？",
     Next = 70  -- 下一段对话ID
 }
@@ -1195,7 +1195,7 @@ DialogueConfig[98] = {
     Type = "Normal",
     DocTag = "2-E#25",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "那大黄说乌鸦叼蛋上屋顶——？",
     Next = 99  -- 下一段对话ID
 }
@@ -1702,7 +1702,7 @@ DialogueConfig[142] = {
     Type = "Normal",
     DocTag = "NGPlus#13",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "那老鼠骗你们编水怪的事——还打算算账吗？",
     Next = 143  -- 下一段对话ID
 }
@@ -2552,7 +2552,7 @@ DialogueConfig[207] = {
     Type = "Normal",
     DocTag = "2-G#8",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "然后呢？",
     Next = 219
 }
@@ -2606,7 +2606,7 @@ DialogueConfig[212] = {
     Type = "Normal",
     DocTag = "2-G#13",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "昨晚有动静吗？",
     Next = 213
 }

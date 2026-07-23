@@ -176,7 +176,7 @@ DialogueConfig[821] = {
     Type = "Normal",
     DocTag = "1-A@cond#1b",
     NpcName = "玩家",
-    NpcSprite = "疑惑",
+    NpcSprite = "正常",
     Dialogue = "谷仓入口那道矮墙翻不过去。",
     Next = 12
 }
@@ -438,7 +438,7 @@ DialogueConfig[30] = {
     Type = "Normal",
     DocTag = "1-E#1",
     NpcName = "玩家",
-    NpcSprite = "疑惑",
+    NpcSprite = "正常",
     Dialogue = "大黄，梯子能借我吗？入口那道小围墙，我得翻过去。",
     Next = 31  -- 下一段对话ID
 }
@@ -887,7 +887,7 @@ DialogueConfig[65] = {
     Type = "Normal",
     DocTag = "2-B#1",
     NpcName = "玩家",
-    NpcSprite = "疑惑",
+    NpcSprite = "正常",
     Dialogue = "这里有一扇精美的小门，还有一撮动物的毛，",
     Next = 822
 }

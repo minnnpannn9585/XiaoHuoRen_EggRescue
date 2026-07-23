@@ -308,6 +308,10 @@ function EndingController_Start()
     BindClickArea()
     InitializeVisuals()
 
+    if _G["PlayAudio"] then
+        _G["PlayAudio"]("audio_ending")
+    end
+
     SetRootRaycastEnabled(true)
     self.gameObject:SetActive(true)
 

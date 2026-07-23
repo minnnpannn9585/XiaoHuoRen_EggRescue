@@ -79,7 +79,7 @@ DialogueConfig[4] = {
     Type = "Normal",
     DocTag = "1-A#4",
     NpcName = "玩家",
-    NpcSprite = "惊讶",
+    NpcSprite = "疑惑",
     Dialogue = "你刚才说的傻子和瞎子——到底是谁？",
     Next = 5
 }

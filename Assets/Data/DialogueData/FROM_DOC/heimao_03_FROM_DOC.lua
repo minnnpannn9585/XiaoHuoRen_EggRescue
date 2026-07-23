@@ -2135,7 +2135,7 @@ DialogueConfig[135] = {
     Type = "Normal",
     DocTag = "3-A#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "你上谷仓屋顶那次——是不是已经知道那是块石头？",
     Next = 136  -- 下一段对话ID
 }
@@ -2190,7 +2190,7 @@ DialogueConfig[140] = {
     Type = "Normal",
     DocTag = "3-A#6",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "你为什么不说！！",
     Next = 141  -- 下一段对话ID
 }
@@ -2278,7 +2278,7 @@ DialogueConfig[148] = {
     Type = "Normal",
     DocTag = "3-A#14",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "那句话是在说乌鸦和我？！",
     Next = 149  -- 下一段对话ID
 }
@@ -2303,7 +2303,7 @@ DialogueConfig[150] = {
     Type = "Normal",
     DocTag = "3-B#1",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "疑惑",
     Dialogue = "你之前上谷仓屋顶——那时候就知道是块石头，对不对？",
     Next = 151  -- 下一段对话ID
 }
@@ -2356,7 +2356,7 @@ DialogueConfig[154] = {
     Type = "Normal",
     DocTag = "3-B#5",
     NpcName = "玩家",
-    NpcSprite = "",
+    NpcSprite = "惊讶",
     Dialogue = "你为什么不说？！",
     Next = 155  -- 下一段对话ID
 }
