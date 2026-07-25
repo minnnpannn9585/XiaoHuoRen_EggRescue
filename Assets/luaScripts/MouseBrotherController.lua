@@ -51,6 +51,10 @@ local function IsPremiumSold(i)
     return GetBool(string.format("Mouse_PremiumSold_%02d", i))
 end
 
+local function PremiumPoolLimit()
+    return GetBool("Mouse_PremiumPoolUnlocked") and 8 or 2
+end
+
 local function CheapPoolAvailable()
     for i = 1, 10 do
         if not IsCheapSold(i) then
@@ -61,9 +65,8 @@ local function CheapPoolAvailable()
 end
 
 local function PremiumPoolAvailable()
-    local unlocked = GetBool("Mouse_PremiumPoolUnlocked")
-    for i = 1, 8 do
-        if (i < 3 or unlocked) and not IsPremiumSold(i) then
+    for i = 1, PremiumPoolLimit() do
+        if not IsPremiumSold(i) then
             return true
         end
     end
@@ -93,13 +96,6 @@ local function CanAffordMint8InGame()
     return CheeseRemainingTotal() >= 8
 end
 
-local function PreMintPoolSoldOut()
-    if not CheapPoolAvailable() and IsPremiumSold(1) and IsPremiumSold(2) then
-        return true
-    end
-    return false
-end
-
 local refreshingDerived = false
 
 function RefreshDerivedFlags()
@@ -111,7 +107,6 @@ function RefreshDerivedFlags()
     SetVar("Mouse_CheapPoolAvailable", CheapPoolAvailable(), "bool")
     SetVar("Mouse_PremiumPoolAvailable", PremiumPoolAvailable(), "bool")
     SetVar("Mouse_CanAffordMint8InGame", CanAffordMint8InGame(), "bool")
-    SetVar("Mouse_PreMintPoolSoldOut", PreMintPoolSoldOut(), "bool")
     refreshingDerived = false
 end
 
@@ -136,7 +131,7 @@ function PickCheapIntel()
 end
 
 function PickPremiumIntel()
-    return PickFromPool(PREMIUM_INTEL, IsPremiumSold, 8)
+    return PickFromPool(PREMIUM_INTEL, IsPremiumSold, PremiumPoolLimit())
 end
 
 local function GoToDialogueNode(nodeId)
@@ -196,11 +191,16 @@ function MouseShop_HandleAction(action, option)
         return true
     end
 
-    if action == "pay8_mint" or action == "pay8_frog" or action == "pay8_pool" then
+    if action == "pay8_mint" or action == "pay8_frog" then
         if not TrySpendCheese(8) then
-            GoToHub()
+            -- 整场剩余锁允许“未捡奶酪”计入显示；钱包不足时明确提示玩家先去拾取。
+            GoToDialogueNode(260)
             return true
         end
+
+        -- 扣费与资格写入同帧完成，避免付费后在演出途中退出造成“钱扣了、资格没给”。
+        SetVar("Mouse_MintFishPaid", true, "bool")
+        SetVar("Mouse_PremiumPoolUnlocked", true, "bool")
         RefreshDerivedFlags()
         local nextId = option and option.Next
         if nextId and nextId > 0 then

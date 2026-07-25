@@ -43,7 +43,6 @@ GlobalVariables = {
     { name = "Mouse_CheapPoolAvailable",    type = "bool", value = false },
     { name = "Mouse_PremiumPoolAvailable",  type = "bool", value = false },
     { name = "Mouse_CanAffordMint8InGame",  type = "bool", value = false },
-    { name = "Mouse_PreMintPoolSoldOut",    type = "bool", value = false },
 
     -- ========== NPC状态变量 ==========
     { name = "DogStatus",                   type = "int",  value = 1 },

@@ -298,8 +298,8 @@ DialogueConfig[100] = {
             DisplayConditions = {
                 { VarName = "BlackCat_MintFishPending", VarType = "bool", Value = true },
                 { VarName = "Mouse_MintFishPaid", VarType = "bool", Value = false },
-                { VarName = "MintFish_Obtained", VarType = "bool", Value = false },
                 { VarName = "Mouse_MintFishPitchShown", VarType = "bool", Value = false },
+                { VarName = "Mouse_PremiumPoolUnlocked", VarType = "bool", Value = false },
             },
         },
         {
@@ -343,16 +343,6 @@ DialogueConfig[100] = {
                 { VarName = "Mouse_MintFishPitchShown", VarType = "bool", Value = true },
                 { VarName = "Mouse_MintFishPaid", VarType = "bool", Value = false },
                 { VarName = "Mouse_PremiumPoolUnlocked", VarType = "bool", Value = false },
-            },
-        },
-        {
-            Text = "真没有更多情报了吗？",
-            Next = 350,
-            DisplayConditions = {
-                { VarName = "MintFish_Obtained", VarType = "bool", Value = true },
-                { VarName = "Mouse_MintFishPitchShown", VarType = "bool", Value = false },
-                { VarName = "Mouse_PremiumPoolUnlocked", VarType = "bool", Value = false },
-                { VarName = "Mouse_PreMintPoolSoldOut", VarType = "bool", Value = true },
             },
         },
         {
@@ -516,6 +506,21 @@ DialogueConfig[220] = {
     NpcName = "鼠哥",
     NpcSprite = "兜售",
     Dialogue = "只不过放我们这儿——保管费八块奶酪碎，公道价。",
+    Next = 229
+}
+
+DialogueConfig[229] = {
+    Type = "Normal",
+    DocTag = "1-E-after-quote-dispatch",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "",
+    SetVariables = {
+        { VarName = "Mouse_MintFishPitchShown", VarType = "bool", Value = true },
+    },
+    ConditionBranches = {
+        { VarName = "MintFish_Obtained", VarType = "bool", TrueNext = 350, FalseNext = 230 },
+    },
     Next = 230
 }
 
@@ -533,9 +538,6 @@ DialogueConfig[230] = {
     NpcName = "鼠哥",
     NpcSprite = "兜售",
     Dialogue = "",
-    SetVariables = {
-        { VarName = "Mouse_MintFishPitchShown", VarType = "bool", Value = true },
-    },
     Options = {
         {
             Text = "给你。",
@@ -1151,131 +1153,73 @@ DialogueConfig[346] = {
 -- Position: { 50, 150 }
 DialogueConfig[350] = {
     Type = "Normal",
-    NpcName = "描述",
+    NpcName = "玩家",
     NpcSprite = "",
-    Dialogue = "（鼠哥算盘停了一拍）",
+    Dialogue = "你看看这是什么。",
     Next = 351
 }
 
 DialogueConfig[351] = {
-    Type = "Question",
-    DocTag = "1-H-menu",
-    NpcName = "鼠哥",
-    NpcSprite = "兜售",
-    Dialogue = "",
-    Options = {
-        {
-            Text = "给你。",
-            Next = 360,
-            ShopAction = "pay8_pool",
-            DisplayConditions = {
-                { VarName = "Mouse_CanAffordMint8InGame", VarType = "bool", Value = true },
-            },
-        },
-        {
-            Text = "算了。",
-            Next = 95,
-        },
-    },
-    Next = -1
+    Type = "Normal",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "（把沾着青蛙味儿的薄荷鱼举到墙缝前）",
+    Next = 352
 }
 
--- Position: { 50, 150 }
 DialogueConfig[352] = {
     Type = "Normal",
     NpcName = "鼠弟",
-    NpcSprite = "兜售",
-    Dialogue = "柜里还有一批贵的——",
+    NpcSprite = "发怵",
+    Dialogue = "哥——",
     Next = 353
 }
 
--- Position: { 50, 150 }
 DialogueConfig[353] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "兜售",
-    Dialogue = "五块那档，你买到头也摸不全。",
+    NpcSprite = "发怵",
+    Dialogue = "……",
     Next = 354
 }
 
--- Position: { 50, 150 }
 DialogueConfig[354] = {
     Type = "Normal",
     NpcName = "玩家",
-    NpcSprite = "惊讶",
-    Dialogue = "那怎么开？",
+    NpcSprite = "",
+    Dialogue = "八块是吧？要不我把鱼和你刚才那句话一起带给黑猫，让它亲自来付？",
     Next = 355
 }
 
--- Position: { 50, 150 }
 DialogueConfig[355] = {
     Type = "Normal",
     NpcName = "鼠哥",
-    NpcSprite = "兜售",
-    Dialogue = "八块奶酪碎。不开价，不给看货。",
+    NpcSprite = "发怵",
+    Dialogue = "不用。",
     Next = 356
 }
 
--- Position: { 50, 150 }
 DialogueConfig[356] = {
     Type = "Normal",
-    NpcName = "鼠弟",
-    NpcSprite = "兜售",
-    Dialogue = "……这是规矩。",
-    Next = 351
+    NpcName = "鼠哥",
+    NpcSprite = "发怵",
+    Dialogue = "柜里后面那批，给你开。",
+    Next = 357
 }
 
--- Position: { 50, 150 }
 DialogueConfig[357] = {
     Type = "Normal",
-    NpcName = "鼠哥",
-    NpcSprite = "兜售",
-    Dialogue = "规矩。",
-    Next = 351
-}
-
--- Position: { 50, 150 }
-DialogueConfig[360] = {
-    Type = "Normal",
-    NpcName = "描述",
-    NpcSprite = "",
-    Dialogue = "（鼠哥数完八块，算盘叮叮响）",
-    Next = 361
-}
-
--- Position: { 50, 150 }
-DialogueConfig[361] = {
-    Type = "Normal",
-    NpcName = "鼠哥",
-    NpcSprite = "兜售",
-    Dialogue = "开柜。",
-    Next = 362
-}
-
--- Position: { 50, 150 }
-DialogueConfig[362] = {
-    Type = "Normal",
     NpcName = "鼠弟",
-    NpcSprite = "兜售",
-    Dialogue = "后面那批——现在就能买喽！",
-    Next = 363
+    NpcSprite = "发怵",
+    Dialogue = "随便挑！刚才那句——当我们没说！",
+    Next = 358
 }
 
--- Position: { 50, 150 }
-DialogueConfig[363] = {
-    Type = "Normal",
-    NpcName = "鼠哥",
-    NpcSprite = "兜售",
-    Dialogue = "去挑。挑完别赖账。",
-    Next = 364
-}
-
--- Position: { 50, 150 }
-DialogueConfig[364] = {
+DialogueConfig[358] = {
     Type = "Normal",
     NpcName = "描述",
     NpcSprite = "",
-    Dialogue = "（账本后几页被翻出来，比前面厚一截）",
+    Dialogue = "（账本后几页被飞快翻开）",
     SetVariables = {
         { VarName = "Mouse_PremiumPoolUnlocked", VarType = "bool", Value = true },
     },

@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MD = ROOT / "MissingEggDoc-main/docs/characters/老鼠兄弟-对话脚本-树状.md"
 OUT = ROOT / "Assets/Editor/DialogueData/FROM_DOC/laoshu_01_FROM_DOC.lua"
+RUNTIME_OUT = ROOT / "Assets/Data/DialogueData/FROM_DOC/laoshu_01_FROM_DOC.lua"
 
 HUB = 100
 HUB_REVISIT = 95  # 【回访】想买什么？/没情报了 → then HUB menu
@@ -25,7 +26,6 @@ NODE_1GP = 320
 NODE_1GA = 330
 NODE_1GT = 340
 NODE_1H = 350
-NODE_1HB = 360
 NGPLUS = 900
 CHEAP_BASE = 500
 PREMIUM_BASE = 600
@@ -168,11 +168,29 @@ def main() -> None:
     # 1-D
     build_simple_section(md, "1-D · 黑猫盯视闲聊", NODE_1D, ["Mouse_BlackCatStareShown"])
 
-    # 1-E (ends with question - handle manually)
-    block_1e = extract_section(md, "1-E · 薄荷鱼报价（未取鱼 · 付 8 块）")
+    # 1-E (quote, then dispatch by whether the player already holds the fish)
+    block_1e = extract_section(md, "1-E · 薄荷鱼报价（未闻价；报价后按是否持鱼分流）")
     lines_1e = parse_tree_block(block_1e.split("└─ 【菜单】")[0])
     qid = NODE_1E + 20
-    chain_lines(NODE_1E, lines_1e, qid)
+    dispatch_id = qid - 1
+    chain_lines(NODE_1E, lines_1e, dispatch_id)
+    add_node(
+        dispatch_id,
+        f"""DialogueConfig[{dispatch_id}] = {{
+    Type = "Normal",
+    DocTag = "1-E-after-quote-dispatch",
+    NpcName = "描述",
+    NpcSprite = "",
+    Dialogue = "",
+    SetVariables = {{
+        {{ VarName = "Mouse_MintFishPitchShown", VarType = "bool", Value = true }},
+    }},
+    ConditionBranches = {{
+        {{ VarName = "MintFish_Obtained", VarType = "bool", TrueNext = {NODE_1H}, FalseNext = {qid} }},
+    }},
+    Next = {qid}
+}}""",
+    )
     add_node(
         qid,
         f"""DialogueConfig[{qid}] = {{
@@ -181,9 +199,6 @@ def main() -> None:
     NpcName = "鼠哥",
     NpcSprite = "兜售",
     Dialogue = "",
-    SetVariables = {{
-        {{ VarName = "Mouse_MintFishPitchShown", VarType = "bool", Value = true }},
-    }},
     Options = {{
         {{
             Text = "给你。",
@@ -255,35 +270,13 @@ def main() -> None:
     nodes[NODE_1GA] = re.sub(r"Next = \d+", f"Next = {NODE_1GT}", nodes[NODE_1GA])
     build_simple_section(md, "1-G-T · 排第七口诀（兜底正文）", NODE_1GT, ["Mouse_FrogFallbackGiven"])
 
-    # 1-H
-    lines_1h = parse_tree_block(extract_section(md, "1-H · 补买后组（已取鱼 · 未闻报价）").split("└─ 【菜单】")[0])
-    chain_lines(NODE_1H, lines_1h, NODE_1H + 1)
-    add_node(
-        NODE_1H + 1,
-        f"""DialogueConfig[{NODE_1H + 1}] = {{
-    Type = "Question",
-    DocTag = "1-H-menu",
-    NpcName = "鼠哥",
-    NpcSprite = "兜售",
-    Dialogue = "",
-    Options = {{
-        {{
-            Text = "给你。",
-            Next = {NODE_1HB},
-            ShopAction = "pay8_pool",
-            DisplayConditions = {{
-                {{ VarName = "Mouse_CanAffordMint8InGame", VarType = "bool", Value = true }},
-            }},
-        }},
-        {{
-            Text = "算了。",
-            Next = {HUB_REVISIT},
-        }},
-    }},
-    Next = -1
-}}""",
+    # 1-H: already holding fish, expose the lie immediately after the first quote
+    build_simple_section(
+        md,
+        "1-H · 未询价持鱼 · 报价现场亮鱼恐吓开池",
+        NODE_1H,
+        ["Mouse_PremiumPoolUnlocked"],
     )
-    build_simple_section(md, "1-H-B · 补买成功", NODE_1HB, ["Mouse_PremiumPoolUnlocked"])
 
     # hub revisit dispatchers
     add_node(
@@ -402,8 +395,8 @@ def main() -> None:
             DisplayConditions = {{
                 {{ VarName = "BlackCat_MintFishPending", VarType = "bool", Value = true }},
                 {{ VarName = "Mouse_MintFishPaid", VarType = "bool", Value = false }},
-                {{ VarName = "MintFish_Obtained", VarType = "bool", Value = false }},
                 {{ VarName = "Mouse_MintFishPitchShown", VarType = "bool", Value = false }},
+                {{ VarName = "Mouse_PremiumPoolUnlocked", VarType = "bool", Value = false }},
             }},
         }},
         {{
@@ -447,16 +440,6 @@ def main() -> None:
                 {{ VarName = "Mouse_MintFishPitchShown", VarType = "bool", Value = true }},
                 {{ VarName = "Mouse_MintFishPaid", VarType = "bool", Value = false }},
                 {{ VarName = "Mouse_PremiumPoolUnlocked", VarType = "bool", Value = false }},
-            }},
-        }},
-        {{
-            Text = "真没有更多情报了吗？",
-            Next = {NODE_1H},
-            DisplayConditions = {{
-                {{ VarName = "MintFish_Obtained", VarType = "bool", Value = true }},
-                {{ VarName = "Mouse_MintFishPitchShown", VarType = "bool", Value = false }},
-                {{ VarName = "Mouse_PremiumPoolUnlocked", VarType = "bool", Value = false }},
-                {{ VarName = "Mouse_PreMintPoolSoldOut", VarType = "bool", Value = true }},
             }},
         }},
         {{
@@ -533,8 +516,10 @@ DialogueConfig = {{}}
 
 """
     body = "\n\n".join(nodes[k] for k in sorted(nodes.keys()))
-    OUT.write_text(header + body + "\n", encoding="utf-8")
-    print(f"Wrote {OUT} ({len(nodes)} nodes)")
+    output = header + body + "\n"
+    OUT.write_text(output, encoding="utf-8")
+    RUNTIME_OUT.write_text(output, encoding="utf-8")
+    print(f"Wrote {OUT} and {RUNTIME_OUT} ({len(nodes)} nodes)")
 
 
 if __name__ == "__main__":
