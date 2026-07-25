@@ -5,6 +5,15 @@
 
 local loadedNPCScripts = {}
 
+-- World Debugger 对话加载调试（过滤关键字 [DialogueLoad]）；发布前改 false
+local DIALOGUE_LOAD_DEBUG = false
+
+local function LoadDbg(msg)
+    if DIALOGUE_LOAD_DEBUG then
+        print(msg)
+    end
+end
+
 local function ResolveDialogueManager()
     local mgr = _G["_DialogueManager"]
     if mgr then
@@ -45,7 +54,7 @@ function LoadNPCConfig()
         if npc.id then _NPCConfigs.byId[npc.id] = npc end
         if npc.name then _NPCConfigs.byName[npc.name] = npc end
     end
-    print("NPC " .. #data.npcList .. " ")
+    LoadDbg("NPC " .. #data.npcList .. " ")
 end
 
 -- 判断表是否像 DialogueConfig 节点表（数字键 + 对白字段）
@@ -220,7 +229,7 @@ function LoadNPCScript(npcName)
                 fallbackId = g.branchId or 1
             end
             if fallbackId ~= currentBranchId then
-                print(string.format(
+                LoadDbg(string.format(
                     "[DialogueLoad] NPC %s branch %d 无 Lua，回退到 branch %d",
                     npcName, currentBranchId, fallbackId))
                 npcConfig.currentBranchId = fallbackId
@@ -277,7 +286,7 @@ function LoadNPCScript(npcName)
     if currentGraph and currentGraph.mergeLuaModules and #currentGraph.mergeLuaModules > 0 then
         mergeInfo = " merge=" .. table.concat(currentGraph.mergeLuaModules, "+")
     end
-    print(string.format(
+    LoadDbg(string.format(
         "[DialogueLoad] npc=%s branchId=%d script=%s path=%s%s",
         npcName, currentBranchId, scriptName, luaAssetPath, mergeInfo))
     return normalizedData
@@ -303,7 +312,7 @@ function StartNpcDialogue(targetNpcName, startId)
         return false
     end
     local sid = startId or 0
-    print(string.format("[DialogueLoad] start npc=%s startID=%s", targetNpcName, tostring(sid)))
+    LoadDbg(string.format("[DialogueLoad] start npc=%s startID=%s", targetNpcName, tostring(sid)))
     mgr.StartDialogueWithData(npcScript, sid)
     return true
 end
@@ -319,7 +328,7 @@ function StartDialogue()
         StartNpcDialogue(npcname, ID)
         return
     end
-    print(string.format("[DialogueLoad] start directID=%s", tostring(ID)))
+    LoadDbg(string.format("[DialogueLoad] start directID=%s", tostring(ID)))
     local mgr = ResolveDialogueManager()
     if not mgr or not mgr.StartDialogue then
         logError("[DialogueLoad] DialogueManager 未就绪：缺少 StartDialogue")

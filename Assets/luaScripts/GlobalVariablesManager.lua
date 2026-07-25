@@ -11,7 +11,7 @@ local debugIntLabels = {}
 local debugIntInitialValues = {}
 
 -- 开发测 bool/int 变量 UI（Canvas 滚动列表）；发布前改 false
-local VAR_DEBUG_UI_ENABLED = true
+local VAR_DEBUG_UI_ENABLED = false
 
 -- int 调试按钮循环上限（doc 17）；到顶后回到 GlobalVariables 初始 value
 local DEBUG_INT_MAX = {
