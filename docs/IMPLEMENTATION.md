@@ -108,7 +108,7 @@ zttTouTing, miaosu
 | `ShuFen.lua` | 淑芬 parent | 拖 `commissionSpot`/`hubSpot`/`ngPlusSpot`；只 SetActive 三个 Spot，不动 parent |
 | `BeiShangWa.lua` | 悲伤蛙 parent | 拖 `beforeSpot`/`afterSpot`/`cushionSpot`（E12）；`MintFish_Obtained` 切换交鱼前后姿态与绿垫点 |
 | `E03EavesdropController.lua` | `E03 · 身后偷听点` | `E03_Overheard \|\| ChickStatus>=3` 时 `DisableInteraction` |
-| `MainController.lua` | `MianController` | 每帧隐藏 SDK 飞行按钮与聊天面板；注册 `PlayAudio`/`PlayParticle` |
+| `MainController.lua` | `MianController` | 每帧隐藏 SDK 飞行按钮与聊天面板；注册 `PlayAudio`/`PlayParticle`。同房共场下 SFX 仅本机：共享 `OnPlayerTriggerEnter` 须先 `isLocal` 再 `PlayAudio`，禁止为远端玩家播 2D 游戏音效 |
 
 路径：`Assets/luaScripts/`。
 
