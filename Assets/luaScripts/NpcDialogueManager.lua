@@ -5,6 +5,8 @@
 ---@var npcName :UnityEngine.UI.Text
 ---@var npcSprite :UnityEngine.UI.Image
 ---@var playerSprite :UnityEngine.UI.Image
+---@var playerExclamation :UnityEngine.GameObject
+---@var playerQuestion :UnityEngine.GameObject
 ---@var npcDialogueText :UnityEngine.UI.Text
 ---@var next :UnityEngine.UI.Button
 ---@var playerPanel :UnityEngine.GameObject
@@ -119,9 +121,7 @@ local function InitPortraitRefs()
     RegPortrait("炸毛", GetLuaBinding("立绘_黑猫_炸毛"))
     RegPortrait("待机", GetLuaBinding("立绘_闪电蜗牛_待机"))
     RegPortrait("闪电蜗牛", GetLuaBinding("立绘_闪电蜗牛_闪电蜗牛"))
-    RegPortrait("正常", GetLuaBinding("立绘_玩家_正常"))
-    RegPortrait("惊讶", GetLuaBinding("立绘_玩家_惊讶"))
-    RegPortrait("疑惑", GetLuaBinding("立绘_玩家_疑惑"))
+    -- 玩家立绘不换图：UI Image 上已放好的素材；惊讶/疑惑只开关符号
 end
 
 local PLAYER_PORTRAIT_KEYS = {
@@ -129,6 +129,17 @@ local PLAYER_PORTRAIT_KEYS = {
     ["惊讶"] = true,
     ["疑惑"] = true,
 }
+
+local function SetPlayerEmotionMarks(spriteKey)
+    local showEx = spriteKey == "惊讶"
+    local showQ = spriteKey == "疑惑"
+    if playerExclamation then
+        playerExclamation:SetActive(showEx)
+    end
+    if playerQuestion then
+        playerQuestion:SetActive(showQ)
+    end
+end
 
 local function PlayPlayerEmotionSfx(spriteKey)
     if spriteKey == "惊讶" then
@@ -142,6 +153,7 @@ local function HideAllPortraits()
     if npcSprite then
         npcSprite.gameObject:SetActive(false)
     end
+    SetPlayerEmotionMarks(nil)
     if playerSprite then
         playerSprite.gameObject:SetActive(false)
     end
@@ -248,31 +260,31 @@ local function ResolvePortraitSpriteKey(data)
     return nil
 end
 
--- speaker=玩家 → playerSprite；否则 → npcSprite（描述沿用 lastPortrait，不改 last）
+-- speaker=玩家 → 只开关立绘与情绪符号（不改 Image.sprite，沿用 UI 上已放好的图）
+-- 否则 → npcSprite（描述沿用 lastPortrait，不改 last）
 local function ApplyPortraitSprite(spriteKey, speaker)
     if not spriteKey or spriteKey == "" then
         return false
     end
-    local sprite = allSprites[spriteKey]
 
     if speaker == "玩家" then
         if npcSprite then
             npcSprite.gameObject:SetActive(false)
         end
-        if not playerSprite or not sprite then
-            if playerSprite then
-                playerSprite.gameObject:SetActive(false)
-            end
+        if not playerSprite then
+            SetPlayerEmotionMarks(nil)
             return false
         end
-        playerSprite.sprite = sprite
         playerSprite.gameObject:SetActive(true)
+        SetPlayerEmotionMarks(spriteKey)
         return true
     end
 
+    SetPlayerEmotionMarks(nil)
     if playerSprite then
         playerSprite.gameObject:SetActive(false)
     end
+    local sprite = allSprites[spriteKey]
     if not npcSprite or not sprite then
         if npcSprite then
             npcSprite.gameObject:SetActive(false)

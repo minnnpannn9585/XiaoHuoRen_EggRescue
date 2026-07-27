@@ -264,11 +264,13 @@ DialogueConfig[n] = {
 
 #### 玩家表情选用（`Assets/Res/Model/TouXiang_LiHui/Player/`）
 
-| key | 图 | 含义 |
-|-----|-----|------|
-| `正常` | 正常.png | **默认**；陈述、答应、汇报、短附和 |
-| `疑惑` | 疑惑.png | **求信息的提问** |
-| `惊讶` | 惊讶.png | **震惊 / 不可思议 / 情绪爆发** |
+| key | 运行时表现 | 含义 |
+|-----|------------|------|
+| `正常` | UI 上的固定立绘，无符号 | **默认**；陈述、答应、汇报、短附和 |
+| `疑惑` | 同一立绘 + `playerQuestion` | **求信息的提问** |
+| `惊讶` | 同一立绘 + `playerExclamation` | **震惊 / 不可思议 / 情绪爆发** |
+
+运行时**不改**玩家 `Image.sprite`（沿用场景/UI 上已放好的立绘）；`疑惑`/`惊讶` 只开关 Inspector 绑定的 `playerExclamation` / `playerQuestion`。
 
 `NpcName = "玩家"` 时 `NpcSprite` 填上表之一；空字符串运行时视为 `正常`。
 
