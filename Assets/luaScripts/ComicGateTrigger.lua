@@ -24,6 +24,11 @@ function OnComicInteract()
         return
     end
 
+    -- 兜底：点击进入时关掉 roof 窗子引导 VFX（Trigger 未踩到时也关掉）
+    if _G.ClimbPath_Advance then
+        _G.ClimbPath_Advance("roof", 2)
+    end
+
     SetGlobalBool("Comic_Revealed", true)
     print("[ComicGate] Comic_Revealed = true，启动 Ending")
 

@@ -1,7 +1,7 @@
 -- 侦探笔记本 · doc 09 §9.2.1 / §9.2.2
 -- Inspector 接线：每条目 / 每条连线 / 每个修饰各拖一个 GameObject（字段名 = 下表名）
 --
--- 壳层：open, openRedDot, boolPanel, pageContents（含第 4 页老鼠情报）
+-- 壳层：open, openRedDot, boolPanel, pageContents（含第 4 页老鼠情报）, hideOnOpen
 -- 翻页：每页底部 4 个页签 pageNTabBtns[1..4]→跳到第 N 页；本页对应槽位可留空
 -- 红点：openRedDot + 页签子节点 Dot；有 pendingReveals（已解锁未观看）时显示
 -- 入口：开局隐藏 open；线索入册时显示 + NoteImage 弹跳（含已有未看线索时再解锁）；关本后红点亮起时同款弹跳
@@ -12,6 +12,7 @@
 ---@var close :UnityEngine.UI.Button
 ---@var openRedDot :UnityEngine.GameObject
 ---@var boolPanel :UnityEngine.GameObject
+---@var hideOnOpen :UnityEngine.GameObject[] -- 打开笔记本时关闭的左侧 HUD（Inspector 拖入）
 ---@var pageContents :UnityEngine.GameObject[]
 ---@var page1TabBtns :UnityEngine.UI.Button[]
 ---@var page2TabBtns :UnityEngine.UI.Button[]
@@ -123,6 +124,8 @@ local lastRedDotShow = false
 local lastOpenInteractable = nil
 -- 首条线索入册前隐藏笔记本入口
 local notebookIconVisible = false
+-- 打开本子时暂藏的左侧 HUD：{ { go, wasActive }, ... }
+local hiddenHudStates = nil
 
 local function Dbg(msg)
     if BOOK_DEBUG then
@@ -884,9 +887,36 @@ function Update()
         revealAnims[id] = nil
     end
 end
+local function HideHudOnOpen()
+    hiddenHudStates = {}
+    if not hideOnOpen then
+        return
+    end
+    for i = 0, hideOnOpen.Length - 1 do
+        local go = hideOnOpen[i]
+        if go then
+            table.insert(hiddenHudStates, { go = go, wasActive = go.activeSelf })
+            go:SetActive(false)
+        end
+    end
+end
+
+local function RestoreHudOnClose()
+    if not hiddenHudStates then
+        return
+    end
+    for _, info in ipairs(hiddenHudStates) do
+        if info.go then
+            info.go:SetActive(info.wasActive)
+        end
+    end
+    hiddenHudStates = nil
+end
+
 function OnCloseClick()
     _G["PlayAudio"]("audio_closeNote")
     boolPanel:SetActive(false)
+    RestoreHudOnClose()
     if notebookIconVisible and open then
         open.gameObject:SetActive(true)
     end
@@ -904,6 +934,7 @@ function OnOpenClick()
     end
 
     _G["PlayAudio"]("audio_openNote")
+    HideHudOnOpen()
     boolPanel:SetActive(true)
     -- 打开面板后仍保留笔记本入口 icon
     close.gameObject:SetActive(true)

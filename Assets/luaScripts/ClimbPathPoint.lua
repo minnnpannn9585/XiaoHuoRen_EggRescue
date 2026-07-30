@@ -153,3 +153,4 @@ function OnPlayerTriggerEnter(douyinPlayer)
 end
 
 _G.ClimbPath_Refresh = ClimbPath_Refresh
+_G.ClimbPath_Advance = ClimbPath_Advance
