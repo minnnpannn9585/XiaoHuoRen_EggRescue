@@ -132,6 +132,9 @@ function SetGlobalVar(varName, value, varType)
     if varName == "BlackCat_Entered" and runtimeValue == true and _G.ClimbPath_Refresh then
         _G.ClimbPath_Refresh("roof")
     end
+    if varName == "E05_GrainSoakGet" and _G["E05GrainSoak_Refresh"] then
+        _G["E05GrainSoak_Refresh"](false)
+    end
     if _G["BookController_OnVarChanged"] then
         _G["BookController_OnVarChanged"](varName)
     end
